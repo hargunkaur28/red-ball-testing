@@ -18,7 +18,6 @@ const connectDB = require('./config/db');
 
 // Import routes
 const authRoutes = require('./routes/auth.routes');
-const adminRoutes = require('./routes/admin.routes');
 const admissionRoutes = require('./routes/admission.routes');
 const membershipRoutes = require('./routes/membership.routes');
 const paymentRoutes = require('./routes/payment.routes');
@@ -245,7 +244,6 @@ app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/admin', adminRoutes);
 app.use('/api/admissions', admissionRoutes);
 app.use('/api', membershipRoutes);
 app.use('/api/payments', paymentRoutes);
@@ -319,21 +317,6 @@ const startServer = async () => {
     console.log(`👨‍🍳 Manager seeded: ${process.env.MANAGER_EMAIL}`);
   }
 
-  const existingReception = await User.findOne({ role: 'receptionist' });
-  if (!existingReception) {
-    if (isProd && (!process.env.RECEPTION_EMAIL || !process.env.RECEPTION_PASSWORD)) {
-      console.warn('⚠️  Receptionist not seeded in production — set RECEPTION_EMAIL and RECEPTION_PASSWORD in env.');
-    } else {
-      await User.create({
-        name: 'Reception Desk',
-        email: process.env.RECEPTION_EMAIL || 'reception@redball.com',
-        phone: '7777777777',
-        password: process.env.RECEPTION_PASSWORD || 'Reception@123',
-        role: 'receptionist',
-      });
-      console.log(`💁 Receptionist seeded`);
-    }
-  }
 
   // Seed test plans
   const seedTestPlans = require('./jobs/seedTestPlans');

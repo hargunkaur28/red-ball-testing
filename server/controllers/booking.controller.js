@@ -3,7 +3,7 @@ const SlotBooking = require('../models/SlotBooking');
 const Slot = require('../models/Slot');
 const Payment = require('../models/Payment');
 
-const PRIVILEGED_ROLES = ['superadmin', 'manager', 'admin', 'receptionist'];
+const PRIVILEGED_ROLES = ['superadmin', 'manager'];
 
 exports.getAll = async (req, res) => {
   try {

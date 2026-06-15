@@ -138,7 +138,7 @@ const orderSchema = new mongoose.Schema({
   },
   cancelledBy: {
     type: String,
-    enum: ['admin', 'manager'],
+    enum: ['superadmin', 'manager'],
   },
   cancellationReason: String,
   isRefunded: {

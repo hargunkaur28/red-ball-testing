@@ -4,7 +4,6 @@ const auth = require('../middleware/auth.middleware');
 const authorize = require('../middleware/role.middleware');
 const controller = require('../controllers/oneTimeAccess.controller');
 
-// Optional authentication middleware to allow guests to create orders/verify purchases
 const optionalAuth = async (req, res, next) => {
   const hasBearerToken = req.headers.authorization?.startsWith('Bearer ');
   if (!hasBearerToken) return next();
@@ -14,7 +13,7 @@ const optionalAuth = async (req, res, next) => {
 router.get('/my-passes', auth, controller.getMyPasses);
 router.post('/purchase-order', optionalAuth, controller.purchaseOrder);
 router.post('/verify-purchase', optionalAuth, controller.verifyPurchase);
-router.get('/admin/passes', auth, authorize('superadmin', 'admin', 'manager', 'receptionist'), controller.getAdminPasses);
-router.patch('/admin/passes/:id/mark-completed', auth, authorize('superadmin', 'admin'), controller.markPassCompleted);
+router.get('/admin/passes', auth, authorize('superadmin'), controller.getAdminPasses);
+router.patch('/admin/passes/:id/mark-completed', auth, authorize('superadmin'), controller.markPassCompleted);
 
 module.exports = router;

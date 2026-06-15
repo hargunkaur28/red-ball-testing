@@ -8,9 +8,9 @@ router.get('/', serviceController.getAll);
 
 router.use(auth);
 
-router.post('/', authorize('superadmin', 'admin'), serviceController.create);
-router.put('/:id', authorize('superadmin', 'admin'), serviceController.update);
-router.delete('/:id', authorize('superadmin', 'admin'), serviceController.delete);
-router.patch('/:id/toggle', authorize('superadmin', 'admin'), serviceController.toggleStatus);
+router.post('/', authorize('superadmin'), serviceController.create);
+router.put('/:id', authorize('superadmin'), serviceController.update);
+router.delete('/:id', authorize('superadmin'), serviceController.delete);
+router.patch('/:id/toggle', authorize('superadmin'), serviceController.toggleStatus);
 
 module.exports = router;

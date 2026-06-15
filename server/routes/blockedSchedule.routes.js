@@ -7,7 +7,7 @@ const authorize = require('../middleware/role.middleware');
 router.use(auth);
 
 router.get('/', blockedScheduleController.getAll);
-router.post('/', authorize('superadmin', 'admin', 'receptionist'), blockedScheduleController.create);
-router.delete('/:id', authorize('superadmin', 'admin'), blockedScheduleController.delete);
+router.post('/', authorize('superadmin'), blockedScheduleController.create);
+router.delete('/:id', authorize('superadmin'), blockedScheduleController.delete);
 
 module.exports = router;

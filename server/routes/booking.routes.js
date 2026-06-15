@@ -8,8 +8,8 @@ router.use(auth);
 
 router.get('/', bookingController.getAll);
 router.get('/:id', bookingController.getById);
-router.post('/:id/check-in', authorize('superadmin', 'admin', 'receptionist'), bookingController.checkIn);
-router.post('/:id/reschedule', authorize('superadmin', 'admin', 'receptionist'), bookingController.reschedule);
-router.post('/:id/cancel', authorize('superadmin', 'admin', 'receptionist'), bookingController.cancel);
+router.post('/:id/check-in', authorize('superadmin'), bookingController.checkIn);
+router.post('/:id/reschedule', authorize('superadmin'), bookingController.reschedule);
+router.post('/:id/cancel', authorize('superadmin'), bookingController.cancel);
 
 module.exports = router;

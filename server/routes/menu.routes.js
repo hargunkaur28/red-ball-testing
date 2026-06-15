@@ -8,12 +8,12 @@ const upload = require('../middleware/upload.middleware');
 
 router.get('/', mc.getMenu);
 router.get('/:categoryId', mc.getByCategory);
-router.post('/items', auth, authorize('superadmin', 'admin', 'manager'), upload.single('imageFile'), mc.createItem);
-router.put('/items/:id', auth, authorize('superadmin', 'admin', 'manager'), upload.single('imageFile'), mc.updateItem);
-router.delete('/items/:id', auth, authorize('superadmin', 'admin', 'manager'), mc.deleteItem);
-router.post('/categories', auth, authorize('superadmin', 'admin', 'manager'), mc.createCategory);
-router.put('/categories/:id', auth, authorize('superadmin', 'admin', 'manager'), mc.updateCategory);
-router.delete('/categories/:id', auth, authorize('superadmin', 'admin', 'manager'), mc.deleteCategory);
-router.put('/categories/rename', auth, authorize('superadmin', 'admin', 'manager'), mc.renameCategory);
+router.post('/items', auth, authorize('superadmin', 'manager'), upload.single('imageFile'), mc.createItem);
+router.put('/items/:id', auth, authorize('superadmin', 'manager'), upload.single('imageFile'), mc.updateItem);
+router.delete('/items/:id', auth, authorize('superadmin', 'manager'), mc.deleteItem);
+router.post('/categories', auth, authorize('superadmin', 'manager'), mc.createCategory);
+router.put('/categories/:id', auth, authorize('superadmin', 'manager'), mc.updateCategory);
+router.delete('/categories/:id', auth, authorize('superadmin', 'manager'), mc.deleteCategory);
+router.put('/categories/rename', auth, authorize('superadmin', 'manager'), mc.renameCategory);
 
 module.exports = router;

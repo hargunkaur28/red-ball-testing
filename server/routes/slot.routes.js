@@ -19,7 +19,6 @@ router.get('/membership/my-bookings', auth, sc.getMyMembershipBookings);
 router.delete('/membership/bookings/:id/cancel', auth, sc.cancelMembershipBooking);
 
 // ── Public slot booking flow ─────────────────────────────────────────────────
-// optionalAuth: attaches req.user when logged in so reference pricing can kick in
 router.get('/public/available', optionalAuth, sc.getPublicAvailableSlots);
 router.post('/public/slot-order', optionalAuth, sc.createSlotOrder);
 router.post('/public/slot-verify', optionalAuth, sc.verifySlotPayment);
@@ -28,17 +27,16 @@ router.post('/public/slot-verify', optionalAuth, sc.verifySlotPayment);
 router.post('/public-booking/order', sc.createPublicBookingOrder);
 router.post('/public-booking', sc.createPublicBooking);
 
-// ── Slot CRUD (superadmin/admin) ─────────────────────────────────────────────
+// ── Slot CRUD (superadmin only) ──────────────────────────────────────────────
 router.get('/', sc.getSlots);
-router.post('/', auth, authorize('superadmin', 'admin'), sc.createSlot);
-router.put('/:id', auth, authorize('superadmin', 'admin'), sc.updateSlot);
-router.delete('/:id', auth, authorize('superadmin', 'admin'), sc.deleteSlot);
+router.post('/', auth, authorize('superadmin'), sc.createSlot);
+router.put('/:id', auth, authorize('superadmin'), sc.updateSlot);
+router.delete('/:id', auth, authorize('superadmin'), sc.deleteSlot);
 
 // ── Booking sub-routes ───────────────────────────────────────────────────────
 router.get('/bookings/my-bookings', auth, sc.getMyBookings);
-// /:id/book removed — users must pay via /public/slot-order + /public/slot-verify
-router.post('/bookings/:id/check-in', auth, authorize('superadmin', 'admin', 'receptionist'), sc.checkInBooking);
-router.post('/bookings/:id/check-out', auth, authorize('superadmin', 'admin', 'receptionist'), sc.checkOutBooking);
+router.post('/bookings/:id/check-in', auth, authorize('superadmin'), sc.checkInBooking);
+router.post('/bookings/:id/check-out', auth, authorize('superadmin'), sc.checkOutBooking);
 router.post('/bookings/:id/cancel', auth, sc.cancelBooking);
 router.get('/:id', sc.getSlot);
 

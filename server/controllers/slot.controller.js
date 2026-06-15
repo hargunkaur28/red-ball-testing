@@ -1104,8 +1104,8 @@ exports.adminManualBooking = async (req, res) => {
         if (matchedUser) break;
         // Fallback: any role
         const anyUser = await User.findOne(matcher);
-        // Skip if the only match is an admin/superadmin (avoid linking to admin accounts)
-        if (anyUser && !['admin', 'superadmin'].includes(anyUser.role)) {
+        // Skip if the only match is a superadmin/manager (avoid linking to staff accounts)
+        if (anyUser && !['superadmin', 'manager'].includes(anyUser.role)) {
           matchedUser = anyUser;
           break;
         }
