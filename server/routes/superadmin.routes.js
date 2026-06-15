@@ -14,5 +14,6 @@ router.patch('/payments/:id/status', auth, authorize('superadmin'), superadminCo
 router.get('/pending-payments', auth, authorize('superadmin'), superadminController.getPendingPayments);
 router.get('/reports/slot-revenue-export', auth, authorize('superadmin'), superadminController.exportSlotRevenue);
 router.post('/backfill-reference-prices', auth, authorize('superadmin'), superadminController.backfillReferencePrices);
+router.post('/sms/test', auth, authorize('superadmin'), superadminController.testSms);
 
 module.exports = router;

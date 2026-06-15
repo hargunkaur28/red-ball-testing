@@ -928,3 +928,44 @@ exports.backfillReferencePrices = async (req, res) => {
     res.status(500).json({ message: 'Backfill failed.', error: error.message });
   }
 };
+
+// ── POST /api/superadmin/sms/test ─────────────────────────────────────────────
+// Superadmin-only: send a test SMS to a given number via Fast2SMS.
+// Body: { phone: '9876543210', message: 'Test SMS from Red Ball' }
+exports.testSms = async (req, res) => {
+  try {
+    const { sendSms, normalisePhone } = require('../utils/fast2smsService');
+    const { phone, message } = req.body;
+
+    const cleaned = normalisePhone(phone);
+    if (!cleaned) {
+      return res.status(400).json({ message: 'Invalid Indian mobile number provided.' });
+    }
+
+    const result = await sendSms({
+      numbers: [cleaned],
+      message: message || 'Test SMS from Red Ball Academy. If you received this, Fast2SMS is working correctly.',
+    });
+
+    res.json({
+      success: result.sent,
+      skipped: result.skipped || false,
+      reason: result.reason,
+      provider: result.provider,
+      fast2smsResponse: result.response || null,
+      error: result.error || null,
+      config: {
+        enabled: process.env.FAST2SMS_ENABLED,
+        route: process.env.FAST2SMS_ROUTE || 'q',
+        hasSenderId: !!process.env.FAST2SMS_SENDER_ID,
+        hasApiKey: !!process.env.FAST2SMS_API_KEY,
+        managerPhone: process.env.RESTAURANT_MANAGER_SMS_PHONE
+          ? '******' + process.env.RESTAURANT_MANAGER_SMS_PHONE.slice(-4)
+          : null,
+      },
+    });
+  } catch (error) {
+    console.error('testSms error:', error);
+    res.status(500).json({ message: 'SMS test failed.', error: error.message });
+  }
+};

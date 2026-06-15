@@ -51,6 +51,7 @@ const startExpiryReminder = require('./jobs/expiryReminder.job');
 const startLowStockAlert = require('./jobs/lowStockAlert.job');
 const startAutoCheckout = require('./jobs/autoCheckout.job');
 const startExpireOneTimeAccess = require('./jobs/expireOneTimeAccess.job');
+const startCricketSlotReminderSms = require('./jobs/cricketSlotReminderSms.job');
 const startTestExpiryCheckerModule = require('./jobs/testExpiryChecker.job');
 const { stopTestExpiryChecker } = startTestExpiryCheckerModule;
 const startTestExpiryChecker = startTestExpiryCheckerModule;
@@ -130,7 +131,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on('join-kitchen-updates', () => {
-    socket.join('kitchen-updates');
+    if (socket.data.role === 'manager' || socket.data.role === 'superadmin') {
+      socket.join('kitchen-updates');
+    }
   });
 
   socket.on('order:accept', async ({ orderId }) => {
@@ -318,14 +321,18 @@ const startServer = async () => {
 
   const existingReception = await User.findOne({ role: 'receptionist' });
   if (!existingReception) {
-    await User.create({
-      name: 'Reception Desk',
-      email: process.env.RECEPTION_EMAIL || 'reception@redball.com',
-      phone: '7777777777',
-      password: process.env.RECEPTION_PASSWORD || 'Reception@123',
-      role: 'receptionist',
-    });
-    console.log(`💁 Receptionist seeded`);
+    if (isProd && (!process.env.RECEPTION_EMAIL || !process.env.RECEPTION_PASSWORD)) {
+      console.warn('⚠️  Receptionist not seeded in production — set RECEPTION_EMAIL and RECEPTION_PASSWORD in env.');
+    } else {
+      await User.create({
+        name: 'Reception Desk',
+        email: process.env.RECEPTION_EMAIL || 'reception@redball.com',
+        phone: '7777777777',
+        password: process.env.RECEPTION_PASSWORD || 'Reception@123',
+        role: 'receptionist',
+      });
+      console.log(`💁 Receptionist seeded`);
+    }
   }
 
   // Seed test plans
@@ -341,6 +348,7 @@ const startServer = async () => {
   startLowStockAlert();
   startAutoCheckout(io);
   startExpireOneTimeAccess(io);
+  startCricketSlotReminderSms();
   startTestExpiryChecker(io);
 
   server.listen(PORT, () => {

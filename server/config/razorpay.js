@@ -48,7 +48,7 @@ exports.createRazorpayOrder = async (options) => {
 // Fetch Razorpay payment details
 exports.fetchPaymentDetails = async (paymentId) => {
   return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error('Razorpay payment fetch timed out')), 15000);
+    const timer = setTimeout(() => reject(new Error('Razorpay payment fetch timed out')), 4000);
     razorpayInstance.payments.fetch(paymentId, (err, payment) => {
       clearTimeout(timer);
       if (err) reject(err);

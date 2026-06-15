@@ -129,13 +129,13 @@ exports.adminDelete = async (req, res) => {
 // POST /api/coupons/validate — validate a coupon and calculate discount
 exports.validate = async (req, res) => {
   try {
-    const { code, targetType, sportId, orderAmount, userId } = req.body;
+    const { code, targetType, sportId, orderAmount } = req.body;
 
     if (!code || !targetType || orderAmount == null) {
       return res.json({ valid: false, message: 'code, targetType, and orderAmount are required.' });
     }
 
-    const effectiveUserId = userId || req.user?.userId;
+    const effectiveUserId = req.user?.userId;
     const amount = Number(orderAmount);
 
     // Find coupon

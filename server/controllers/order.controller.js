@@ -5,6 +5,7 @@ const RestaurantSettings = require('../models/RestaurantSettings');
 const Coupon = require('../models/Coupon');
 const CouponUsage = require('../models/CouponUsage');
 const { sendAdminPaymentAlert } = require('../utils/emailService');
+const { sendKitchenOrderSms } = require('../utils/fast2smsService');
 
 // ── helpers ────────────────────────────────────────────────────────────────────
 
@@ -137,6 +138,11 @@ exports.create = async (req, res) => {
       io.emit('dashboard:refresh');
     }
 
+    // Kitchen SMS — fire-and-forget, never blocks response
+    if (order.paymentMethod === 'cash' || order.paymentStatus === 'paid') {
+      sendKitchenOrderSms(populated).catch(() => {});
+    }
+
     if (order.paymentStatus === 'paid' && order.paymentMethod === 'razorpay') {
       const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
       const recipients = [
@@ -252,6 +258,7 @@ exports.getCustomerOrders = async (req, res) => {
 exports.getTableOrders = async (req, res) => {
   try {
     const orders = await Order.find({ tableId: req.params.tableId })
+      .select('-customerPhone -deliveryAddress -deliveryLocation -customerId -razorpayPaymentId -razorpayOrderId')
       .populate('tableId', 'label tableNumber section')
       .sort({ createdAt: -1 })
       .limit(30);
@@ -421,7 +428,12 @@ exports.createDirect = async (req, res) => {
           const notExpired = (!coupon.startsAt || now >= coupon.startsAt) && (!coupon.endsAt || now <= coupon.endsAt);
           const withinLimit = coupon.usageLimitTotal == null || coupon.usedCount < coupon.usageLimitTotal;
           const meetsMin = !coupon.minOrderAmount || subtotal >= coupon.minOrderAmount;
-          if (notExpired && withinLimit && meetsMin) {
+          const callerUserId = req.user?.userId;
+          const userUsageCount = coupon.usageLimitPerUser != null && callerUserId
+            ? await CouponUsage.countDocuments({ couponId: coupon._id, userId: callerUserId })
+            : 0;
+          const withinPerUserLimit = coupon.usageLimitPerUser == null || !callerUserId || userUsageCount < coupon.usageLimitPerUser;
+          if (notExpired && withinLimit && meetsMin && withinPerUserLimit) {
             let calcDiscount;
             if (coupon.discountType === 'percentage') {
               const pct = (coupon.discountValue / 100) * subtotal;
@@ -456,11 +468,16 @@ exports.createDirect = async (req, res) => {
         return res.status(400).json({ message: 'Payment signature verification failed.' });
       }
 
-      const payment = await fetchPaymentDetails(razorpayPaymentId);
+      let payment;
+      try {
+        payment = await fetchPaymentDetails(razorpayPaymentId);
+      } catch (fetchErr) {
+        console.error('[Order] Razorpay fetch failed:', fetchErr.message);
+        return res.status(503).json({ message: 'Payment verification unavailable. Please try again in a moment.' });
+      }
       if (payment.status !== 'captured') {
         return res.status(400).json({ message: `Payment not captured. Razorpay status: ${payment.status}.` });
       }
-
       const expectedPaise = Math.round(totalAmount * 100);
       if (payment.amount !== expectedPaise) {
         return res.status(400).json({
@@ -473,7 +490,7 @@ exports.createDirect = async (req, res) => {
       savedRazorpayOrderId = razorpayOrderId;
     }
 
-    const effectiveCustomerId = req.user?.userId || customerId;
+    const effectiveCustomerId = req.user?.userId;
 
     const order = await Order.create({
       tableId,
@@ -530,6 +547,11 @@ exports.createDirect = async (req, res) => {
       io.emit('dashboard:refresh');
     }
 
+    // Kitchen SMS — fire-and-forget, never blocks response
+    if (order.paymentMethod === 'cash' || order.paymentStatus === 'paid') {
+      sendKitchenOrderSms(populated).catch(() => {});
+    }
+
     if (order.paymentStatus === 'paid' && order.paymentMethod === 'razorpay') {
       const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
       const recipients = [process.env.MANAGER_EMAIL, process.env.ADMIN_NOTIFICATION_EMAIL].filter(Boolean);
@@ -579,11 +601,7 @@ exports.createRazorpayOrder = async (req, res) => {
       const deliveryCharge = await calcDeliveryCharge(orderType || 'pickup', subtotalForCoupon);
       serverAmount = subtotalForCoupon + deliveryCharge;
     } else {
-      // Legacy fallback: client provides amount (pickup/table, no delivery charge risk)
-      const { amount } = req.body;
-      if (!amount) return res.status(400).json({ message: 'items[] or amount is required.' });
-      serverAmount = Number(amount);
-      subtotalForCoupon = serverAmount;
+      return res.status(400).json({ message: 'items[] is required.' });
     }
 
     if (!serverAmount || serverAmount <= 0) {
@@ -607,7 +625,12 @@ exports.createRazorpayOrder = async (req, res) => {
           const notExpired = (!coupon.startsAt || now >= coupon.startsAt) && (!coupon.endsAt || now <= coupon.endsAt);
           const withinLimit = coupon.usageLimitTotal == null || coupon.usedCount < coupon.usageLimitTotal;
           const meetsMin = !coupon.minOrderAmount || subtotalForCoupon >= coupon.minOrderAmount;
-          if (notExpired && withinLimit && meetsMin) {
+          const callerUserId = req.user?.userId;
+          const userUsageCount = coupon.usageLimitPerUser != null && callerUserId
+            ? await CouponUsage.countDocuments({ couponId: coupon._id, userId: callerUserId })
+            : 0;
+          const withinPerUserLimit = coupon.usageLimitPerUser == null || !callerUserId || userUsageCount < coupon.usageLimitPerUser;
+          if (notExpired && withinLimit && meetsMin && withinPerUserLimit) {
             let calcDiscount;
             if (coupon.discountType === 'percentage') {
               const pct = (coupon.discountValue / 100) * subtotalForCoupon;

@@ -380,7 +380,7 @@ exports.resetPassword = async (req, res) => {
     const { email, otp, newPassword } = req.body;
     const user = await User.findOne({ email }).select('+resetOtp +resetOtpExpiry');
 
-    const otpValid = user.resetOtp && await bcrypt.compare(otp, user.resetOtp);
+    const otpValid = user && user.resetOtp && await bcrypt.compare(otp, user.resetOtp);
     if (!otpValid || user.resetOtpExpiry < new Date()) {
       return res.status(400).json({ message: 'Invalid or expired OTP.' });
     }

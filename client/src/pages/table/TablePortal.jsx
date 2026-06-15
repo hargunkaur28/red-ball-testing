@@ -367,6 +367,11 @@ export default function TablePortal({ embedded = false }) {
     if (items.length === 0) { toast.error('Cart is empty.'); return; }
     if (isAuthenticated && !user?.phone) { setShowPhoneModal(true); return; }
 
+    if (!customer.name.trim()) { toast.error('Please enter your name.'); return; }
+    if (!validPhone(customer.phone)) { toast.error('Please enter a valid 10-digit phone number.'); return; }
+    if (orderType === 'table' && !selectedTable) { toast.error('Please select a table.'); return; }
+    if (orderType === 'delivery' && !customer.address.trim()) { toast.error('Please enter your delivery address.'); return; }
+
     if (paymentMethod === 'razorpay') {
       if (!scriptLoaded || !window.Razorpay) {
         toast.error('Razorpay SDK failed to load. Please refresh.');
@@ -961,7 +966,7 @@ export default function TablePortal({ embedded = false }) {
               </div>
 
               {/* Submit Button */}
-              <button onClick={handleSubmitOrder} className="w-full bg-[#C8102E] hover:bg-[#A60D25] text-white font-bold py-3 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled={items.length === 0 || !customer.name || !customer.phone || (orderType === 'table' && !selectedTable)}>
+              <button onClick={handleSubmitOrder} className="w-full bg-[#C8102E] hover:bg-[#A60D25] text-white font-bold py-3 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled={items.length === 0 || !customer.name || !customer.phone || (orderType === 'table' && !selectedTable) || (orderType === 'delivery' && !customer.address)}>
                 {paymentMethod === 'razorpay' ? `Pay ${formatCurrency(cartTotal)}` : 'Send Order'}
               </button>
             </>

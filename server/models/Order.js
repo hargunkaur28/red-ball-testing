@@ -153,6 +153,11 @@ const orderSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
+  // SMS tracking — kitchen order alert sent to restaurant manager
+  managerSmsSentAt: { type: Date },
+  managerSmsStatus: { type: String }, // 'sent' | 'failed'
+  managerSmsError:  { type: String },
 }, {
   timestamps: true,
 });

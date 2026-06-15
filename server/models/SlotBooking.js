@@ -172,6 +172,13 @@ const slotBookingSchema = new mongoose.Schema({
   cancellationReason: String,
   cancellationTime: Date,
   notes: String,
+
+  // SMS reminder tracking — cricket slot 1-hour reminder
+  reminderSmsSentAt:     { type: Date },
+  reminderSmsAttemptedAt:{ type: Date },
+  reminderSmsAttempts:   { type: Number, default: 0 },
+  reminderSmsStatus:     { type: String }, // 'sent' | 'failed'
+  reminderSmsError:      { type: String },
 }, {
   timestamps: true,
 });

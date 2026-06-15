@@ -108,6 +108,10 @@ exports.getEntitlementStatus = async (req, res) => {
 // GET /api/attendance/user/:userId — Get user attendance history
 exports.getUserAttendance = async (req, res) => {
   try {
+    const privileged = ['superadmin', 'admin', 'receptionist', 'manager'].includes(req.user?.role);
+    if (!privileged && req.user?.userId !== req.params.userId) {
+      return res.status(403).json({ message: 'Access denied.' });
+    }
     const { startDate, endDate } = req.query;
     const filter = { userId: req.params.userId };
 
