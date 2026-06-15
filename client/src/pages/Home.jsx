@@ -40,35 +40,37 @@ function FlowSection({ children, theme = 'dark', id }) {
 }
 
 // ── Kids Academy Banner ───────────────────────────────────────────────────────
-const KIDS_SPORTS = ['badminton', 'cricket'];
-
-const FEATURE_CHIPS = [
-  { Icon: Users, label: 'Dedicated coach included' },
-  { Icon: CreditCard, label: 'One-time admission fee' },
-  { Icon: CalendarDays, label: 'Flexible monthly plans' },
+const KIDS_SPORTS = [
+  { slug: 'badminton', fallbackBg: 'linear-gradient(135deg,#14532d,#166534)' },
+  { slug: 'cricket',   fallbackBg: 'linear-gradient(135deg,#1e3a5f,#1d4ed8)' },
 ];
 
-function SportCard({ sport }) {
+const FEATURE_CHIPS = [
+  { Icon: Users,       label: 'Coach included' },
+  { Icon: CreditCard,  label: 'Admission fee' },
+  { Icon: CalendarDays,label: 'Monthly plans' },
+];
+
+function KidsSportCard({ sport, fallbackBg }) {
   const img = sport?.imageUrl || sport?.heroImage || sport?.image || sport?.thumbnail;
   const name = sport?.name || '';
 
   return (
     <div
-      className="relative w-[130px] h-[172px] sm:w-[148px] sm:h-[196px] rounded-2xl overflow-hidden shadow-2xl shadow-black/50 shrink-0"
+      className="relative rounded-2xl overflow-hidden shadow-xl h-36 sm:h-44 lg:w-[210px] lg:h-[280px]"
       style={{ border: '1px solid rgba(255,255,255,0.1)' }}
     >
       {img ? (
         <img src={img} alt={name} className="absolute inset-0 w-full h-full object-cover" />
       ) : (
-        <div className="absolute inset-0" style={{ background: 'rgba(255,255,255,0.04)' }} />
+        <div className="absolute inset-0" style={{ background: fallbackBg }} />
       )}
-      {/* gradient overlay */}
       <div
         className="absolute inset-0"
-        style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.82) 30%, rgba(0,0,0,0.18) 100%)' }}
+        style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 25%, transparent 70%)' }}
       />
-      <div className="absolute inset-x-0 bottom-0 p-3">
-        <p className="text-white text-[11px] font-black uppercase tracking-[0.14em] leading-tight">{name}</p>
+      <div className="absolute inset-x-0 bottom-0 px-3 pb-3">
+        <p className="text-white text-[11px] font-black uppercase tracking-wider">{name}</p>
       </div>
     </div>
   );
@@ -83,9 +85,10 @@ function KidsAcademyBanner() {
 
   const kidsSports = useMemo(() => {
     const all = sportsData?.sports || [];
-    return KIDS_SPORTS.map(
-      (slug) => all.find((s) => s.name?.toLowerCase().includes(slug)) ?? { name: slug, _id: slug }
-    );
+    return KIDS_SPORTS.map(({ slug, fallbackBg }) => ({
+      fallbackBg,
+      sport: all.find((s) => s.name?.toLowerCase().includes(slug)) ?? { name: slug, _id: slug },
+    }));
   }, [sportsData]);
 
   return (
@@ -93,77 +96,69 @@ function KidsAcademyBanner() {
       className="relative overflow-hidden"
       style={{ background: 'linear-gradient(160deg, #0C0F0F 0%, #101414 100%)' }}
     >
-      {/* subtle red glow top-right */}
       <div
-        className="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(200,16,46,0.09) 0%, transparent 70%)' }}
+        className="absolute -top-32 -right-32 w-96 h-96 rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(200,16,46,0.08) 0%, transparent 70%)' }}
       />
 
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-22">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+      <div className="max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12 py-10 sm:py-14 lg:py-20">
 
-          {/* Sport image cards */}
-          <div className="flex gap-4 shrink-0 order-2 lg:order-1">
-            {kidsSports.map((sport) => (
-              <SportCard key={sport._id || sport.name} sport={sport} />
+        {/* ── Desktop: side-by-side ── Mobile: stacked ── */}
+        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-24">
+
+          {/* Cards — 2-col grid on mobile, side by side on desktop */}
+          <div className="grid grid-cols-2 gap-3 w-full lg:flex lg:w-auto lg:gap-4 shrink-0">
+            {kidsSports.map(({ sport, fallbackBg }) => (
+              <KidsSportCard key={sport._id || sport.name} sport={sport} fallbackBg={fallbackBg} />
             ))}
           </div>
 
           {/* Text + CTA */}
-          <div className="flex-1 order-1 lg:order-2 text-center lg:text-left">
+          <div className="flex-1 text-center lg:text-left">
             <span
-              className="inline-block text-[10px] font-black uppercase tracking-[0.28em] mb-5 px-3 py-1 rounded-full"
+              className="inline-block text-[10px] font-black uppercase tracking-[0.25em] mb-4 px-3 py-1 rounded-full"
               style={{ background: 'rgba(200,16,46,0.13)', color: '#F87171', border: '1px solid rgba(200,16,46,0.28)' }}
             >
               For Kids &amp; Beginners
             </span>
 
             <h2
-              className="text-white mb-4 leading-[0.95]"
+              className="text-white mb-3 leading-[0.95]"
               style={{
                 fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: 'clamp(2.6rem, 5.5vw, 4rem)',
+                fontSize: 'clamp(2.4rem, 5vw, 3.8rem)',
                 letterSpacing: '1.5px',
               }}
             >
               Kids Academy
             </h2>
 
-            <p className="text-white/52 text-[15px] max-w-md mx-auto lg:mx-0 leading-relaxed mb-7">
-              Structured Badminton &amp; Cricket coaching programmes with a dedicated coach, designed for kids and beginners.
+            <p className="text-white/50 text-sm sm:text-base max-w-lg mx-auto lg:mx-0 leading-relaxed mb-5">
+              Badminton &amp; Cricket coaching with a dedicated coach — built for kids and beginners.
             </p>
 
-            {/* Feature chips */}
-            <div className="flex flex-wrap gap-2.5 justify-center lg:justify-start mb-9">
+            {/* Chips — all 3 on one row */}
+            <div className="flex flex-row gap-2 justify-center lg:justify-start mb-6 flex-wrap">
               {FEATURE_CHIPS.map(({ Icon, label }) => (
                 <span
                   key={label}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold text-white/65"
-                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.09)' }}
+                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold text-white/55 whitespace-nowrap"
+                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
                 >
-                  <Icon size={11} className="text-white/45 shrink-0" />
+                  <Icon size={10} className="text-white/35 shrink-0" />
                   {label}
                 </span>
               ))}
             </div>
 
-            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-              <Link
-                to="/book-slots?program=kids-academy"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-black text-sm text-white shadow-lg shadow-red-950/30 transition-all hover:scale-[1.02] active:scale-[0.97]"
-                style={{ background: 'linear-gradient(135deg, #C8102E 0%, #8B0B1E 100%)' }}
-              >
-                Explore Kids Academy
-                <ArrowRight size={14} />
-              </Link>
-              <a
-                href="#section-sports"
-                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full font-bold text-sm text-white/55 transition-all hover:text-white/80"
-                style={{ border: '1px solid rgba(255,255,255,0.1)' }}
-              >
-                View All Sports
-              </a>
-            </div>
+            <Link
+              to="/book-slots?program=kids-academy"
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-full font-black text-sm text-white shadow-lg shadow-red-950/30 transition-all hover:scale-[1.02] active:scale-[0.97]"
+              style={{ background: 'linear-gradient(135deg, #C8102E 0%, #8B0B1E 100%)' }}
+            >
+              Explore Kids Academy
+              <ArrowRight size={14} />
+            </Link>
           </div>
         </div>
       </div>
