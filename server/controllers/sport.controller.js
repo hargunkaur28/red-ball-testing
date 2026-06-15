@@ -1576,6 +1576,18 @@ exports.listKidsAcademy = async (req, res) => {
   }
 };
 
+// ── GET /api/sports/kids-academy/public ──────────────────────────────────────
+// Public endpoint: returns slugs of sports that have active Kids Academy plans.
+exports.listPublicKidsAcademy = async (req, res) => {
+  try {
+    const plans = await MembershipPlan.find({ isKidsAcademy: true, isActive: true }).lean();
+    const slugs = [...new Set(plans.flatMap((p) => p.sportsIncluded || []))];
+    res.json({ slugs });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
+
 // ── DELETE /api/sports/:id/kids-academy ──────────────────────────────────────
 // Removes all Kids Academy MembershipPlans for a sport.
 exports.deleteKidsAcademy = async (req, res) => {

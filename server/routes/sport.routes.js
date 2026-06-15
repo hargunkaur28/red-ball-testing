@@ -25,6 +25,7 @@ router.delete('/discounts/:id', auth, authorize('superadmin'), sportController.d
 // ==========================================
 router.get('/public', sportController.getPublicSports);
 router.get('/public/:slug', sportController.getPublicSportBySlug);
+router.get('/kids-academy/public', sportController.listPublicKidsAcademy);
 router.get('/kids-academy', auth, authorize('superadmin'), sportController.listKidsAcademy);
 router.get('/', auth, authorize('superadmin'), sportController.getAllSports);
 router.get('/:id', auth, authorize('superadmin'), sportController.getSportById);

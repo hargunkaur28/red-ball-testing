@@ -44,6 +44,7 @@ const slotBookingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Membership',
   },
+  membershipPlanSnapshot: { type: String },
   isMembershipBooking: {
     type: Boolean,
     default: false,

@@ -3,8 +3,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Trophy, Clock, AlertTriangle, CheckCircle, Download, RefreshCw, Check,
-  CalendarPlus, CalendarCheck, X, ChevronDown, ChevronUp,
+  CalendarPlus, CalendarCheck, X, ChevronDown, ChevronUp, Zap,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import api from '../../lib/axios';
 import useAuthStore from '../../store/authStore';
 import { formatCurrency } from '../../lib/utils';
@@ -22,9 +23,9 @@ const formatDateTime = (dateStr) => {
 
 const fmtSlotDate = (dateStr) => {
   if (!dateStr) return emptyDash;
-  return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-IN', {
-    weekday: 'short', day: 'numeric', month: 'short',
-  });
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return emptyDash;
+  return d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
 };
 
 const statusStyles = {
@@ -69,6 +70,7 @@ function DetailRow({ label, value, valueClass = 'text-white' }) {
 function UpcomingBookings({ membershipId }) {
   const qc = useQueryClient();
   const [showPast, setShowPast] = useState(false);
+  const [confirmCancelId, setConfirmCancelId] = useState(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ['membership-bookings'],
@@ -80,9 +82,13 @@ function UpcomingBookings({ membershipId }) {
     mutationFn: (id) => api.delete(`/slots/membership/bookings/${id}/cancel`),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['membership-bookings'] });
+      setConfirmCancelId(null);
       toast.success('Booking cancelled');
     },
-    onError: (e) => toast.error(e?.response?.data?.message || 'Cancellation failed'),
+    onError: (e) => {
+      setConfirmCancelId(null);
+      toast.error(e?.response?.data?.message || 'Cancellation failed');
+    },
   });
 
   const allBookings = (data?.bookings || []).filter((b) => b.membershipId?._id === membershipId || b.membershipId === membershipId);
@@ -140,13 +146,34 @@ function UpcomingBookings({ membershipId }) {
               </p>
             </div>
             {canCancel(b) && (
-              <button
-                onClick={() => cancelMutation.mutate(b._id)}
-                disabled={cancelMutation.isPending}
-                className="shrink-0 flex items-center gap-1 text-[11px] font-bold text-red-400 hover:text-red-300 border border-red-400/20 rounded-full px-2.5 py-1 transition-colors disabled:opacity-50"
-              >
-                <X size={11} /> Cancel
-              </button>
+              confirmCancelId === b._id ? (
+                <div className="shrink-0 flex flex-col items-end gap-1.5">
+                  <p className="text-[11px] text-white/60 font-semibold whitespace-nowrap">Cancel this slot?</p>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={() => cancelMutation.mutate(b._id)}
+                      disabled={cancelMutation.isPending}
+                      className="flex items-center gap-1 text-[11px] font-black text-white bg-red-600 hover:bg-red-500 rounded-full px-3 py-1 transition-colors disabled:opacity-50"
+                    >
+                      {cancelMutation.isPending ? 'Cancelling…' : 'Yes, cancel'}
+                    </button>
+                    <button
+                      onClick={() => setConfirmCancelId(null)}
+                      disabled={cancelMutation.isPending}
+                      className="text-[11px] font-bold text-white/45 hover:text-white/70 border border-white/10 rounded-full px-2.5 py-1 transition-colors"
+                    >
+                      Keep
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setConfirmCancelId(b._id)}
+                  className="shrink-0 flex items-center gap-1 text-[11px] font-bold text-red-400 hover:text-red-300 border border-red-400/20 rounded-full px-2.5 py-1 transition-colors"
+                >
+                  <X size={11} /> Cancel
+                </button>
+              )
             )}
           </div>
         ))
@@ -228,6 +255,21 @@ export default function Membership() {
         <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#df1526]">Red Ball Academy</p>
         <h1 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">My Membership</h1>
         <p className="mt-2 text-sm text-white/50">View and manage your membership</p>
+      </div>
+
+      {/* Book Another Sport banner */}
+      <div className="rounded-2xl border border-white/8 bg-white/[0.03] px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <p className="text-white font-bold text-sm">Want to try another sport?</p>
+          <p className="text-white/45 text-xs mt-0.5">Book a one-time paid slot for any sport.</p>
+        </div>
+        <Link
+          to="/user/book-slots"
+          className="self-start sm:self-auto shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider text-white transition-all hover:opacity-90 active:scale-[0.98]"
+          style={{ background: 'linear-gradient(135deg, #C8102E, #8B0B1E)' }}
+        >
+          <Zap size={12} /> Book Another Sport
+        </Link>
       </div>
 
       {activeMemberships.length > 0 ? (

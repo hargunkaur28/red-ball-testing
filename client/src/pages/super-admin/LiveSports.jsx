@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Zap, RefreshCw, ChevronRight, ChevronLeft, AlertTriangle,
   Check, Building2, X, Lock, Unlock, Loader2, Plus, Sun, Moon,
-  Layers, IndianRupee, LayoutGrid, Trash2, Pencil, Clock, Search, User, ShieldCheck,
+  Layers, IndianRupee, LayoutGrid, Trash2, Pencil, Clock, Search, User, ShieldCheck, Crown,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import api from '../../lib/axios';
@@ -288,18 +288,33 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
                         </div>
                       </div>
                       {s.bookings?.length > 0 && (
-                        <div className="mt-2 pt-2 border-t border-current/15 space-y-1">
-                          {s.bookings.map((b) => (
-                            <div key={b._id} className="flex items-center justify-between text-[11px]">
-                              <span className="font-semibold">{b.playerName}</span>
-                              <div className="flex items-center gap-1.5">
-                                <span className="opacity-60">{b.playerPhone}</span>
-                                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
-                                  b.paymentStatus === 'paid' ? 'bg-green-200 text-green-800' : b.paymentStatus === 'partial' ? 'bg-amber-200 text-amber-800' : 'bg-red-200 text-red-800'
-                                }`}>{b.paymentStatus}</span>
+                        <div className="mt-2 pt-2 border-t border-current/15 space-y-1.5">
+                          {s.bookings.map((b) => {
+                            const isMembership = b.isMembershipBooking || b.bookingType === 'membership-slot';
+                            const planName = b.membershipPlanSnapshot || b.membershipId?.planId?.name || '';
+                            return (
+                              <div key={b._id} className="flex items-start justify-between gap-2 text-[11px]">
+                                <div className="min-w-0">
+                                  <span className="font-semibold block truncate">{b.playerName}</span>
+                                  {isMembership && (
+                                    <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-violet-100 text-violet-700 mt-0.5">
+                                      <Crown size={8} /> {planName || 'Membership'}
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="flex items-center gap-1.5 shrink-0">
+                                  <span className="opacity-60">{b.playerPhone}</span>
+                                  {isMembership ? (
+                                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-violet-100 text-violet-700">Free</span>
+                                  ) : (
+                                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                                      b.paymentStatus === 'paid' ? 'bg-green-200 text-green-800' : b.paymentStatus === 'partial' ? 'bg-amber-200 text-amber-800' : 'bg-red-200 text-red-800'
+                                    }`}>{b.paymentStatus}</span>
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       )}
                       {isSlotAvailable(s) && (

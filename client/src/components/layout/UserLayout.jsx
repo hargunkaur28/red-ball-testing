@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Home, CreditCard, Calendar, Utensils, ClipboardList, User, Menu, X, LogOut, Star, ScanLine, History, Globe } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import useAuthStore from '../../store/authStore';
 import { getInitials } from '../../lib/utils';
 import ErrorBoundary from '../shared/ErrorBoundary';
+import api from '../../lib/axios';
 
 const menuItems = [
   { path: '/user', label: 'Dashboard', icon: <Home size={18} />, end: true },
@@ -18,18 +20,31 @@ const menuItems = [
   { path: '/', label: 'Back to Website', icon: <Globe size={18} /> },
 ];
 
-const mobileNavItems = [
-  { path: '/user', label: 'Home', Icon: Home, match: (path) => path === '/user' || path === '/user/dashboard' },
-  { path: '/user/book-slots', label: 'Bookings', Icon: Calendar, match: (path) => path === '/user/book-slots' || path === '/user/one-time-booking' },
-  { path: '/user/table-portal', label: 'Order Food', Icon: Utensils, match: (path) => path === '/user/table-portal' },
-  { isAction: true, action: 'openMenu', label: 'Menu', Icon: Menu, match: () => false },
-];
+// mobileNavItems is defined inside the component so bookingsPath can be used (see below)
 
 export default function UserLayout() {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Check if user has any active membership to redirect Bookings nav
+  const { data: membershipData } = useQuery({
+    queryKey: ['my-membership', user?.id],
+    queryFn: () => api.get(`/memberships/${user.id}`).then((r) => r.data),
+    enabled: !!user?.id,
+    staleTime: 2 * 60 * 1000,
+  });
+  const hasActiveMembership = (membershipData?.memberships || (membershipData?.membership ? [membershipData.membership] : []))
+    .some((m) => m.status === 'active' && new Date(m.endDate) > new Date());
+  const bookingsPath = hasActiveMembership ? '/user/membership' : '/user/book-slots';
+
+  const mobileNavItems = [
+    { path: '/user', label: 'Home', Icon: Home, match: (path) => path === '/user' || path === '/user/dashboard' },
+    { path: bookingsPath, label: 'Bookings', Icon: Calendar, match: (path) => path === '/user/book-slots' || path === '/user/membership' || path === '/user/one-time-booking' },
+    { path: '/user/table-portal', label: 'Order Food', Icon: Utensils, match: (path) => path === '/user/table-portal' },
+    { isAction: true, action: 'openMenu', label: 'Menu', Icon: Menu, match: () => false },
+  ];
 
   useEffect(() => { setMobileOpen(false); }, [location.pathname]);
   useEffect(() => {

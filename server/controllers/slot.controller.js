@@ -443,7 +443,8 @@ exports.adminLiveSportDetail = async (req, res) => {
     const bookingsBySlot = {};
     const slotIds = slots.map((s) => s._id);
     const bookings = await SlotBooking.find({ slotId: { $in: slotIds } })
-      .select('slotId playerName playerPhone playerEmail paymentStatus status isManualEntry isReference amountDue amountPaid waivedAmount');
+      .select('slotId playerName playerPhone playerEmail paymentStatus status isManualEntry isReference amountDue amountPaid waivedAmount isMembershipBooking bookingType membershipId membershipPlanSnapshot')
+      .populate({ path: 'membershipId', select: 'planId', populate: { path: 'planId', select: 'name' } });
 
     for (const b of bookings) {
       const key = b.slotId.toString();
@@ -530,9 +531,42 @@ exports.getPublicAvailableSlots = async (req, res) => {
       }).lean();
     }
 
+    // Past-time filtering: for today, slots starting before the next full hour are unavailable
+    const nowLocal = new Date();
+    const todayLocalStr = `${nowLocal.getFullYear()}-${String(nowLocal.getMonth()+1).padStart(2,'0')}-${String(nowLocal.getDate()).padStart(2,'0')}`;
+    const isToday = date === todayLocalStr;
+    let nextAllowedMinutes = 0;
+    if (isToday) {
+      const curMin = nowLocal.getHours() * 60 + nowLocal.getMinutes();
+      nextAllowedMinutes = Math.ceil(curMin / 60) * 60;
+    }
+
+    // Overlap check: logged-in user's confirmed bookings on this date (any sport)
+    let userBookedRanges = [];
+    if (req.user) {
+      const userBookings = await SlotBooking.find({
+        userId: req.user.userId,
+        status: { $in: ['confirmed', 'checked-in'] },
+        startTime: { $exists: true },
+      }).populate({ path: 'slotId', select: 'date' }).lean();
+      userBookedRanges = userBookings
+        .filter((b) => {
+          const bd = b.slotId?.date;
+          return bd && new Date(bd) >= startOfDay && new Date(bd) <= endOfDay;
+        })
+        .map((b) => ({ startMin: timeToMinutes(b.startTime), endMin: timeToMinutes(b.endTime) }));
+    }
+
     const publicSlots = slots.map((s) => {
       const courtClosed = s.courtId && closedCourtIds.has(s.courtId.toString());
-      const isAvailable = !courtClosed && s.isBookable && s.status !== 'full' && s.status !== 'maintenance';
+      const slotStartMin = timeToMinutes(s.startTime);
+      const slotEndMin = timeToMinutes(s.endTime);
+      const isPastTime = isToday && slotStartMin < nextAllowedMinutes;
+      const hasOverlap = userBookedRanges.some((r) => r.startMin < slotEndMin && slotStartMin < r.endMin);
+      const baseAvail = !courtClosed && s.isBookable && s.status !== 'full' && s.status !== 'maintenance';
+      const isAvailable = baseAvail && !isPastTime && !hasOverlap;
+      const unavailableReason = isPastTime ? 'past-time' : hasOverlap ? 'overlap' : undefined;
+
       const originalPrice = s.pricePerSlot;
       let finalPrice = originalPrice;
       let discountInfo = null;
@@ -568,6 +602,7 @@ exports.getPublicAvailableSlots = async (req, res) => {
         pricingType: s.pricingType,
         status: s.status,
         isAvailable,
+        unavailableReason,
         currentBookings: s.currentBookings,
         capacity: s.capacity,
         discount: discountInfo,
@@ -594,6 +629,65 @@ exports.createSlotOrder = async (req, res) => {
 
     const slot = await Slot.findById(slotId);
     if (!slot) return res.status(404).json({ message: 'Slot not found.' });
+
+    // Past-time guard: reject slots in the past or before the next full hour today
+    const nowLocal = new Date();
+    const slotDateObj = slot.date;
+    const todayLocalStr = `${nowLocal.getFullYear()}-${String(nowLocal.getMonth()+1).padStart(2,'0')}-${String(nowLocal.getDate()).padStart(2,'0')}`;
+    const slotDateLocalStr = `${slotDateObj.getFullYear()}-${String(slotDateObj.getMonth()+1).padStart(2,'0')}-${String(slotDateObj.getDate()).padStart(2,'0')}`;
+    if (slotDateLocalStr < todayLocalStr) {
+      return res.status(409).json({ message: 'Cannot book a slot in the past.' });
+    }
+    if (slotDateLocalStr === todayLocalStr) {
+      const curMin = nowLocal.getHours() * 60 + nowLocal.getMinutes();
+      const nextAllowedMin = Math.ceil(curMin / 60) * 60;
+      if (timeToMinutes(slot.startTime) < nextAllowedMin) {
+        return res.status(409).json({ message: 'Booking window for this slot has passed. Please choose a later slot.' });
+      }
+    }
+
+    // Overlap guard: user must not have a confirmed booking at the same time on the same date
+    if (req.user) {
+      const slotStart = new Date(slot.date);
+      slotStart.setHours(0, 0, 0, 0);
+      const slotEnd = new Date(slot.date);
+      slotEnd.setHours(23, 59, 59, 999);
+      const [sh, sm] = slot.startTime.split(':').map(Number);
+      const [eh, em] = slot.endTime.split(':').map(Number);
+      const newStart = sh * 60 + sm;
+      const newEnd = eh * 60 + em;
+      const existingBookings = await SlotBooking.find({
+        userId: req.user.userId,
+        status: { $in: ['confirmed', 'checked-in'] },
+      }).populate({ path: 'slotId', select: 'date' }).lean();
+      const overlap = existingBookings.find((b) => {
+        const bd = b.slotId?.date;
+        if (!bd || new Date(bd) < slotStart || new Date(bd) > slotEnd) return false;
+        const bs = timeToMinutes(b.startTime);
+        const be = timeToMinutes(b.endTime);
+        return bs < newEnd && newStart < be;
+      });
+      if (overlap) {
+        return res.status(409).json({ message: 'You already have another slot booked during this time.' });
+      }
+
+      // Membership advisory: if user has active membership covering this sport, suggest free booking
+      if (slot.sportId) {
+        const sportForSlot = await Sport.findById(slot.sportId).select('name slug').lean();
+        const activeMembership = await Membership.findOne({
+          studentId: req.user.userId,
+          status: 'active',
+          endDate: { $gt: new Date() },
+        }).populate('planId').lean();
+        if (activeMembership && sportForSlot && membershipCoversSpot(activeMembership.planId, sportForSlot)) {
+          return res.status(409).json({
+            message: `This sport is covered by your ${activeMembership.planId?.name || 'active'} membership. Book this slot for free from your Membership page.`,
+            hasMembership: true,
+            redirectTo: '/user/membership',
+          });
+        }
+      }
+    }
 
     if (!slot.isBookable || slot.status === 'maintenance') {
       return res.status(409).json({ message: 'This slot is not available for booking.' });
@@ -1258,6 +1352,7 @@ exports.getMyBookings = async (req, res) => {
     const rawBookings = await SlotBooking.find({
       $or: [{ userId }, { playerEmail: req.user?.email }],
       status: { $ne: 'cancelled' },
+      isMembershipBooking: { $ne: true }, // membership slots shown separately in /user/membership
     })
       .populate('slotId', 'date startTime endTime duration')
       .populate('sportId', 'name slug thumbnail')
@@ -1486,9 +1581,45 @@ exports.getMembershipAvailableSlots = async (req, res) => {
         .map((b) => b.slotId?._id?.toString())
     );
 
+    // Past-time filtering for today
+    const nowLocal = new Date();
+    const todayLocalStr = `${nowLocal.getFullYear()}-${String(nowLocal.getMonth()+1).padStart(2,'0')}-${String(nowLocal.getDate()).padStart(2,'0')}`;
+    const isToday = date === todayLocalStr;
+    let nextAllowedMinutes = 0;
+    if (isToday) {
+      const curMin = nowLocal.getHours() * 60 + nowLocal.getMinutes();
+      nextAllowedMinutes = Math.ceil(curMin / 60) * 60;
+    }
+
+    // Cross-sport overlap check: all confirmed bookings by this user on this date (any sport)
+    const startOfDayForOverlap = new Date(date); startOfDayForOverlap.setHours(0,0,0,0);
+    const endOfDayForOverlap = new Date(date); endOfDayForOverlap.setHours(23,59,59,999);
+    const allUserBookings = await SlotBooking.find({
+      userId: req.user.userId,
+      status: { $in: ['confirmed', 'checked-in'] },
+    }).populate({ path: 'slotId', select: 'date' }).lean();
+    const userBookedRanges = allUserBookings
+      .filter((b) => {
+        const bd = b.slotId?.date;
+        return bd && new Date(bd) >= startOfDayForOverlap && new Date(bd) <= endOfDayForOverlap;
+      })
+      .map((b) => ({ startMin: timeToMinutes(b.startTime), endMin: timeToMinutes(b.endTime), slotId: b.slotId?._id?.toString() }));
+
     const publicSlots = slots.map((s) => {
       const courtClosed = s.courtId && closedCourtIds.has(s.courtId.toString());
-      const isAvailable = !courtClosed && s.currentBookings < s.capacity;
+      const slotStartMin = timeToMinutes(s.startTime);
+      const slotEndMin = timeToMinutes(s.endTime);
+      const isPastTime = isToday && slotStartMin < nextAllowedMinutes;
+      // overlap: exclude the slot's own booking (alreadyBooked) to avoid double-flagging
+      const hasOverlap = !bookedSlotIds.has(s._id.toString()) && userBookedRanges.some(
+        (r) => r.slotId !== s._id.toString() && r.startMin < slotEndMin && slotStartMin < r.endMin
+      );
+      const baseAvail = !courtClosed && s.currentBookings < s.capacity;
+      const isAvailable = baseAvail && !isPastTime && !hasOverlap && !bookedSlotIds.has(s._id.toString());
+      const unavailableReason = bookedSlotIds.has(s._id.toString()) ? 'already-booked'
+        : isPastTime ? 'past-time'
+        : hasOverlap ? 'overlap'
+        : undefined;
       return {
         _id: s._id,
         name: s.name,
@@ -1497,9 +1628,10 @@ exports.getMembershipAvailableSlots = async (req, res) => {
         startTime: s.startTime,
         endTime: s.endTime,
         duration: s.duration,
-        pricePerSlot: 0, // free for membership
+        pricePerSlot: 0,
         status: s.status,
         isAvailable,
+        unavailableReason,
         currentBookings: s.currentBookings,
         capacity: s.capacity,
         alreadyBooked: bookedSlotIds.has(s._id.toString()),
@@ -1548,12 +1680,20 @@ exports.bookMembershipSlot = async (req, res) => {
       return res.status(400).json({ message: 'Slot does not belong to this sport.' });
     }
 
-    // Ensure slot is not in the past
-    const slotDateTime = new Date(slot.date);
-    const [sh, sm] = slot.startTime.split(':').map(Number);
-    slotDateTime.setHours(sh, sm, 0, 0);
-    if (slotDateTime < new Date()) {
+    // Ensure slot is not in the past (next-full-hour rule)
+    const nowLocal2 = new Date();
+    const todayLocalStr2 = `${nowLocal2.getFullYear()}-${String(nowLocal2.getMonth()+1).padStart(2,'0')}-${String(nowLocal2.getDate()).padStart(2,'0')}`;
+    const slotDateObj2 = slot.date;
+    const slotDateLocalStr2 = `${slotDateObj2.getFullYear()}-${String(slotDateObj2.getMonth()+1).padStart(2,'0')}-${String(slotDateObj2.getDate()).padStart(2,'0')}`;
+    if (slotDateLocalStr2 < todayLocalStr2) {
       return res.status(409).json({ message: 'Cannot book a slot in the past.' });
+    }
+    if (slotDateLocalStr2 === todayLocalStr2) {
+      const curMin2 = nowLocal2.getHours() * 60 + nowLocal2.getMinutes();
+      const nextAllowedMin2 = Math.ceil(curMin2 / 60) * 60;
+      if (timeToMinutes(slot.startTime) < nextAllowedMin2) {
+        return res.status(409).json({ message: 'Booking window for this slot has passed. Please choose a later slot.' });
+      }
     }
 
     // Check court is open
@@ -1574,17 +1714,35 @@ exports.bookMembershipSlot = async (req, res) => {
     // Check for overlapping confirmed membership booking same day + sport
     const startOfDay = new Date(slot.date); startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date(slot.date); endOfDay.setHours(23, 59, 59, 999);
-    const overlap = await SlotBooking.findOne({
+    const sameSportOverlap = await SlotBooking.findOne({
       userId: req.user.userId,
       sportId: sport._id,
       isMembershipBooking: true,
       status: { $in: ['confirmed', 'checked-in'] },
     }).populate({ path: 'slotId', select: 'date' });
-    if (overlap) {
-      const od = overlap.slotId?.date;
+    if (sameSportOverlap) {
+      const od = sameSportOverlap.slotId?.date;
       if (od && new Date(od) >= startOfDay && new Date(od) <= endOfDay) {
         return res.status(409).json({ message: `You already have a ${sport.name} slot booked for this day.` });
       }
+    }
+
+    // Cross-sport overlap: check ALL confirmed bookings for this user on this date+time
+    const newStartMin = timeToMinutes(slot.startTime);
+    const newEndMin = timeToMinutes(slot.endTime);
+    const allSameDayBookings = await SlotBooking.find({
+      userId: req.user.userId,
+      status: { $in: ['confirmed', 'checked-in'] },
+    }).populate({ path: 'slotId', select: 'date' }).lean();
+    const crossOverlap = allSameDayBookings.find((b) => {
+      const bd = b.slotId?.date;
+      if (!bd || new Date(bd) < startOfDay || new Date(bd) > endOfDay) return false;
+      const bs = timeToMinutes(b.startTime);
+      const be = timeToMinutes(b.endTime);
+      return bs < newEndMin && newStartMin < be;
+    });
+    if (crossOverlap) {
+      return res.status(409).json({ message: 'You already have another slot booked during this time.' });
     }
 
     // Atomically claim capacity
@@ -1612,6 +1770,7 @@ exports.bookMembershipSlot = async (req, res) => {
       courtNameSnapshot: slot.courtNameSnapshot,
       userId: req.user.userId,
       membershipId: membership._id,
+      membershipPlanSnapshot: membership.planId?.name || '',
       isMembershipBooking: true,
       bookingType: 'membership-slot',
       playerName: user?.name || '',

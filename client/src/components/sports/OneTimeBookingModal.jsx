@@ -4,10 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, CreditCard, CheckCircle2, Loader2, User, Mail, Phone,
   ShieldCheck, Check, Calendar, Building2, Clock, ChevronLeft,
-  Tag, AlertTriangle, Zap, Ticket,
+  Tag, AlertTriangle, Zap, Ticket, Crown,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/axios';
 import { formatCurrency } from '../../lib/utils';
 import useAuthStore from '../../store/authStore';
@@ -27,11 +28,37 @@ const slotColor = (s) => {
   return { bg: 'rgba(34,197,94,0.1)', border: 'rgba(34,197,94,0.3)', text: '#22c55e' };
 };
 
+const slotStatusLabel = (s, avail) => {
+  if (s.unavailableReason === 'past-time') return 'Time passed';
+  if (s.unavailableReason === 'overlap') return 'Clash';
+  if (!avail) return 'Booked';
+  return 'Available';
+};
+
 const validPhone = (p) => /^[6-9]\d{9}$/.test(String(p || '').replace(/\D/g, '')) ? String(p).replace(/\D/g, '') : '';
 
 export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
   const navigate = useNavigate();
   const { user, isAuthenticated, checkAuth, clearPendingEntryIntent, googleAuth } = useAuthStore();
+
+  // Check if user has an active membership covering this sport
+  const { data: membershipData } = useQuery({
+    queryKey: ['my-membership', user?.id],
+    queryFn: () => api.get(`/memberships/${user.id}`).then((r) => r.data),
+    enabled: !!user?.id && isAuthenticated && isOpen,
+    staleTime: 60_000,
+  });
+  const activeMembership = (membershipData?.memberships || (membershipData?.membership ? [membershipData.membership] : []))
+    .find((m) => m.status === 'active' && new Date(m.endDate) > new Date());
+  const membershipCoversSport = (() => {
+    if (!activeMembership || !sport) return false;
+    const plan = activeMembership.planId;
+    if (!plan) return false;
+    if (plan.isAllServices) return true;
+    const keys = (plan.sportsIncluded || []).map((k) => (k || '').trim().toLowerCase());
+    const isAllKey = (k) => k === 'all' || k === 'all-services';
+    return keys.some((k) => isAllKey(k) || k === sport.slug?.toLowerCase() || k === sport.name?.toLowerCase());
+  })();
 
   // ── Step state: 'date' | 'slot' | 'details' | 'success'
   const [step, setStep] = useState('date');
@@ -429,6 +456,22 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                       const isToday = selectedDate === todayStr();
                       return (
                       <div className="space-y-4">
+                        {/* Membership banner */}
+                        {membershipCoversSport && activeMembership && (
+                          <div className="rounded-2xl px-4 py-3 flex items-start gap-3" style={{ background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)' }}>
+                            <Crown size={16} className="text-violet-400 shrink-0 mt-0.5" />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-violet-200 text-xs font-bold leading-tight">You have an active {activeMembership.planId?.name} membership</p>
+                              <p className="text-violet-300/70 text-[11px] mt-0.5">Book this sport for free from your Membership page.</p>
+                            </div>
+                            <button
+                              onClick={() => { onClose(); navigate('/user/membership'); }}
+                              className="shrink-0 text-[11px] font-black text-violet-300 border border-violet-400/30 rounded-full px-2.5 py-1 hover:bg-violet-400/10 transition-colors whitespace-nowrap"
+                            >
+                              Go to Membership
+                            </button>
+                          </div>
+                        )}
                         {slotsLoading ? (
                           <div className="flex items-center justify-center py-12">
                             <Loader2 size={24} className="animate-spin text-white/40" />
@@ -494,7 +537,7 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                                           style={{
                                             background: isSelected ? `${accentColor}20` : colors.bg,
                                             border: `1px solid ${isSelected ? accentColor : colors.border}`,
-                                            opacity: avail ? 1 : 0.5,
+                                            opacity: avail ? 1 : 0.45,
                                             cursor: avail ? 'pointer' : 'not-allowed',
                                           }}
                                         >
@@ -523,7 +566,7 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                                           </div>
                                           <div className="mt-1.5 flex items-center gap-1">
                                             <span className="text-[9px] font-bold" style={{ color: colors.text }}>
-                                              {avail ? 'Available' : 'Booked'}
+                                              {slotStatusLabel(s, avail)}
                                             </span>
                                             {isSelected && <Check size={10} style={{ color: accentColor }} />}
                                           </div>

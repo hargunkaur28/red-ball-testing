@@ -47,6 +47,7 @@ function SportSelectorStep({ plan, onSelect }) {
   const allSports = sportsData?.sports || [];
   const availableSports = allSports.filter((s) => {
     const keys = (plan?.sportsIncluded || []).map((k) => (k || '').toLowerCase());
+    // Exclude non-playable entries like 'all' or 'all-services' themselves — only real sports
     return keys.some((k) => isAllServicesKey(k) || k === s.slug || k === s.name?.toLowerCase());
   });
 
@@ -59,25 +60,36 @@ function SportSelectorStep({ plan, onSelect }) {
       <div className="grid grid-cols-2 gap-3">
         {availableSports.map((sport) => {
           const fallback = getSportFallback(sport.slug || sport.name);
+          const imgSrc = sport.imageUrl || sport.heroImage || sport.image || sport.thumbnail || null;
           return (
             <button
               key={sport._id}
               onClick={() => onSelect(sport)}
-              className="rounded-2xl p-4 flex flex-col items-center gap-2 text-center transition-all hover:scale-[1.02] active:scale-[0.98]"
-              style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: `1px solid ${fallback.color}30`,
-              }}
+              className="rounded-2xl overflow-hidden text-center transition-all hover:scale-[1.02] active:scale-[0.98] relative"
+              style={{ border: `1px solid rgba(255,255,255,0.08)` }}
             >
-              {sport.imageUrl ? (
-                <img src={sport.imageUrl} alt={sport.name} className="w-10 h-10 rounded-xl object-cover" />
-              ) : (
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
-                  style={{ background: `${fallback.color}20` }}>
-                  {fallback.emoji}
-                </div>
-              )}
-              <p className="text-white text-sm font-bold">{sport.name}</p>
+              {/* Image / colour block */}
+              <div className="relative h-20 w-full">
+                {imgSrc ? (
+                  <img
+                    src={imgSrc}
+                    alt={sport.name}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                ) : (
+                  <div
+                    className="absolute inset-0 flex items-center justify-center text-3xl"
+                    style={{ background: `linear-gradient(135deg, ${fallback.color}40, ${fallback.color}18)` }}
+                  >
+                    {fallback.emoji}
+                  </div>
+                )}
+                {/* Gradient overlay for text legibility */}
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' }} />
+              </div>
+              <div className="px-2 py-2" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                <p className="text-white text-xs font-bold">{sport.name}</p>
+              </div>
             </button>
           );
         })}
@@ -203,22 +215,29 @@ function SlotPickerStep({ sport, membership, onBack, onBooked }) {
                 <div className="grid grid-cols-2 gap-2">
                   {courtSlots.map((slot) => {
                     const isSelected = selectedSlot?._id === slot._id;
-                    const unavailable = !slot.isAvailable || slot.alreadyBooked;
+                    const unavailable = !slot.isAvailable;
+                    const reason = slot.unavailableReason || (slot.alreadyBooked ? 'already-booked' : unavailable ? 'full' : null);
+                    const labelMap = {
+                      'past-time': 'Time passed',
+                      'overlap': 'Clash with booking',
+                      'already-booked': 'Already booked',
+                      'full': 'Full',
+                    };
+                    const label = reason ? labelMap[reason] : `${slot.capacity - slot.currentBookings} left`;
                     return (
                       <button
                         key={slot._id}
                         disabled={unavailable}
                         onClick={() => setSelectedSlot(isSelected ? null : slot)}
-                        className="rounded-xl p-2.5 text-left transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="rounded-xl p-2.5 text-left transition-all disabled:cursor-not-allowed"
                         style={{
                           background: isSelected ? `${fallback.color}20` : 'rgba(255,255,255,0.04)',
                           border: `1px solid ${isSelected ? fallback.color : 'rgba(255,255,255,0.08)'}`,
+                          opacity: unavailable ? 0.42 : 1,
                         }}
                       >
                         <p className="text-white text-xs font-bold">{slot.startTime} – {slot.endTime}</p>
-                        <p className="text-white/40 text-[10px] mt-0.5">
-                          {slot.alreadyBooked ? 'Already booked' : unavailable ? 'Full' : `${slot.capacity - slot.currentBookings} left`}
-                        </p>
+                        <p className="text-white/40 text-[10px] mt-0.5">{label}</p>
                         {isSelected && <Check size={12} className="text-green-400 mt-1" />}
                       </button>
                     );
