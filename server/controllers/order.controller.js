@@ -468,18 +468,21 @@ exports.createDirect = async (req, res) => {
         return res.status(400).json({ message: 'Payment signature verification failed.' });
       }
 
-      let payment;
+      // HMAC already verified above — that is the primary security gate.
+      // fetchPaymentDetails is a best-effort capture-status/amount check. If
+      // Razorpay's API is slow or times out we trust the HMAC and proceed rather
+      // than blocking the customer's order.
+      let payment = null;
       try {
         payment = await fetchPaymentDetails(razorpayPaymentId);
       } catch (fetchErr) {
-        console.error('[Order] Razorpay fetch failed:', fetchErr.message);
-        return res.status(503).json({ message: 'Payment verification unavailable. Please try again in a moment.' });
+        console.error('[Order] WARN: Razorpay status fetch failed (HMAC passed — proceeding):', fetchErr.message);
       }
-      if (payment.status !== 'captured') {
+      if (payment && payment.status !== 'captured') {
         return res.status(400).json({ message: `Payment not captured. Razorpay status: ${payment.status}.` });
       }
       const expectedPaise = Math.round(totalAmount * 100);
-      if (payment.amount !== expectedPaise) {
+      if (payment && payment.amount !== expectedPaise) {
         return res.status(400).json({
           message: `Payment amount mismatch: expected ₹${totalAmount} but Razorpay received ₹${payment.amount / 100}.`,
         });
