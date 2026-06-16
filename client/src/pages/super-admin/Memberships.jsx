@@ -5,7 +5,7 @@ import api from '../../lib/axios';
 import { formatCurrency, formatDate, getStatusColor, getInitials } from '../../lib/utils';
 import {
   Search, ChevronLeft, ChevronRight, X,
-  CreditCard, User, Loader2, Users, CheckCircle, AlertCircle, Clock, Pencil,
+  CreditCard, User, Loader2, Users, CheckCircle, AlertCircle, Clock, Pencil, Calendar,
 } from 'lucide-react';
 import { toast } from 'sonner';
 

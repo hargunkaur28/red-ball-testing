@@ -531,13 +531,15 @@ exports.getPublicAvailableSlots = async (req, res) => {
       }).lean();
     }
 
-    // Past-time filtering: for today, slots starting before the next full hour are unavailable
-    const nowLocal = new Date();
-    const todayLocalStr = `${nowLocal.getFullYear()}-${String(nowLocal.getMonth()+1).padStart(2,'0')}-${String(nowLocal.getDate()).padStart(2,'0')}`;
+    // Past-time filtering: for today, slots starting before the next full hour are unavailable.
+    // Use IST (UTC+5:30) because the server runs in UTC but bookings are in India.
+    const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+    const nowIST = new Date(Date.now() + IST_OFFSET_MS);
+    const todayLocalStr = `${nowIST.getUTCFullYear()}-${String(nowIST.getUTCMonth()+1).padStart(2,'0')}-${String(nowIST.getUTCDate()).padStart(2,'0')}`;
     const isToday = date === todayLocalStr;
     let nextAllowedMinutes = 0;
     if (isToday) {
-      const curMin = nowLocal.getHours() * 60 + nowLocal.getMinutes();
+      const curMin = nowIST.getUTCHours() * 60 + nowIST.getUTCMinutes();
       nextAllowedMinutes = Math.ceil(curMin / 60) * 60;
     }
 
@@ -1276,8 +1278,36 @@ exports.adminManualBooking = async (req, res) => {
 
 exports.checkInBooking = async (req, res) => {
   try {
-    const booking = await SlotBooking.findById(req.params.id);
+    const booking = await SlotBooking.findById(req.params.id).populate('slotId', 'date startTime endTime');
     if (!booking) return res.status(404).json({ message: 'Booking not found.' });
+
+    const slot = booking.slotId;
+    if (slot?.startTime && slot?.endTime && slot?.date) {
+      const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+      const nowIST = new Date(Date.now() + IST_OFFSET_MS);
+      const nowMin = nowIST.getUTCHours() * 60 + nowIST.getUTCMinutes();
+
+      const slotDate = new Date(slot.date);
+      const slotDateStr = `${slotDate.getUTCFullYear()}-${String(slotDate.getUTCMonth()+1).padStart(2,'0')}-${String(slotDate.getUTCDate()).padStart(2,'0')}`;
+      const todayIST = `${nowIST.getUTCFullYear()}-${String(nowIST.getUTCMonth()+1).padStart(2,'0')}-${String(nowIST.getUTCDate()).padStart(2,'0')}`;
+
+      if (slotDateStr === todayIST) {
+        const [sh, sm] = slot.startTime.split(':').map(Number);
+        const [eh, em] = slot.endTime.split(':').map(Number);
+        const startMin = sh * 60 + sm;
+        const endMin = eh * 60 + em;
+
+        if (nowMin < startMin - 5) {
+          const wait = startMin - 5 - nowMin;
+          return res.status(400).json({ message: `Check-in opens 5 minutes before the slot. Please wait ${wait} more minute${wait === 1 ? '' : 's'}.` });
+        }
+        if (nowMin > endMin) {
+          return res.status(400).json({ message: 'This slot has already ended.' });
+        }
+      } else if (slotDateStr > todayIST) {
+        return res.status(400).json({ message: 'Cannot check in before the slot date.' });
+      }
+    }
 
     booking.status = 'checked-in';
     booking.checkInTime = new Date();
@@ -1581,13 +1611,14 @@ exports.getMembershipAvailableSlots = async (req, res) => {
         .map((b) => b.slotId?._id?.toString())
     );
 
-    // Past-time filtering for today
-    const nowLocal = new Date();
-    const todayLocalStr = `${nowLocal.getFullYear()}-${String(nowLocal.getMonth()+1).padStart(2,'0')}-${String(nowLocal.getDate()).padStart(2,'0')}`;
+    // Past-time filtering for today — use IST (UTC+5:30); server runs UTC.
+    const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+    const nowIST = new Date(Date.now() + IST_OFFSET_MS);
+    const todayLocalStr = `${nowIST.getUTCFullYear()}-${String(nowIST.getUTCMonth()+1).padStart(2,'0')}-${String(nowIST.getUTCDate()).padStart(2,'0')}`;
     const isToday = date === todayLocalStr;
     let nextAllowedMinutes = 0;
     if (isToday) {
-      const curMin = nowLocal.getHours() * 60 + nowLocal.getMinutes();
+      const curMin = nowIST.getUTCHours() * 60 + nowIST.getUTCMinutes();
       nextAllowedMinutes = Math.ceil(curMin / 60) * 60;
     }
 

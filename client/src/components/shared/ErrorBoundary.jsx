@@ -16,11 +16,15 @@ export default class ErrorBoundary extends Component {
     console.error('ErrorBoundary caught:', error, errorInfo);
 
     // Auto-reload page if a dynamic import/chunk fetch error is detected
-    const isChunkError = 
-      error && 
-      (error.name === 'TypeError' && error.message?.includes('Failed to fetch dynamically imported module') ||
-       error.message?.includes('chunk') ||
-       error.message?.includes('MIME type of "text/html"'));
+    const msg = error?.message || '';
+    const isChunkError =
+      error && (
+        msg.includes('Failed to fetch dynamically imported module') ||
+        msg.includes('error loading dynamically imported module') ||
+        msg.includes('Importing a module script failed') ||
+        msg.includes('chunk') ||
+        msg.includes('MIME type of "text/html"')
+      );
 
     if (isChunkError) {
       console.warn('Chunk/Module load error detected! Triggering automatic page reload to fetch the latest assets...');

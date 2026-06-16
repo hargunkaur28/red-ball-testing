@@ -93,6 +93,8 @@ export default function UserDashboard() {
     socket.on('attendance:check-out', refreshSession);
     socket.on('attendance:auto-checkout', refreshSession);
     socket.on('dashboard:refresh', refreshSession);
+    socket.on('booking:checked-in', refreshSession);
+    socket.on('booking:checked-out', refreshSession);
     return () => {
       socket.off('session:started', refreshSession);
       socket.off('session:ended', refreshSession);
@@ -100,6 +102,8 @@ export default function UserDashboard() {
       socket.off('attendance:check-out', refreshSession);
       socket.off('attendance:auto-checkout', refreshSession);
       socket.off('dashboard:refresh', refreshSession);
+      socket.off('booking:checked-in', refreshSession);
+      socket.off('booking:checked-out', refreshSession);
     };
   }, [qc]);
 
