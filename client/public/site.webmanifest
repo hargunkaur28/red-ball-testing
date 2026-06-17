@@ -1,0 +1,24 @@
+{
+  "name": "Red Ball Academy",
+  "short_name": "RBA",
+  "description": "Play. Train. Dominate. Book sports courts, buy memberships, and train at Red Ball Sports Arena, Rohtak.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#080808",
+  "background_color": "#080808",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

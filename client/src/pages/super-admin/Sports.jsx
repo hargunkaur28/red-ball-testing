@@ -592,6 +592,7 @@ function SportCard({ sport, onEdit, onToggle, onArchive, onViewQR, onConfig }) {
           >
             <Power size={14} /> {isActive ? 'Disable' : 'Enable'}
           </button>
+          {sport.slug !== 'all-services' && (
           <button
             onClick={onViewQR}
             className="flex-1 min-w-[80px] flex items-center justify-center gap-1.5 p-2 rounded-lg bg-violet-50 text-violet-600 hover:bg-violet-100 transition-colors text-xs font-semibold"
@@ -599,6 +600,7 @@ function SportCard({ sport, onEdit, onToggle, onArchive, onViewQR, onConfig }) {
           >
             <QrCode size={14} /> QR
           </button>
+          )}
           <button
             onClick={onConfig}
             className="flex-1 min-w-[80px] flex items-center justify-center gap-1.5 p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors text-xs font-semibold"

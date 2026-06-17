@@ -1059,6 +1059,220 @@ function SportOverviewCard({ item, selected, onClick }) {
   );
 }
 
+// ── Bookings Section ──────────────────────────────────────────────────────────
+function BookingsSection() {
+  const [mode, setMode] = useState('today');   // 'today' | 'date' | 'month'
+  const [pickedDate, setPickedDate] = useState(todayStr());
+  const [pickedMonth, setPickedMonth] = useState(() => todayStr().slice(0, 7));
+  const [sportFilter, setSportFilter] = useState('');
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 60_000);
+    return () => clearInterval(t);
+  }, []);
+
+  const params = {};
+  if (mode === 'date')  params.date  = pickedDate;
+  if (mode === 'month') params.month = pickedMonth;
+  if (sportFilter)      params.sportId = sportFilter;
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['admin-bookings', mode, pickedDate, pickedMonth, sportFilter],
+    queryFn: () => api.get('/slots/admin/bookings', { params }).then(r => r.data),
+    staleTime: 60_000,
+    refetchInterval: mode === 'today' ? 120_000 : false,
+  });
+
+  const { data: sportsData } = useQuery({
+    queryKey: ['sports-for-booking-filter'],
+    queryFn: () => api.get('/sports').then(r => r.data),
+    staleTime: 300_000,
+  });
+  const sportsList = (sportsData?.sports || []).filter(s =>
+    s.active && !s.deletedAt && s.slug !== 'all-services' && (s.name || '').toLowerCase() !== 'coaching'
+  );
+
+  const toMin = (t) => { const [h, m] = (t || '0:0').split(':').map(Number); return h * 60 + m; };
+  const nowMin = new Date(now).getHours() * 60 + new Date(now).getMinutes();
+  const isToday = mode === 'today' || (mode === 'date' && pickedDate === todayStr());
+
+  const getDerivedStatus = (b) => {
+    if (!isToday) {
+      const map = {
+        confirmed:    { dot: 'bg-green-400',   pill: 'bg-green-50 text-green-700',     label: 'Confirmed' },
+        'checked-in': { dot: 'bg-blue-400',     pill: 'bg-blue-50 text-blue-700',       label: 'Checked-In' },
+        completed:    { dot: 'bg-gray-300',      pill: 'bg-gray-100 text-gray-500',      label: 'Finished' },
+        'no-show':    { dot: 'bg-red-400',       pill: 'bg-red-50 text-red-600',         label: 'No Show' },
+        pending:      { dot: 'bg-amber-400',     pill: 'bg-amber-50 text-amber-700',     label: 'Pending' },
+      };
+      return map[b.status] || map.pending;
+    }
+    const startMin = toMin(b.startTime), endMin = toMin(b.endTime);
+    const inProgress = nowMin >= startMin && nowMin < endMin;
+    const isPast     = nowMin >= endMin;
+    if (b.status === 'no-show')    return { dot: 'bg-red-400',       pill: 'bg-red-50 text-red-600',          label: 'No Show' };
+    if (b.status === 'completed')  return { dot: 'bg-gray-300',       pill: 'bg-gray-100 text-gray-500',       label: 'Finished' };
+    if (b.status === 'checked-in') {
+      if (inProgress) return { dot: 'bg-emerald-400 animate-pulse', pill: 'bg-emerald-50 text-emerald-700',  label: 'Active' };
+      if (isPast)     return { dot: 'bg-gray-300',                   pill: 'bg-gray-100 text-gray-500',       label: 'Finished' };
+      return           { dot: 'bg-blue-400',                          pill: 'bg-blue-50 text-blue-700',        label: 'Checked-In' };
+    }
+    if (b.status === 'confirmed') {
+      if (isPast)     return { dot: 'bg-orange-400',                  pill: 'bg-orange-50 text-orange-700',   label: 'Missed' };
+      if (inProgress) return { dot: 'bg-amber-400 animate-pulse',    pill: 'bg-amber-50 text-amber-800',     label: 'Due Now' };
+      return           { dot: 'bg-green-400',                          pill: 'bg-green-50 text-green-700',     label: 'Confirmed' };
+    }
+    return { dot: 'bg-amber-400', pill: 'bg-amber-50 text-amber-700', label: 'Pending' };
+  };
+
+  const bookings = data?.bookings || [];
+  const showDateCol = mode === 'month';
+
+  return (
+    <section className="mt-8">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div className="flex items-center gap-2">
+          <User size={16} className="text-violet-500" />
+          <h2 className="font-bold text-[#111] text-sm uppercase tracking-wider">Bookings</h2>
+          {!isLoading && (
+            <span className="px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 text-[10px] font-bold">
+              {data?.total ?? 0}
+            </span>
+          )}
+        </div>
+
+        {/* Filters row */}
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Mode pills */}
+          <div className="flex rounded-lg border border-[#EAEAEA] overflow-hidden text-xs font-semibold">
+            {[['today', 'Today'], ['date', 'By Date'], ['month', 'By Month']].map(([val, lbl]) => (
+              <button key={val} onClick={() => setMode(val)}
+                className={`px-3 py-1.5 transition-colors ${mode === val ? 'bg-[#C8102E] text-white' : 'text-[#555] hover:bg-[#F5F5F5]'}`}>
+                {lbl}
+              </button>
+            ))}
+          </div>
+
+          {mode === 'date' && (
+            <input type="date" value={pickedDate} onChange={e => setPickedDate(e.target.value)}
+              className="border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+          )}
+          {mode === 'month' && (
+            <input type="month" value={pickedMonth} onChange={e => setPickedMonth(e.target.value)}
+              className="border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+          )}
+
+          {/* Sport filter */}
+          <select value={sportFilter} onChange={e => setSportFilter(e.target.value)}
+            className="border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20 text-[#555]">
+            <option value="">All Sports</option>
+            {sportsList.map(s => <option key={s._id} value={s._id}>{s.name}</option>)}
+          </select>
+        </div>
+      </div>
+
+      {isLoading ? (
+        <div className="bg-white rounded-2xl border border-[#EAEAEA] divide-y divide-[#F5F5F5]">
+          {[1,2,3,4].map(i => (
+            <div key={i} className="flex items-center gap-3 px-5 py-3.5 animate-pulse">
+              <div className="w-14 h-9 bg-gray-100 rounded" />
+              <div className="flex-1 space-y-1.5">
+                <div className="h-3.5 w-36 bg-gray-200 rounded" />
+                <div className="h-3 w-52 bg-gray-100 rounded" />
+              </div>
+              <div className="w-16 h-5 bg-gray-100 rounded-full" />
+            </div>
+          ))}
+        </div>
+      ) : bookings.length === 0 ? (
+        <div className="bg-white rounded-2xl border border-[#EAEAEA] py-12 text-center text-sm text-[#999]">
+          <User size={28} className="mx-auto mb-2 text-[#DDD]" />
+          No bookings found for this period.
+        </div>
+      ) : (
+        <div className="bg-white rounded-2xl border border-[#EAEAEA] overflow-hidden">
+          {/* Table header */}
+          <div className="grid text-[10px] font-bold uppercase tracking-wider text-[#999] bg-[#FAFAFA] border-b border-[#EAEAEA] px-5 py-2.5"
+            style={{ gridTemplateColumns: showDateCol ? '80px 1fr 1fr 110px 90px' : '60px 1fr 1fr 110px 90px' }}>
+            <span>{showDateCol ? 'Date' : 'Time'}</span>
+            <span>Player</span>
+            <span>Sport · Court</span>
+            <span>Phone</span>
+            <span className="text-right">Status</span>
+          </div>
+
+          {/* Rows */}
+          <div className="divide-y divide-[#F5F5F5] max-h-[500px] overflow-y-auto">
+            {bookings.map((b) => {
+              const sc = getDerivedStatus(b);
+              const dateLabel = b.slotDate
+                ? new Date(b.slotDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })
+                : '—';
+              return (
+                <div key={b._id}
+                  className="grid items-center gap-2 px-5 py-3 hover:bg-[#FAFAFA] transition-colors text-sm"
+                  style={{ gridTemplateColumns: showDateCol ? '80px 1fr 1fr 110px 90px' : '60px 1fr 1fr 110px 90px' }}>
+
+                  {/* Date or Time */}
+                  <div className="shrink-0">
+                    {showDateCol ? (
+                      <p className="text-xs font-bold text-[#111]">{dateLabel}</p>
+                    ) : (
+                      <>
+                        <p className="text-xs font-black text-[#111] leading-tight">{b.startTime}</p>
+                        <p className="text-[10px] text-[#999] leading-tight">{b.endTime}</p>
+                      </>
+                    )}
+                    {showDateCol && (
+                      <p className="text-[10px] text-[#999] leading-tight">{b.startTime}–{b.endTime}</p>
+                    )}
+                  </div>
+
+                  {/* Player */}
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="font-semibold text-[#111] text-sm truncate">{b.playerName}</span>
+                      {b.isMembershipBooking && (
+                        <span className="px-1.5 py-0.5 rounded-full bg-violet-100 text-violet-700 text-[9px] font-bold uppercase leading-none shrink-0">
+                          {b.membershipPlanSnapshot || 'Member'}
+                        </span>
+                      )}
+                      {b.isReference && (
+                        <span className="px-1.5 py-0.5 rounded-full bg-sky-100 text-sky-700 text-[9px] font-bold uppercase leading-none shrink-0">
+                          Ref
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Sport · Court */}
+                  <div className="min-w-0">
+                    <p className="text-xs text-[#555] truncate">
+                      {b.sportNameSnapshot || '—'}{b.courtNameSnapshot ? ` · ${b.courtNameSnapshot}` : ''}
+                    </p>
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <p className="text-xs font-mono text-[#777]">{b.playerPhone || '—'}</p>
+                  </div>
+
+                  {/* Status */}
+                  <div className="flex items-center justify-end gap-1.5">
+                    <div className={`w-1.5 h-1.5 rounded-full ${sc.dot}`} />
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${sc.pill}`}>{sc.label}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function LiveSports() {
   const qc = useQueryClient();
@@ -1192,7 +1406,7 @@ export default function LiveSports() {
           <div className="card py-10 text-center text-sm text-[#999]">No sports found.</div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-            {(overviewData?.overview || []).map((item) => (
+            {(overviewData?.overview || []).filter((item) => item.sport?.slug !== 'all-services').map((item) => (
               <SportOverviewCard key={item.sport._id} item={item}
                 selected={selectedSportId === item.sport._id}
                 onClick={() => { setSelectedSportId(selectedSportId === item.sport._id ? null : item.sport._id); setOpenCourtGroup(null); }} />
@@ -1283,6 +1497,9 @@ export default function LiveSports() {
           />
         )}
       </AnimatePresence>
+
+      {/* Bookings Table */}
+      <BookingsSection />
 
       {/* Manual Payment Modal (z-60 so it floats over the court panel) */}
       <AnimatePresence>

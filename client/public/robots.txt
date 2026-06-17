@@ -1,0 +1,44 @@
+User-agent: *
+Allow: /
+
+# Public pages — crawl allowed
+Allow: /sports-academy-rohtak
+Allow: /stadium-in-rohtak
+Allow: /sports-arena-rohtak
+Allow: /sports-complex-rohtak
+Allow: /academy-in-rohtak
+Allow: /best-sports-academy-rohtak
+Allow: /cricket-academy-rohtak
+Allow: /box-cricket-rohtak
+Allow: /badminton-court-rohtak
+Allow: /pickleball-court-rohtak
+Allow: /swimming-pool-rohtak
+Allow: /gym-in-rohtak
+Allow: /kids-sports-academy-rohtak
+Allow: /buy-membership
+Allow: /book-slots
+Allow: /one-time-booking
+Allow: /sports
+Allow: /privacy-policy
+Allow: /terms-and-conditions
+
+# Private dashboards — do not crawl (both root and sub-paths)
+Disallow: /user
+Disallow: /user/
+Disallow: /super-admin
+Disallow: /super-admin/
+Disallow: /restaurant
+Disallow: /restaurant/
+Disallow: /login
+Disallow: /api
+Disallow: /api/
+
+# Table/entry portals — not indexable
+Disallow: /table
+Disallow: /table/
+Disallow: /table-portal
+Disallow: /entry
+Disallow: /entry/
+
+# Sitemap
+Sitemap: https://redballsportsarena.in/sitemap.xml

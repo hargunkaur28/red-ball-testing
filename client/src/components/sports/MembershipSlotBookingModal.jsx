@@ -46,8 +46,9 @@ function SportSelectorStep({ plan, onSelect }) {
 
   const allSports = sportsData?.sports || [];
   const availableSports = allSports.filter((s) => {
+    // "All Services" is a membership category, not a bookable sport
+    if (s.slug === 'all-services' || (s.name || '').toLowerCase() === 'all services') return false;
     const keys = (plan?.sportsIncluded || []).map((k) => (k || '').toLowerCase());
-    // Exclude non-playable entries like 'all' or 'all-services' themselves — only real sports
     return keys.some((k) => isAllServicesKey(k) || k === s.slug || k === s.name?.toLowerCase());
   });
 

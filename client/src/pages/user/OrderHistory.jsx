@@ -96,18 +96,20 @@ function OrderItem({ item, orderStatus, estimatedPrepMinutes, estimatedReadyAt }
     }
   }
 
+  const isCancelled = displayStatus === 'cancelled' || displayStatus === 'refunded';
+
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/5 border border-[#222A2A] rounded-2xl gap-4">
+    <div className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-2xl gap-4 ${isCancelled ? 'bg-red-500/5 border-red-500/15' : 'bg-white/5 border-[#222A2A]'}`}>
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] border border-white/5 flex items-center justify-center shrink-0">
+        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br border flex items-center justify-center shrink-0 ${isCancelled ? 'from-red-950 to-red-900/30 border-red-500/10 opacity-60' : 'from-[#1A1A1A] to-[#2A2A2A] border-white/5'}`}>
           <span className="text-xl">🍲</span>
         </div>
         <div>
-          <h4 className="text-sm font-bold text-white flex items-center gap-2">
+          <h4 className={`text-sm font-bold flex items-center gap-2 ${isCancelled ? 'text-white/40 line-through' : 'text-white'}`}>
             {item.name}
-            <span className="text-white/40 text-xs font-medium">×{item.quantity}</span>
+            <span className="text-white/40 text-xs font-medium no-underline" style={{ textDecoration: 'none' }}>×{item.quantity}</span>
           </h4>
-          <p className="text-xs text-white/50 mt-1">{formatCurrency(item.price * item.quantity)}</p>
+          <p className={`text-xs mt-1 ${isCancelled ? 'text-red-400/60 line-through' : 'text-white/50'}`}>{formatCurrency(item.price * item.quantity)}</p>
         </div>
       </div>
       

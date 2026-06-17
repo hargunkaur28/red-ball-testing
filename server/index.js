@@ -63,6 +63,11 @@ const isProd = process.env.NODE_ENV === 'production';
 const allowedOrigins = [
   ...(!isProd ? ['http://localhost:5173'] : []),
   'https://red-ball-delta.vercel.app',
+  // Production domains
+  'https://redballsportsarena.in',
+  'https://www.redballsportsarena.in',
+  'https://redballsportsarena.com',
+  'https://www.redballsportsarena.com',
   process.env.CLIENT_URL,
 ].filter(Boolean);
 
@@ -97,6 +102,10 @@ io.use(async (socket, next) => {
 
 // Socket.io connection handling
 io.on('connection', (socket) => {
+  // Auto-join personal room so targeted io.to(`user:${id}`) events work
+  if (socket.data.userId) {
+    socket.join(`user:${socket.data.userId}`);
+  }
   // join-managers accepts an optional inline token as a fallback for cases
   // where the socket connected before the user was authenticated (e.g. App.jsx
   // connects on mount, then the user logs in and the restaurant page emits this).

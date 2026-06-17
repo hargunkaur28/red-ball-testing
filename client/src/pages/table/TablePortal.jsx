@@ -1043,12 +1043,33 @@ export default function TablePortal({ embedded = false }) {
                         })()}
 
                         <div className="space-y-1.5 max-h-[120px] overflow-y-auto pr-1 scrollbar-thin">
-                          {order.items.map(item => (
-                            <div key={item._id} className="flex justify-between text-xs font-bold text-gray-200">
-                              <span>{item.quantity}x {item.name}</span>
-                              <span className="text-[#F5A623] font-mono">{formatCurrency(item.price * item.quantity)}</span>
-                            </div>
-                          ))}
+                          {order.items.map(item => {
+                            const isCancelled = item.status === 'cancelled';
+                            return (
+                              <div key={item._id} className="flex flex-col gap-0.5">
+                                <div className={`flex justify-between text-xs font-bold ${isCancelled ? 'text-gray-500' : 'text-gray-200'}`}>
+                                  <span className={isCancelled ? 'line-through' : ''}>
+                                    {item.quantity}x {item.name}
+                                  </span>
+                                  {isCancelled ? (
+                                    <span className="text-red-500/70 font-mono line-through">{formatCurrency(item.price * item.quantity)}</span>
+                                  ) : (
+                                    <span className="text-[#F5A623] font-mono">{formatCurrency(item.price * item.quantity)}</span>
+                                  )}
+                                </div>
+                                {isCancelled && (
+                                  <div className="flex items-center gap-1.5 flex-wrap">
+                                    <span className="text-[9px] font-black uppercase tracking-wider text-red-400 bg-red-500/10 border border-red-500/25 rounded px-1.5 py-0.5">
+                                      Cancelled
+                                    </span>
+                                    {item.cancelReason && (
+                                      <span className="text-[10px] text-gray-500 italic">"{item.cancelReason}"</span>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
 
                         <div className="flex items-center justify-between border-t border-white/5 pt-2 text-xs font-bold">

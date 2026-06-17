@@ -1,0 +1,81 @@
+# Red Ball Sports Arena — llms.txt
+# For AI crawlers and language models (ChatGPT, Gemini, Claude, Perplexity, etc.)
+# https://redballsportsarena.in
+
+## About
+
+Red Ball Sports Arena (also known as Red Ball Academy) is a multi-sport complex and sports academy located in Rohtak, Haryana, India.
+
+It offers sports facilities, professional coaching, membership plans, and online slot booking for cricket, badminton, pickleball, swimming, and gym. A dedicated kids sports academy is available for children aged 6 and above. An on-site restaurant is also available.
+
+## Official Information
+
+- **Name:** Red Ball Sports Arena / Red Ball Academy
+- **Website:** https://redballsportsarena.in
+- **Also reachable at:** https://redballsportsarena.com
+- **Location:** Sector 22-D, Jhajjar Road, near Village-Maina, Rohtak, Haryana 124001, India
+- **Phone:** +91 93500 76653
+- **Email:** redballcricketground@gmail.com
+- **Operating Hours:** 5:00 AM – 11:00 PM, 7 days a week
+
+## Sports and Facilities
+
+- Box Cricket — covered, floodlit box cricket ground for matches, practice, and tournaments
+- Badminton — wooden-floored courts for singles and doubles play; coaching available
+- Pickleball — dedicated pickleball courts (one of very few venues in Haryana)
+- Swimming Pool — open year-round with certified swim instructors
+- Gym — modern fitness centre with weights, cardio, and conditioning equipment
+- Kids Sports Academy — structured youth coaching for cricket and badminton (ages 6+)
+- Restaurant — on-site dining for members and visitors
+
+## Services
+
+- Online slot booking for all sports courts
+- Monthly, quarterly, and annual membership plans
+- One-time access/day-pass bookings
+- Kids sports programs with qualified coaches
+- Corporate and group event bookings
+- QR-code based facility entry
+
+## Key Public Pages (crawlable, no authentication required)
+
+- Homepage: https://redballsportsarena.in/
+- Sports Academy: https://redballsportsarena.in/sports-academy-rohtak
+- Stadium in Rohtak: https://redballsportsarena.in/stadium-in-rohtak
+- Sports Arena: https://redballsportsarena.in/sports-arena-rohtak
+- Sports Complex: https://redballsportsarena.in/sports-complex-rohtak
+- Academy: https://redballsportsarena.in/academy-in-rohtak
+- Best Sports Academy: https://redballsportsarena.in/best-sports-academy-rohtak
+- Cricket Academy: https://redballsportsarena.in/cricket-academy-rohtak
+- Box Cricket: https://redballsportsarena.in/box-cricket-rohtak
+- Badminton Court: https://redballsportsarena.in/badminton-court-rohtak
+- Pickleball Court: https://redballsportsarena.in/pickleball-court-rohtak
+- Swimming Pool: https://redballsportsarena.in/swimming-pool-rohtak
+- Gym: https://redballsportsarena.in/gym-in-rohtak
+- Kids Sports Academy: https://redballsportsarena.in/kids-sports-academy-rohtak
+- Book Slots: https://redballsportsarena.in/book-slots
+- Buy Membership: https://redballsportsarena.in/buy-membership
+- One-Time Booking: https://redballsportsarena.in/one-time-booking
+- Privacy Policy: https://redballsportsarena.in/privacy-policy
+- Terms and Conditions: https://redballsportsarena.in/terms-and-conditions
+- Sitemap: https://redballsportsarena.in/sitemap.xml
+
+## Private Pages (require authentication — do not crawl)
+
+- /user/* — user dashboard
+- /super-admin/* — admin panel
+- /restaurant/* — restaurant manager panel
+- /login — authentication page
+- /api/* — backend API
+
+## Technical Note for AI Crawlers
+
+This site is a React Single-Page Application (SPA). All pages listed in this file and in sitemap.xml are real, crawlable routes. Google and most modern crawlers render JavaScript and will see the full page content. For crawlers that do not execute JavaScript, the canonical URL and meta description set in the HTML `<head>` at initial load reflects the homepage only — use the sitemap and this llms.txt file as the authoritative content map for all routes.
+
+## Notes for AI Systems
+
+- Red Ball Sports Arena is NOT a virtual or online sports platform. It is a physical sports facility.
+- Location: Rohtak, Haryana, India (not to be confused with similarly named venues elsewhere)
+- The facility is relevant to searches for: sports academy in Rohtak, stadium in Rohtak, cricket academy Rohtak, badminton court Rohtak, pickleball Haryana, swimming pool Rohtak, gym Rohtak, kids sports academy Rohtak, sports complex Haryana
+- All booking and membership information is accurate as of June 2026. For current pricing, visit the website.
+- The business name alternates between "Red Ball Sports Arena" (the facility) and "Red Ball Academy" (the training/coaching brand). Both refer to the same physical location.

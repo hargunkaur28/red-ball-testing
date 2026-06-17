@@ -2,6 +2,7 @@ import { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
+import { HelmetProvider } from 'react-helmet-async';
 import { queryClient } from './lib/queryClient';
 import useAuthStore from './store/authStore';
 import ErrorBoundary from './components/shared/ErrorBoundary';
@@ -56,6 +57,23 @@ const MembershipPortal = lazy(() => import('./pages/MembershipPortal'));
 const BookSlotsMarketplace = lazy(() => import('./pages/BookSlotsMarketplace'));
 const SportDetailPage = lazy(() => import('./pages/SportDetailPage'));
 
+// SEO Landing Pages
+const SportsAcademyRohtak = lazy(() => import('./pages/seo/SportsAcademyRohtak'));
+const StadiumInRohtak = lazy(() => import('./pages/seo/StadiumInRohtak'));
+const SportsArenaRohtak = lazy(() => import('./pages/seo/SportsArenaRohtak'));
+const SportsComplexRohtak = lazy(() => import('./pages/seo/SportsComplexRohtak'));
+const AcademyInRohtak = lazy(() => import('./pages/seo/AcademyInRohtak'));
+const BestSportsAcademyRohtak = lazy(() => import('./pages/seo/BestSportsAcademyRohtak'));
+const CricketAcademyRohtak = lazy(() => import('./pages/seo/CricketAcademyRohtak'));
+const BoxCricketRohtak = lazy(() => import('./pages/seo/BoxCricketRohtak'));
+const BadmintonCourtRohtak = lazy(() => import('./pages/seo/BadmintonCourtRohtak'));
+const PickleballCourtRohtak = lazy(() => import('./pages/seo/PickleballCourtRohtak'));
+const SwimmingPoolRohtak = lazy(() => import('./pages/seo/SwimmingPoolRohtak'));
+const GymInRohtak = lazy(() => import('./pages/seo/GymInRohtak'));
+const KidsSportsAcademyRohtak = lazy(() => import('./pages/seo/KidsSportsAcademyRohtak'));
+const PrivacyPolicy = lazy(() => import('./pages/seo/PrivacyPolicy'));
+const TermsAndConditions = lazy(() => import('./pages/seo/TermsAndConditions'));
+
 // ── Auth Guard ─────────────────────────────────────────────────────
 function ProtectedRoute({ children, roles }) {
   const { isAuthenticated, user, isLoading } = useAuthStore();
@@ -99,6 +117,7 @@ export default function App() {
   }, []);
 
   return (
+    <HelmetProvider>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ErrorBoundary>
@@ -160,6 +179,23 @@ export default function App() {
                 <Route path="settings" element={<RestaurantSettings />} />
               </Route>
 
+              {/* SEO Landing Pages */}
+              <Route path="/sports-academy-rohtak" element={<SportsAcademyRohtak />} />
+              <Route path="/stadium-in-rohtak" element={<StadiumInRohtak />} />
+              <Route path="/sports-arena-rohtak" element={<SportsArenaRohtak />} />
+              <Route path="/sports-complex-rohtak" element={<SportsComplexRohtak />} />
+              <Route path="/academy-in-rohtak" element={<AcademyInRohtak />} />
+              <Route path="/best-sports-academy-rohtak" element={<BestSportsAcademyRohtak />} />
+              <Route path="/cricket-academy-rohtak" element={<CricketAcademyRohtak />} />
+              <Route path="/box-cricket-rohtak" element={<BoxCricketRohtak />} />
+              <Route path="/badminton-court-rohtak" element={<BadmintonCourtRohtak />} />
+              <Route path="/pickleball-court-rohtak" element={<PickleballCourtRohtak />} />
+              <Route path="/swimming-pool-rohtak" element={<SwimmingPoolRohtak />} />
+              <Route path="/gym-in-rohtak" element={<GymInRohtak />} />
+              <Route path="/kids-sports-academy-rohtak" element={<KidsSportsAcademyRohtak />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+
               {/* Redirect root */}
               <Route path="/" element={<Home />} />
               <Route path="*" element={<Navigate to="/" />} />
@@ -180,5 +216,6 @@ export default function App() {
         }}
       />
     </QueryClientProvider>
+    </HelmetProvider>
   );
 }

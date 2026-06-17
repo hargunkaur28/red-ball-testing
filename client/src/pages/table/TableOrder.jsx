@@ -586,13 +586,22 @@ export default function TableOrder() {
                     {item.isAvailable && (
                       <div>
                         {item.sizes?.length > 1 ? (
-                          /* Multiple sizes — always open modal for size selection */
-                          <button
-                            onClick={(e) => { e.stopPropagation(); openFoodModal(item); }}
-                            className="px-4 py-2 bg-[#C8102E] hover:bg-[#A00D24] text-white rounded-full text-xs font-bold uppercase transition-all shadow-md active:scale-95"
-                          >
-                            Select Size
-                          </button>
+                          <>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); openFoodModal(item); }}
+                              className="w-10 h-10 rounded-full bg-[#C8102E] text-white flex sm:hidden flex-col items-center justify-center shadow-lg active:scale-90 transition-transform"
+                            >
+                              <span className="text-[10px] font-black leading-none">ADD</span>
+                              <Plus size={14} strokeWidth={3} />
+                            </button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); openFoodModal(item); }}
+                              className="hidden sm:flex px-5 py-2.5 bg-[#C8102E] hover:bg-[#A00D24] text-white rounded-full text-xs font-bold transition-all shadow-lg hover:scale-105 active:scale-95 items-center gap-1.5 uppercase tracking-wider"
+                            >
+                              <span>Add</span>
+                              <span className="text-white/70 font-normal">+</span>
+                            </button>
+                          </>
                         ) : qty > 0 ? (
                           <div className="flex items-center gap-2 bg-black rounded-full p-1 border border-white/10 shadow-lg scale-90 sm:scale-100">
                             <button
@@ -746,7 +755,7 @@ export default function TableOrder() {
                             onClick={(e) => { e.stopPropagation(); openFoodModal(item); }}
                             className="px-4 py-2 bg-[#C8102E] hover:bg-[#A00D24] text-white rounded-full text-xs font-bold uppercase transition-all shadow-md active:scale-95"
                           >
-                            Select Size
+                            Add +
                           </button>
                         ) : qty > 0 ? (
                           <div className="flex items-center gap-1.5 bg-black rounded-full p-1 border border-white/10 shadow">

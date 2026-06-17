@@ -13,9 +13,18 @@ const programs = [
 
 const quickLinks = [
   { label: 'About Us', href: '#about' },
-  { label: 'Membership Plans', href: '#membership' },
+  { label: 'Membership Plans', to: '/buy-membership' },
   { label: 'Book a Ground', to: '/book-slots' },
   { label: 'Contact', href: '#contact' },
+];
+
+const seoLinks = [
+  { label: 'Sports Academy Rohtak', to: '/sports-academy-rohtak' },
+  { label: 'Stadium in Rohtak', to: '/stadium-in-rohtak' },
+  { label: 'Cricket Academy Rohtak', to: '/cricket-academy-rohtak' },
+  { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },
+  { label: 'Gym in Rohtak', to: '/gym-in-rohtak' },
+  { label: "Kids' Sports Academy", to: '/kids-sports-academy-rohtak' },
 ];
 
 // Instagram SVG
@@ -68,7 +77,7 @@ export default function Footer() {
 
       {/* Footer Columns */}
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-12 md:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
 
           {/* Col 1 — Brand */}
           <div className="lg:col-span-1">
@@ -147,7 +156,23 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Col 4 — Contact */}
+          {/* Col 4 — Explore (SEO links) */}
+          <div>
+            <h4 className="text-[#0D0D0D] font-bold text-sm uppercase tracking-[2px] mb-5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              Explore
+            </h4>
+            <ul className="space-y-2.5">
+              {seoLinks.map((item) => (
+                <li key={item.label}>
+                  <Link to={item.to} className="text-[#0D0D0D]/70 text-sm hover:text-[#C8102E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 5 — Contact */}
           <div>
             <h4 className="text-[#0D0D0D] font-bold text-sm uppercase tracking-[2px] mb-5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Contact
@@ -176,9 +201,9 @@ export default function Footer() {
             © 2025 Red Ball Academy. All Rights Reserved.
           </p>
           <div className="flex items-center gap-4 text-xs text-[#0D0D0D]/50" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            <a href="#" className="hover:text-[#C8102E] transition-colors">Privacy Policy</a>
+            <Link to="/privacy-policy" className="hover:text-[#C8102E] transition-colors">Privacy Policy</Link>
             <span>·</span>
-            <a href="#" className="hover:text-[#C8102E] transition-colors">Terms & Conditions</a>
+            <Link to="/terms-and-conditions" className="hover:text-[#C8102E] transition-colors">Terms & Conditions</Link>
           </div>
         </div>
       </div>

@@ -6,6 +6,8 @@ const authorize = require('../middleware/role.middleware');
 const sc = require('../controllers/slot.controller');
 
 // ── Admin routes (specific paths must come before /:id) ──────────────────────
+router.get('/admin/today-bookings', auth, authorize('superadmin', 'manager'), sc.adminTodayBookings);
+router.get('/admin/bookings', auth, authorize('superadmin', 'manager'), sc.adminBookings);
 router.get('/admin/live', auth, authorize('superadmin'), sc.adminLiveOverview);
 router.get('/admin/live/:sportId', auth, authorize('superadmin'), sc.adminLiveSportDetail);
 router.post('/admin/bulk', auth, authorize('superadmin'), sc.bulkCreateSlots);

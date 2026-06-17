@@ -82,6 +82,7 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
   const [showAvailableCoupons, setShowAvailableCoupons] = useState(false);
   const [availableCoupons, setAvailableCoupons] = useState([]);
   const [couponsLoading, setCouponsLoading] = useState(false);
+  const [showMembershipPopup, setShowMembershipPopup] = useState(false);
 
   const fallback = getSportFallback(sport?.slug || sport?.name || '');
   const accentColor = fallback.color || '#C8102E';
@@ -97,8 +98,14 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
       setCouponInput('');
       setAppliedCoupon(null);
       setCouponError('');
+      setShowMembershipPopup(false);
     }
   }, [isOpen]);
+
+  // Show membership popup once membership data resolves and covers this sport
+  useEffect(() => {
+    if (isOpen && membershipCoversSport) setShowMembershipPopup(true);
+  }, [isOpen, membershipCoversSport]);
 
   // Sync auth user
   useEffect(() => {
@@ -819,6 +826,68 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                   </div>
                 </div>
               </motion.div>
+
+              {/* Membership popup — shown once when modal opens and user already has coverage */}
+              <AnimatePresence>
+                {showMembershipPopup && (
+                  <>
+                    <motion.div
+                      key="memb-popup-backdrop"
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                      className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm"
+                      onClick={() => setShowMembershipPopup(false)}
+                    />
+                    <motion.div
+                      key="memb-popup"
+                      initial={{ opacity: 0, scale: 0.88, y: 24 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.9, y: 16 }}
+                      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                      className="fixed inset-0 z-[60] flex items-center justify-center p-6 pointer-events-none"
+                    >
+                      <div
+                        className="pointer-events-auto w-full max-w-sm rounded-3xl p-6 flex flex-col items-center text-center relative overflow-hidden"
+                        style={{
+                          background: 'linear-gradient(145deg, #1a1040 0%, #110d30 100%)',
+                          border: '1px solid rgba(124,58,237,0.35)',
+                          boxShadow: '0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(124,58,237,0.15)',
+                        }}
+                      >
+                        {/* Glow */}
+                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full blur-3xl opacity-30 pointer-events-none" style={{ background: '#7c3aed' }} />
+
+                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 relative" style={{ background: 'rgba(124,58,237,0.18)', border: '1px solid rgba(124,58,237,0.4)' }}>
+                          <Crown size={26} className="text-violet-400" />
+                        </div>
+
+                        <p className="text-violet-300 text-[11px] font-black uppercase tracking-widest mb-1">Membership Active</p>
+                        <h3 className="text-white font-black text-lg leading-tight mb-2">
+                          {activeMembership?.planId?.name || 'Your membership'} covers {sport?.name}
+                        </h3>
+                        <p className="text-white/50 text-sm leading-relaxed mb-6">
+                          You can book this sport for free using your membership. Head to your Bookings page to pick a slot without paying again.
+                        </p>
+
+                        <div className="w-full flex flex-col gap-2.5">
+                          <button
+                            onClick={() => { setShowMembershipPopup(false); onClose(); navigate('/user/membership'); }}
+                            className="w-full py-3 rounded-2xl font-black text-sm text-white flex items-center justify-center gap-2"
+                            style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)', boxShadow: '0 8px 24px rgba(124,58,237,0.35)' }}
+                          >
+                            <Crown size={15} /> Go to Membership
+                          </button>
+                          <button
+                            onClick={() => setShowMembershipPopup(false)}
+                            className="w-full py-3 rounded-2xl font-semibold text-sm text-white/50 hover:text-white/80 border border-white/10 hover:border-white/20 transition-colors"
+                          >
+                            Book as One-Time Anyway
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
             </>
           )}
         </AnimatePresence>,

@@ -9,7 +9,7 @@ const ReferencePrice = require('../models/ReferencePrice');
 const Coupon = require('../models/Coupon');
 const CouponUsage = require('../models/CouponUsage');
 const { calculateGST } = require('../utils/gstCalculator');
-const { createRazorpayOrder, verifyPaymentSignature, fetchPaymentDetails } = require('../config/razorpay');
+const { createRazorpayOrder, verifyPaymentSignature, fetchPaymentDetails, createRefund } = require('../config/razorpay');
 
 const ALLOWED_MANUAL_PAYMENT_MODES = ['cash', 'upi', 'card', 'bank-transfer'];
 
@@ -378,7 +378,7 @@ exports.adminLiveOverview = async (req, res) => {
     const endOfDay = new Date(dateStr);
     endOfDay.setHours(23, 59, 59, 999);
 
-    const sports = await Sport.find({ active: true, deletedAt: null }).sort({ name: 1 });
+    const sports = await Sport.find({ active: true, deletedAt: null, slug: { $ne: 'all-services' } }).sort({ name: 1 });
 
     const overview = await Promise.all(sports.map(async (sport) => {
       const courts = await Court.find({ sportId: sport._id }).sort({ sortOrder: 1, name: 1 });
@@ -496,6 +496,9 @@ exports.getPublicAvailableSlots = async (req, res) => {
     const { sportSlug, date, courtId } = req.query;
     if (!sportSlug || !date) {
       return res.status(400).json({ message: 'sportSlug and date are required.' });
+    }
+    if (sportSlug === 'all-services') {
+      return res.status(400).json({ message: 'Slot booking is not available for All Services.' });
     }
 
     const sport = await Sport.findOne({ slug: sportSlug, active: true, deletedAt: null });
@@ -932,7 +935,32 @@ exports.verifySlotPayment = async (req, res) => {
       { new: true }
     );
     if (!claimedSlot) {
-      return res.status(409).json({ message: 'Slot is no longer available. Please choose another slot.' });
+      // Slot filled between order creation and payment capture — attempt auto-refund
+      let refundInitiated = false;
+      try {
+        await createRefund(razorpayPaymentId, paymentRecord.totalAmount);
+        paymentRecord.razorpayPaymentId = razorpayPaymentId;
+        paymentRecord.status = 'refunded';
+        await paymentRecord.save();
+        refundInitiated = true;
+      } catch (refundErr) {
+        console.error('Auto-refund failed (manual action required):', refundErr.message, {
+          razorpayPaymentId,
+          paymentId: paymentRecord._id,
+          amount: paymentRecord.totalAmount,
+        });
+        paymentRecord.razorpayPaymentId = razorpayPaymentId;
+        paymentRecord.status = 'refund-pending';
+        paymentRecord.adminNote = `Auto-refund failed: ${refundErr.message}`;
+        await paymentRecord.save();
+      }
+      return res.status(409).json({
+        message: refundInitiated
+          ? `This slot was just booked by someone else. Your payment of ₹${paymentRecord.totalAmount} has been refunded and will reflect within 5–7 business days.`
+          : `This slot was just booked by someone else. Your payment was captured but the auto-refund could not be processed — please contact support with Payment ID: ${razorpayPaymentId}.`,
+        refundInitiated,
+        razorpayPaymentId,
+      });
     }
 
     const sport = claimedSlot.sportId ? await Sport.findById(claimedSlot.sportId).select('name slug') : null;
@@ -1314,7 +1342,10 @@ exports.checkInBooking = async (req, res) => {
     await booking.save();
 
     const io = req.app.get('io');
-    if (io) io.emit('booking:checked-in', booking);
+    if (io) {
+      io.emit('booking:checked-in', booking);
+      if (booking.userId) io.to(`user:${booking.userId}`).emit('booking:checked-in', booking);
+    }
 
     res.json({ booking, message: 'Checked in successfully.' });
   } catch (error) {
@@ -1332,7 +1363,10 @@ exports.checkOutBooking = async (req, res) => {
     await booking.save();
 
     const io = req.app.get('io');
-    if (io) io.emit('booking:checked-out', booking);
+    if (io) {
+      io.emit('booking:checked-out', booking);
+      if (booking.userId) io.to(`user:${booking.userId}`).emit('booking:checked-out', booking);
+    }
 
     res.json({ booking, message: 'Checked out successfully.' });
   } catch (error) {
@@ -1565,6 +1599,9 @@ exports.getMembershipAvailableSlots = async (req, res) => {
     if (!sportSlug || !date || !membershipId) {
       return res.status(400).json({ message: 'sportSlug, date and membershipId are required.' });
     }
+    if (sportSlug === 'all-services') {
+      return res.status(400).json({ message: 'Slot booking is not available for All Services.' });
+    }
 
     // Validate membership
     const membership = await Membership.findOne({ _id: membershipId, studentId: req.user.userId })
@@ -1676,6 +1713,86 @@ exports.getMembershipAvailableSlots = async (req, res) => {
   }
 };
 
+// ── GET /api/slots/admin/today-bookings ──────────────────────────────────────
+// Returns all slot bookings for today (IST) — for the superadmin/manager dashboard.
+exports.adminTodayBookings = async (req, res) => {
+  try {
+    const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+    const nowIST = new Date(Date.now() + IST_OFFSET_MS);
+    const dateStr = `${nowIST.getUTCFullYear()}-${String(nowIST.getUTCMonth() + 1).padStart(2, '0')}-${String(nowIST.getUTCDate()).padStart(2, '0')}`;
+
+    const startOfDay = new Date(dateStr);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(dateStr);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const todaySlots = await Slot.find({ date: { $gte: startOfDay, $lte: endOfDay } }).select('_id').lean();
+    const slotIds = todaySlots.map((s) => s._id);
+
+    const bookings = await SlotBooking.find({
+      slotId: { $in: slotIds },
+      status: { $nin: ['cancelled'] },
+    })
+      .select('bookingId playerName playerPhone startTime endTime sportNameSnapshot courtNameSnapshot status isMembershipBooking membershipPlanSnapshot isReference paymentStatus')
+      .sort({ startTime: 1, playerName: 1 })
+      .lean();
+
+    res.json({ bookings, date: dateStr, total: bookings.length });
+  } catch (error) {
+    console.error('adminTodayBookings error:', error);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
+
+// ── GET /api/slots/admin/bookings ─────────────────────────────────────────────
+// Flexible bookings query for the Live Sports page.
+// Query params:
+//   date=YYYY-MM-DD   — single day (default: today IST)
+//   month=YYYY-MM     — full calendar month
+//   sportId=<id>      — optional sport filter
+exports.adminBookings = async (req, res) => {
+  try {
+    const { date, month, sportId } = req.query;
+    const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+
+    let startOfRange, endOfRange, resolvedDate;
+
+    if (month) {
+      const [yr, mo] = month.split('-').map(Number);
+      startOfRange = new Date(yr, mo - 1, 1, 0, 0, 0, 0);
+      endOfRange   = new Date(yr, mo,     0, 23, 59, 59, 999);
+    } else {
+      const nowIST = new Date(Date.now() + IST_OFFSET_MS);
+      resolvedDate = date || `${nowIST.getUTCFullYear()}-${String(nowIST.getUTCMonth() + 1).padStart(2, '0')}-${String(nowIST.getUTCDate()).padStart(2, '0')}`;
+      startOfRange = new Date(resolvedDate); startOfRange.setHours(0, 0, 0, 0);
+      endOfRange   = new Date(resolvedDate); endOfRange.setHours(23, 59, 59, 999);
+    }
+
+    const slots = await Slot.find({ date: { $gte: startOfRange, $lte: endOfRange } })
+      .select('_id date').lean();
+    const slotIds = slots.map((s) => s._id);
+    const slotDateMap = new Map(slots.map((s) => [s._id.toString(), s.date]));
+
+    const bookingFilter = { slotId: { $in: slotIds }, status: { $nin: ['cancelled'] } };
+    if (sportId) bookingFilter.sportId = sportId;
+
+    const bookings = await SlotBooking.find(bookingFilter)
+      .select('bookingId playerName playerPhone startTime endTime sportNameSnapshot courtNameSnapshot sportId status isMembershipBooking membershipPlanSnapshot isReference paymentStatus slotId')
+      .sort({ startTime: 1, playerName: 1 })
+      .lean();
+
+    const result = bookings.map((b) => ({
+      ...b,
+      slotDate: slotDateMap.get(b.slotId?.toString()) || null,
+    }));
+
+    res.json({ bookings: result, total: result.length, date: resolvedDate, month: month || null });
+  } catch (error) {
+    console.error('adminBookings error:', error);
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
+
 // ── POST /api/slots/membership/book ──────────────────────────────────────────
 // Book a slot using membership (free, instantly confirmed).
 // Body: { membershipId, slotId, sportId }
@@ -1745,17 +1862,19 @@ exports.bookMembershipSlot = async (req, res) => {
     // Check for overlapping confirmed membership booking same day + sport
     const startOfDay = new Date(slot.date); startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date(slot.date); endOfDay.setHours(23, 59, 59, 999);
+    const slotsThisDay = await Slot.find({
+      sportId: sport._id,
+      date: { $gte: startOfDay, $lte: endOfDay },
+    }).select('_id').lean();
+    const slotIdsThisDay = slotsThisDay.map((s) => s._id);
     const sameSportOverlap = await SlotBooking.findOne({
       userId: req.user.userId,
-      sportId: sport._id,
+      slotId: { $in: slotIdsThisDay },
       isMembershipBooking: true,
       status: { $in: ['confirmed', 'checked-in'] },
-    }).populate({ path: 'slotId', select: 'date' });
+    });
     if (sameSportOverlap) {
-      const od = sameSportOverlap.slotId?.date;
-      if (od && new Date(od) >= startOfDay && new Date(od) <= endOfDay) {
-        return res.status(409).json({ message: `You already have a ${sport.name} slot booked for this day.` });
-      }
+      return res.status(409).json({ message: `You already have a ${sport.name} slot booked for this day.` });
     }
 
     // Cross-sport overlap: check ALL confirmed bookings for this user on this date+time

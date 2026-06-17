@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, CreditCard, Ticket, ArrowRight, Calendar, AlertTriangle, Activity, LogIn, LogOut, Zap, AlertCircle, IndianRupee, Download, FileText, Filter } from 'lucide-react';
+import { Trophy, CreditCard, Ticket, ArrowRight, Calendar, AlertTriangle, Activity, LogIn, LogOut, Zap, AlertCircle, IndianRupee, Download, FileText, Filter, Users } from 'lucide-react';
 import api from '../../lib/axios';
 import socket from '../../lib/socket';
 
@@ -114,6 +114,12 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [checkInLog, setCheckInLog] = useState([]);
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 60_000);
+    return () => clearInterval(t);
+  }, []);
 
   // Fetch today's check-in/out feed on mount
   useEffect(() => {
@@ -154,30 +160,41 @@ export default function Dashboard() {
 
   // Socket.IO for real-time check-in/out events
   useEffect(() => {
+    const refreshBookings = () => qc.invalidateQueries({ queryKey: ['dashboard-today-bookings'] });
     const handleCheckIn = (data) => {
       setCheckInLog(prev => [{ type: 'check-in', ...data, id: Date.now() }, ...prev].slice(0, 20));
       qc.invalidateQueries({ queryKey: ['dashboard-sports'] });
+      refreshBookings();
     };
     const handleCheckOut = (data) => {
       setCheckInLog(prev => [{ type: 'check-out', ...data, id: Date.now() }, ...prev].slice(0, 20));
       qc.invalidateQueries({ queryKey: ['dashboard-sports'] });
+      refreshBookings();
     };
     const handleAutoCheckout = (data) => {
       setCheckInLog(prev => [{ type: 'auto-checkout', ...data, id: Date.now() }, ...prev].slice(0, 20));
       qc.invalidateQueries({ queryKey: ['dashboard-sports'] });
+      refreshBookings();
     };
-    const handleRefresh = () => qc.invalidateQueries({ queryKey: ['dashboard-sports'] });
+    const handleRefresh = () => {
+      qc.invalidateQueries({ queryKey: ['dashboard-sports'] });
+      refreshBookings();
+    };
 
     socket.on('attendance:check-in', handleCheckIn);
     socket.on('attendance:check-out', handleCheckOut);
     socket.on('attendance:auto-checkout', handleAutoCheckout);
     socket.on('dashboard:refresh', handleRefresh);
+    socket.on('booking:checked-in', refreshBookings);
+    socket.on('booking:checked-out', refreshBookings);
 
     return () => {
       socket.off('attendance:check-in', handleCheckIn);
       socket.off('attendance:check-out', handleCheckOut);
       socket.off('attendance:auto-checkout', handleAutoCheckout);
       socket.off('dashboard:refresh', handleRefresh);
+      socket.off('booking:checked-in', refreshBookings);
+      socket.off('booking:checked-out', refreshBookings);
     };
   }, [qc]);
   // Fetch active sports count
@@ -233,6 +250,17 @@ export default function Dashboard() {
       return data;
     },
     staleTime: 30_000,
+  });
+
+  // Fetch today's slot bookings
+  const { data: todayBookingsData, isLoading: todayBookingsLoading } = useQuery({
+    queryKey: ['dashboard-today-bookings', today()],
+    queryFn: async () => {
+      const { data } = await api.get('/slots/admin/today-bookings');
+      return data;
+    },
+    staleTime: 60_000,
+    refetchInterval: 120_000,
   });
 
   const isCardsLoading = sportsLoading || membershipsLoading || oneTimeLoading;
@@ -546,6 +574,131 @@ export default function Dashboard() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+      </motion.div>
+
+      {/* ── Today's Bookings ─────────────────────────────── */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.68, duration: 0.45 }}
+        className="mb-6"
+      >
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Users size={16} className="text-violet-500" />
+            <h2 className="text-sm font-bold tracking-wider text-[#9CA3AF] uppercase font-['Inter']">
+              Today's Bookings
+            </h2>
+            {!todayBookingsLoading && todayBookingsData?.total > 0 && (
+              <span className="px-2 py-0.5 rounded-full bg-violet-100 text-violet-700 text-[10px] font-bold">
+                {todayBookingsData.total}
+              </span>
+            )}
+          </div>
+          <button
+            onClick={() => navigate('/super-admin/live-sports')}
+            className="text-xs font-semibold text-[#C8102E] hover:underline flex items-center gap-1"
+          >
+            Live Sports <ArrowRight size={12} />
+          </button>
+        </div>
+
+        {todayBookingsLoading ? (
+          <div className="card animate-pulse py-5 space-y-3">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="flex items-center gap-3">
+                <div className="w-16 h-8 bg-gray-200 rounded" />
+                <div className="flex-1 space-y-1.5">
+                  <div className="h-3.5 w-32 bg-gray-200 rounded" />
+                  <div className="h-3 w-48 bg-gray-100 rounded" />
+                </div>
+                <div className="w-16 h-5 bg-gray-100 rounded-full" />
+              </div>
+            ))}
+          </div>
+        ) : !todayBookingsData?.bookings?.length ? (
+          <div className="card py-5 flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-violet-50 flex items-center justify-center text-violet-400 shrink-0">
+              <Users size={18} />
+            </div>
+            <div>
+              <p className="text-sm font-bold text-[#0D0D0D]">No bookings today</p>
+              <p className="text-xs text-[#9CA3AF] mt-0.5">Slot bookings for today will appear here.</p>
+            </div>
+          </div>
+        ) : (
+          <div className="card !p-0 overflow-hidden">
+            <div className="max-h-[400px] overflow-y-auto divide-y divide-gray-50">
+              {todayBookingsData.bookings.map((b) => {
+                // Derive time-aware display status from slot times + DB status
+                const toMin = (t) => { const [h, m] = (t || '0:0').split(':').map(Number); return h * 60 + m; };
+                const nowMin = new Date(now).getHours() * 60 + new Date(now).getMinutes();
+                const startMin = toMin(b.startTime);
+                const endMin = toMin(b.endTime);
+                const inProgress = nowMin >= startMin && nowMin < endMin;
+                const isPast = nowMin >= endMin;
+
+                let sc;
+                if (b.status === 'no-show') {
+                  sc = { dot: 'bg-red-400', pill: 'bg-red-50 text-red-600', label: 'No Show' };
+                } else if (b.status === 'completed') {
+                  sc = { dot: 'bg-gray-300', pill: 'bg-gray-100 text-gray-500', label: 'Finished' };
+                } else if (b.status === 'checked-in') {
+                  if (inProgress) sc = { dot: 'bg-emerald-400 animate-pulse', pill: 'bg-emerald-50 text-emerald-700', label: 'Active' };
+                  else if (isPast) sc = { dot: 'bg-gray-300', pill: 'bg-gray-100 text-gray-500', label: 'Finished' };
+                  else sc = { dot: 'bg-blue-400', pill: 'bg-blue-50 text-blue-700', label: 'Checked-In' };
+                } else if (b.status === 'confirmed') {
+                  if (isPast) sc = { dot: 'bg-orange-400', pill: 'bg-orange-50 text-orange-700', label: 'Missed' };
+                  else if (inProgress) sc = { dot: 'bg-amber-400 animate-pulse', pill: 'bg-amber-50 text-amber-800', label: 'Due Now' };
+                  else sc = { dot: 'bg-green-400', pill: 'bg-green-50 text-green-700', label: 'Confirmed' };
+                } else {
+                  sc = { dot: 'bg-amber-400', pill: 'bg-amber-50 text-amber-700', label: 'Pending' };
+                }
+
+                return (
+                  <div key={b._id} className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50/60 transition-colors">
+                    {/* Time block */}
+                    <div className="shrink-0 text-center w-[52px]">
+                      <p className="text-xs font-black text-[#0D0D0D] leading-tight">{b.startTime}</p>
+                      <p className="text-[10px] text-[#9CA3AF] leading-tight">{b.endTime}</p>
+                    </div>
+
+                    {/* Status dot */}
+                    <div className={`w-2 h-2 rounded-full shrink-0 ${sc.dot}`} />
+
+                    {/* Details */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <p className="text-sm font-bold text-[#0D0D0D] leading-tight">{b.playerName}</p>
+                        {b.isMembershipBooking && (
+                          <span className="px-1.5 py-0.5 rounded-full bg-violet-100 text-violet-700 text-[9px] font-bold uppercase leading-none">
+                            {b.membershipPlanSnapshot || 'Member'}
+                          </span>
+                        )}
+                        {b.isReference && (
+                          <span className="px-1.5 py-0.5 rounded-full bg-sky-100 text-sky-700 text-[9px] font-bold uppercase leading-none">
+                            Ref Price
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-[#9CA3AF] truncate mt-0.5">
+                        {b.sportNameSnapshot || '—'}{b.courtNameSnapshot ? ` · ${b.courtNameSnapshot}` : ''}
+                      </p>
+                      {b.playerPhone && (
+                        <p className="text-[10px] text-[#9CA3AF] font-mono mt-0.5">{b.playerPhone}</p>
+                      )}
+                    </div>
+
+                    {/* Status pill */}
+                    <span className={`shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full ${sc.pill}`}>
+                      {sc.label}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}

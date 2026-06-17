@@ -45,7 +45,7 @@ export default function UserDashboard() {
     queryKey: ['attendance', 'active-session', user?.id],
     queryFn: () => api.get('/attendance/active-sessions').then(r => r.data),
     enabled: !!user?.id,
-    refetchInterval: 30000,
+    refetchInterval: 15000,
   });
 
   const { data: passesData, isLoading: passesLoading } = useQuery({
@@ -58,11 +58,45 @@ export default function UserDashboard() {
     queryKey: ['my-slot-bookings'],
     queryFn: () => api.get('/slots/bookings/my-bookings').then(r => r.data),
     enabled: !!user?.id,
+    refetchInterval: 15000,
+  });
+
+  const { data: membershipBookingsData, isLoading: membershipBookingsLoading } = useQuery({
+    queryKey: ['my-membership-slot-bookings'],
+    queryFn: () => api.get('/slots/membership/my-bookings').then(r => r.data),
+    enabled: !!user?.id,
+    refetchInterval: 30000,
   });
 
   const passesList = useMemo(() => passesData?.passes || [], [passesData]);
   const slotBookingsList = useMemo(() => slotBookingsData?.bookings || [], [slotBookingsData]);
   const hasReferenceBooking = useMemo(() => slotBookingsList.some(b => b.isReference), [slotBookingsList]);
+
+  const upcomingMembershipBookings = useMemo(() => {
+    const all = membershipBookingsData?.bookings || [];
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
+    return all
+      .filter(b => {
+        if (b.status === 'cancelled') return false;
+        const slotDate = b.slotId?.date ? new Date(b.slotId.date).toISOString().slice(0, 10) : null;
+        if (!slotDate) return false;
+        if (slotDate > todayStr) return true;
+        if (slotDate === todayStr) {
+          const [h, m] = (b.startTime || '0:0').split(':').map(Number);
+          return h * 60 + m >= nowMin;
+        }
+        return false;
+      })
+      .sort((a, b) => {
+        const da = a.slotId?.date || '';
+        const db = b.slotId?.date || '';
+        if (da !== db) return da < db ? -1 : 1;
+        const [ah, am] = (a.startTime || '0:0').split(':').map(Number);
+        const [bh, bm] = (b.startTime || '0:0').split(':').map(Number);
+        return ah * 60 + am - (bh * 60 + bm);
+      });
+  }, [membershipBookingsData]);
 
   useEffect(() => {
     const interval = setInterval(() => setNow(Date.now()), 1000);
@@ -86,6 +120,7 @@ export default function UserDashboard() {
       qc.invalidateQueries({ queryKey: ['attendance', 'active-session'] });
       qc.invalidateQueries({ queryKey: ['my-passes'] });
       qc.invalidateQueries({ queryKey: ['my-slot-bookings'] });
+      qc.invalidateQueries({ queryKey: ['my-membership-slot-bookings'] });
     };
     socket.on('session:started', refreshSession);
     socket.on('session:ended', refreshSession);
@@ -699,6 +734,80 @@ export default function UserDashboard() {
               })}
             </div>
           )}
+          </div>
+        )}
+      </div>
+
+      {/* Upcoming Membership Slot Bookings */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-extrabold text-white/70 uppercase tracking-wider">Upcoming Membership Bookings</h3>
+          {upcomingMembershipBookings.length > 0 && (
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(124,58,237,0.15)', color: '#a78bfa', border: '1px solid rgba(124,58,237,0.25)' }}>
+              {upcomingMembershipBookings.length} upcoming
+            </span>
+          )}
+        </div>
+        {membershipBookingsLoading ? (
+          <div className="text-sm text-white/45 py-2">Loading...</div>
+        ) : upcomingMembershipBookings.length === 0 ? (
+          <div className="ota-card text-center py-7 px-6 border-dashed">
+            <p className="text-white/55 text-sm">No upcoming membership bookings.</p>
+            <Link to="/user/book-slots" className="text-xs text-violet-400 font-bold mt-1 inline-block hover:underline">
+              Book a Slot via Membership →
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {upcomingMembershipBookings.map((booking) => {
+              const slotDate = booking.slotId?.date
+                ? new Date(booking.slotId.date).toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short' })
+                : '—';
+              const isToday = booking.slotId?.date
+                ? new Date(booking.slotId.date).toISOString().slice(0, 10) === new Date().toISOString().slice(0, 10)
+                : false;
+              const statusColors = {
+                confirmed: 'text-green-400',
+                'checked-in': 'text-blue-400',
+                completed: 'text-white/40',
+              };
+              const planName = booking.membershipId?.planId?.name || booking.membershipPlanSnapshot || 'Membership';
+              return (
+                <motion.div
+                  key={booking._id}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="ota-soft-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                >
+                  <div className="flex items-start gap-3 min-w-0">
+                    <div className="w-10 h-10 rounded-xl shrink-0 flex items-center justify-center" style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.25)' }}>
+                      <ShieldCheck size={16} className="text-violet-400" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-0.5">
+                        <p className="text-sm font-bold text-white truncate">
+                          {booking.sportNameSnapshot || 'Sport'}{booking.courtNameSnapshot ? ` · ${booking.courtNameSnapshot}` : ''}
+                        </p>
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold shrink-0" style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.25)', color: '#a78bfa' }}>
+                          {planName}
+                        </span>
+                      </div>
+                      <p className="text-xs text-white/45">
+                        {isToday ? <span className="text-amber-400 font-semibold">Today</span> : slotDate} · {booking.startTime}–{booking.endTime}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 shrink-0">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(124,58,237,0.1)', color: '#a78bfa', border: '1px solid rgba(124,58,237,0.2)' }}>
+                      Free
+                    </span>
+                    <span className={`text-[10px] font-bold uppercase tracking-wide ${statusColors[booking.status] || 'text-white/40'}`}>
+                      {booking.status}
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         )}
       </div>
