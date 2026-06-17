@@ -678,7 +678,7 @@ export default function TablePortal({ embedded = false }) {
                                   onClick={() => openItemModal(item)}
                                   className="w-full sm:px-4 px-4 py-1.5 bg-[#C8102E] hover:bg-[#A60D25] text-white text-xs font-black tracking-widest uppercase rounded-full transition-colors"
                                 >
-                                  SELECT SIZE
+                                  ADD +
                                 </button>
                               ) : qty > 0 ? (
                                 <div className="flex items-center gap-2 bg-black rounded-full p-1 border border-white/10 shadow-lg w-fit">
