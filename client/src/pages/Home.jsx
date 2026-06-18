@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
@@ -40,9 +40,12 @@ function FlowSection({ children, theme = 'dark', id }) {
 }
 
 // ── Kids Academy Banner ───────────────────────────────────────────────────────
-const KIDS_SPORTS = [
-  { slug: 'badminton', fallbackBg: 'linear-gradient(135deg,#14532d,#166534)' },
-  { slug: 'cricket',   fallbackBg: 'linear-gradient(135deg,#1e3a5f,#1d4ed8)' },
+const FALLBACK_GRADIENTS = [
+  'linear-gradient(135deg,#14532d,#166534)',
+  'linear-gradient(135deg,#1e3a5f,#1d4ed8)',
+  'linear-gradient(135deg,#4a1942,#7e22ce)',
+  'linear-gradient(135deg,#7c2d12,#c2410c)',
+  'linear-gradient(135deg,#164e63,#0891b2)',
 ];
 
 const FEATURE_CHIPS = [
@@ -52,7 +55,7 @@ const FEATURE_CHIPS = [
 ];
 
 function KidsSportCard({ sport, fallbackBg }) {
-  const img = sport?.imageUrl || sport?.heroImage || sport?.image || sport?.thumbnail;
+  const img = sport?.heroImage || sport?.thumbnail;
   const name = sport?.name || '';
 
   return (
@@ -77,19 +80,20 @@ function KidsSportCard({ sport, fallbackBg }) {
 }
 
 function KidsAcademyBanner() {
-  const { data: sportsData } = useQuery({
-    queryKey: ['public-sports'],
-    queryFn: () => api.get('/sports/public').then((r) => r.data),
+  const { data: kidsData } = useQuery({
+    queryKey: ['kids-academy-public'],
+    queryFn: () => api.get('/sports/kids-academy/public').then((r) => r.data),
     staleTime: 5 * 60 * 1000,
   });
 
-  const kidsSports = useMemo(() => {
-    const all = sportsData?.sports || [];
-    return KIDS_SPORTS.map(({ slug, fallbackBg }) => ({
-      fallbackBg,
-      sport: all.find((s) => s.name?.toLowerCase().includes(slug)) ?? { name: slug, _id: slug },
-    }));
-  }, [sportsData]);
+  const kidsSports = kidsData?.sports || [];
+
+  const sportNames = kidsSports.map((s) => s.name);
+  const descSports = sportNames.length > 0
+    ? sportNames.join(' & ') + ' coaching with a dedicated coach — built for kids and beginners.'
+    : 'Multi-sport coaching with a dedicated coach — built for kids and beginners.';
+
+  if (kidsSports.length === 0) return null;
 
   return (
     <section
@@ -108,8 +112,12 @@ function KidsAcademyBanner() {
 
           {/* Cards — 2-col grid on mobile, side by side on desktop */}
           <div className="grid grid-cols-2 gap-3 w-full lg:flex lg:w-auto lg:gap-4 shrink-0">
-            {kidsSports.map(({ sport, fallbackBg }) => (
-              <KidsSportCard key={sport._id || sport.name} sport={sport} fallbackBg={fallbackBg} />
+            {kidsSports.map((sport, i) => (
+              <KidsSportCard
+                key={sport._id || sport.slug}
+                sport={sport}
+                fallbackBg={FALLBACK_GRADIENTS[i % FALLBACK_GRADIENTS.length]}
+              />
             ))}
           </div>
 
@@ -134,10 +142,10 @@ function KidsAcademyBanner() {
             </h2>
 
             <p className="text-white/50 text-sm sm:text-base max-w-lg mx-auto lg:mx-0 leading-relaxed mb-5">
-              Badminton &amp; Cricket coaching with a dedicated coach — built for kids and beginners.
+              {descSports}
             </p>
 
-            {/* Chips — all 3 on one row */}
+            {/* Chips */}
             <div className="flex flex-row gap-2 justify-center lg:justify-start mb-6 flex-wrap">
               {FEATURE_CHIPS.map(({ Icon, label }) => (
                 <span
