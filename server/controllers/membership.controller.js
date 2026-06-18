@@ -515,7 +515,7 @@ exports.publicVerifyPayment = async (req, res) => {
     try {
       rzpDetails = await fetchPaymentDetails(razorpayPaymentId);
     } catch (rzpErr) {
-      console.error('[Membership] Razorpay fetchPaymentDetails failed:', rzpErr.message);
+      console.error('[Membership] Razorpay fetchPaymentDetails failed:', rzpErr.message, rzpErr.error || '');
       return res.status(502).json({ success: false, message: 'Payment verification unavailable. Please retry in a moment.' });
     }
     if (rzpDetails.status !== 'captured' && rzpDetails.status !== 'authorized') {

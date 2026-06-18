@@ -212,6 +212,7 @@ export default function MembershipPortal({ embedded = false }) {
         handler: async (response) => {
           try {
             const { data: verifyRes } = await api.post('/memberships/public-verify', {
+              paymentId: orderRes.paymentId,
               planId: selectedPlanId,
               razorpayOrderId: response.razorpay_order_id,
               razorpayPaymentId: response.razorpay_payment_id,

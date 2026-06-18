@@ -45,16 +45,36 @@ exports.createRazorpayOrder = async (options) => {
   });
 };
 
-// Fetch Razorpay payment details
-exports.fetchPaymentDetails = async (paymentId) => {
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const fetchPaymentDetailsOnce = (paymentId) => {
   return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error('Razorpay payment fetch timed out')), 4000);
-    razorpayInstance.payments.fetch(paymentId, (err, payment) => {
+    const timer = setTimeout(() => reject(new Error('Razorpay payment fetch timed out after 15s')), 15000);
+    razorpayInstance.payments.fetch(paymentId, {}, (err, payment) => {
       clearTimeout(timer);
       if (err) reject(err);
       else resolve(payment);
     });
   });
+};
+
+// Fetch Razorpay payment details. Razorpay can be briefly eventually-consistent
+// immediately after checkout returns, so retry transient fetch failures.
+exports.fetchPaymentDetails = async (paymentId, options = {}) => {
+  const retries = options.retries ?? 2;
+  const delayMs = options.delayMs ?? 900;
+  let lastError;
+
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try {
+      return await fetchPaymentDetailsOnce(paymentId);
+    } catch (error) {
+      lastError = error;
+      if (attempt < retries) await sleep(delayMs);
+    }
+  }
+
+  throw lastError;
 };
 
 // Create refund

@@ -31,12 +31,18 @@ export default function MembershipPlanCard({ plan, index = 0 }) {
   });
 
   const activeMemberships = membershipData?.memberships || [];
-  const isInUse = activeMemberships.some(
+  const matchingMembership = activeMemberships.find(
     m => (m.planId?._id === plan._id || m.planId === plan._id) && ['active', 'pending', 'frozen'].includes(m.status)
   );
+  const isInUse = !!matchingMembership;
+
+  const daysLeft = matchingMembership?.endDate
+    ? Math.ceil((new Date(matchingMembership.endDate) - new Date()) / (1000 * 60 * 60 * 24))
+    : null;
+  const canRenew = isInUse && daysLeft !== null && daysLeft <= 7;
 
   const handleBuy = () => {
-    if (isInUse) return;
+    if (isInUse && !canRenew) return;
     setIsModalOpen(true);
   };
 
@@ -112,23 +118,36 @@ export default function MembershipPlanCard({ plan, index = 0 }) {
       )}
 
       {/* CTA */}
+      {isInUse && !canRenew && daysLeft !== null && (
+        <p className="text-center text-[11px] font-semibold" style={{ color: isPopular ? '#C8102E' : '#F5A623' }}>
+          {daysLeft} day{daysLeft !== 1 ? 's' : ''} remaining
+        </p>
+      )}
+      {canRenew && (
+        <p className="text-center text-[11px] font-semibold text-amber-400">
+          Expires in {daysLeft} day{daysLeft !== 1 ? 's' : ''} — renew now
+        </p>
+      )}
+
       <button
         onClick={handleBuy}
-        disabled={isInUse}
+        disabled={isInUse && !canRenew}
         className="w-full mt-auto py-2.5 rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-200 hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
         style={{
-          background: isInUse 
+          background: isInUse && !canRenew
             ? 'rgba(255,255,255,0.1)'
+            : canRenew
+            ? 'linear-gradient(90deg, #d97706, #b45309)'
             : isPopular
             ? 'linear-gradient(90deg, #df1526, #C8102E)'
             : 'rgba(255,255,255,0.06)',
-          color: isInUse
+          color: isInUse && !canRenew
             ? 'rgba(255,255,255,0.4)'
-            : isPopular ? '#fff' : 'rgba(255,255,255,0.8)',
-          border: isPopular || isInUse ? 'none' : '1px solid rgba(255,255,255,0.1)',
+            : '#fff',
+          border: (isPopular || isInUse) ? 'none' : '1px solid rgba(255,255,255,0.1)',
         }}
       >
-        {isInUse ? 'Currently Active' : `Buy ${meta.short} Plan`}
+        {isInUse && !canRenew ? 'Currently Active' : canRenew ? `Renew ${meta.short} Plan` : `Buy ${meta.short} Plan`}
       </button>
 
       <MembershipBookingModal

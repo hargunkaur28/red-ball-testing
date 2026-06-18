@@ -25,6 +25,7 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [pendingVerify, setPendingVerify] = useState(null); // saved if 502, allows retry
 
   const trainingAvailable = plan?.trainingAvailable && plan?.trainingPrice > 0;
   const basePrice = plan?.price || 0;
@@ -146,20 +147,21 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
         },
         handler: async (response) => {
           setSubmitting(true);
+          const verifyPayload = {
+            paymentId: orderRes.paymentId,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpaySignature: response.razorpay_signature,
+            customerDetails: details,
+          };
           try {
-            const { data: verifyRes } = await api.post('/memberships/public-verify', {
-              paymentId: orderRes.paymentId,
-              razorpayOrderId: response.razorpay_order_id,
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpaySignature: response.razorpay_signature,
-              customerDetails: details,
-              // withTraining intentionally omitted — server uses the snapshot from the pending payment
-            });
+            const { data: verifyRes } = await api.post('/memberships/public-verify', verifyPayload);
 
             if (verifyRes.success) {
+              setPendingVerify(null);
               if (verifyRes.token) {
                 localStorage.setItem('token', verifyRes.token);
-                await checkAuth(); // Re-sync auth state
+                await checkAuth();
               }
               setSuccess(true);
               toast.success('Membership confirmed! Redirecting to dashboard...');
@@ -170,7 +172,13 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
               toast.error(verifyRes.message || 'Verification failed.');
             }
           } catch (err) {
-            toast.error(err.response?.data?.message || 'Verification failed. Contact reception.');
+            const status = err.response?.status;
+            if (status === 502 || status === 503 || status === 504) {
+              setPendingVerify(verifyPayload);
+              toast.error('Payment went through but verification timed out. Use the Retry button below.');
+            } else {
+              toast.error(err.response?.data?.message || 'Verification failed. Contact reception.');
+            }
           } finally {
             setSubmitting(false);
           }
@@ -405,10 +413,48 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
                       </div>
                     )}
 
+                    {/* Retry verification button — shown only after a 502/timeout */}
+                    {pendingVerify && (
+                      <button
+                        onClick={async () => {
+                          setSubmitting(true);
+                          try {
+                            const { data: verifyRes } = await api.post('/memberships/public-verify', pendingVerify);
+                            if (verifyRes.success) {
+                              setPendingVerify(null);
+                              if (verifyRes.token) {
+                                localStorage.setItem('token', verifyRes.token);
+                                await checkAuth();
+                              }
+                              setSuccess(true);
+                              toast.success('Membership confirmed! Redirecting to dashboard...');
+                              setTimeout(() => navigate('/user'), 2800);
+                            } else {
+                              toast.error(verifyRes.message || 'Verification failed.');
+                            }
+                          } catch (err) {
+                            const status = err.response?.status;
+                            if (status === 502 || status === 503 || status === 504) {
+                              toast.error('Server still unreachable. Wait a moment and try again.');
+                            } else {
+                              toast.error(err.response?.data?.message || 'Verification failed. Contact reception.');
+                            }
+                          } finally {
+                            setSubmitting(false);
+                          }
+                        }}
+                        disabled={submitting}
+                        className="w-full py-3 rounded-2xl font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                        style={{ background: 'linear-gradient(135deg, #d97706, #b45309)', color: '#fff' }}
+                      >
+                        {submitting ? <Loader2 size={18} className="animate-spin" /> : '⟳ Retry Verification'}
+                      </button>
+                    )}
+
                     {/* Pay button */}
                     <button
                       onClick={handlePurchase}
-                      disabled={submitting || !plan?._id}
+                      disabled={submitting || !plan?._id || !!pendingVerify}
                       className="w-full py-4 rounded-2xl font-black text-sm uppercase tracking-wider flex flex-col items-center justify-center gap-1 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                       style={{
                         background: `linear-gradient(135deg, #df1526, #C8102E)`,
