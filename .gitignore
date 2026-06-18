@@ -10,4 +10,9 @@ server/importCollections.js
 server/dropImportedCollections.js
 server/fixSports.js
 server/debugSports.js
+server/deleteAdmins.js
 server/exports/
+
+# Test scripts
+server/scripts/testEmail.js
+server/scripts/testSMS.js

@@ -5,7 +5,7 @@
 // Future improvement: add Vite SSR/prerendering for SEO routes if needed.
 import { Helmet } from 'react-helmet-async';
 
-const SITE_URL = 'https://redballsportsarena.in';
+const SITE_URL = 'https://www.redballsportsarena.in';
 const SITE_NAME = 'Red Ball Sports Arena';
 const DEFAULT_IMAGE = `${SITE_URL}/banner.png`;
 

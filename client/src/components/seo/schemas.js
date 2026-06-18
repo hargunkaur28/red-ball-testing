@@ -1,4 +1,4 @@
-export const SITE_URL = 'https://redballsportsarena.in';
+export const SITE_URL = 'https://www.redballsportsarena.in';
 
 export const localBusinessSchema = {
   '@context': 'https://schema.org',
