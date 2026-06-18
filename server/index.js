@@ -180,6 +180,8 @@ app.use(helmet({
   hsts: isProd ? { maxAge: 31536000, includeSubDomains: true } : false,
 }));
 
+app.set('trust proxy', 1);
+
 app.use(cors({
   origin: allowedOrigins,
   credentials: true,
