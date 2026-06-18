@@ -8,7 +8,7 @@ const invoiceHtml = buildInvoiceHTML({
   date: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
   studentName: 'Test User',
   studentPhone: '+91 9999999999',
-  studentEmail: process.env.BREVO_SENDER_EMAIL,
+  studentEmail: process.env.EMAIL_USER,
   items: [{ description: 'Gym — Quarterly', quantity: 1, rate: 6000, amount: 6000 }],
   subtotal: 6000,
   gstPercent: 0,
@@ -20,9 +20,9 @@ const invoiceHtml = buildInvoiceHTML({
 });
 
 async function run() {
-  console.log('Sending welcome email to', process.env.BREVO_SENDER_EMAIL, '...');
+  console.log('Sending welcome email to', process.env.EMAIL_USER, '...');
   await sendMembershipWelcomeEmail({
-    toEmail: process.env.BREVO_SENDER_EMAIL,
+    toEmail: process.env.EMAIL_USER,
     toName: 'Test User',
     planName: 'Gym — Quarterly',
     startDate: '24 May 2026',
