@@ -1,38 +1,15 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "https://red-ball.onrender.com/api/:path*"
+      "src": "/api/(.*)",
+      "dest": "https://red-ball.onrender.com/api/$1"
     },
     {
-      "source": "/((?!.*\\.).*)",
-      "destination": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/robots.txt",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
+      "handle": "filesystem"
     },
     {
-      "source": "/sitemap.xml",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
-    },
-    {
-      "source": "/llms.txt",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
-    },
-    {
-      "source": "/site.webmanifest",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
-    },
-    {
-      "source": "/banner.jpg",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }]
-    },
-    {
-      "source": "/icon.png",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }]
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
