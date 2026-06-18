@@ -262,12 +262,11 @@ exports.validateCheckIn = async (userId, sportName) => {
   const activeSessions = await Attendance.find({ userId, checkOutTime: null, sessionStatus: 'Active' });
 
   // 4. Duplicate-sport check — user already has an open session for this sport
-  // Bypass this check if the user has an all-services membership
   const hasDuplicate = activeSessions.some(
     (s) => (s.sport || '').trim().toLowerCase() === resolvedSportSlug || (s.sport || '').trim().toLowerCase() === sportObj.name.toLowerCase(),
   );
 
-  if (hasDuplicate && !entitlement.isAllServices) {
+  if (hasDuplicate) {
     return {
       allowed: false,
       reason: `You already have an active session for ${sportObj.name}. Please check out first.`,
@@ -287,9 +286,9 @@ exports.validateCheckIn = async (userId, sportName) => {
     };
   }
 
-  // 6. Daily Limit Check (Only 1 check-in per day per sport for non-all-services)
-  // Bypass for one-time-play checkins
-  if (entitlementSource !== 'one-time-play' && !entitlement.isAllServices) {
+  // 6. Daily Limit Check (Only 1 check-in per day per sport)
+  // Bypass for one-time-play checkins only
+  if (entitlementSource !== 'one-time-play') {
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
     const todayEnd = new Date();

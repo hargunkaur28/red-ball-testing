@@ -21,6 +21,15 @@ router.put('/discounts/:id', auth, authorize('superadmin'), sportController.upda
 router.delete('/discounts/:id', auth, authorize('superadmin'), sportController.deleteDiscount);
 
 // ==========================================
+// HERO CARD ROUTES (must be before /:id)
+// ==========================================
+router.get('/hero-cards/public', sportController.getPublicHeroCards);
+router.get('/hero-cards', auth, authorize('superadmin'), sportController.getHeroCards);
+router.post('/hero-cards', auth, authorize('superadmin'), sportController.createHeroCard);
+router.put('/hero-cards/:cardId', auth, authorize('superadmin'), sportController.updateHeroCard);
+router.delete('/hero-cards/:cardId', auth, authorize('superadmin'), sportController.deleteHeroCard);
+
+// ==========================================
 // SUPERADMIN SPORT MANAGEMENT ROUTES
 // ==========================================
 router.get('/public', sportController.getPublicSports);

@@ -59,14 +59,19 @@ exports.deletePlan = async (req, res) => {
 // GET /api/memberships/:studentId
 exports.getStudentMembership = async (req, res) => {
   try {
+    // Only superadmin may view another user's membership
+    if (req.user.role !== 'superadmin' && req.params.studentId !== req.user.userId.toString()) {
+      return res.status(403).json({ message: 'Access denied.' });
+    }
+
     const memberships = await Membership.find({ studentId: req.params.studentId })
       .populate('planId')
       .populate('paymentId')
       .sort({ createdAt: -1 });
-    
-    res.json({ 
+
+    res.json({
       membership: memberships[0] || null, // For backward compatibility
-      memberships: memberships 
+      memberships: memberships
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error.' });
@@ -505,20 +510,22 @@ exports.publicVerifyPayment = async (req, res) => {
     const isValid = verifyPaymentSignature(razorpayOrderId, razorpayPaymentId, razorpaySignature);
     if (!isValid) return res.status(400).json({ success: false, message: 'Invalid payment signature.' });
 
-    // Fetch Razorpay payment and verify captured amount against snapshot
+    // Fetch Razorpay payment and verify captured amount against snapshot — required, no fallback allowed
+    let rzpDetails;
     try {
-      const rzpDetails = await fetchPaymentDetails(razorpayPaymentId);
-      if (rzpDetails.status !== 'captured' && rzpDetails.status !== 'authorized') {
-        return res.status(400).json({ success: false, message: 'Payment not completed by Razorpay.' });
-      }
-      if (rzpDetails.amount !== Math.round(pendingPayment.totalAmount * 100)) {
-        return res.status(400).json({
-          success: false,
-          message: `Amount mismatch: expected ₹${pendingPayment.totalAmount}, got ₹${rzpDetails.amount / 100}.`,
-        });
-      }
+      rzpDetails = await fetchPaymentDetails(razorpayPaymentId);
     } catch (rzpErr) {
-      console.error('Razorpay fetch error (signature-only fallback):', rzpErr.message);
+      console.error('[Membership] Razorpay fetchPaymentDetails failed:', rzpErr.message);
+      return res.status(502).json({ success: false, message: 'Payment verification unavailable. Please retry in a moment.' });
+    }
+    if (rzpDetails.status !== 'captured' && rzpDetails.status !== 'authorized') {
+      return res.status(400).json({ success: false, message: 'Payment not completed by Razorpay.' });
+    }
+    if (rzpDetails.amount !== Math.round(pendingPayment.totalAmount * 100)) {
+      return res.status(400).json({
+        success: false,
+        message: `Amount mismatch: expected ₹${pendingPayment.totalAmount}, got ₹${rzpDetails.amount / 100}.`,
+      });
     }
 
     // Load plan from payment snapshot (referenceId = planId) — never trust client planId

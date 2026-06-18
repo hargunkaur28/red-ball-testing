@@ -145,16 +145,19 @@ io.on('connection', (socket) => {
   });
 
   socket.on('order:accept', async ({ orderId }) => {
+    if (socket.data.role !== 'manager' && socket.data.role !== 'superadmin') return;
     io.to('restaurant-managers').emit('order:updated', { orderId, status: 'preparing' });
     io.to(`order-${orderId}`).emit('order:status', { orderId, status: 'preparing' });
   });
 
   socket.on('order:ready', async ({ orderId }) => {
+    if (socket.data.role !== 'manager' && socket.data.role !== 'superadmin') return;
     io.to('restaurant-managers').emit('order:updated', { orderId, status: 'ready' });
     io.to(`order-${orderId}`).emit('order:status', { orderId, status: 'ready' });
   });
 
   socket.on('order:delivered', async ({ orderId }) => {
+    if (socket.data.role !== 'manager' && socket.data.role !== 'superadmin') return;
     io.to('restaurant-managers').emit('order:updated', { orderId, status: 'delivered' });
     io.to(`order-${orderId}`).emit('order:status', { orderId, status: 'delivered' });
   });
@@ -249,6 +252,56 @@ app.use('/api/sports/entry-check', rateLimit({
   legacyHeaders: false,
   message: rateLimitMessage(60 * 1000),
 }));
+
+// Payment endpoints: 20 requests per 10 minutes
+app.use('/api/payments/create-order', rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: rateLimitMessage(10 * 60 * 1000),
+}));
+app.use('/api/payments/verify', rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: rateLimitMessage(10 * 60 * 1000),
+}));
+
+// Slot order creation + verification: 30 per 10 minutes
+const slotOrderLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: rateLimitMessage(10 * 60 * 1000),
+});
+app.use('/api/slots/public/slot-order', slotOrderLimiter);
+app.use('/api/slots/public/slot-verify', slotOrderLimiter);
+app.use('/api/slots/public-booking/order', slotOrderLimiter);
+app.use('/api/slots/public-booking', slotOrderLimiter);
+
+// Coupon validation: 60 per 10 minutes (UI calls on every keypress, so be generous)
+app.use('/api/coupons/validate', rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: rateLimitMessage(10 * 60 * 1000),
+}));
+
+// Restaurant order creation: 20 per 10 minutes
+const restaurantOrderLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: rateLimitMessage(10 * 60 * 1000),
+});
+app.use('/api/orders/direct', restaurantOrderLimiter);
+app.use('/api/orders/table-order', restaurantOrderLimiter);
+app.use('/api/orders/create-razorpay-order', restaurantOrderLimiter);
 
 // Static Files
 app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));

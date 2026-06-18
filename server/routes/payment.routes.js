@@ -5,7 +5,7 @@ const authorize = require('../middleware/role.middleware');
 const pc = require('../controllers/payment.controller');
 
 router.get('/', auth, authorize('superadmin'), pc.getAll);
-router.post('/create-order', pc.createOrder);
+router.post('/create-order', auth, authorize('superadmin'), pc.createOrder);
 router.post('/verify', pc.verifyPayment);
 router.post('/manual', auth, authorize('superadmin'), pc.manualPayment);
 router.post('/webhook/razorpay', pc.webhookHandler);
@@ -13,6 +13,6 @@ router.post('/:id/mark-paid', auth, authorize('superadmin'), pc.markPaid);
 router.post('/:id/retry', auth, pc.retryPayment);
 router.put('/:id/refund', auth, authorize('superadmin'), pc.refundPayment);
 router.get('/:id/invoice', auth, pc.getInvoice);
-router.get('/:id/invoice/print', pc.printInvoice);
+router.get('/:id/invoice/print', auth, pc.printInvoice);
 
 module.exports = router;

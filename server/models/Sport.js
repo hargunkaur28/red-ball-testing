@@ -86,6 +86,14 @@ const sportSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
+  heroHref: {
+    type: String,
+    default: '',
+  },
+  heroActive: {
+    type: Boolean,
+    default: true,
+  },
 
   // Day/night slot pricing
   slotPricingMode: {

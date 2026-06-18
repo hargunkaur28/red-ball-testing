@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronDown, ArrowRight, ScanLine, Dumbbell, Trophy, Feather, Target, Layers, LogIn } from 'lucide-react';
+import { ChevronDown, ArrowRight, ScanLine, Dumbbell, Trophy, Feather, Target, Layers, LogIn, GraduationCap } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/axios';
 import useAuthStore from '../../store/authStore';
@@ -114,6 +114,21 @@ export default function HeroSection() {
     queryFn: () => api.get('/sports/public').then((r) => r.data),
   });
   const sports = sportsData?.sports || [];
+
+  // Fetch custom hero cards added via admin
+  const { data: heroCardsData } = useQuery({
+    queryKey: ['hero-cards-public'],
+    queryFn: () => api.get('/sports/hero-cards/public').then((r) => r.data),
+  });
+  const customHeroCards = heroCardsData?.heroCards || [];
+
+  // Fetch kids academy sports
+  const { data: kidsData } = useQuery({
+    queryKey: ['kids-academy-public'],
+    queryFn: () => api.get('/sports/kids-academy/public').then((r) => r.data),
+  });
+  const kidsSports = kidsData?.sports || [];
+  const kidsTagline = kidsSports.map((s) => s.name).join(' • ') || 'Multi-Sport';
 
   const sportsBySlug = useMemo(() => {
     const map = {};
@@ -310,7 +325,14 @@ export default function HeroSection() {
             className="w-full md:max-w-[450px] mt-4 md:mt-0 md:max-h-none md:overflow-visible overflow-y-auto max-h-[65vh] pr-2 scrollbar-none"
           >
             <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full">
-              {landingItems.map((item, idx) => (
+              {landingItems.map((item, idx) => {
+                const sport = item.slug ? sportsBySlug[item.slug] : null;
+                // Skip cards hidden by admin (sport exists + explicitly set to false)
+                if (sport && sport.heroActive === false) return null;
+                // Use DB values if set, fall back to hardcoded defaults
+                const displayTagline = (!item.fullWidth && sport?.tagline) ? sport.tagline : item.tagline;
+                const displayHref = (!item.fullWidth && sport?.heroHref) ? sport.heroHref : item.href;
+                return (
                 <motion.div
                   key={item.name}
                   initial={{ opacity: 0, y: 16 }}
@@ -319,7 +341,7 @@ export default function HeroSection() {
                   className={item.fullWidth ? 'col-span-2' : ''}
                 >
                   <Link
-                    to={item.href}
+                    to={displayHref}
                     className={`relative overflow-hidden p-3 sm:p-4 flex items-center hover:scale-[1.04] transition-all duration-300 shadow-2xl group cursor-pointer ${
                       item.fullWidth
                         ? 'rounded-[20px] flex-row justify-between h-[76px] sm:h-[95px] bg-cover bg-center bg-no-repeat'
@@ -337,7 +359,7 @@ export default function HeroSection() {
                             </div>
                             <div>
                               <h3 className="text-white font-extrabold text-[15px] sm:text-base leading-tight group-hover:text-[#F5A623] transition-colors">{item.name}</h3>
-                              <p className="text-[#F5A623] text-[10px] sm:text-[11px] uppercase tracking-widest font-extrabold mt-0.5">{item.tagline}</p>
+                              <p className="text-[#F5A623] text-[10px] sm:text-[11px] uppercase tracking-widest font-extrabold mt-0.5">{displayTagline}</p>
                             </div>
                           </div>
                           <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-[#df1526] hover:bg-[#8B0B1E] text-white text-[10px] sm:text-xs font-black uppercase tracking-wider rounded-full transition-colors flex items-center gap-1 shrink-0 shadow-lg">
@@ -348,16 +370,66 @@ export default function HeroSection() {
                     ) : (
                       <>
                         <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] sm:rounded-2xl border border-white/10 bg-black/40 flex items-center justify-center shrink-0 overflow-hidden">
-                          {sportsBySlug[item.slug]?.heroIcon ? (
-                            <img src={sportsBySlug[item.slug].heroIcon} alt={item.name} className="w-full h-full object-cover" />
+                          {sport?.heroIcon ? (
+                            <img src={sport.heroIcon} alt={item.name} className="w-full h-full object-cover" />
                           ) : item.icon}
                         </div>
                         <div className="text-left">
                           <h3 className="text-white font-extrabold text-[13px] sm:text-[15px] leading-tight group-hover:text-[#F5A623] transition-colors">{item.name}</h3>
-                          <p className="text-white/45 text-[8.5px] sm:text-[9px] uppercase tracking-wider font-semibold mt-0.5">{item.tagline}</p>
+                          <p className="text-white/45 text-[8.5px] sm:text-[9px] uppercase tracking-wider font-semibold mt-0.5">{displayTagline}</p>
                         </div>
                       </>
                     )}
+                  </Link>
+                </motion.div>
+                );
+              })}
+
+              {/* Kids Academy card — only shown when at least one sport has kids academy enabled */}
+              {kidsSports.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.7 + landingItems.length * 0.08 }}
+                >
+                  <Link
+                    to="/kids-sports-academy-rohtak"
+                    className="relative overflow-hidden p-3 sm:p-4 flex items-center hover:scale-[1.04] transition-all duration-300 shadow-2xl group cursor-pointer rounded-2xl flex-row gap-2.5 sm:gap-3.5 h-[68px] sm:h-[84px] bg-black/30 backdrop-blur-md hover:bg-black/50 border border-white/10 hover:border-white/20 hover:shadow-[0_10px_25px_rgba(200,16,46,0.25)]"
+                  >
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] sm:rounded-2xl border border-white/10 bg-black/40 flex items-center justify-center shrink-0">
+                      <GraduationCap size={22} className="text-[#F5A623]" />
+                    </div>
+                    <div className="text-left min-w-0">
+                      <h3 className="text-white font-extrabold text-[13px] sm:text-[15px] leading-tight group-hover:text-[#F5A623] transition-colors">Kids Academy</h3>
+                      <p className="text-white/45 text-[8.5px] sm:text-[9px] uppercase tracking-wider font-semibold mt-0.5 truncate">{kidsTagline}</p>
+                    </div>
+                  </Link>
+                </motion.div>
+              )}
+
+              {/* Custom hero cards added via admin */}
+              {customHeroCards.map((card, idx) => (
+                <motion.div
+                  key={card._id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.7 + (landingItems.length + idx) * 0.08 }}
+                >
+                  <Link
+                    to={card.href}
+                    className="relative overflow-hidden p-3 sm:p-4 flex items-center hover:scale-[1.04] transition-all duration-300 shadow-2xl group cursor-pointer rounded-2xl flex-row gap-2.5 sm:gap-3.5 h-[68px] sm:h-[84px] bg-black/30 backdrop-blur-md hover:bg-black/50 border border-white/10 hover:border-white/20 hover:shadow-[0_10px_25px_rgba(200,16,46,0.25)]"
+                  >
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] sm:rounded-2xl border border-white/10 bg-black/40 flex items-center justify-center shrink-0 overflow-hidden">
+                      {card.iconUrl ? (
+                        <img src={card.iconUrl} alt={card.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <Trophy size={22} style={{ color: card.color || '#C8102E' }} />
+                      )}
+                    </div>
+                    <div className="text-left">
+                      <h3 className="text-white font-extrabold text-[13px] sm:text-[15px] leading-tight group-hover:text-[#F5A623] transition-colors">{card.name}</h3>
+                      <p className="text-white/45 text-[8.5px] sm:text-[9px] uppercase tracking-wider font-semibold mt-0.5">{card.tagline}</p>
+                    </div>
                   </Link>
                 </motion.div>
               ))}

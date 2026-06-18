@@ -45,7 +45,7 @@ export default function UserDashboard() {
     queryKey: ['attendance', 'active-session', user?.id],
     queryFn: () => api.get('/attendance/active-sessions').then(r => r.data),
     enabled: !!user?.id,
-    refetchInterval: 15000,
+    refetchInterval: 5000,
   });
 
   const { data: passesData, isLoading: passesLoading } = useQuery({

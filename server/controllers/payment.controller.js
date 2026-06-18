@@ -146,27 +146,58 @@ exports.verifyPayment = async (req, res) => {
   try {
     const { razorpayOrderId, razorpayPaymentId, razorpaySignature } = req.body;
 
-    // Verify signature
+    if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
+      return res.status(400).json({ message: 'razorpayOrderId, razorpayPaymentId, and razorpaySignature are required.' });
+    }
+
+    // Find payment record by Razorpay order ID
+    const payment = await Payment.findOne({ razorpayOrderId });
+    if (!payment) return res.status(404).json({ message: 'Payment not found.' });
+
+    // Idempotency: already fully paid with the same Razorpay payment
+    if (payment.status === 'paid') {
+      if (payment.razorpayPaymentId === razorpayPaymentId) {
+        return res.json({ payment, message: 'Payment already processed.' });
+      }
+      return res.status(400).json({ message: 'This order was already paid with a different payment ID.' });
+    }
+
+    if (payment.status !== 'pending') {
+      return res.status(400).json({ message: `Payment is in an unexpected state: ${payment.status}.` });
+    }
+
+    // Reject reuse of this order with a different Razorpay payment ID
+    if (payment.razorpayPaymentId && payment.razorpayPaymentId !== razorpayPaymentId) {
+      return res.status(400).json({ message: 'This order was already used with a different Razorpay payment.' });
+    }
+
+    // Verify HMAC signature
     const isValid = verifyPaymentSignature(razorpayOrderId, razorpayPaymentId, razorpaySignature);
     if (!isValid) {
       return res.status(400).json({ message: 'Invalid payment signature.' });
     }
 
-    // Find payment record
-    const payment = await Payment.findOne({ razorpayOrderId });
-    if (!payment) return res.status(404).json({ message: 'Payment not found.' });
-
-    // Fetch payment details from Razorpay to verify amount and status (best-effort)
+    // Fetch Razorpay payment details — required, no fallback allowed
+    let paymentDetails;
     try {
-      const paymentDetails = await fetchPaymentDetails(razorpayPaymentId);
-      if (paymentDetails.status !== 'captured' && paymentDetails.status !== 'authorized') {
-        return res.status(400).json({ message: 'Payment not completed by Razorpay.' });
-      }
+      paymentDetails = await fetchPaymentDetails(razorpayPaymentId);
     } catch (fetchErr) {
-      console.warn('Razorpay payment fetch failed (proceeding after signature verification):', fetchErr.message);
+      console.error('Razorpay fetchPaymentDetails failed:', fetchErr.message);
+      return res.status(502).json({ message: 'Payment verification unavailable. Please retry in a moment.' });
     }
 
-    // Update payment record
+    if (paymentDetails.status !== 'captured' && paymentDetails.status !== 'authorized') {
+      return res.status(400).json({ message: `Payment not completed by Razorpay (status: ${paymentDetails.status}).` });
+    }
+
+    // Amount must exactly match the snapshot stored when the order was created
+    if (paymentDetails.amount !== Math.round(payment.totalAmount * 100)) {
+      return res.status(400).json({
+        message: `Payment amount mismatch: expected ₹${payment.totalAmount}, Razorpay received ₹${paymentDetails.amount / 100}.`,
+      });
+    }
+
+    // All checks passed — mark paid
     payment.razorpayPaymentId = razorpayPaymentId;
     payment.razorpaySignature = razorpaySignature;
     payment.amountPaid = payment.totalAmount;
@@ -174,10 +205,8 @@ exports.verifyPayment = async (req, res) => {
     payment.status = 'paid';
     await payment.save();
 
-    // CRITICAL: Activate related records after successful payment
     await activateOnPaymentSuccess(payment, req);
 
-    // Emit socket event for real-time updates
     const io = req.app.get('io');
     if (io) {
       io.emit('payment:success', {
@@ -342,22 +371,40 @@ exports.refundPayment = async (req, res) => {
   }
 };
 
+/** Returns true when the authenticated user is allowed to view this payment. */
+function canAccessInvoice(payment, user) {
+  if (!user) return false;
+  if (user.role === 'superadmin') return true;
+  // Managers may access restaurant invoices only
+  if (user.role === 'manager' && payment.type === 'restaurant') return true;
+  // Users may access their own invoices
+  const ownerId = payment.studentId?._id ?? payment.studentId;
+  if (ownerId && ownerId.toString() === user.userId.toString()) return true;
+  return false;
+}
+
 // GET /api/payments/:id/invoice (JSON data)
 exports.getInvoice = async (req, res) => {
   try {
     const payment = await Payment.findById(req.params.id).populate('studentId', 'name email phone');
     if (!payment) return res.status(404).json({ message: 'Payment not found.' });
+    if (!canAccessInvoice(payment, req.user)) {
+      return res.status(403).json({ message: 'Access denied.' });
+    }
     res.json({ payment });
   } catch (error) {
     res.status(500).json({ message: 'Server error.' });
   }
 };
 
-// GET /api/payments/:id/invoice/print (HTML)
+// GET /api/payments/:id/invoice/print (HTML) — requires auth (set on route)
 exports.printInvoice = async (req, res) => {
   try {
     const payment = await Payment.findById(req.params.id).populate('studentId', 'name email phone');
     if (!payment) return res.status(404).send('<h1>Invoice not found</h1>');
+    if (!canAccessInvoice(payment, req.user)) {
+      return res.status(403).send('<h1>Access denied</h1>');
+    }
 
     const { buildInvoiceHTML } = require('../utils/invoiceBuilder');
 
@@ -578,6 +625,14 @@ exports.retryPayment = async (req, res) => {
   try {
     const payment = await Payment.findById(req.params.id);
     if (!payment) return res.status(404).json({ message: 'Payment not found.' });
+
+    // Ownership: superadmin can retry any payment; users only their own
+    if (req.user.role !== 'superadmin') {
+      const ownerId = payment.studentId?._id ?? payment.studentId;
+      if (!ownerId || ownerId.toString() !== req.user.userId.toString()) {
+        return res.status(403).json({ message: 'Access denied.' });
+      }
+    }
 
     if (payment.status !== 'failed' && payment.status !== 'pending') {
       return res.status(400).json({ message: 'Cannot retry this payment.' });

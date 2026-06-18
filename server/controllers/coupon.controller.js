@@ -1,5 +1,6 @@
 const Coupon = require('../models/Coupon');
 const CouponUsage = require('../models/CouponUsage');
+const { validateCouponForCheckout } = require('../utils/couponValidator');
 
 // GET /api/coupons/admin — all coupons (including archived), sorted newest first
 exports.adminList = async (req, res) => {
@@ -135,97 +136,14 @@ exports.validate = async (req, res) => {
       return res.json({ valid: false, message: 'code, targetType, and orderAmount are required.' });
     }
 
-    const effectiveUserId = req.user?.userId;
+    // userId always comes from the verified JWT, never from the client body
+    const userId = req.user?.userId;
     const amount = Number(orderAmount);
 
-    // Find coupon
-    const coupon = await Coupon.findOne({ code: code.toUpperCase().trim() });
+    const result = await validateCouponForCheckout({ code, targetType, sportId, userId, amount });
+    if (!result.valid) return res.json({ valid: false, message: result.message });
 
-    if (!coupon) {
-      return res.json({ valid: false, message: 'Invalid coupon code.' });
-    }
-
-    // Not archived
-    if (coupon.archivedAt) {
-      return res.json({ valid: false, message: 'This coupon is no longer available.' });
-    }
-
-    // Active check
-    if (!coupon.isActive) {
-      return res.json({ valid: false, message: 'This coupon is currently inactive.' });
-    }
-
-    // Date range check
-    const now = new Date();
-    if (coupon.startsAt && now < coupon.startsAt) {
-      return res.json({ valid: false, message: 'This coupon is not yet valid.' });
-    }
-    if (coupon.endsAt && now > coupon.endsAt) {
-      return res.json({ valid: false, message: 'This coupon has expired.' });
-    }
-
-    // Target type check
-    if (coupon.targetType !== 'both' && coupon.targetType !== targetType) {
-      return res.json({ valid: false, message: `This coupon is not applicable for ${targetType} orders.` });
-    }
-
-    // Sport match check (for sports targetType)
-    if (targetType === 'sports' && sportId && !coupon.appliesToAllSports && coupon.sportIds.length > 0) {
-      const sportIdStr = sportId.toString();
-      const matchesSport = coupon.sportIds.some((sid) => sid.toString() === sportIdStr);
-      if (!matchesSport) {
-        return res.json({ valid: false, message: 'This coupon is not applicable for this sport.' });
-      }
-    }
-
-    // Min order amount check
-    if (coupon.minOrderAmount && amount < coupon.minOrderAmount) {
-      return res.json({ valid: false, message: `Minimum order amount of ₹${coupon.minOrderAmount} required for this coupon.` });
-    }
-
-    // Total usage limit check
-    if (coupon.usageLimitTotal != null && coupon.usedCount >= coupon.usageLimitTotal) {
-      return res.json({ valid: false, message: 'This coupon has reached its usage limit.' });
-    }
-
-    // User eligibility check
-    if (coupon.visibility === 'specific-users') {
-      if (!effectiveUserId) {
-        return res.json({ valid: false, message: 'Please log in to use this coupon.' });
-      }
-      const isEligible = coupon.eligibleUserIds.some(
-        (uid) => uid.toString() === effectiveUserId.toString()
-      );
-      if (!isEligible) {
-        return res.json({ valid: false, message: 'You are not eligible for this coupon.' });
-      }
-    }
-
-    // Per-user usage limit check
-    if (coupon.usageLimitPerUser != null && effectiveUserId) {
-      const userUsageCount = await CouponUsage.countDocuments({
-        couponId: coupon._id,
-        userId: effectiveUserId,
-      });
-      if (userUsageCount >= coupon.usageLimitPerUser) {
-        return res.json({ valid: false, message: 'You have already used this coupon the maximum number of times.' });
-      }
-    }
-
-    // Calculate discount
-    let discountAmount;
-    if (coupon.discountType === 'percentage') {
-      const percentDiscount = (coupon.discountValue / 100) * amount;
-      const cap = coupon.maxDiscountAmount != null ? coupon.maxDiscountAmount : Infinity;
-      discountAmount = Math.min(percentDiscount, cap);
-    } else {
-      // fixed
-      discountAmount = Math.min(coupon.discountValue, amount);
-    }
-
-    discountAmount = Math.max(0, Math.round(discountAmount * 100) / 100);
-    const finalAmount = Math.max(0, amount - discountAmount);
-
+    const { coupon, discountAmount, finalAmount } = result;
     return res.json({
       valid: true,
       couponId: coupon._id,

@@ -448,14 +448,13 @@ export default function Membership() {
                   <p className="mb-4 text-sm text-white/58">
                     {isExpired ? 'Your membership has expired.' : `Your membership expires in ${timeLeftDisplay}.`}
                   </p>
-                  <button
-                    onClick={() => renewMutation.mutate({ id: membership._id, paymentMode: 'cash' })}
-                    disabled={renewMutation.isPending}
-                    className="rounded-full bg-white px-7 py-3 text-sm font-black text-black transition hover:bg-[#df1526] hover:text-white disabled:opacity-60"
+                  <Link
+                    to={`/sports/${(plan?.sportsIncluded?.[0] || '').toLowerCase().replace(/\s+/g, '-')}`}
+                    className="inline-flex items-center rounded-full bg-white px-7 py-3 text-sm font-black text-black transition hover:bg-[#df1526] hover:text-white"
                   >
-                    <RefreshCw size={18} className="mr-2 inline" />
-                    {renewMutation.isPending ? 'Renewing...' : 'Renew Membership'}
-                  </button>
+                    <RefreshCw size={18} className="mr-2" />
+                    Renew Membership
+                  </Link>
                   <p className="mt-3 text-xs text-white/35">Visit reception for payment</p>
                 </Surface>
               )}

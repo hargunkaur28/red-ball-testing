@@ -109,7 +109,7 @@ exports.getEntitlementStatus = async (req, res) => {
 exports.getUserAttendance = async (req, res) => {
   try {
     const privileged = ['superadmin', 'manager'].includes(req.user?.role);
-    if (!privileged && req.user?.userId !== req.params.userId) {
+    if (!privileged && req.user?.userId.toString() !== req.params.userId) {
       return res.status(403).json({ message: 'Access denied.' });
     }
     const { startDate, endDate } = req.query;
@@ -144,10 +144,14 @@ exports.getUserAttendance = async (req, res) => {
   }
 };
 
-// POST /api/attendance/check-in — Check in a user (admin/receptionist manual check-in)
+// POST /api/attendance/check-in — Superadmin may check in any user; regular users check in themselves only
 exports.checkIn = async (req, res) => {
   try {
-    const { userId, method, sport, ground, notes } = req.body;
+    const { method, sport, ground, notes } = req.body;
+    // Superadmin may supply any userId; everyone else is locked to their own account
+    const userId = req.user.role === 'superadmin'
+      ? (req.body.userId || req.user.userId.toString())
+      : req.user.userId.toString();
 
     // ── Entitlement validation ──
     if (sport) {
@@ -263,10 +267,14 @@ exports.checkIn = async (req, res) => {
   }
 };
 
-// POST /api/attendance/check-out — Check out a user
+// POST /api/attendance/check-out — Superadmin may check out any user; regular users check out themselves only
 exports.checkOut = async (req, res) => {
   try {
-    const { userId, attendanceId } = req.body;
+    const { attendanceId } = req.body;
+    // Superadmin may supply any userId; everyone else is locked to their own account
+    const userId = req.user.role === 'superadmin'
+      ? (req.body.userId || req.user.userId.toString())
+      : req.user.userId.toString();
 
     // Support checking out a specific session by attendanceId
     let attendance;

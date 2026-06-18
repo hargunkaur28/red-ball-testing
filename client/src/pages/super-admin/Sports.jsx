@@ -625,13 +625,15 @@ function SportCard({ sport, onEdit, onToggle, onArchive, onViewQR, onConfig }) {
 // Hero Icons Editor
 // ===========================================================================
 const HERO_SLUGS = [
-  { slug: 'box-cricket', label: 'Box Cricket' },
-  { slug: 'badminton',   label: 'Badminton' },
-  { slug: 'pickleball',  label: 'Pickleball' },
-  { slug: 'swimming',    label: 'Swimming' },
-  { slug: 'all-services',label: 'All Services' },
-  { slug: 'gym',         label: 'Gym & Fitness' },
+  { slug: 'box-cricket',  label: 'Box Cricket',   defaultTagline: 'Play & Train',  defaultHref: '/sports/box-cricket' },
+  { slug: 'badminton',    label: 'Badminton',      defaultTagline: 'AC Courts',     defaultHref: '/sports/badminton' },
+  { slug: 'pickleball',   label: 'Pickleball',     defaultTagline: 'Cushioned',     defaultHref: '/sports/pickleball' },
+  { slug: 'swimming',     label: 'Swimming',       defaultTagline: 'Heated Pool',   defaultHref: '/sports/swimming' },
+  { slug: 'all-services', label: 'All Services',   defaultTagline: 'VIP Access',    defaultHref: '/sports/all-services' },
+  { slug: 'gym',          label: 'Gym & Fitness',  defaultTagline: 'AC Facility',   defaultHref: '/sports/gym' },
 ];
+
+const BLANK_CARD = { name: '', tagline: '', href: '', iconUrl: '', color: '#C8102E', order: 0 };
 
 function HeroIconsEditor() {
   const qc = useQueryClient();
@@ -644,8 +646,14 @@ function HeroIconsEditor() {
     },
   });
 
+  const { data: customCards = [], isLoading: cardsLoading } = useQuery({
+    queryKey: ['hero-cards'],
+    queryFn: () => api.get('/sports/hero-cards').then((r) => r.data.heroCards || []),
+  });
+
   const sportsBySlug = Object.fromEntries(sports.map((s) => [s.slug, s]));
 
+  // --- Sport icon mutations ---
   const updateMutation = useMutation({
     mutationFn: ({ id, heroIcon }) => api.put(`/sports/${id}`, { heroIcon }),
     onSuccess: () => {
@@ -669,7 +677,6 @@ function HeroIconsEditor() {
   const handleSave = async (slug) => {
     const sport = sportsBySlug[slug];
     if (!sport) return toast.error('Sport not found');
-
     const file = files[slug];
     if (file) {
       const fd = new FormData();
@@ -686,6 +693,118 @@ function HeroIconsEditor() {
 
   const getPreview = (slug) => previews[slug] || sportsBySlug[slug]?.heroIcon || '';
 
+  // --- Existing sport card edit state ---
+  const [editingSportSlug, setEditingSportSlug] = useState(null);
+  const [sportForm, setSportForm] = useState({ tagline: '', heroHref: '', heroActive: true });
+  const [hideConfirm, setHideConfirm] = useState(null); // slug to hide
+
+  const updateSportHeroMutation = useMutation({
+    mutationFn: ({ id, data }) => api.put(`/sports/${id}`, data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['sports'] });
+      toast.success('Card updated');
+      setEditingSportSlug(null);
+    },
+    onError: (err) => toast.error(err.response?.data?.message || 'Failed to update'),
+  });
+
+  const openSportEdit = (slug) => {
+    const s = sportsBySlug[slug];
+    const defaults = HERO_SLUGS.find((h) => h.slug === slug);
+    setSportForm({
+      tagline: s?.tagline || defaults?.defaultTagline || '',
+      heroHref: s?.heroHref || defaults?.defaultHref || '',
+      heroActive: s?.heroActive !== false,
+    });
+    setEditingSportSlug(slug);
+  };
+
+  const handleSportFormSave = async (slug) => {
+    const sport = sportsBySlug[slug];
+    if (!sport) return;
+    const file = files[slug];
+    const payload = { tagline: sportForm.tagline, heroHref: sportForm.heroHref, heroActive: sportForm.heroActive };
+    if (file) {
+      const fd = new FormData();
+      Object.entries(payload).forEach(([k, v]) => fd.append(k, v));
+      fd.append('heroIcon', urls[slug] || sport.heroIcon || '');
+      fd.append('imageFile', file);
+      await api.put(`/sports/${sport._id}`, fd);
+      qc.invalidateQueries({ queryKey: ['sports'] });
+      toast.success('Card updated');
+      setFiles((f) => { const n = { ...f }; delete n[slug]; return n; });
+      setEditingSportSlug(null);
+    } else {
+      if (urls[slug] !== undefined) payload.heroIcon = urls[slug];
+      updateSportHeroMutation.mutate({ id: sport._id, data: payload });
+    }
+  };
+
+  // --- Custom card state ---
+  const [showForm, setShowForm] = useState(false);
+  const [editingCard, setEditingCard] = useState(null); // null = creating new
+  const [cardForm, setCardForm] = useState(BLANK_CARD);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+
+  const createCardMutation = useMutation({
+    mutationFn: (data) => api.post('/sports/hero-cards', data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['hero-cards'] });
+      toast.success('Custom card created');
+      setShowForm(false);
+      setCardForm(BLANK_CARD);
+    },
+    onError: (err) => toast.error(err.response?.data?.message || 'Failed to create'),
+  });
+
+  const updateCardMutation = useMutation({
+    mutationFn: ({ id, data }) => api.put(`/sports/hero-cards/${id}`, data),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['hero-cards'] });
+      toast.success('Card updated');
+      setShowForm(false);
+      setEditingCard(null);
+      setCardForm(BLANK_CARD);
+    },
+    onError: (err) => toast.error(err.response?.data?.message || 'Failed to update'),
+  });
+
+  const deleteCardMutation = useMutation({
+    mutationFn: (id) => api.delete(`/sports/hero-cards/${id}`),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['hero-cards'] });
+      toast.success('Card deleted');
+      setDeleteConfirm(null);
+    },
+    onError: (err) => toast.error(err.response?.data?.message || 'Failed to delete'),
+  });
+
+  const openNew = () => {
+    setEditingCard(null);
+    setCardForm(BLANK_CARD);
+    setShowForm(true);
+  };
+
+  const openEdit = (card) => {
+    setEditingCard(card._id);
+    setCardForm({ name: card.name, tagline: card.tagline, href: card.href, iconUrl: card.iconUrl || '', color: card.color || '#C8102E', order: card.order ?? 0 });
+    setShowForm(true);
+  };
+
+  const handleCardSubmit = (e) => {
+    e.preventDefault();
+    if (!cardForm.name.trim() || !cardForm.tagline.trim() || !cardForm.href.trim()) {
+      return toast.error('Name, tagline, and link are required');
+    }
+    if (editingCard) {
+      updateCardMutation.mutate({ id: editingCard, data: cardForm });
+    } else {
+      createCardMutation.mutate(cardForm);
+    }
+  };
+
+  const isSaving = createCardMutation.isPending || updateCardMutation.isPending;
+
   if (isLoading) return (
     <div className="flex items-center gap-2 text-gray-400 py-12">
       <Loader2 size={18} className="animate-spin" /> Loading sports...
@@ -693,84 +812,372 @@ function HeroIconsEditor() {
   );
 
   return (
-    <div>
-      <p className="text-sm text-gray-500 mb-6">
-        These icons appear in the hero section grid on the public homepage. Upload an image or paste a URL for each sport. Leave blank to use the default SVG illustration.
-      </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {HERO_SLUGS.map(({ slug, label }) => {
-          const sport = sportsBySlug[slug];
-          const preview = getPreview(slug);
-          return (
-            <div key={slug} className="card p-4 flex flex-col gap-3">
-              {/* Preview */}
-              <div className="flex items-center gap-3">
-                <div className="w-14 h-14 rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-center overflow-hidden shrink-0">
-                  {preview ? (
-                    <img src={preview} alt={label} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
+    <div className="space-y-10">
+      {/* ---- Sport icon overrides ---- */}
+      <div>
+        <p className="text-sm text-gray-500 mb-6">
+          Edit tagline, link, and icon for each sport card. Use Hide to remove a card from the homepage hero grid.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {HERO_SLUGS.map(({ slug, label, defaultTagline, defaultHref }) => {
+            const sport = sportsBySlug[slug];
+            const preview = getPreview(slug);
+            const isHidden = sport && sport.heroActive === false;
+            const isEditing = editingSportSlug === slug;
+            const currentTagline = sport?.tagline || defaultTagline;
+            const currentHref = sport?.heroHref || defaultHref;
+            return (
+              <div key={slug} className={`card p-4 flex flex-col gap-3 ${isHidden ? 'opacity-50' : ''}`}>
+                {/* Header */}
+                <div className="flex items-center gap-3">
+                  <div className="w-14 h-14 rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-center overflow-hidden shrink-0">
+                    {preview ? (
+                      <img src={preview} alt={label} className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none'; }} />
+                    ) : (
+                      <Trophy size={22} className="text-gray-300" />
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-semibold text-gray-900">{label}</p>
+                      {isHidden && <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-red-50 text-red-500">Hidden</span>}
+                    </div>
+                    <p className="text-[11px] text-gray-400 truncate">{currentTagline}</p>
+                    <p className="text-[10px] text-gray-300 truncate">{currentHref}</p>
+                  </div>
+                </div>
+
+                {/* Expand/collapse edit form */}
+                {isEditing ? (
+                  <div className="space-y-2 pt-1 border-t border-gray-100">
+                    <div>
+                      <label className="block text-[11px] font-medium text-gray-500 mb-1">Tagline</label>
+                      <input
+                        type="text"
+                        value={sportForm.tagline}
+                        onChange={(e) => setSportForm((f) => ({ ...f, tagline: e.target.value }))}
+                        placeholder={defaultTagline}
+                        className="input-field text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-medium text-gray-500 mb-1">Link (href)</label>
+                      <input
+                        type="text"
+                        value={sportForm.heroHref}
+                        onChange={(e) => setSportForm((f) => ({ ...f, heroHref: e.target.value }))}
+                        placeholder={defaultHref}
+                        className="input-field text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-medium text-gray-500 mb-1">Icon image URL</label>
+                      <input
+                        type="url"
+                        placeholder="Paste image URL..."
+                        value={urls[slug] ?? (sport?.heroIcon || '')}
+                        onChange={(e) => {
+                          setUrls((u) => ({ ...u, [slug]: e.target.value }));
+                          setPreviews((p) => ({ ...p, [slug]: e.target.value }));
+                          setFiles((f) => { const n = { ...f }; delete n[slug]; return n; });
+                        }}
+                        className="input-field text-xs"
+                      />
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="text-xs text-gray-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer"
+                      onChange={(e) => handleFileChange(slug, e.target.files?.[0])}
+                    />
+                    <div className="flex gap-2 pt-1">
+                      <button
+                        onClick={() => handleSportFormSave(slug)}
+                        disabled={!sport || updateSportHeroMutation.isPending}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-700 transition-colors disabled:opacity-40"
+                      >
+                        {updateSportHeroMutation.isPending ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setEditingSportSlug(null)}
+                        className="px-3 py-1.5 rounded-lg border border-gray-200 text-gray-500 text-xs font-semibold hover:bg-gray-50 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => openSportEdit(slug)}
+                      disabled={!sport}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-700 transition-colors disabled:opacity-40"
+                    >
+                      <Pencil size={11} /> Edit
+                    </button>
+                    {isHidden ? (
+                      <button
+                        onClick={() => sport && updateSportHeroMutation.mutate({ id: sport._id, data: { heroActive: true } })}
+                        disabled={!sport}
+                        className="px-3 py-1.5 rounded-lg border border-green-200 text-green-600 text-xs font-semibold hover:bg-green-50 transition-colors disabled:opacity-40"
+                        title="Show this card again"
+                      >
+                        Show
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => setHideConfirm(slug)}
+                        disabled={!sport}
+                        className="px-3 py-1.5 rounded-lg border border-red-200 text-red-500 text-xs font-semibold hover:bg-red-50 transition-colors disabled:opacity-40"
+                        title="Hide from hero grid"
+                      >
+                        Hide
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Hide confirm modal */}
+      {hideConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-6 shadow-2xl max-w-sm w-full mx-4">
+            <h3 className="text-base font-bold text-gray-900 mb-1">Hide "{HERO_SLUGS.find(h => h.slug === hideConfirm)?.label}" from hero?</h3>
+            <p className="text-sm text-gray-500 mb-5">The card will no longer appear on the homepage. You can restore it anytime.</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  const sport = sportsBySlug[hideConfirm];
+                  if (sport) updateSportHeroMutation.mutate({ id: sport._id, data: { heroActive: false } });
+                  setHideConfirm(null);
+                }}
+                className="flex-1 py-2.5 rounded-xl bg-red-600 text-white text-sm font-bold hover:bg-red-700 transition-colors"
+              >
+                Yes, Hide It
+              </button>
+              <button
+                onClick={() => setHideConfirm(null)}
+                className="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-600 text-sm font-semibold hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ---- Custom hero cards ---- */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-base font-semibold text-gray-900">Custom Hero Cards</h3>
+            <p className="text-xs text-gray-400 mt-0.5">Extra cards stacked below the sports icons in the homepage hero grid (2-per-row).</p>
+          </div>
+          <button
+            onClick={openNew}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-700 transition-colors"
+          >
+            <Plus size={14} /> New Card
+          </button>
+        </div>
+
+        {/* Inline create / edit form */}
+        {showForm && (
+          <form onSubmit={handleCardSubmit} className="card p-5 mb-5 space-y-3 border-2 border-gray-200">
+            <p className="text-sm font-semibold text-gray-800">{editingCard ? 'Edit Card' : 'New Hero Card'}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Name <span className="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  placeholder="e.g. Kids Academy"
+                  value={cardForm.name}
+                  onChange={(e) => setCardForm((f) => ({ ...f, name: e.target.value }))}
+                  className="input-field text-sm"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Tagline <span className="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  placeholder="e.g. Ages 6–16"
+                  value={cardForm.tagline}
+                  onChange={(e) => setCardForm((f) => ({ ...f, tagline: e.target.value }))}
+                  className="input-field text-sm"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Link (href) <span className="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  placeholder="e.g. /kids-sports-academy-rohtak"
+                  value={cardForm.href}
+                  onChange={(e) => setCardForm((f) => ({ ...f, href: e.target.value }))}
+                  className="input-field text-sm"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Icon Image URL</label>
+                <input
+                  type="url"
+                  placeholder="https://..."
+                  value={cardForm.iconUrl}
+                  onChange={(e) => setCardForm((f) => ({ ...f, iconUrl: e.target.value }))}
+                  className="input-field text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Accent Color</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={cardForm.color}
+                    onChange={(e) => setCardForm((f) => ({ ...f, color: e.target.value }))}
+                    className="w-9 h-9 rounded cursor-pointer border border-gray-200"
+                  />
+                  <input
+                    type="text"
+                    value={cardForm.color}
+                    onChange={(e) => setCardForm((f) => ({ ...f, color: e.target.value }))}
+                    className="input-field text-sm flex-1"
+                    placeholder="#C8102E"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Order (lower = first)</label>
+                <input
+                  type="number"
+                  value={cardForm.order}
+                  onChange={(e) => setCardForm((f) => ({ ...f, order: Number(e.target.value) }))}
+                  className="input-field text-sm"
+                  min={0}
+                />
+              </div>
+            </div>
+            {/* Preview */}
+            {(cardForm.iconUrl || cardForm.name) && (
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-black/90 w-fit mt-1">
+                <div className="w-10 h-10 rounded-2xl border border-white/10 bg-black/40 flex items-center justify-center shrink-0 overflow-hidden">
+                  {cardForm.iconUrl ? (
+                    <img src={cardForm.iconUrl} alt={cardForm.name} className="w-full h-full object-cover" onError={(e) => { e.target.style.display='none'; }} />
                   ) : (
-                    <Trophy size={22} className="text-gray-300" />
+                    <Trophy size={20} style={{ color: cardForm.color || '#C8102E' }} />
                   )}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">{label}</p>
-                  <p className="text-[11px] text-gray-400 mt-0.5">
-                    {sport ? (sport.heroIcon ? 'Custom icon set' : 'Using default SVG') : <span className="text-amber-500">Sport not found</span>}
-                  </p>
+                  <p className="text-white font-extrabold text-[13px] leading-tight">{cardForm.name || 'Card Name'}</p>
+                  <p className="text-white/45 text-[9px] uppercase tracking-wider font-semibold mt-0.5">{cardForm.tagline || 'Tagline'}</p>
                 </div>
               </div>
+            )}
+            <div className="flex gap-2 pt-1">
+              <button
+                type="submit"
+                disabled={isSaving}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-700 disabled:opacity-50 transition-colors"
+              >
+                {isSaving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
+                {editingCard ? 'Save Changes' : 'Create Card'}
+              </button>
+              <button
+                type="button"
+                onClick={() => { setShowForm(false); setEditingCard(null); setCardForm(BLANK_CARD); }}
+                className="px-4 py-2 rounded-lg border border-gray-200 text-gray-600 text-xs font-semibold hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
 
-              {/* URL input */}
-              <input
-                type="url"
-                placeholder="Paste image URL..."
-                value={urls[slug] ?? (sport?.heroIcon || '')}
-                onChange={(e) => {
-                  setUrls((u) => ({ ...u, [slug]: e.target.value }));
-                  setPreviews((p) => ({ ...p, [slug]: e.target.value }));
-                  setFiles((f) => { const n = { ...f }; delete n[slug]; return n; });
-                }}
-                className="input-field text-xs"
-                disabled={!sport}
-              />
-
-              {/* File upload */}
-              <input
-                type="file"
-                accept="image/*"
-                className="text-xs text-gray-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer"
-                onChange={(e) => handleFileChange(slug, e.target.files?.[0])}
-                disabled={!sport}
-              />
-
-              {/* Actions */}
-              <div className="flex gap-2 mt-1">
-                <button
-                  onClick={() => handleSave(slug)}
-                  disabled={!sport || updateMutation.isPending}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-700 transition-colors disabled:opacity-40"
-                >
-                  {updateMutation.isPending ? <Loader2 size={12} className="animate-spin" /> : null}
-                  Save
-                </button>
-                {(sport?.heroIcon || previews[slug]) && (
+        {/* Existing custom cards */}
+        {cardsLoading ? (
+          <div className="flex items-center gap-2 text-gray-400 py-4 text-sm"><Loader2 size={14} className="animate-spin" /> Loading...</div>
+        ) : customCards.length === 0 && !showForm ? (
+          <div className="text-center py-8 border-2 border-dashed border-gray-200 rounded-xl">
+            <p className="text-sm text-gray-400">No custom cards yet. Click <strong>New Card</strong> to add one.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {customCards.map((card) => (
+              <div key={card._id} className="card p-4 flex flex-col gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-14 h-14 rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-center overflow-hidden shrink-0">
+                    {card.iconUrl ? (
+                      <img src={card.iconUrl} alt={card.name} className="w-full h-full object-cover" onError={(e) => { e.target.style.display='none'; }} />
+                    ) : (
+                      <Trophy size={22} style={{ color: card.color || '#C8102E' }} />
+                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 truncate">{card.name}</p>
+                    <p className="text-[11px] text-gray-400 truncate">{card.tagline}</p>
+                    <p className="text-[10px] text-gray-300 truncate mt-0.5">{card.href}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-5 h-5 rounded-full border border-gray-200 shrink-0"
+                    style={{ background: card.color || '#C8102E' }}
+                    title={card.color}
+                  />
+                  <span className="text-[11px] text-gray-400">Order: {card.order ?? 0}</span>
+                  <span className={`ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full ${card.active ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
+                    {card.active ? 'Visible' : 'Hidden'}
+                  </span>
+                </div>
+                <div className="flex gap-2">
                   <button
-                    onClick={() => {
-                      setUrls((u) => ({ ...u, [slug]: '' }));
-                      setPreviews((p) => { const n = { ...p }; delete n[slug]; return n; });
-                      setFiles((f) => { const n = { ...f }; delete n[slug]; return n; });
-                      if (sport) updateMutation.mutate({ id: sport._id, heroIcon: '' });
-                    }}
-                    className="px-3 py-1.5 rounded-lg border border-red-200 text-red-500 text-xs font-semibold hover:bg-red-50 transition-colors"
-                    title="Remove icon (revert to default SVG)"
+                    onClick={() => openEdit(card)}
+                    className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-700 transition-colors"
                   >
-                    Reset
+                    <Pencil size={11} /> Edit
                   </button>
-                )}
+                  <button
+                    onClick={() => setDeleteConfirm(card)}
+                    className="px-3 py-1.5 rounded-lg border border-red-200 text-red-500 text-xs font-semibold hover:bg-red-50 transition-colors"
+                  >
+                    <Trash2 size={12} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Delete confirm modal */}
+        {deleteConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+            <div className="bg-white rounded-2xl p-6 shadow-2xl max-w-sm w-full mx-4">
+              <h3 className="text-base font-bold text-gray-900 mb-1">Delete "{deleteConfirm.name}"?</h3>
+              <p className="text-sm text-gray-500 mb-5">This card will be removed from the homepage hero grid immediately.</p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => deleteCardMutation.mutate(deleteConfirm._id)}
+                  disabled={deleteCardMutation.isPending}
+                  className="flex-1 py-2.5 rounded-xl bg-red-600 text-white text-sm font-bold hover:bg-red-700 disabled:opacity-50 transition-colors"
+                >
+                  {deleteCardMutation.isPending ? 'Deleting…' : 'Yes, Delete'}
+                </button>
+                <button
+                  onClick={() => setDeleteConfirm(null)}
+                  className="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-600 text-sm font-semibold hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
-          );
-        })}
+          </div>
+        )}
       </div>
     </div>
   );

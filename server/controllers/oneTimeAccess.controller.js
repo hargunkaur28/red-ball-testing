@@ -96,14 +96,16 @@ exports.verifyPurchase = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Invalid payment signature.' });
     }
 
-    // 2. Fetch Razorpay Payment Details (best-effort — HMAC signature above is the security gate)
+    // 2. Fetch Razorpay Payment Details — required, no fallback allowed
+    let paymentDetails;
     try {
-      const paymentDetails = await fetchPaymentDetails(razorpayPaymentId);
-      if (paymentDetails.status !== 'captured' && paymentDetails.status !== 'authorized') {
-        return res.status(400).json({ success: false, message: 'Payment not completed by Razorpay.' });
-      }
+      paymentDetails = await fetchPaymentDetails(razorpayPaymentId);
     } catch (fetchErr) {
-      console.warn('Razorpay payment fetch failed (proceeding after signature verification):', fetchErr.message);
+      console.error('[OneTimeAccess] Razorpay fetchPaymentDetails failed:', fetchErr.message);
+      return res.status(502).json({ success: false, message: 'Payment verification unavailable. Please retry in a moment.' });
+    }
+    if (paymentDetails.status !== 'captured' && paymentDetails.status !== 'authorized') {
+      return res.status(400).json({ success: false, message: 'Payment not completed by Razorpay.' });
     }
 
     // 3. Idempotency Check using Razorpay Payment ID or Order ID

@@ -8,6 +8,7 @@ const User = require('../models/User');
 const ReferencePrice = require('../models/ReferencePrice');
 const Coupon = require('../models/Coupon');
 const CouponUsage = require('../models/CouponUsage');
+const { validateCouponForCheckout } = require('../utils/couponValidator');
 const { calculateGST } = require('../utils/gstCalculator');
 const { createRazorpayOrder, verifyPaymentSignature, fetchPaymentDetails, createRefund } = require('../config/razorpay');
 
@@ -741,39 +742,27 @@ exports.createSlotOrder = async (req, res) => {
       }
     }
 
-    // Apply coupon if provided — re-validate server-side
+    // Apply coupon if provided — re-validate server-side using shared helper
+    // userId always comes from the verified JWT — never from the client body
     let couponDiscountAmt = 0;
     let validatedCouponId = null;
     let validatedCouponCode = null;
-    if (couponId && couponCode) {
+    if (couponCode) {
       try {
-        const coupon = await Coupon.findById(couponId);
-        if (
-          coupon &&
-          coupon.isActive &&
-          !coupon.archivedAt &&
-          coupon.code === couponCode.toUpperCase().trim() &&
-          (coupon.targetType === 'sports' || coupon.targetType === 'both')
-        ) {
-          const now = new Date();
-          const notExpired = (!coupon.startsAt || now >= coupon.startsAt) && (!coupon.endsAt || now <= coupon.endsAt);
-          const withinLimit = coupon.usageLimitTotal == null || coupon.usedCount < coupon.usageLimitTotal;
-          if (notExpired && withinLimit) {
-            let calcDiscount;
-            if (coupon.discountType === 'percentage') {
-              const pct = (coupon.discountValue / 100) * finalPrice;
-              const cap = coupon.maxDiscountAmount != null ? coupon.maxDiscountAmount : Infinity;
-              calcDiscount = Math.min(pct, cap);
-            } else {
-              calcDiscount = Math.min(coupon.discountValue, finalPrice);
-            }
-            couponDiscountAmt = Math.max(0, Math.round(calcDiscount * 100) / 100);
-            finalPrice = Math.max(0, finalPrice - couponDiscountAmt);
-            validatedCouponId = coupon._id;
-            validatedCouponCode = coupon.code;
-          }
+        const couponResult = await validateCouponForCheckout({
+          code: couponCode,
+          targetType: 'sports',
+          sportId: slot.sportId,
+          userId: req.user?.userId,
+          amount: finalPrice,
+        });
+        if (couponResult.valid) {
+          couponDiscountAmt = couponResult.discountAmount;
+          finalPrice = Math.max(0, finalPrice - couponDiscountAmt);
+          validatedCouponId = couponResult.coupon._id;
+          validatedCouponCode = couponResult.coupon.code;
         }
-      } catch (_) { /* ignore coupon errors — proceed without discount */ }
+      } catch (_) { /* non-fatal — proceed without discount on unexpected error */ }
     }
 
     // Create pending Payment BEFORE Razorpay order — snapshot binds verify to this slot/amount
@@ -891,19 +880,21 @@ exports.verifySlotPayment = async (req, res) => {
       const isValid = verifyPaymentSignature(razorpayOrderId, razorpayPaymentId, razorpaySignature);
       if (!isValid) return res.status(400).json({ message: 'Payment verification failed.' });
 
+      // Fetch payment details — required, no fallback allowed
+      let rzpDetails;
       try {
-        const rzpDetails = await fetchPaymentDetails(razorpayPaymentId);
-        if (rzpDetails.status !== 'captured' && rzpDetails.status !== 'authorized') {
-          return res.status(400).json({ message: 'Payment not completed by Razorpay.' });
-        }
-        if (rzpDetails.amount !== Math.round(paymentRecord.totalAmount * 100)) {
-          return res.status(400).json({
-            message: `Amount mismatch: expected ₹${paymentRecord.totalAmount}, got ₹${rzpDetails.amount / 100}.`,
-          });
-        }
+        rzpDetails = await fetchPaymentDetails(razorpayPaymentId);
       } catch (rzpErr) {
-        // Razorpay temporarily unreachable — proceed on valid signature
-        console.error('Razorpay fetch error (signature-only fallback):', rzpErr.message);
+        console.error('[Slot] Razorpay fetchPaymentDetails failed:', rzpErr.message);
+        return res.status(502).json({ message: 'Payment verification unavailable. Please retry in a moment.' });
+      }
+      if (rzpDetails.status !== 'captured' && rzpDetails.status !== 'authorized') {
+        return res.status(400).json({ message: 'Payment not completed by Razorpay.' });
+      }
+      if (rzpDetails.amount !== Math.round(paymentRecord.totalAmount * 100)) {
+        return res.status(400).json({
+          message: `Amount mismatch: expected ₹${paymentRecord.totalAmount}, got ₹${rzpDetails.amount / 100}.`,
+        });
       }
     } else if (paymentRecord.status !== 'paid') {
       return res.status(400).json({ message: `Payment is in an unexpected state: ${paymentRecord.status}.` });
@@ -1379,6 +1370,14 @@ exports.cancelBooking = async (req, res) => {
     const { reason } = req.body;
     const booking = await SlotBooking.findById(req.params.id);
     if (!booking) return res.status(404).json({ message: 'Booking not found.' });
+
+    // Superadmin can cancel any booking; regular users can only cancel their own
+    if (req.user.role !== 'superadmin') {
+      const ownerId = booking.userId;
+      if (!ownerId || ownerId.toString() !== req.user.userId.toString()) {
+        return res.status(403).json({ message: 'Access denied.' });
+      }
+    }
 
     if (booking.status === 'completed' || booking.status === 'cancelled') {
       return res.status(400).json({ message: 'Cannot cancel this booking.' });

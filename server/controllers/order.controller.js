@@ -4,6 +4,7 @@ const Inventory = require('../models/Inventory');
 const RestaurantSettings = require('../models/RestaurantSettings');
 const Coupon = require('../models/Coupon');
 const CouponUsage = require('../models/CouponUsage');
+const { validateCouponForCheckout } = require('../utils/couponValidator');
 const { sendAdminPaymentAlert } = require('../utils/emailService');
 const { sendKitchenOrderSms } = require('../utils/fast2smsService');
 
@@ -412,43 +413,25 @@ exports.createDirect = async (req, res) => {
     let totalAmount = subtotal + deliveryCharge;
 
     // Apply coupon discount server-side (on subtotal only, not delivery)
+    // userId always comes from the verified JWT — never from the client body
     let couponDiscountAmt = 0;
     let validatedCouponId = null;
     let validatedCouponCode = null;
     if (couponCode) {
       try {
-        const coupon = await Coupon.findOne({ code: couponCode.toUpperCase().trim() });
-        if (
-          coupon &&
-          coupon.isActive &&
-          !coupon.archivedAt &&
-          (coupon.targetType === 'food' || coupon.targetType === 'both')
-        ) {
-          const now = new Date();
-          const notExpired = (!coupon.startsAt || now >= coupon.startsAt) && (!coupon.endsAt || now <= coupon.endsAt);
-          const withinLimit = coupon.usageLimitTotal == null || coupon.usedCount < coupon.usageLimitTotal;
-          const meetsMin = !coupon.minOrderAmount || subtotal >= coupon.minOrderAmount;
-          const callerUserId = req.user?.userId;
-          const userUsageCount = coupon.usageLimitPerUser != null && callerUserId
-            ? await CouponUsage.countDocuments({ couponId: coupon._id, userId: callerUserId })
-            : 0;
-          const withinPerUserLimit = coupon.usageLimitPerUser == null || !callerUserId || userUsageCount < coupon.usageLimitPerUser;
-          if (notExpired && withinLimit && meetsMin && withinPerUserLimit) {
-            let calcDiscount;
-            if (coupon.discountType === 'percentage') {
-              const pct = (coupon.discountValue / 100) * subtotal;
-              const cap = coupon.maxDiscountAmount != null ? coupon.maxDiscountAmount : Infinity;
-              calcDiscount = Math.min(pct, cap);
-            } else {
-              calcDiscount = Math.min(coupon.discountValue, subtotal);
-            }
-            couponDiscountAmt = Math.max(0, Math.round(calcDiscount * 100) / 100);
-            totalAmount = Math.max(0, totalAmount - couponDiscountAmt);
-            validatedCouponId = coupon._id;
-            validatedCouponCode = coupon.code;
-          }
+        const couponResult = await validateCouponForCheckout({
+          code: couponCode,
+          targetType: 'food',
+          userId: req.user?.userId,
+          amount: subtotal,
+        });
+        if (couponResult.valid) {
+          couponDiscountAmt = couponResult.discountAmount;
+          totalAmount = Math.max(0, totalAmount - couponDiscountAmt);
+          validatedCouponId = couponResult.coupon._id;
+          validatedCouponCode = couponResult.coupon.code;
         }
-      } catch (_) { /* non-fatal */ }
+      } catch (_) { /* non-fatal — proceed without discount on unexpected error */ }
     }
 
     // Razorpay: verify signature + check captured amount before accepting 'paid'
@@ -468,23 +451,21 @@ exports.createDirect = async (req, res) => {
         return res.status(400).json({ message: 'Payment signature verification failed.' });
       }
 
-      // HMAC already verified above — that is the primary security gate.
-      // fetchPaymentDetails is a best-effort capture-status/amount check. If
-      // Razorpay's API is slow or times out we trust the HMAC and proceed rather
-      // than blocking the customer's order.
-      let payment = null;
+      // Fetch Razorpay payment details — required, no fallback allowed.
+      let rzpPayment;
       try {
-        payment = await fetchPaymentDetails(razorpayPaymentId);
+        rzpPayment = await fetchPaymentDetails(razorpayPaymentId);
       } catch (fetchErr) {
-        console.error('[Order] WARN: Razorpay status fetch failed (HMAC passed — proceeding):', fetchErr.message);
+        console.error('[Order] Razorpay fetchPaymentDetails failed:', fetchErr.message);
+        return res.status(502).json({ message: 'Payment verification unavailable. Please retry in a moment.' });
       }
-      if (payment && payment.status !== 'captured') {
-        return res.status(400).json({ message: `Payment not captured. Razorpay status: ${payment.status}.` });
+      if (rzpPayment.status !== 'captured') {
+        return res.status(400).json({ message: `Payment not captured. Razorpay status: ${rzpPayment.status}.` });
       }
       const expectedPaise = Math.round(totalAmount * 100);
-      if (payment && payment.amount !== expectedPaise) {
+      if (rzpPayment.amount !== expectedPaise) {
         return res.status(400).json({
-          message: `Payment amount mismatch: expected ₹${totalAmount} but Razorpay received ₹${payment.amount / 100}.`,
+          message: `Payment amount mismatch: expected ₹${totalAmount} but Razorpay received ₹${rzpPayment.amount / 100}.`,
         });
       }
 
@@ -612,43 +593,25 @@ exports.createRazorpayOrder = async (req, res) => {
     }
 
     // Apply coupon discount (on subtotal only, not delivery)
+    // userId always comes from the verified JWT — never from the client body
     let couponDiscountAmt = 0;
     let validatedCouponId = null;
     let validatedCouponCode = null;
     if (couponCode) {
       try {
-        const coupon = await Coupon.findOne({ code: couponCode.toUpperCase().trim() });
-        if (
-          coupon &&
-          coupon.isActive &&
-          !coupon.archivedAt &&
-          (coupon.targetType === 'food' || coupon.targetType === 'both')
-        ) {
-          const now = new Date();
-          const notExpired = (!coupon.startsAt || now >= coupon.startsAt) && (!coupon.endsAt || now <= coupon.endsAt);
-          const withinLimit = coupon.usageLimitTotal == null || coupon.usedCount < coupon.usageLimitTotal;
-          const meetsMin = !coupon.minOrderAmount || subtotalForCoupon >= coupon.minOrderAmount;
-          const callerUserId = req.user?.userId;
-          const userUsageCount = coupon.usageLimitPerUser != null && callerUserId
-            ? await CouponUsage.countDocuments({ couponId: coupon._id, userId: callerUserId })
-            : 0;
-          const withinPerUserLimit = coupon.usageLimitPerUser == null || !callerUserId || userUsageCount < coupon.usageLimitPerUser;
-          if (notExpired && withinLimit && meetsMin && withinPerUserLimit) {
-            let calcDiscount;
-            if (coupon.discountType === 'percentage') {
-              const pct = (coupon.discountValue / 100) * subtotalForCoupon;
-              const cap = coupon.maxDiscountAmount != null ? coupon.maxDiscountAmount : Infinity;
-              calcDiscount = Math.min(pct, cap);
-            } else {
-              calcDiscount = Math.min(coupon.discountValue, subtotalForCoupon);
-            }
-            couponDiscountAmt = Math.max(0, Math.round(calcDiscount * 100) / 100);
-            serverAmount = Math.max(0, serverAmount - couponDiscountAmt);
-            validatedCouponId = coupon._id;
-            validatedCouponCode = coupon.code;
-          }
+        const couponResult = await validateCouponForCheckout({
+          code: couponCode,
+          targetType: 'food',
+          userId: req.user?.userId,
+          amount: subtotalForCoupon,
+        });
+        if (couponResult.valid) {
+          couponDiscountAmt = couponResult.discountAmount;
+          serverAmount = Math.max(0, serverAmount - couponDiscountAmt);
+          validatedCouponId = couponResult.coupon._id;
+          validatedCouponCode = couponResult.coupon.code;
         }
-      } catch (_) { /* non-fatal */ }
+      } catch (_) { /* non-fatal — proceed without discount on unexpected error */ }
     }
 
     const { createRazorpayOrder } = require('../config/razorpay');

@@ -1,4 +1,5 @@
 const Sport = require('../models/Sport');
+const HeroCard = require('../models/HeroCard');
 const MembershipPlan = require('../models/MembershipPlan');
 const Membership = require('../models/Membership');
 const Slot = require('../models/Slot');
@@ -1577,12 +1578,15 @@ exports.listKidsAcademy = async (req, res) => {
 };
 
 // ── GET /api/sports/kids-academy/public ──────────────────────────────────────
-// Public endpoint: returns slugs of sports that have active Kids Academy plans.
+// Public endpoint: returns sports that have active Kids Academy plans.
 exports.listPublicKidsAcademy = async (req, res) => {
   try {
     const plans = await MembershipPlan.find({ isKidsAcademy: true, isActive: true }).lean();
     const slugs = [...new Set(plans.flatMap((p) => p.sportsIncluded || []))];
-    res.json({ slugs });
+    const sportDocs = await Sport.find({ slug: { $in: slugs }, active: true, deletedAt: null })
+      .select('slug name heroIcon thumbnail')
+      .lean();
+    res.json({ slugs, sports: sportDocs });
   } catch (error) {
     res.status(500).json({ message: 'Server error.' });
   }
@@ -1601,3 +1605,66 @@ exports.deleteKidsAcademy = async (req, res) => {
     res.status(500).json({ message: 'Server error.', error: error.message });
   }
 };
+
+// ===========================================================================
+// HERO CARD CRUD
+// ===========================================================================
+
+exports.getPublicHeroCards = async (req, res) => {
+  try {
+    const cards = await HeroCard.find({ active: true }).sort({ order: 1, createdAt: 1 });
+    res.json({ heroCards: cards });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+exports.getHeroCards = async (req, res) => {
+  try {
+    const cards = await HeroCard.find().sort({ order: 1, createdAt: 1 });
+    res.json({ heroCards: cards });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+exports.createHeroCard = async (req, res) => {
+  try {
+    const { name, tagline, href, iconUrl, color, order } = req.body;
+    const card = await HeroCard.create({
+      name, tagline, href,
+      iconUrl: iconUrl || '',
+      color: color || '#C8102E',
+      order: order ?? 0,
+    });
+    res.status(201).json({ heroCard: card });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+exports.updateHeroCard = async (req, res) => {
+  try {
+    const { name, tagline, href, iconUrl, color, order, active } = req.body;
+    const card = await HeroCard.findByIdAndUpdate(
+      req.params.cardId,
+      { name, tagline, href, iconUrl, color, order, active },
+      { new: true, runValidators: true }
+    );
+    if (!card) return res.status(404).json({ message: 'Hero card not found' });
+    res.json({ heroCard: card });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+exports.deleteHeroCard = async (req, res) => {
+  try {
+    const card = await HeroCard.findByIdAndDelete(req.params.cardId);
+    if (!card) return res.status(404).json({ message: 'Hero card not found' });
+    res.json({ message: 'Hero card deleted' });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
