@@ -1,24 +1,38 @@
-const axios = require('axios');
+const nodemailer = require('nodemailer');
 
-const brevoClient = axios.create({
-  baseURL: 'https://api.brevo.com/v3',
-  headers: { 'Content-Type': 'application/json' },
+const transporter = nodemailer.createTransport({
+  host: 'smtp.hostinger.com',
+  port: 587,
+  secure: false,
+  pool: true,
+  maxConnections: 3,
+  maxMessages: 100,
+  connectionTimeout: 60000,
+  greetingTimeout: 60000,
+  socketTimeout: 60000,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
 });
 
-const getSender = () => ({
-  email: process.env.BREVO_SENDER_EMAIL || 'noreply@redballacademy.com',
-  name: process.env.BREVO_SENDER_NAME || 'Red Ball Academy',
-});
+const getSender = () =>
+  `"${process.env.EMAIL_SENDER_NAME || 'Red Ball Academy'}" <${process.env.EMAIL_USER}>`;
 
-const send = (payload) =>
-  brevoClient.post('/smtp/email', payload, {
-    headers: { 'api-key': process.env.BREVO_API_KEY },
+const send = ({ to, subject, htmlContent }) =>
+  transporter.sendMail({
+    from: getSender(),
+    to,
+    subject,
+    html: htmlContent,
   });
 
 async function sendPasswordResetOTP({ toEmail, toName, otp }) {
   return send({
-    sender: getSender(),
-    to: [{ email: toEmail, name: toName }],
+    to: toEmail,
     subject: 'Your Red Ball Academy Password Reset OTP',
     htmlContent: `
       <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;">
@@ -40,8 +54,7 @@ async function sendPasswordResetOTP({ toEmail, toName, otp }) {
 
 async function sendFailedLoginAlert({ targetEmail, attemptedEmail, role, attemptCount, ip, userAgent, timestamp }) {
   return send({
-    sender: getSender(),
-    to: [{ email: targetEmail, name: 'Admin' }],
+    to: targetEmail,
     subject: `Security Alert: ${attemptCount} Failed Login Attempts — ${attemptedEmail}`,
     htmlContent: `
       <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;border:2px solid #DC2626;border-radius:8px;padding:24px;">
@@ -63,8 +76,7 @@ async function sendFailedLoginAlert({ targetEmail, attemptedEmail, role, attempt
 
 async function sendMembershipWelcomeEmail({ toEmail, toName, planName, startDate, endDate, totalAmount, invoiceHtml, invoiceNumber }) {
   return send({
-    sender: getSender(),
-    to: [{ email: toEmail, name: toName }],
+    to: toEmail,
     subject: `Welcome to Red Ball Academy! Your ${planName} is Active`,
     htmlContent: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
@@ -95,8 +107,7 @@ async function sendMembershipWelcomeEmail({ toEmail, toName, planName, startDate
 
 async function sendAdminPaymentAlert({ adminEmail, payerName, payerEmail, payerPhone, paymentType, amount, paymentMode, invoiceNumber, timestamp }) {
   return send({
-    sender: getSender(),
-    to: [{ email: adminEmail, name: 'Admin' }],
+    to: adminEmail,
     subject: `New Payment Received — &#8377;${amount} (${paymentType})`,
     htmlContent: `
       <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;border:1px solid #e0e0e0;border-radius:8px;padding:24px;">

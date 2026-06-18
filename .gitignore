@@ -3,3 +3,11 @@ node_modules
 .env.*
 *.log
 .DS_Store
+
+# Temporary DB migration scripts
+server/exportCollections.js
+server/importCollections.js
+server/dropImportedCollections.js
+server/fixSports.js
+server/debugSports.js
+server/exports/

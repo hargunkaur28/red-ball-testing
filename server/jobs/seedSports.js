@@ -90,8 +90,7 @@ async function seedSports() {
       await Sport.create(item);
       console.log(`✅ Seeded sport: ${item.name}`);
     } else {
-      existing.name = item.name;
-      await existing.save();
+      await Sport.updateOne({ slug: item.slug }, { $set: { name: item.name } });
       console.log(`✅ Updated sport name to: ${item.name}`);
     }
   }
