@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet-async';
 
 const SITE_URL = 'https://www.redballsportsarena.in';
 const SITE_NAME = 'Red Ball Sports Arena';
-const DEFAULT_IMAGE = `${SITE_URL}/banner.png`;
+const DEFAULT_IMAGE = `${SITE_URL}/banner.jpg`;
 
 export default function SEOHead({
   title,
