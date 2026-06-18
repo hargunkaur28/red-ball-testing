@@ -74,6 +74,40 @@ const KidsSportsAcademyRohtak = lazy(() => import('./pages/seo/KidsSportsAcademy
 const PrivacyPolicy = lazy(() => import('./pages/seo/PrivacyPolicy'));
 const TermsAndConditions = lazy(() => import('./pages/seo/TermsAndConditions'));
 
+// New SEO Facility Pages
+const CricketGroundRohtak = lazy(() => import('./pages/seo/CricketGroundRohtak'));
+const CricketStadiumRohtak = lazy(() => import('./pages/seo/CricketStadiumRohtak'));
+const CricketCoachingRohtak = lazy(() => import('./pages/seo/CricketCoachingRohtak'));
+const CricketPracticeGroundRohtak = lazy(() => import('./pages/seo/CricketPracticeGroundRohtak'));
+const SwimmingClassesRohtak = lazy(() => import('./pages/seo/SwimmingClassesRohtak'));
+const SwimmingAcademyRohtak = lazy(() => import('./pages/seo/SwimmingAcademyRohtak'));
+const KidsSwimmingClassesRohtak = lazy(() => import('./pages/seo/KidsSwimmingClassesRohtak'));
+const BadmintonAcademyRohtak = lazy(() => import('./pages/seo/BadmintonAcademyRohtak'));
+const BadmintonCoachingRohtak = lazy(() => import('./pages/seo/BadmintonCoachingRohtak'));
+const KidsBadmintonClassesRohtak = lazy(() => import('./pages/seo/KidsBadmintonClassesRohtak'));
+const FootballGroundRohtak = lazy(() => import('./pages/seo/FootballGroundRohtak'));
+const SportsClubRohtak = lazy(() => import('./pages/seo/SportsClubRohtak'));
+
+// New SEO Geo Pages
+const CricketGroundHaryana = lazy(() => import('./pages/seo/CricketGroundHaryana'));
+const CricketGroundJhajjar = lazy(() => import('./pages/seo/CricketGroundJhajjar'));
+const CricketGroundBahadurgarh = lazy(() => import('./pages/seo/CricketGroundBahadurgarh'));
+const CricketGroundSonipat = lazy(() => import('./pages/seo/CricketGroundSonipat'));
+const CricketGroundPanipat = lazy(() => import('./pages/seo/CricketGroundPanipat'));
+const CricketGroundGurgaon = lazy(() => import('./pages/seo/CricketGroundGurgaon'));
+const CricketGroundDelhi = lazy(() => import('./pages/seo/CricketGroundDelhi'));
+const SportsComplexHaryana = lazy(() => import('./pages/seo/SportsComplexHaryana'));
+
+// New SEO League & Tournament Pages
+const RohtakCricketLeague = lazy(() => import('./pages/seo/RohtakCricketLeague'));
+const CricketTournamentsRohtak = lazy(() => import('./pages/seo/CricketTournamentsRohtak'));
+const CorporateCricketEvents = lazy(() => import('./pages/seo/CorporateCricketEvents'));
+const InterCollegeCricketTournaments = lazy(() => import('./pages/seo/InterCollegeCricketTournaments'));
+
+// Blog Pages
+const BlogIndex = lazy(() => import('./pages/blog/BlogIndex'));
+const BlogPost = lazy(() => import('./pages/blog/BlogPost'));
+
 // ── Auth Guard ─────────────────────────────────────────────────────
 function ProtectedRoute({ children, roles }) {
   const { isAuthenticated, user, isLoading } = useAuthStore();
@@ -195,6 +229,40 @@ export default function App() {
               <Route path="/kids-sports-academy-rohtak" element={<KidsSportsAcademyRohtak />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+
+              {/* New SEO Facility Pages */}
+              <Route path="/cricket-ground-rohtak" element={<CricketGroundRohtak />} />
+              <Route path="/cricket-stadium-rohtak" element={<CricketStadiumRohtak />} />
+              <Route path="/cricket-coaching-rohtak" element={<CricketCoachingRohtak />} />
+              <Route path="/cricket-practice-ground-rohtak" element={<CricketPracticeGroundRohtak />} />
+              <Route path="/swimming-classes-rohtak" element={<SwimmingClassesRohtak />} />
+              <Route path="/swimming-academy-rohtak" element={<SwimmingAcademyRohtak />} />
+              <Route path="/kids-swimming-classes-rohtak" element={<KidsSwimmingClassesRohtak />} />
+              <Route path="/badminton-academy-rohtak" element={<BadmintonAcademyRohtak />} />
+              <Route path="/badminton-coaching-rohtak" element={<BadmintonCoachingRohtak />} />
+              <Route path="/kids-badminton-classes-rohtak" element={<KidsBadmintonClassesRohtak />} />
+              <Route path="/football-ground-rohtak" element={<FootballGroundRohtak />} />
+              <Route path="/sports-club-rohtak" element={<SportsClubRohtak />} />
+
+              {/* New SEO Geo Pages */}
+              <Route path="/cricket-ground-haryana" element={<CricketGroundHaryana />} />
+              <Route path="/cricket-ground-jhajjar" element={<CricketGroundJhajjar />} />
+              <Route path="/cricket-ground-bahadurgarh" element={<CricketGroundBahadurgarh />} />
+              <Route path="/cricket-ground-sonipat" element={<CricketGroundSonipat />} />
+              <Route path="/cricket-ground-panipat" element={<CricketGroundPanipat />} />
+              <Route path="/cricket-ground-gurgaon" element={<CricketGroundGurgaon />} />
+              <Route path="/cricket-ground-delhi" element={<CricketGroundDelhi />} />
+              <Route path="/sports-complex-haryana" element={<SportsComplexHaryana />} />
+
+              {/* New SEO League & Tournament Pages */}
+              <Route path="/rohtak-cricket-league" element={<RohtakCricketLeague />} />
+              <Route path="/cricket-tournaments-rohtak" element={<CricketTournamentsRohtak />} />
+              <Route path="/corporate-cricket-events" element={<CorporateCricketEvents />} />
+              <Route path="/inter-college-cricket-tournaments" element={<InterCollegeCricketTournaments />} />
+
+              {/* Blog */}
+              <Route path="/blog" element={<BlogIndex />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
 
               {/* Redirect root */}
               <Route path="/" element={<Home />} />
