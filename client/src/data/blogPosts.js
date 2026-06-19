@@ -317,7 +317,7 @@ export const blogPosts = [
     author: 'Red Ball Sports Arena',
     imagePrompt: 'Cricket match in progress at the Rohtak Cricket League at Red Ball Sports Arena. Teams in professional league jerseys, umpire in white coat, scoreboard showing match situation, engaged spectators in the background. Professional cricket league photography.',
     tags: ['rohtak cricket league', 'RCL', 'cricket league rohtak', 'cricket tournament'],
-    intro: 'The Rohtak Cricket League has established itself as the most prestigious cricket competition in Rohtak. Played at Red Ball Sports Arena on Jhajjar Road, the RCL brings together the best cricket teams from Rohtak and across Haryana in a professionally organised league that captures the competitive spirit this cricket-mad city deserves. This guide covers everything a team needs to know to participate.',
+    intro: 'The Rohtak Cricket League (RCL) is Rohtak\'s premier T20 cricket tournament — 20-over league cricket for corporate and franchise teams, broadcast live on YouTube, Siti Cable, and DEN Networks. Hosted at Red Ball Sports Arena on Jhajjar Road, the RCL brings professional cricket coverage to Rohtak and gives serious teams a genuine competitive stage. This guide covers everything your team needs to know to participate.',
     sections: [
       {
         heading: 'History and Significance of the Rohtak Cricket League',
@@ -325,15 +325,19 @@ export const blogPosts = [
       },
       {
         heading: 'RCL Format and Structure',
-        body: 'The Rohtak Cricket League runs in a box cricket format — 6-a-side matches with 6–8 overs per innings. The league phase runs over multiple weekends with each registered team playing all other teams in their group. Teams are awarded points for wins, with net run rate used as the tiebreaker.\n\nThe top teams from each group advance to the knockout stage — quarterfinals, semifinals, and the grand final. Finals day is typically an all-day event with the semifinal and final matches played in a festive atmosphere at Red Ball Sports Arena. Trophy ceremony, individual awards (Best Batsman, Best Bowler, Best Fielder, Player of the Tournament), and celebration follow the final.',
+        body: 'The Rohtak Cricket League runs as a 20-over T20 tournament featuring local corporate and franchise teams. The league phase runs over multiple weekends with each registered team playing all other teams in their group. Teams are awarded points for wins, with net run rate used as the tiebreaker. Matches are played under Red Ball\'s floodlights, enabling day and night fixtures.\n\nThe top teams from each group advance to the knockout stage — quarterfinals, semifinals, and the grand final. Finals day is typically an all-day event with a festive atmosphere at Red Ball Sports Arena. Trophy ceremony, individual awards (Best Batsman, Best Bowler, Best Fielder, Player of the Tournament), and celebration follow the final. Alongside the main league ground, Red Ball\'s Box 360 — Rohtak\'s first 24/7 circular box cricket facility — hosts warm-up and practice sessions for RCL squads.',
       },
       {
         heading: 'How to Register Your Team',
         body: 'Team registration for the Rohtak Cricket League opens approximately 4–6 weeks before the start of each season. To register, contact Red Ball Sports Arena at +91 93500 76653 or email redballcricketground@gmail.com with your team name, captain\'s details, and the number of players. A registration form will be provided.\n\nRegistration fees vary by season and format. Payment is due at registration to secure your team\'s place. Teams are advised not to delay — RCL seasons have consistently sold out in recent editions as the league\'s reputation has grown. Corporate teams, college teams, and neighbourhood/club teams are all eligible to register.',
       },
       {
+        heading: 'Live Broadcast: RCL on YouTube, Siti Cable & DEN Networks',
+        body: 'One of the things that sets the Rohtak Cricket League apart from most local tournaments in Haryana is live broadcast coverage. RCL matches are streamed live on YouTube and aired on Siti Cable and DEN Networks — making it accessible to viewers across Rohtak and Haryana who can\'t attend in person. This broadcast reach means your team\'s performances are watched beyond the ground, creating a genuine spotlight for cricketers who perform well.\n\nFor teams, this is a significant motivating factor — you\'re not just playing in a local match, you\'re performing on a broadcast platform that Rohtak families watch from home. The live production brings the feel of a professional cricket league to a local competition, which is rare for city-level cricket anywhere in India.',
+      },
+      {
         heading: 'What to Expect at RCL Matches',
-        body: 'RCL match days at Red Ball are a proper cricket experience. The ground is prepared before each match — pitch marked, stumps set, and ground staff on duty. Professional umpires officiate all league matches. Live scoring is maintained and results are updated in the standings. Spectators fill the seating areas on key match days, creating a genuine match atmosphere.\n\nTeams are expected to arrive 20 minutes before scheduled match times for warm-up. Late arrival forfeits the pre-match warm-up time but not the match itself (reasonable delays accommodated). Both teams should wear distinct colours — if your team doesn\'t have jerseys, Red Ball can advise on affordable options available locally.',
+        body: 'RCL match days at Red Ball are a proper cricket event. The ground is prepared before each match — pitch marked, stumps set, and ground staff on duty. Professional umpires officiate all league matches. Live scoring is maintained and results are updated in the standings. Spectators fill the seating areas on key match days, and Red Ball\'s on-site restaurant serves food and drinks throughout the day for players, families, and fans.\n\nTeams are expected to arrive 20 minutes before scheduled match times for warm-up. Late arrival forfeits the pre-match warm-up time but not the match itself (reasonable delays accommodated). Both teams should wear distinct colours — if your team doesn\'t have jerseys, Red Ball can advise on affordable options available locally.',
       },
       {
         heading: 'Training for the Rohtak Cricket League',
@@ -345,10 +349,11 @@ export const blogPosts = [
       },
     ],
     faqs: [
-      { q: 'Can teams from outside Rohtak participate in the RCL?', a: 'Yes. Teams from across Haryana and Delhi NCR are eligible. Out-of-city teams have participated in previous editions.' },
-      { q: 'What is the minimum age for RCL participation?', a: 'Players must be aged 16 or above to participate in the main RCL. Contact Red Ball for youth-specific tournament information.' },
-      { q: 'Is there a women\'s category in the Rohtak Cricket League?', a: 'Red Ball is actively working to establish a women\'s cricket competition in Rohtak. Contact us if you want to organise or participate in women\'s cricket events.' },
-      { q: 'How is the RCL different from other Rohtak cricket tournaments?', a: 'The RCL is a structured season-long league with group stage, knockouts, and a grand final — not a single-day tournament. This extended format creates genuine team development and sustained competitive engagement.' },
+      { q: 'Is the Rohtak Cricket League broadcast live?', a: 'Yes. RCL matches are broadcast live on YouTube, Siti Cable, and DEN Networks — making it one of the few local cricket leagues in Haryana with full live coverage.' },
+      { q: 'What format does the Rohtak Cricket League use?', a: 'The RCL uses a 20-over T20 format with corporate and franchise teams. A group stage leads into quarterfinals, semifinals, and a grand final.' },
+      { q: 'Can teams from outside Rohtak participate in the RCL?', a: 'Yes. Teams from across Haryana and Delhi NCR are eligible. Corporate, college, and franchise teams from cities like Jhajjar, Sonipat, Panipat, and Gurgaon are welcome.' },
+      { q: 'What is the minimum age for RCL participation?', a: 'Players must be aged 16 or above to participate in the main RCL. Contact Red Ball at +91 93500 76653 for details on youth cricket events.' },
+      { q: 'How is the RCL different from other Rohtak cricket tournaments?', a: 'The RCL is a structured season-long league with live broadcast, group stage, knockouts, and a grand final — not a single-day event. The broadcast on YouTube, Siti Cable and DEN Networks gives it a reach no other local tournament in Rohtak has.' },
     ],
   },
   {
@@ -880,6 +885,31 @@ export const blogPosts = [
     ],
   },
 ];
+
+const COVER_IMAGES = {
+  'cricket-ground-rohtak-booking-guide':   'https://images.unsplash.com/photo-1540747913346-19378f736625?q=80&w=900&auto=format&fit=crop',
+  'box-cricket-rules-format-rohtak':        'https://images.unsplash.com/photo-1531415074968-036ba1b575da?q=80&w=900&auto=format&fit=crop',
+  'swimming-pool-rohtak-guide':             'https://images.unsplash.com/photo-1530549387789-4c1017266635?q=80&w=900&auto=format&fit=crop',
+  'kids-swimming-classes-rohtak-guide':     'https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?q=80&w=900&auto=format&fit=crop',
+  'badminton-court-rohtak-guide':           'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=900&auto=format&fit=crop',
+  'pickleball-rohtak-haryana':              'https://images.unsplash.com/photo-1612534847738-b3af9bc31f0c?q=80&w=900&auto=format&fit=crop',
+  'corporate-sports-events-rohtak':         'https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=900&auto=format&fit=crop',
+  'rohtak-cricket-league-guide':            'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?q=80&w=900&auto=format&fit=crop',
+  'gym-rohtak-fitness-guide':               'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=900&auto=format&fit=crop',
+  'kids-sports-academy-rohtak-benefits':    'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=900&auto=format&fit=crop',
+  'cricket-tournament-hosting-guide':       'https://images.unsplash.com/photo-1540747913346-19378f736625?q=80&w=900&auto=format&fit=crop',
+  'sports-membership-plans-guide':          'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=900&auto=format&fit=crop',
+  'football-rohtak-guide':                  'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=900&auto=format&fit=crop',
+  'morning-vs-evening-sports-sessions':     'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=900&auto=format&fit=crop',
+  'inter-college-cricket-tournaments-rohtak':'https://images.unsplash.com/photo-1531415074968-036ba1b575da?q=80&w=900&auto=format&fit=crop',
+  'best-sports-complex-rohtak':             'https://images.unsplash.com/photo-1556817411-31ae72fa3ea0?q=80&w=900&auto=format&fit=crop',
+  'cricket-coaching-guide-rohtak':          'https://images.unsplash.com/photo-1540747913346-19378f736625?q=80&w=900&auto=format&fit=crop',
+  'kids-badminton-coaching-rohtak':         'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=900&auto=format&fit=crop',
+};
+
+export function getBlogCoverImage(slug) {
+  return COVER_IMAGES[slug] || 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=900&auto=format&fit=crop';
+}
 
 export function getBlogPost(slug) {
   return blogPosts.find(p => p.slug === slug) || null;

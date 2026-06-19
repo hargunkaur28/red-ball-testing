@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import SEOHead from '../../components/seo/SEOHead';
 import SEOLandingLayout, { CTAStrip, ContactBand } from '../../components/seo/SEOLandingLayout';
-import { blogPosts } from '../../data/blogPosts';
+import { blogPosts, getBlogCoverImage } from '../../data/blogPosts';
 
 const categoryColors = {
   Cricket: 'bg-red-100 text-red-700',
@@ -61,10 +61,13 @@ export default function BlogIndex() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {blogPosts.map(post => (
             <Link key={post.slug} to={`/blog/${post.slug}`} className="group block bg-white border border-black/8 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="bg-[#F9F6F1] h-36 flex items-center justify-center px-4">
-                <span className="text-3xl font-black text-[#0D0D0D]/10 text-center leading-tight" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
-                  {post.title.split(':')[0]}
-                </span>
+              <div className="h-44 overflow-hidden bg-[#F0EDEA]">
+                <img
+                  src={getBlogCoverImage(post.slug)}
+                  alt={post.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-2 mb-2">

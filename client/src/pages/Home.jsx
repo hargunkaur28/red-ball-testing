@@ -15,6 +15,7 @@ import FeaturedMenu from '../components/home/FeaturedMenu';
 import RestaurantTeaser from '../components/home/RestaurantTeaser';
 import MembershipPlans from '../components/home/MembershipPlans';
 import Testimonials from '../components/home/Testimonials';
+import HomeBlogSection from '../components/home/HomeBlogSection';
 import MotivationalBanner from '../components/home/MotivationalBanner';
 import ContactSection from '../components/home/ContactSection';
 import Footer from '../components/home/Footer';
@@ -223,6 +224,7 @@ export default function Home() {
           <MembershipPlans />
         </FlowSection>
         <Testimonials />
+        <HomeBlogSection />
         <MotivationalBanner />
         <ContactSection />
         <Footer />

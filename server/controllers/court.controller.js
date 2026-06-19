@@ -125,15 +125,13 @@ exports.deleteCourt = async (req, res) => {
     const court = await Court.findById(req.params.id);
     if (!court) return res.status(404).json({ message: 'Court not found.' });
 
-    // Block deletion if any slots reference this court
-    const slotCount = await Slot.countDocuments({ courtId: court._id });
-    if (slotCount > 0) {
-      return res.status(409).json({
-        message: `Cannot delete court: ${slotCount} slot(s) are linked to it. Delete or reassign the slots first, or close the court instead.`,
-      });
+    // Cascade-delete all slots belonging to this court
+    const slotIds = await Slot.distinct('_id', { courtId: court._id });
+    if (slotIds.length > 0) {
+      await Slot.deleteMany({ courtId: court._id });
     }
 
-    // Soft-delete: stamp deletedAt and mark closed rather than hard-deleting
+    // Soft-delete the court
     court.deletedAt = new Date();
     court.isOpen = false;
     court.statusReason = 'Deleted';
@@ -142,7 +140,7 @@ exports.deleteCourt = async (req, res) => {
     const io = req.app.get('io');
     if (io) io.emit('court:deleted', { courtId: court._id });
 
-    res.json({ message: 'Court deleted.' });
+    res.json({ message: 'Court deleted.', slotsDeleted: slotIds.length });
   } catch (err) {
     res.status(500).json({ message: 'Server error.' });
   }

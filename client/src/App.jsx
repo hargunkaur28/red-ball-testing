@@ -29,6 +29,7 @@ const SASessionOvertime = lazy(() => import('./pages/super-admin/SessionOvertime
 const SAOneTime = lazy(() => import('./pages/super-admin/OneTime'));
 const SALiveSports = lazy(() => import('./pages/super-admin/LiveSports'));
 const SACommunication = lazy(() => import('./pages/super-admin/Communication'));
+const SABlogs = lazy(() => import('./pages/super-admin/Blogs'));
 const SAOrderManagement = lazy(() => import('./pages/restaurant/RestaurantOrders'));
 const SAMenuItems = lazy(() => import('./pages/restaurant/Menu'));
 
@@ -85,7 +86,6 @@ const KidsSwimmingClassesRohtak = lazy(() => import('./pages/seo/KidsSwimmingCla
 const BadmintonAcademyRohtak = lazy(() => import('./pages/seo/BadmintonAcademyRohtak'));
 const BadmintonCoachingRohtak = lazy(() => import('./pages/seo/BadmintonCoachingRohtak'));
 const KidsBadmintonClassesRohtak = lazy(() => import('./pages/seo/KidsBadmintonClassesRohtak'));
-const FootballGroundRohtak = lazy(() => import('./pages/seo/FootballGroundRohtak'));
 const SportsClubRohtak = lazy(() => import('./pages/seo/SportsClubRohtak'));
 
 // New SEO Geo Pages
@@ -97,6 +97,70 @@ const CricketGroundPanipat = lazy(() => import('./pages/seo/CricketGroundPanipat
 const CricketGroundGurgaon = lazy(() => import('./pages/seo/CricketGroundGurgaon'));
 const CricketGroundDelhi = lazy(() => import('./pages/seo/CricketGroundDelhi'));
 const SportsComplexHaryana = lazy(() => import('./pages/seo/SportsComplexHaryana'));
+
+// New Geo Pages — Badminton
+const BadmintonCourtJhajjar = lazy(() => import('./pages/seo/BadmintonCourtJhajjar'));
+const BadmintonCourtBahadurgarh = lazy(() => import('./pages/seo/BadmintonCourtBahadurgarh'));
+const BadmintonCourtSonipat = lazy(() => import('./pages/seo/BadmintonCourtSonipat'));
+const BadmintonCourtPanipat = lazy(() => import('./pages/seo/BadmintonCourtPanipat'));
+const BadmintonCourtGurgaon = lazy(() => import('./pages/seo/BadmintonCourtGurgaon'));
+const BadmintonCourtHisar = lazy(() => import('./pages/seo/BadmintonCourtHisar'));
+
+// New Geo Pages — Swimming
+const SwimmingPoolJhajjar = lazy(() => import('./pages/seo/SwimmingPoolJhajjar'));
+const SwimmingPoolBahadurgarh = lazy(() => import('./pages/seo/SwimmingPoolBahadurgarh'));
+const SwimmingPoolSonipat = lazy(() => import('./pages/seo/SwimmingPoolSonipat'));
+const SwimmingPoolPanipat = lazy(() => import('./pages/seo/SwimmingPoolPanipat'));
+const SwimmingPoolGurgaon = lazy(() => import('./pages/seo/SwimmingPoolGurgaon'));
+const SwimmingPoolHisar = lazy(() => import('./pages/seo/SwimmingPoolHisar'));
+
+// New Geo Pages — Gym
+const GymJhajjar = lazy(() => import('./pages/seo/GymJhajjar'));
+const GymBahadurgarh = lazy(() => import('./pages/seo/GymBahadurgarh'));
+const GymSonipat = lazy(() => import('./pages/seo/GymSonipat'));
+const GymPanipat = lazy(() => import('./pages/seo/GymPanipat'));
+const GymGurgaon = lazy(() => import('./pages/seo/GymGurgaon'));
+const GymHisar = lazy(() => import('./pages/seo/GymHisar'));
+
+
+// New Geo Pages — Sports Complex
+const SportsComplexJhajjar = lazy(() => import('./pages/seo/SportsComplexJhajjar'));
+const SportsComplexBahadurgarh = lazy(() => import('./pages/seo/SportsComplexBahadurgarh'));
+const SportsComplexSonipat = lazy(() => import('./pages/seo/SportsComplexSonipat'));
+const SportsComplexPanipat = lazy(() => import('./pages/seo/SportsComplexPanipat'));
+const SportsComplexGurgaon = lazy(() => import('./pages/seo/SportsComplexGurgaon'));
+const SportsComplexHisar = lazy(() => import('./pages/seo/SportsComplexHisar'));
+
+// New Geo Pages — Cricket new cities
+const CricketGroundRewari = lazy(() => import('./pages/seo/CricketGroundRewari'));
+const CricketGroundBhiwani = lazy(() => import('./pages/seo/CricketGroundBhiwani'));
+const CricketGroundJind = lazy(() => import('./pages/seo/CricketGroundJind'));
+const CricketGroundKarnal = lazy(() => import('./pages/seo/CricketGroundKarnal'));
+const CricketGroundHisar = lazy(() => import('./pages/seo/CricketGroundHisar'));
+
+// New Geo Pages — Sports Academy
+const SportsAcademyJhajjar = lazy(() => import('./pages/seo/SportsAcademyJhajjar'));
+const SportsAcademyBahadurgarh = lazy(() => import('./pages/seo/SportsAcademyBahadurgarh'));
+const SportsAcademySonipat = lazy(() => import('./pages/seo/SportsAcademySonipat'));
+const SportsAcademyPanipat = lazy(() => import('./pages/seo/SportsAcademyPanipat'));
+const SportsAcademyHaryana = lazy(() => import('./pages/seo/SportsAcademyHaryana'));
+
+// New Geo Pages — Pickleball
+const PickleballCourtHaryana = lazy(() => import('./pages/seo/PickleballCourtHaryana'));
+const PickleballCourtGurgaon = lazy(() => import('./pages/seo/PickleballCourtGurgaon'));
+const PickleballCourtSonipat = lazy(() => import('./pages/seo/PickleballCourtSonipat'));
+
+// New Geo Pages — Kids Academy
+const KidsSportsAcademyHaryana = lazy(() => import('./pages/seo/KidsSportsAcademyHaryana'));
+const KidsSportsAcademyJhajjar = lazy(() => import('./pages/seo/KidsSportsAcademyJhajjar'));
+const KidsSportsAcademyPanipat = lazy(() => import('./pages/seo/KidsSportsAcademyPanipat'));
+const KidsSportsAcademySonipat = lazy(() => import('./pages/seo/KidsSportsAcademySonipat'));
+
+// New Geo Pages — Cricket Academy & Box Cricket
+const CricketAcademyJhajjar = lazy(() => import('./pages/seo/CricketAcademyJhajjar'));
+const CricketAcademyPanipat = lazy(() => import('./pages/seo/CricketAcademyPanipat'));
+const BoxCricketJhajjar = lazy(() => import('./pages/seo/BoxCricketJhajjar'));
+const BoxCricketPanipat = lazy(() => import('./pages/seo/BoxCricketPanipat'));
 
 // New SEO League & Tournament Pages
 const RohtakCricketLeague = lazy(() => import('./pages/seo/RohtakCricketLeague'));
@@ -181,6 +245,7 @@ export default function App() {
                 <Route path="orders" element={<SAOrderManagement />} />
                 <Route path="menu" element={<SAMenuItems />} />
                 <Route path="settings" element={<Settings />} />
+                <Route path="blogs" element={<SABlogs />} />
               </Route>
 
               {/* User/Student Panel */}
@@ -241,7 +306,7 @@ export default function App() {
               <Route path="/badminton-academy-rohtak" element={<BadmintonAcademyRohtak />} />
               <Route path="/badminton-coaching-rohtak" element={<BadmintonCoachingRohtak />} />
               <Route path="/kids-badminton-classes-rohtak" element={<KidsBadmintonClassesRohtak />} />
-              <Route path="/football-ground-rohtak" element={<FootballGroundRohtak />} />
+
               <Route path="/sports-club-rohtak" element={<SportsClubRohtak />} />
 
               {/* New SEO Geo Pages */}
@@ -253,6 +318,70 @@ export default function App() {
               <Route path="/cricket-ground-gurgaon" element={<CricketGroundGurgaon />} />
               <Route path="/cricket-ground-delhi" element={<CricketGroundDelhi />} />
               <Route path="/sports-complex-haryana" element={<SportsComplexHaryana />} />
+
+              {/* Geo Pages — Badminton */}
+              <Route path="/badminton-court-jhajjar" element={<BadmintonCourtJhajjar />} />
+              <Route path="/badminton-court-bahadurgarh" element={<BadmintonCourtBahadurgarh />} />
+              <Route path="/badminton-court-sonipat" element={<BadmintonCourtSonipat />} />
+              <Route path="/badminton-court-panipat" element={<BadmintonCourtPanipat />} />
+              <Route path="/badminton-court-gurgaon" element={<BadmintonCourtGurgaon />} />
+              <Route path="/badminton-court-hisar" element={<BadmintonCourtHisar />} />
+
+              {/* Geo Pages — Swimming */}
+              <Route path="/swimming-pool-jhajjar" element={<SwimmingPoolJhajjar />} />
+              <Route path="/swimming-pool-bahadurgarh" element={<SwimmingPoolBahadurgarh />} />
+              <Route path="/swimming-pool-sonipat" element={<SwimmingPoolSonipat />} />
+              <Route path="/swimming-pool-panipat" element={<SwimmingPoolPanipat />} />
+              <Route path="/swimming-pool-gurgaon" element={<SwimmingPoolGurgaon />} />
+              <Route path="/swimming-pool-hisar" element={<SwimmingPoolHisar />} />
+
+              {/* Geo Pages — Gym */}
+              <Route path="/gym-jhajjar" element={<GymJhajjar />} />
+              <Route path="/gym-bahadurgarh" element={<GymBahadurgarh />} />
+              <Route path="/gym-sonipat" element={<GymSonipat />} />
+              <Route path="/gym-panipat" element={<GymPanipat />} />
+              <Route path="/gym-gurgaon" element={<GymGurgaon />} />
+              <Route path="/gym-hisar" element={<GymHisar />} />
+
+
+              {/* Geo Pages — Sports Complex */}
+              <Route path="/sports-complex-jhajjar" element={<SportsComplexJhajjar />} />
+              <Route path="/sports-complex-bahadurgarh" element={<SportsComplexBahadurgarh />} />
+              <Route path="/sports-complex-sonipat" element={<SportsComplexSonipat />} />
+              <Route path="/sports-complex-panipat" element={<SportsComplexPanipat />} />
+              <Route path="/sports-complex-gurgaon" element={<SportsComplexGurgaon />} />
+              <Route path="/sports-complex-hisar" element={<SportsComplexHisar />} />
+
+              {/* Geo Pages — Cricket new cities */}
+              <Route path="/cricket-ground-rewari" element={<CricketGroundRewari />} />
+              <Route path="/cricket-ground-bhiwani" element={<CricketGroundBhiwani />} />
+              <Route path="/cricket-ground-jind" element={<CricketGroundJind />} />
+              <Route path="/cricket-ground-karnal" element={<CricketGroundKarnal />} />
+              <Route path="/cricket-ground-hisar" element={<CricketGroundHisar />} />
+
+              {/* Geo Pages — Sports Academy */}
+              <Route path="/sports-academy-jhajjar" element={<SportsAcademyJhajjar />} />
+              <Route path="/sports-academy-bahadurgarh" element={<SportsAcademyBahadurgarh />} />
+              <Route path="/sports-academy-sonipat" element={<SportsAcademySonipat />} />
+              <Route path="/sports-academy-panipat" element={<SportsAcademyPanipat />} />
+              <Route path="/sports-academy-haryana" element={<SportsAcademyHaryana />} />
+
+              {/* Geo Pages — Pickleball */}
+              <Route path="/pickleball-court-haryana" element={<PickleballCourtHaryana />} />
+              <Route path="/pickleball-court-gurgaon" element={<PickleballCourtGurgaon />} />
+              <Route path="/pickleball-court-sonipat" element={<PickleballCourtSonipat />} />
+
+              {/* Geo Pages — Kids Academy */}
+              <Route path="/kids-sports-academy-haryana" element={<KidsSportsAcademyHaryana />} />
+              <Route path="/kids-sports-academy-jhajjar" element={<KidsSportsAcademyJhajjar />} />
+              <Route path="/kids-sports-academy-panipat" element={<KidsSportsAcademyPanipat />} />
+              <Route path="/kids-sports-academy-sonipat" element={<KidsSportsAcademySonipat />} />
+
+              {/* Geo Pages — Cricket Academy & Box Cricket */}
+              <Route path="/cricket-academy-jhajjar" element={<CricketAcademyJhajjar />} />
+              <Route path="/cricket-academy-panipat" element={<CricketAcademyPanipat />} />
+              <Route path="/box-cricket-jhajjar" element={<BoxCricketJhajjar />} />
+              <Route path="/box-cricket-panipat" element={<BoxCricketPanipat />} />
 
               {/* New SEO League & Tournament Pages */}
               <Route path="/rohtak-cricket-league" element={<RohtakCricketLeague />} />

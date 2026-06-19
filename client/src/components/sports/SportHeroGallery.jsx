@@ -3,7 +3,7 @@ import { getSportFallback } from './sportFallbacks';
 
 export default function SportHeroGallery({ sport }) {
   const fallback = getSportFallback(sport?.slug || sport?.name || '');
-  const heroImage = sport?.heroImage || fallback.heroImage;
+  const heroImage = sport?.thumbnail || sport?.heroImage || fallback.heroImage;
   const chips = fallback.chips;
 
   return (

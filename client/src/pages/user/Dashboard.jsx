@@ -148,8 +148,9 @@ export default function UserDashboard() {
   const sessionState = useMemo(() => {
     if (!activeSession?.checkInTime) return null;
     const allowedMinutes = activeSession.allowedDurationMinutes || sessionData?.allowedDurationMinutes || 75;
+    const displayMinutes = 60; // UI always shows 60 min limit regardless of backend setting
     const checkInMs = new Date(activeSession.checkInTime).getTime();
-    const endsAt = checkInMs + allowedMinutes * 60000;
+    const endsAt = checkInMs + displayMinutes * 60000;
     const remainingMs = endsAt - now;
     const remainingMinutes = Math.ceil(Math.max(0, remainingMs) / 60000);
     const overtimeMinutes = Math.max(0, Math.floor((now - endsAt) / 60000));
@@ -169,7 +170,7 @@ export default function UserDashboard() {
           : 'Session running normally';
 
     return {
-      allowedMinutes,
+      allowedMinutes: displayMinutes,
       remainingMs,
       overtimeMinutes,
       label: formatSessionClock(remainingMs),
@@ -543,7 +544,7 @@ export default function UserDashboard() {
 
               if (pass.accessStatus === 'active') {
                 const sessionStartMs = pass.usedAt ? new Date(pass.usedAt).getTime() : now;
-                const endsAtMs = sessionStartMs + (pass.allowedDurationMinutes || 60) * 60000;
+                const endsAtMs = sessionStartMs + 60 * 60000; // UI always shows 60 min limit
                 const passRemainingMs = endsAtMs - now;
                 const isPassOvertime = passRemainingMs < 0;
                 const passTimerColor = isPassOvertime
@@ -584,7 +585,7 @@ export default function UserDashboard() {
                         {formatSessionClock(passRemainingMs)}
                       </div>
                       <p className="text-xs text-neutral-500 mt-1">
-                        {pass.allowedDurationMinutes || 60} min allowed
+                        60 min allowed
                         {isPassOvertime ? ' · Overtime charges active' : ''}
                       </p>
                     </div>

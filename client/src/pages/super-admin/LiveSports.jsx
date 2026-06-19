@@ -572,6 +572,17 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
             )}
             <button onClick={onClose} className="w-full py-2.5 rounded-xl bg-[#C8102E] text-white text-sm font-semibold hover:bg-[#a50d27]">Close</button>
           </div>
+        ) : courts.length === 0 ? (
+          <div className="p-6 flex flex-col items-center gap-4 text-center">
+            <div className="w-14 h-14 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center">
+              <Building2 size={26} className="text-amber-500" />
+            </div>
+            <div>
+              <p className="font-bold text-[#111] text-base">No courts set up yet</p>
+              <p className="text-sm text-[#666] mt-1">Slots must belong to a court. Add at least one court for <strong>{sport?.name}</strong> before creating slots.</p>
+            </div>
+            <button onClick={onClose} className="w-full py-2.5 rounded-xl bg-[#111] text-white text-sm font-semibold hover:bg-[#333]">Got it — I'll add a court first</button>
+          </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-5 space-y-5 overflow-y-auto max-h-[75vh]">
 

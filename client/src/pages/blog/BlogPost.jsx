@@ -1,7 +1,7 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import SEOHead from '../../components/seo/SEOHead';
 import SEOLandingLayout, { CTAStrip, FAQSection, ContactBand } from '../../components/seo/SEOLandingLayout';
-import { getBlogPost, blogPosts } from '../../data/blogPosts';
+import { getBlogPost, getBlogCoverImage, blogPosts } from '../../data/blogPosts';
 import { articleSchema, breadcrumbSchema, faqSchema } from '../../components/seo/schemas';
 
 export default function BlogPost() {
@@ -59,6 +59,16 @@ export default function BlogPost() {
             {post.intro}
           </p>
         </header>
+
+        {/* Cover image */}
+        <div className="mb-10 rounded-2xl overflow-hidden bg-[#F0EDEA]" style={{ aspectRatio: '16/7' }}>
+          <img
+            src={getBlogCoverImage(post.slug)}
+            alt={post.h1}
+            className="w-full h-full object-cover"
+            loading="eager"
+          />
+        </div>
 
         <div className="prose max-w-none" style={{ fontFamily: "'DM Sans', sans-serif" }}>
           {post.sections.map((section, i) => (

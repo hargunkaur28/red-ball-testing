@@ -5,28 +5,28 @@ import { stadiumOrArenaSchema, breadcrumbSchema, faqSchema } from '../../compone
 
 const faqs = [
   {
-    q: 'What is the Rohtak Cricket League?',
-    a: 'The Rohtak Cricket League (RCL) is a structured cricket tournament hosted at Red Ball Sports Arena — featuring teams from Rohtak and across Haryana competing in a league format.',
+    q: 'What is the Rohtak Cricket League (RCL)?',
+    a: 'The Rohtak Cricket League is a premier local T20 cricket tournament held at Red Ball Sports Arena, Rohtak. It features 20-over matches between local corporate and franchise teams from Rohtak and Haryana.',
+  },
+  {
+    q: 'Is the Rohtak Cricket League broadcast live?',
+    a: 'Yes. RCL matches are broadcast live on YouTube, Siti Cable, and DEN Networks — making it one of the few local cricket leagues in Haryana with full live coverage.',
   },
   {
     q: 'How can my team register for the Rohtak Cricket League?',
-    a: 'Contact Red Ball Sports Arena at +91 93500 76653 or email redballcricketground@gmail.com to register your team for the next Rohtak Cricket League season.',
+    a: 'Contact Red Ball Sports Arena at +91 93500 76653 or email redballcricketground@gmail.com to register your team. Both corporate and franchise teams are welcome.',
   },
   {
-    q: 'Where is the Rohtak Cricket League played?',
-    a: 'All Rohtak Cricket League matches are played at Red Ball Sports Arena, Sector 22-D, Jhajjar Road, Rohtak — the official home ground of the RCL.',
+    q: 'Where are RCL matches played?',
+    a: 'All Rohtak Cricket League matches are played at Red Ball Sports Arena, Sector 22-D, Jhajjar Road (near Omaxe), Rohtak — which also features Box 360, Rohtak\'s first 24/7 circular box cricket facility.',
   },
   {
-    q: 'How many teams participate in the Rohtak Cricket League?',
-    a: 'The Rohtak Cricket League features multiple teams each season. Team count varies by season. Contact us for current season participation details.',
+    q: 'What facilities are available for spectators during RCL matches?',
+    a: 'Red Ball Sports Arena has floodlit day/night grounds, seating for spectators, and an on-site restaurant where fans can dine during and after matches.',
   },
   {
-    q: 'Is the Rohtak Cricket League open to teams from outside Rohtak?',
-    a: 'Yes. Teams from across Haryana and Delhi NCR are welcome to participate in the Rohtak Cricket League. Contact Red Ball to register an out-of-city team.',
-  },
-  {
-    q: 'Is there an entry fee for the Rohtak Cricket League?',
-    a: 'Yes. Team registration fees apply for the Rohtak Cricket League. Fees vary by season and format. Contact Red Ball for current RCL registration details.',
+    q: 'Are teams from outside Rohtak eligible to play in the RCL?',
+    a: 'Yes. Corporate and franchise teams from across Haryana and Delhi NCR are eligible to participate. The league welcomes teams from cities like Jhajjar, Sonipat, Panipat, Gurgaon, and beyond.',
   },
 ];
 
@@ -43,8 +43,8 @@ export default function RohtakCricketLeague() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Rohtak Cricket League | RCL Official Venue | Red Ball Sports Arena"
-        description="The Rohtak Cricket League (RCL) is played at Red Ball Sports Arena — Rohtak's home of cricket. Register your team, view schedules, and be part of Haryana's most exciting cricket league."
+        title="Rohtak Cricket League (RCL) | Live T20 Tournament | Red Ball Sports Arena"
+        description="The Rohtak Cricket League is Rohtak's premier T20 tournament — broadcast live on YouTube, Siti Cable & DEN Networks. Hosted at Red Ball Sports Arena, Jhajjar Road, Rohtak. Register your team."
         canonical="/rohtak-cricket-league"
         schema={schema}
       />
@@ -53,12 +53,15 @@ export default function RohtakCricketLeague() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Official Home Venue · Rohtak, Haryana</p>
+          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Live T20 Cricket · Rohtak, Haryana</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Rohtak Cricket League
           </h1>
-          <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena is the official home of the Rohtak Cricket League — Rohtak's most competitive and celebrated cricket tournament. Season after season, the RCL brings together the best cricket teams from Rohtak and Haryana to compete on Rohtak's finest cricket ground.
+          <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            The Rohtak Cricket League (RCL) is Rohtak's premier T20 cricket tournament — 20-over league cricket featuring corporate and franchise teams from Rohtak and across Haryana, played under floodlights at Red Ball Sports Arena.
+          </p>
+          <p className="text-white/50 text-sm max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            RCL matches are broadcast live on <span className="text-white/80 font-semibold">YouTube</span>, <span className="text-white/80 font-semibold">Siti Cable</span>, and <span className="text-white/80 font-semibold">DEN Networks</span> — bringing professional cricket coverage to Rohtak.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -71,24 +74,62 @@ export default function RohtakCricketLeague() {
         </div>
       </section>
 
+      {/* Live broadcast highlight */}
+      <section className="bg-[#C8102E] px-4 py-8">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-4 text-white">
+          <div className="text-4xl">📺</div>
+          <div>
+            <p className="font-black text-lg uppercase tracking-wide" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Broadcast Live</p>
+            <p className="text-white/85 text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              RCL matches air on <strong>YouTube</strong>, <strong>Siti Cable</strong>, and <strong>DEN Networks</strong> — watch from anywhere in Haryana or tune in live at the ground.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="max-w-4xl mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0D0D0D] mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-          The Home of Cricket Competition in Rohtak
+          Rohtak's Home of Competitive Cricket
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          The Rohtak Cricket League at Red Ball Sports Arena is more than a tournament — it's the centrepiece of Rohtak's cricket calendar. Teams train for months to compete in the RCL. Spectators fill the ground on match days. The league has created a genuine cricket culture in Rohtak, giving players a competitive outlet and a reason to take the game seriously. Red Ball's facilities make every RCL match a professional experience.
+          Red Ball Sports Arena on Jhajjar Road is the official venue of the Rohtak Cricket League. The arena's floodlit grounds host day-night T20 matches in a league format, with the stadium atmosphere bringing out the best in every team that competes here. The RCL isn't just a tournament — it's a live event with broadcast coverage that reaches viewers across Haryana and beyond. Alongside the cricket ground, Red Ball's Box 360 — Rohtak's first 24/7 circular box cricket facility — hosts warm-up and practice matches for RCL squads.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { title: 'League Format', desc: 'Round-robin group stage followed by knockout semi-finals and a grand final. Multiple matches across the season for all participating teams.' },
-            { title: 'Official Ground', desc: 'All RCL matches played at Red Ball Sports Arena — floodlit ground, scoreboard, seating, food court, and QR-based entry system.' },
-            { title: 'Open Registration', desc: 'Teams from Rohtak, Haryana, and Delhi NCR are eligible to register. Corporate, college, and club teams all welcome.' },
+            {
+              title: '20-Over T20 Format',
+              desc: 'Full league format — 20-over T20 matches with corporate and franchise teams. Group stages, knockouts, and a grand final played under Red Ball\'s floodlights.',
+            },
+            {
+              title: 'Live on Cable & YouTube',
+              desc: 'RCL matches are broadcast live on YouTube, Siti Cable, and DEN Networks. Come watch in person or follow along from anywhere.',
+            },
+            {
+              title: 'Stadium Experience',
+              desc: 'Spectator seating, on-site restaurant serving food and drinks during match days, and a genuine live sports atmosphere at every RCL fixture.',
+            },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>
               <p className="text-sm text-[#0D0D0D]/60 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Box 360 callout */}
+      <section className="bg-[#0D0D0D] px-4 py-10">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-[#C8102E] text-xs font-bold uppercase tracking-widest mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>Exclusive to Red Ball</p>
+          <h2 className="text-2xl md:text-3xl font-black text-white mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
+            Box 360 — Rohtak's First Circular Box Cricket
+          </h2>
+          <p className="text-white/60 text-sm md:text-base max-w-2xl leading-relaxed mb-5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            Alongside the main cricket ground, Red Ball features Box 360 — a unique circular box cricket format available 24/7. It's the first of its kind in Rohtak, offering a fast, high-intensity game format perfect for practice or a quick competitive match at any hour.
+          </p>
+          <Link to="/box-cricket-rohtak" className="inline-block border border-white/30 text-white font-bold px-5 py-2.5 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            Learn About Box 360
+          </Link>
         </div>
       </section>
 
@@ -100,8 +141,9 @@ export default function RohtakCricketLeague() {
               { label: 'Cricket Tournaments', to: '/cricket-tournaments-rohtak' },
               { label: 'Corporate Cricket', to: '/corporate-cricket-events' },
               { label: 'Inter-College Cricket', to: '/inter-college-cricket-tournaments' },
+              { label: 'Box Cricket Rohtak', to: '/box-cricket-rohtak' },
               { label: 'Cricket Ground', to: '/cricket-ground-rohtak' },
-              { label: 'Cricket Stadium', to: '/cricket-stadium-rohtak' },
+              { label: 'Cricket Academy', to: '/cricket-academy-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C8102E] hover:text-[#C8102E] transition-colors"

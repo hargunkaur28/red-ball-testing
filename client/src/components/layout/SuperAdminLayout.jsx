@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LayoutDashboard, Trophy, CreditCard, Ticket, Menu, X, LogOut, Bell, TimerReset, Settings, MessageSquare, ClipboardList, UtensilsCrossed, Zap } from 'lucide-react';
+import { LayoutDashboard, Trophy, CreditCard, Ticket, Menu, X, LogOut, Bell, TimerReset, Settings, MessageSquare, ClipboardList, UtensilsCrossed, Zap, BookOpen } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 import { getInitials } from '../../lib/utils';
 import ErrorBoundary from '../shared/ErrorBoundary';
@@ -16,6 +16,7 @@ const menuItems = [
   { path: '/super-admin/communication', label: 'Communication', icon: <MessageSquare size={18} /> },
   { path: '/super-admin/orders', label: 'Order Management', icon: <ClipboardList size={18} /> },
   { path: '/super-admin/menu', label: 'Menu Items', icon: <UtensilsCrossed size={18} /> },
+  { path: '/super-admin/blogs', label: 'Blog Posts', icon: <BookOpen size={18} /> },
   { path: '/super-admin/settings', label: 'Settings', icon: <Settings size={18} /> },
 ];
 
