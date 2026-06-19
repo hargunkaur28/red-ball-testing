@@ -44,6 +44,7 @@ const academySettingsRoutes = require('./routes/academySettings.routes');
 const courtRoutes = require('./routes/court.routes');
 const couponRoutes = require('./routes/coupon.routes');
 const academyRoutes = require('./routes/academy.routes');
+const sessionConfigRoutes = require('./routes/sessionConfig.routes');
 
 // Import cron jobs
 const startExpiryReminder = require('./jobs/expiryReminder.job');
@@ -334,6 +335,7 @@ app.use('/api/academy-settings', academySettingsRoutes);
 app.use('/api/courts', courtRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/academy', academyRoutes);
+app.use('/api/session-config', sessionConfigRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -352,8 +354,11 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 5000;
 
+const { startCricketReminderCron } = require('./utils/cricketReminderCron');
+
 const startServer = async () => {
   await connectDB();
+  startCricketReminderCron();
 
   const User = require('./models/User');
 

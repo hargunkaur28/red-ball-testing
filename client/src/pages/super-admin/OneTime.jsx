@@ -17,6 +17,7 @@ import {
   Loader2,
   User,
   CheckCircle,
+  LayoutGrid,
 } from 'lucide-react';
 
 /* ─── helpers ─── */
@@ -68,6 +69,31 @@ function getStatusBadge(status) {
   }
 }
 
+/* ─── session status badge ─── */
+function SessionBadge({ status, overtimeMinutes }) {
+  switch (status) {
+    case 'active':
+      return <span className="badge badge-info">Active</span>;
+    case 'attended':
+      return <span className="badge badge-success">Attended</span>;
+    case 'overtime':
+      return (
+        <span className="badge badge-warning">
+          Overtime{overtimeMinutes ? ` +${overtimeMinutes}m` : ''}
+        </span>
+      );
+    case 'missed':
+      return <span className="badge badge-danger">Missed</span>;
+    case 'no-show':
+      return <span className="badge badge-danger">No-show</span>;
+    case 'cancelled':
+      return <span className="badge" style={{ background: '#f3f4f6', color: '#6b7280' }}>Cancelled</span>;
+    case 'upcoming':
+    default:
+      return <span className="badge" style={{ background: '#f3f4f6', color: '#374151' }}>Upcoming</span>;
+  }
+}
+
 /* ─── skeleton row ─── */
 function SkeletonRow({ cols = 10 }) {
   return (
@@ -83,7 +109,7 @@ function SkeletonRow({ cols = 10 }) {
 
 /* ─── main page ─── */
 export default function OneTime() {
-  const [activeTab, setActiveTab] = useState('passes'); // 'bookings' or 'passes'
+  const [activeTab, setActiveTab] = useState('slots'); // 'slots' | 'passes'
   const qc = useQueryClient();
 
   const handleMarkCompleted = async (e, passId) => {
@@ -102,6 +128,7 @@ export default function OneTime() {
   const [sportFilter, setSportFilter] = useState('');
   const [paymentStatus, setPaymentStatus] = useState('All');
   const [bookingStatus, setBookingStatus] = useState('All');
+  const [sessionStatus, setSessionStatus] = useState('All');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [page, setPage] = useState(1);
@@ -120,44 +147,7 @@ export default function OneTime() {
 
   const sports = sportsData?.sports ?? sportsData ?? [];
 
-  /* fetch entries */
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [
-      'super-admin-onetime',
-      search,
-      sportFilter,
-      paymentStatus,
-      bookingStatus,
-      startDate,
-      endDate,
-      page,
-    ],
-    queryFn: () => {
-      const params = new URLSearchParams();
-      if (search) params.append('search', search);
-      if (sportFilter) params.append('sport', sportFilter);
-      if (paymentStatus !== 'All')
-        params.append('paymentStatus', paymentStatus.toLowerCase());
-      if (bookingStatus !== 'All')
-        params.append('status', bookingStatus.toLowerCase());
-      if (startDate) params.append('startDate', startDate);
-      if (endDate) params.append('endDate', endDate);
-      params.append('page', page);
-      params.append('limit', limit);
-      return api
-        .get(`/super-admin/one-time?${params.toString()}`)
-        .then((r) => r.data);
-    },
-    keepPreviousData: true,
-    enabled: activeTab === 'bookings',
-    onError: () => toast.error('Failed to load one-time entries'),
-  });
 
-  const entries = data?.entries ?? [];
-  const total = data?.total ?? 0;
-  const totalPages = data?.totalPages ?? 1;
-  const from = total === 0 ? 0 : (page - 1) * limit + 1;
-  const to = Math.min(page * limit, total);
 
   /* fetch prepaid passes */
   const { data: passesData, isLoading: isPassesLoading, isError: isPassesError } = useQuery({
@@ -218,25 +208,42 @@ export default function OneTime() {
   const passesTo = Math.min(page * limit, passesTotal);
   const paginatedPasses = filteredPasses.slice((page - 1) * limit, page * limit);
 
-  const displayTotal = activeTab === 'bookings' ? total : passesTotal;
-  const displayTotalPages = activeTab === 'bookings' ? totalPages : passesTotalPages;
-  const displayFrom = activeTab === 'bookings' ? from : passesFrom;
-  const displayTo = activeTab === 'bookings' ? to : passesTo;
-  const showLoading = activeTab === 'bookings' ? isLoading : isPassesLoading;
-  const showError = activeTab === 'bookings' ? isError : isPassesError;
+  /* fetch slot bookings */
+  const { data: slotsData, isLoading: isSlotsLoading, isError: isSlotsError } = useQuery({
+    queryKey: [
+      'admin-slot-bookings',
+      search, sportFilter, paymentStatus, bookingStatus, sessionStatus, startDate, endDate, page,
+    ],
+    queryFn: () => {
+      const params = new URLSearchParams();
+      if (search) params.append('search', search);
+      if (sportFilter) params.append('sport', sportFilter);
+      if (paymentStatus !== 'All') params.append('paymentStatus', paymentStatus.toLowerCase());
+      if (bookingStatus !== 'All') params.append('status', bookingStatus.toLowerCase());
+      if (sessionStatus !== 'All') params.append('sessionStatus', sessionStatus.toLowerCase());
+      if (startDate) params.append('startDate', startDate);
+      if (endDate) params.append('endDate', endDate);
+      params.append('page', page);
+      params.append('limit', limit);
+      return api.get(`/super-admin/slot-bookings?${params.toString()}`).then((r) => r.data);
+    },
+    keepPreviousData: true,
+    enabled: activeTab === 'slots',
+    onError: () => toast.error('Failed to load slot bookings'),
+  });
 
-  const bookingsHeaders = [
-    'Booking ID',
-    'Type',
-    'Player Name',
-    'Phone',
-    'Sport',
-    'Duration',
-    'Amount',
-    'Check In',
-    'Check Out',
-    'Date',
-  ];
+  const slotEntries = slotsData?.bookings ?? [];
+  const slotsTotal = slotsData?.total ?? 0;
+  const slotsTotalPages = slotsData?.totalPages ?? 1;
+  const slotsFrom = slotsTotal === 0 ? 0 : (page - 1) * limit + 1;
+  const slotsTo = Math.min(page * limit, slotsTotal);
+
+  const displayTotal = activeTab === 'slots' ? slotsTotal : passesTotal;
+  const displayTotalPages = activeTab === 'slots' ? slotsTotalPages : passesTotalPages;
+  const displayFrom = activeTab === 'slots' ? slotsFrom : passesFrom;
+  const displayTo = activeTab === 'slots' ? slotsTo : passesTo;
+  const showLoading = activeTab === 'slots' ? isSlotsLoading : isPassesLoading;
+  const showError = activeTab === 'slots' ? isSlotsError : isPassesError;
 
   const passesHeaders = [
     'Pass ID',
@@ -249,9 +256,22 @@ export default function OneTime() {
     'Check Out',
   ];
 
+  const slotHeaders = [
+    'Booking ID',
+    'Source',
+    'Player',
+    'Phone',
+    'Sport',
+    'Date',
+    'Slot Time',
+    'Amount',
+    'Payment',
+    'Session',
+  ];
+
   const currentBookingStatusOptions =
-    activeTab === 'bookings'
-      ? bookingStatusOptions
+    activeTab === 'slots'
+      ? ['All', 'Pending', 'Confirmed', 'Checked-in', 'Completed', 'Cancelled', 'No-show']
       : ['All', 'Unused', 'Active', 'Completed', 'Expired', 'Cancelled'];
 
   function handleTabChange(tab) {
@@ -259,6 +279,7 @@ export default function OneTime() {
     setPage(1);
     setBookingStatus('All');
     setPaymentStatus('All');
+    setSessionStatus('All');
   }
 
   function handleSelectPass(pass) {
@@ -302,12 +323,13 @@ export default function OneTime() {
   }
 
   const hasActiveFilters =
-    sportFilter || paymentStatus !== 'All' || bookingStatus !== 'All' || startDate || endDate;
+    sportFilter || paymentStatus !== 'All' || bookingStatus !== 'All' || sessionStatus !== 'All' || startDate || endDate;
 
   function clearFilters() {
     setSportFilter('');
     setPaymentStatus('All');
     setBookingStatus('All');
+    setSessionStatus('All');
     setStartDate('');
     setEndDate('');
     setPage(1);
@@ -326,13 +348,26 @@ export default function OneTime() {
             One-Time Entries.
           </h1>
           <p className="text-sm text-[#666666] mt-3">
-            All walk-in and online one-time play bookings
+            All slot bookings — online and admin-created
           </p>
         </div>
       </div>
 
       {/* Tabs */}
       <div className="flex border-b border-[#EAEAEA] mb-6">
+        <button
+          onClick={() => handleTabChange('slots')}
+          className={`py-3 px-6 font-medium text-sm border-b-2 transition-all ${
+            activeTab === 'slots'
+              ? 'border-black text-black'
+              : 'border-transparent text-[#666666] hover:text-black'
+          }`}
+        >
+          Slot Bookings
+          {slotsTotal > 0 && (
+            <span className="ml-2 px-1.5 py-0.5 rounded-full bg-[#111] text-white text-[10px]">{slotsTotal}</span>
+          )}
+        </button>
         <button
           onClick={() => handleTabChange('passes')}
           className={`py-3 px-6 font-medium text-sm border-b-2 transition-all ${
@@ -342,16 +377,6 @@ export default function OneTime() {
           }`}
         >
           Prepaid Passes
-        </button>
-        <button
-          onClick={() => handleTabChange('bookings')}
-          className={`py-3 px-6 font-medium text-sm border-b-2 transition-all ${
-            activeTab === 'bookings'
-              ? 'border-black text-black'
-              : 'border-transparent text-[#666666] hover:text-black'
-          }`}
-        >
-          All Entries
         </button>
       </div>
 
@@ -371,9 +396,9 @@ export default function OneTime() {
             <input
               type="text"
               placeholder={
-                activeTab === 'bookings'
-                  ? "Search by name, phone, or booking ID..."
-                  : "Search by customer name, phone, email, pass ID..."
+                activeTab === 'slots'
+                  ? "Search by name, phone, booking ID, or court..."
+                  : "Search by customer name, phone, email, or pass ID..."
               }
               value={search}
               onChange={(e) => {
@@ -398,6 +423,7 @@ export default function OneTime() {
                   sportFilter,
                   paymentStatus !== 'All' ? paymentStatus : '',
                   bookingStatus !== 'All' ? bookingStatus : '',
+                  sessionStatus !== 'All' ? sessionStatus : '',
                   startDate,
                   endDate,
                 ].filter(Boolean).length}
@@ -459,7 +485,7 @@ export default function OneTime() {
                 {/* Booking Status */}
                 <div>
                   <label className="block text-xs text-[#666] mb-1">
-                    {activeTab === 'bookings' ? 'Booking Status' : 'Pass Status'}
+                    {activeTab === 'slots' ? 'Booking Status' : 'Pass Status'}
                   </label>
                   <select
                     className="input-field bg-white"
@@ -475,6 +501,22 @@ export default function OneTime() {
                     ))}
                   </select>
                 </div>
+
+                {/* Session Status — slots tab only */}
+                {activeTab === 'slots' && (
+                  <div>
+                    <label className="block text-xs text-[#666] mb-1">Session</label>
+                    <select
+                      className="input-field bg-white"
+                      value={sessionStatus}
+                      onChange={(e) => updateFilter(setSessionStatus)(e.target.value)}
+                    >
+                      {['All', 'Upcoming', 'Active', 'Attended', 'Overtime', 'Missed', 'No-show', 'Cancelled'].map((s) => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
 
                 {/* Start Date */}
                 <div>
@@ -533,7 +575,7 @@ export default function OneTime() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[#EAEAEA]">
-                {(activeTab === 'bookings' ? bookingsHeaders : passesHeaders).map((h) => (
+                {(activeTab === 'slots' ? slotHeaders : passesHeaders).map((h) => (
                   <th
                     key={h}
                     className="text-left text-[10px] font-semibold tracking-wider text-[#888888] uppercase px-4 py-3"
@@ -544,101 +586,73 @@ export default function OneTime() {
               </tr>
             </thead>
             <tbody>
-              {activeTab === 'bookings' ? (
+              {activeTab === 'slots' ? (
                 showLoading ? (
-                  Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} cols={10} />)
+                  Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} cols={11} />)
                 ) : showError ? (
                   <tr>
-                    <td colSpan={10} className="text-center py-16 text-[#888]">
-                      <p className="text-base font-medium text-[#111]">
-                        Something went wrong
-                      </p>
-                      <p className="text-sm mt-1">
-                        Failed to load entries. Please try again.
-                      </p>
+                    <td colSpan={11} className="text-center py-16 text-[#888]">
+                      <p className="text-base font-medium text-[#111]">Something went wrong</p>
+                      <p className="text-sm mt-1">Failed to load slot bookings. Please try again.</p>
                     </td>
                   </tr>
-                ) : entries.length === 0 ? (
+                ) : slotEntries.length === 0 ? (
                   <tr>
-                    <td colSpan={10} className="text-center py-16">
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                      >
+                    <td colSpan={11} className="text-center py-16">
+                      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
                         <div className="w-16 h-16 rounded-full bg-[#F7F7F7] flex items-center justify-center mx-auto mb-4">
-                          <Ticket size={28} className="text-[#CCCCCC]" />
+                          <LayoutGrid size={28} className="text-[#CCCCCC]" />
                         </div>
                         <p className="text-base font-medium text-[#111]">
-                          {search || hasActiveFilters
-                            ? 'No entries match your filters'
-                            : 'No one-time play entries yet'}
+                          {search || hasActiveFilters ? 'No slot bookings match your filters' : 'No slot bookings yet'}
                         </p>
                         <p className="text-sm text-[#888] mt-1 max-w-sm mx-auto">
                           {search || hasActiveFilters
-                            ? "Try adjusting your search or filter criteria to find what you're looking for."
-                            : "When players make walk-in or online one-time bookings, they'll appear here."}
+                            ? 'Try adjusting your search or filter criteria.'
+                            : 'When players book slots (online or manual admin entry), they\'ll appear here.'}
                         </p>
                         {hasActiveFilters && (
-                          <button
-                            onClick={clearFilters}
-                            className="btn-ghost text-xs mt-4"
-                          >
-                            Clear filters
-                          </button>
+                          <button onClick={clearFilters} className="btn-ghost text-xs mt-4">Clear filters</button>
                         )}
                       </motion.div>
                     </td>
                   </tr>
                 ) : (
-                  entries.map((entry, idx) => (
+                  slotEntries.map((sb, idx) => (
                     <motion.tr
-                      key={entry._id}
+                      key={sb._id}
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.03 }}
-                      onClick={() => setSelectedEntry(entry)}
+                      onClick={() => setSelectedEntry({ ...sb, type: 'slot-booking', amount: sb.price, notes: sb.notes || `Court: ${sb.courtName || '—'}\nBooked by: ${sb.isManualEntry ? 'Admin (Manual)' : 'Online'}` })}
                       className="border-b border-[#F0F0F0] table-row cursor-pointer transition-colors"
                     >
-                      <td className="px-4 py-3 font-mono text-xs text-[#666]">
-                        {entry.bookingId || entry._id?.slice(-8)}
-                      </td>
+                      <td className="px-4 py-3 font-mono text-xs text-[#666]">{sb.bookingId}</td>
                       <td className="px-4 py-3">
-                        <span
-                          className={`badge ${
-                            entry.type === 'walk-in'
-                              ? 'badge-success'
-                              : entry.type === 'prepaid-pass'
-                                ? 'badge-warning'
-                                : 'badge-info'
-                          }`}
-                        >
-                          {entry.type === 'walk-in' ? 'Walk-in' : entry.type === 'prepaid-pass' ? 'Prepaid' : 'Online'}
+                        <span className={`badge ${sb.isManualEntry ? 'badge-warning' : 'badge-info'}`}>
+                          {sb.isManualEntry ? 'Manual' : 'Online'}
                         </span>
                       </td>
-                      <td className="px-4 py-3 font-medium text-[#111]">
-                        {entry.playerName}
+                      <td className="px-4 py-3">
+                        <p className="font-medium text-[#111]">{sb.playerName}</p>
+                        {sb.playerEmail && sb.playerEmail !== '—' && (
+                          <p className="text-xs text-[#888]">{sb.playerEmail}</p>
+                        )}
                       </td>
-                      <td className="px-4 py-3 text-[#666]">
-                        {entry.playerPhone || '—'}
+                      <td className="px-4 py-3 text-[#666] text-xs">{sb.playerPhone}</td>
+                      <td className="px-4 py-3 text-[#111] capitalize font-medium">{sb.sport}</td>
+                      <td className="px-4 py-3 text-[#666] whitespace-nowrap text-xs">{formatDate(sb.date)}</td>
+                      <td className="px-4 py-3 font-mono text-xs text-[#555] whitespace-nowrap">
+                        {sb.startTime}–{sb.endTime}
                       </td>
-                      <td className="px-4 py-3 text-[#111] capitalize">
-                        {entry.sport}
+                      <td className="px-4 py-3 font-medium text-[#111]">{formatCurrency(sb.totalAmount)}</td>
+                      <td className="px-4 py-3">
+                        <span className={`badge ${sb.paymentStatus === 'paid' ? 'badge-success' : sb.paymentStatus === 'partial' ? 'badge-warning' : 'badge-danger'}`}>
+                          {sb.paymentStatus}
+                        </span>
                       </td>
-                      <td className="px-4 py-3 text-[#666]">
-                        {formatDuration(entry.duration)}
-                      </td>
-
-                      <td className="px-4 py-3 font-medium text-[#111]">
-                        {formatCurrency(entry.totalAmount ?? entry.amount)}
-                      </td>
-                      <td className="px-4 py-3 font-mono text-xs text-[#666]">
-                        {formatTime(entry.checkInTime)}
-                      </td>
-                      <td className="px-4 py-3 font-mono text-xs text-[#666]">
-                        {formatTime(entry.checkOutTime)}
-                      </td>
-                      <td className="px-4 py-3 text-[#666] whitespace-nowrap">
-                        {formatDate(entry.date)}
+                      <td className="px-4 py-3">
+                        <SessionBadge status={sb.sessionStatus} overtimeMinutes={sb.overtimeMinutes} />
                       </td>
                     </motion.tr>
                   ))
@@ -1003,24 +1017,49 @@ export default function OneTime() {
                         </span>
                       </div>
                     )}
-                    {selectedEntry.checkInTime && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-[#666]">Check-in</span>
-                        <span className="text-[#111] font-mono text-xs">
-                          {formatTime(selectedEntry.checkInTime)}
-                        </span>
-                      </div>
-                    )}
-                    {selectedEntry.checkOutTime && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-[#666]">Check-out</span>
-                        <span className="text-[#111] font-mono text-xs">
-                          {formatTime(selectedEntry.checkOutTime)}
-                        </span>
-                      </div>
-                    )}
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#666]">Check-in</span>
+                      <span className={`font-mono text-xs ${selectedEntry.checkInTime ? 'text-[#111]' : 'text-[#bbb]'}`}>
+                        {selectedEntry.checkInTime ? formatTime(selectedEntry.checkInTime) : '—'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#666]">Check-out</span>
+                      <span className={`font-mono text-xs ${selectedEntry.checkOutTime ? 'text-[#111]' : selectedEntry.status === 'checked-in' ? 'text-amber-600 font-semibold' : 'text-[#bbb]'}`}>
+                        {selectedEntry.checkOutTime
+                          ? formatTime(selectedEntry.checkOutTime)
+                          : selectedEntry.status === 'checked-in'
+                          ? 'In session'
+                          : '—'}
+                      </span>
+                    </div>
                   </div>
                 </div>
+
+                {/* Court / extra slot info */}
+                {selectedEntry.courtName && selectedEntry.courtName !== '—' && (
+                  <div className="rounded-xl border border-[#EAEAEA] p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <LayoutGrid size={14} className="text-[#888]" />
+                      <span className="text-xs font-semibold text-[#888] uppercase tracking-wider">Court</span>
+                    </div>
+                    <p className="text-sm font-semibold text-[#111]">{selectedEntry.courtName}</p>
+                  </div>
+                )}
+
+                {/* Payment detail for manual bookings */}
+                {selectedEntry.type === 'slot-booking' && (selectedEntry.amountDue > 0 || selectedEntry.amountPaid > 0) && (
+                  <div className="rounded-xl border border-[#EAEAEA] p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <DollarSign size={14} className="text-[#888]" />
+                      <span className="text-xs font-semibold text-[#888] uppercase tracking-wider">Payment Detail</span>
+                    </div>
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between text-sm"><span className="text-[#666]">Paid</span><span className="font-medium text-[#111]">{formatCurrency(selectedEntry.amountPaid)}</span></div>
+                      <div className="flex justify-between text-sm"><span className="text-[#666]">Due</span><span className={`font-medium ${selectedEntry.amountDue > 0 ? 'text-red-600' : 'text-[#111]'}`}>{formatCurrency(selectedEntry.amountDue)}</span></div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Notes */}
                 {selectedEntry.notes && (
@@ -1028,7 +1067,7 @@ export default function OneTime() {
                     <p className="text-xs font-semibold text-[#888] uppercase tracking-wider mb-2">
                       Notes
                     </p>
-                    <p className="text-sm text-[#444] leading-relaxed">
+                    <p className="text-sm text-[#444] leading-relaxed whitespace-pre-line">
                       {selectedEntry.notes}
                     </p>
                   </div>

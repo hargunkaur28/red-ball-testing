@@ -22,6 +22,7 @@ export default function FeaturedMenu() {
   const { data: menuData, isLoading } = useQuery({
     queryKey: ['public-menu-featured'],
     queryFn: () => api.get('/menu').then((r) => r.data),
+    staleTime: 5 * 60 * 1000,
   });
 
   const featuredItems = (menuData?.items || []).filter(item => item.featured).slice(0, 6);

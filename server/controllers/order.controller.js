@@ -5,7 +5,7 @@ const RestaurantSettings = require('../models/RestaurantSettings');
 const Coupon = require('../models/Coupon');
 const CouponUsage = require('../models/CouponUsage');
 const { validateCouponForCheckout } = require('../utils/couponValidator');
-const { sendAdminPaymentAlert } = require('../utils/emailService');
+const { sendAdminPaymentAlert, sendOrderReadyEmail, sendKitchenOrderEmail } = require('../utils/emailService');
 const { sendKitchenOrderSms } = require('../utils/fast2smsService');
 
 // ── helpers ────────────────────────────────────────────────────────────────────
@@ -144,24 +144,27 @@ exports.create = async (req, res) => {
       sendKitchenOrderSms(populated).catch(() => {});
     }
 
-    if (order.paymentStatus === 'paid' && order.paymentMethod === 'razorpay') {
-      const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-      const recipients = [
-        process.env.MANAGER_EMAIL,
-        process.env.ADMIN_NOTIFICATION_EMAIL,
-      ].filter(Boolean);
-      recipients.forEach((email) => {
-        sendAdminPaymentAlert({
-          adminEmail: email,
-          payerName: order.customerName || 'Guest',
-          payerPhone: order.customerPhone,
-          paymentType: `Food Order (${order.orderType})`,
-          amount: order.totalAmount,
-          paymentMode: 'Razorpay',
-          invoiceNumber: order._id.toString().slice(-8).toUpperCase(),
-          timestamp,
-        }).catch(() => {});
-      });
+    // Kitchen email — sent for every confirmed order (cash or paid)
+    if ((order.paymentMethod === 'cash' || order.paymentStatus === 'paid') && process.env.MANAGER_EMAIL) {
+      const istTimestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+      const tableLabel = populated.tableId?.label || populated.tableId?.tableNumber;
+      sendKitchenOrderEmail({
+        kitchenEmail: process.env.MANAGER_EMAIL,
+        orderNumber: order.orderNumber || order._id.toString().slice(-6).toUpperCase(),
+        orderType: order.orderType,
+        tableLabel,
+        customerName: order.customerName,
+        customerPhone: order.customerPhone,
+        items: order.items,
+        subtotal: order.subtotal,
+        deliveryCharge: order.deliveryCharge || 0,
+        couponCode: order.couponCode,
+        couponDiscountAmount: order.couponDiscountAmount || 0,
+        totalAmount: order.totalAmount,
+        specialInstructions: order.specialInstructions,
+        deliveryAddress: order.deliveryAddress,
+        timestamp: istTimestamp,
+      }).catch((err) => console.error('[Email] Kitchen order email failed:', err.message));
     }
 
     res.status(201).json({ order: populated });
@@ -185,7 +188,7 @@ exports.updateStatus = async (req, res) => {
 
     const populated = await Order.findById(order._id)
       .populate('tableId', 'label tableNumber section')
-      .populate('customerId', 'name phone');
+      .populate('customerId', 'name phone email');
 
     const io = req.app.get('io');
 
@@ -199,6 +202,24 @@ exports.updateStatus = async (req, res) => {
       io.to(`order-${order._id}`).emit('order:status', { orderId: order._id, status });
       io.emit('order:status-update');
       io.emit('dashboard:refresh');
+    }
+
+    // Notify user when their order is ready (fire-and-forget)
+    if (status === 'ready' && previousStatus !== 'ready') {
+      const customerEmail = populated.customerId?.email;
+      const customerName = populated.customerId?.name || populated.customerName || 'Customer';
+      if (customerEmail) {
+        const tableLabel = populated.tableId?.label || populated.tableId?.tableNumber;
+        sendOrderReadyEmail({
+          toEmail: customerEmail,
+          toName: customerName,
+          orderNumber: order.orderNumber || order._id.toString().slice(-6).toUpperCase(),
+          orderType: order.orderType,
+          tableLabel,
+          items: order.items,
+          totalAmount: order.totalAmount,
+        }).catch((err) => console.error('[Email] Order ready email failed:', err.message));
+      }
     }
 
     res.json({ order: populated });
@@ -536,21 +557,27 @@ exports.createDirect = async (req, res) => {
       sendKitchenOrderSms(populated).catch(() => {});
     }
 
-    if (order.paymentStatus === 'paid' && order.paymentMethod === 'razorpay') {
-      const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-      const recipients = [process.env.MANAGER_EMAIL, process.env.ADMIN_NOTIFICATION_EMAIL].filter(Boolean);
-      recipients.forEach((email) => {
-        sendAdminPaymentAlert({
-          adminEmail: email,
-          payerName: order.customerName || 'Guest',
-          payerPhone: order.customerPhone,
-          paymentType: `Food Order (${order.orderType})`,
-          amount: order.totalAmount,
-          paymentMode: 'Razorpay',
-          invoiceNumber: order._id.toString().slice(-8).toUpperCase(),
-          timestamp,
-        }).catch(() => {});
-      });
+    // Kitchen email — sent for every confirmed order (cash or paid)
+    if ((order.paymentMethod === 'cash' || order.paymentStatus === 'paid') && process.env.MANAGER_EMAIL) {
+      const istTimestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+      const tableLabel = populated.tableId?.label || populated.tableId?.tableNumber;
+      sendKitchenOrderEmail({
+        kitchenEmail: process.env.MANAGER_EMAIL,
+        orderNumber: order.orderNumber || order._id.toString().slice(-6).toUpperCase(),
+        orderType: order.orderType,
+        tableLabel,
+        customerName: order.customerName,
+        customerPhone: order.customerPhone,
+        items: order.items,
+        subtotal: order.subtotal,
+        deliveryCharge: order.deliveryCharge || 0,
+        couponCode: order.couponCode,
+        couponDiscountAmount: order.couponDiscountAmount || 0,
+        totalAmount: order.totalAmount,
+        specialInstructions: order.specialInstructions,
+        deliveryAddress: order.deliveryAddress,
+        timestamp: istTimestamp,
+      }).catch((err) => console.error('[Email] Kitchen order email failed:', err.message));
     }
 
     res.status(201).json({ order: populated });

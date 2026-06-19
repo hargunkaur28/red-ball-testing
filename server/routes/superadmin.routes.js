@@ -8,6 +8,7 @@ const superadminController = require('../controllers/superadmin.controller');
 router.get('/memberships', auth, authorize('superadmin'), superadminController.getMemberships);
 router.get('/overtime-sessions', auth, authorize('superadmin'), superadminController.getOvertimeSessions);
 router.get('/one-time', auth, authorize('superadmin'), superadminController.getOneTimeEntries);
+router.get('/slot-bookings', auth, authorize('superadmin'), superadminController.getSlotBookings);
 router.get('/users', auth, authorize('superadmin'), superadminController.getUsers);
 router.get('/user-search', auth, authorize('superadmin'), superadminController.userSearch);
 router.patch('/payments/:id/status', auth, authorize('superadmin'), superadminController.updatePaymentStatus);

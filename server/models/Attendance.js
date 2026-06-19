@@ -78,7 +78,7 @@ const attendanceSchema = new mongoose.Schema({
   // Entitlement snapshot — frozen at check-in time
   entitlementType: {
     type: String,
-    enum: ['single-sport', 'multi-sport', 'all-services', 'one-time-play'],
+    enum: ['single-sport', 'multi-sport', 'all-services', 'one-time-play', 'slot-booking', 'membership-slot'],
   },
   concurrentSessionLimit: {
     type: Number,

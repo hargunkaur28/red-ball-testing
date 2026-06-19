@@ -6,7 +6,9 @@ const Slot = require('../models/Slot');
 const SlotBooking = require('../models/SlotBooking');
 const Attendance = require('../models/Attendance');
 const Payment = require('../models/Payment');
+const cache = require('../utils/memCache');
 const mongoose = require('mongoose');
+const { todayISTBoundaries } = require('../utils/istUtils');
 const { DEFAULT_ALLOWED_DURATION_MINUTES, applySessionCheckout, getEffectiveConfig } = require('../utils/sessionCalculator');
 const { calculateEntitlement, validateCheckIn, isAllServicesKey } = require('../utils/entitlementEngine');
 
@@ -109,8 +111,14 @@ exports.getAllSports = async (req, res) => {
 // GET /api/sports/public - Get active sports (public)
 exports.getPublicSports = async (req, res) => {
   try {
+    const CACHE_KEY = 'public-sports';
+    const cached = cache.get(CACHE_KEY);
+    if (cached) return res.json(cached);
+
     const sports = await Sport.find({ active: true, deletedAt: null }).sort({ name: 1 });
-    res.json({ success: true, sports });
+    const payload = { success: true, sports };
+    cache.set(CACHE_KEY, payload, 60_000); // 60s TTL
+    res.json(payload);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -262,6 +270,7 @@ exports.createSport = async (req, res) => {
       return sport;
     });
 
+    cache.invalidate('public-sports');
     res.status(201).json({ success: true, sport: newSport });
   } catch (error) {
     console.error('Create Sport Error:', error);
@@ -346,7 +355,7 @@ exports.updateSport = async (req, res) => {
     });
 
     // Sync future unbooked slot prices to match the updated sport price
-    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const { startOfDay: today } = todayISTBoundaries();
     if (sport.slotPricingMode === 'dayNight') {
       if (daySlotPrice !== undefined) {
         await Slot.updateMany(
@@ -367,6 +376,7 @@ exports.updateSport = async (req, res) => {
       );
     }
 
+    cache.invalidate('public-sports');
     res.json({ success: true, sport: updatedSport });
   } catch (error) {
     console.error('Update Sport Error:', error);
@@ -415,6 +425,7 @@ exports.deleteSport = async (req, res) => {
       return sport;
     });
 
+    cache.invalidate('public-sports');
     res.json({ success: true, message: 'Sport archived and deactivated successfully', sport: archivedSport });
   } catch (error) {
     console.error('Archive Sport Error:', error);
@@ -512,25 +523,49 @@ const timeToMinutes = (t) => {
 // Return first SlotBooking valid for QR check-in right now
 // Grace window: 10 min before slot start; hard cut-off at slot end
 const findValidSlotBooking = async (userId, sportId) => {
-  const now = new Date();
-  const nowMins = now.getHours() * 60 + now.getMinutes();
-  const todayStart = new Date(now); todayStart.setHours(0, 0, 0, 0);
-  const todayEnd = new Date(now); todayEnd.setHours(23, 59, 59, 999);
+  try {
+    const User = require('../models/User');
+    const IST = 5.5 * 60 * 60 * 1000;
+    const nowIST = new Date(Date.now() + IST);
+    const nowMins = nowIST.getUTCHours() * 60 + nowIST.getUTCMinutes();
+    const todayISTStr = nowIST.toISOString().slice(0, 10); // "YYYY-MM-DD" in IST
 
-  const bookings = await SlotBooking.find({
-    userId,
-    sportId,
-    status: { $in: ['confirmed', 'checked-in'] },
-  }).populate({ path: 'slotId', select: 'date' }).select('+isMembershipBooking +membershipId').lean();
+    const isInWindow = (b) => {
+      const slotDate = b.slotId?.date;
+      const slotIST = slotDate ? new Date(slotDate.getTime() + IST) : null;
+      const slotDateStr = slotIST ? slotIST.toISOString().slice(0, 10) : null;
+      const startMins = timeToMinutes(b.startTime) - 10;
+      const endMins = timeToMinutes(b.endTime);
+      if (!slotDate) return false;
+      if (slotDateStr !== todayISTStr) return false;
+      return nowMins >= startMins && nowMins < endMins;
+    };
 
-  for (const b of bookings) {
-    const slotDate = b.slotId?.date;
-    if (!slotDate || slotDate < todayStart || slotDate > todayEnd) continue;
-    const startMins = timeToMinutes(b.startTime) - 10;
-    const endMins = timeToMinutes(b.endTime);
-    if (nowMins >= startMins && nowMins < endMins) return b;
+    // Look up user's phone for fallback matching
+    const user = await User.findById(userId).select('phone').lean();
+    const phone = user?.phone ? user.phone.replace(/\D/g, '').slice(-10) : null;
+
+    // Single query: match by userId OR by playerPhone (handles manual bookings
+    // that weren't linked to a user account, e.g. superadmin booking for themselves)
+    const orClauses = [{ userId }];
+    if (phone) orClauses.push({ playerPhone: { $regex: phone + '$' } });
+
+    const bookings = await SlotBooking.find({
+      $or: orClauses,
+      sportId,
+      status: { $in: ['confirmed', 'checked-in'] },
+    }).populate({ path: 'slotId', select: 'date' }).lean();
+
+
+    for (const b of bookings) {
+      if (isInWindow(b)) return b;
+    }
+
+    return null;
+  } catch (err) {
+    console.error('[SlotEntry] findValidSlotBooking error:', err.message);
+    return null;
   }
-  return null;
 };
 
 const normalizeKey = (value) => (value || '').trim().toLowerCase();
@@ -625,11 +660,22 @@ exports.entryCheck = async (req, res) => {
       activeCheckIn = validation.activeSessions.find(
         (s) => (s.sport || '').trim().toLowerCase() === sport.slug || (s.sport || '').trim().toLowerCase() === sport.name.toLowerCase()
       ) || null;
-      
+
+      // validateCheckIn returns activeSessions:[] early when the user has no membership.
+      // Slot-booking users fall into this case, so we must do an independent DB check.
+      if (!activeCheckIn) {
+        activeCheckIn = await Attendance.findOne({
+          userId: req.user.userId,
+          sport: { $regex: new RegExp(`^${sport.name}$`, 'i') },
+          checkOutTime: null,
+          sessionStatus: 'Active',
+        }).lean() || null;
+      }
+
       const wrongSportCheckIn = validation.activeSessions.find(
         (s) => (s.sport || '').trim().toLowerCase() !== sport.slug && (s.sport || '').trim().toLowerCase() !== sport.name.toLowerCase()
       );
-      if (wrongSportCheckIn) {
+      if (!activeCheckIn && wrongSportCheckIn) {
         validationAllowed = false;
         validationReason = `Wrong QR Code! You are currently checked in for ${wrongSportCheckIn.sport || 'another sport'}. Please scan the ${wrongSportCheckIn.sport || 'correct'} QR to check out before checking into a new sport.`;
       }
@@ -758,10 +804,7 @@ exports.entryCheckIn = async (req, res) => {
           (plan.sportsIncluded || []).some((k) => isAllServicesKey(k))
         );
         if (planIsAllServices) {
-          const startOfDay = new Date();
-          startOfDay.setHours(0, 0, 0, 0);
-          const endOfDay = new Date();
-          endOfDay.setHours(23, 59, 59, 999);
+          const { startOfDay, endOfDay } = todayISTBoundaries();
           const alreadyUsedToday = await Attendance.findOne({
             userId: req.user.userId,
             sportId: sport._id,
@@ -775,8 +818,7 @@ exports.entryCheckIn = async (req, res) => {
         }
       }
 
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const { startOfDay: today } = todayISTBoundaries();
 
       let allowedDurationMinutes = config.allowedDurationMinutes;
       let hourlyRateAtCheckIn = sport.hourlyPrice || 0;
@@ -969,6 +1011,13 @@ exports.entryCheckOut = async (req, res) => {
         }, opts);
       }
 
+      if (attendance.relatedBookingType === 'slot-booking' || attendance.relatedBookingType === 'membership-slot') {
+        await SlotBooking.findByIdAndUpdate(attendance.relatedBookingId, {
+          checkOutTime: checkoutAt,
+          status: 'completed',
+        }, opts);
+      }
+
       sport.activeOccupancy = Math.max(0, (sport.activeOccupancy || 0) - 1);
       await sport.save(opts);
 
@@ -1135,8 +1184,7 @@ exports.entryPayVerify = async (req, res) => {
       }], opts);
 
       // C. Create Attendance check-in
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const { startOfDay: today } = todayISTBoundaries();
       const currentSessionConfig = {
         allowedDurationMinutes: config.allowedDurationMinutes || 60,
         overtimeThresholdMinutes: 0,
@@ -1315,8 +1363,7 @@ exports.entryVerifyMembership = async (req, res) => {
       }], opts);
 
       // C. Create Attendance
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const { startOfDay: today } = todayISTBoundaries();
       const [attendance] = await Attendance.create([{
         userId: req.user.userId,
         date: today,

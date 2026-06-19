@@ -1,14 +1,12 @@
 const BlockedSchedule = require('../models/BlockedSchedule');
+const { istDayBoundaries } = require('../utils/istUtils');
 
 exports.getAll = async (req, res) => {
   try {
     const { date } = req.query;
     const filter = {};
     if (date) {
-      const start = new Date(date);
-      start.setHours(0, 0, 0, 0);
-      const end = new Date(date);
-      end.setHours(23, 59, 59, 999);
+      const { startOfDay: start, endOfDay: end } = istDayBoundaries(date);
       filter.date = { $gte: start, $lte: end };
     }
     const blocked = await BlockedSchedule.find(filter).sort({ date: 1, startTime: 1 });

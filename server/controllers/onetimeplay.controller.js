@@ -3,6 +3,7 @@ const Payment = require('../models/Payment');
 const Attendance = require('../models/Attendance');
 const { calculateGST } = require('../utils/gstCalculator');
 const razorpayConfig = require('../config/razorpay');
+const { istDayBoundaries } = require('../utils/istUtils');
 
 // GET /api/onetimeplay
 exports.getAll = async (req, res) => {
@@ -10,10 +11,7 @@ exports.getAll = async (req, res) => {
     const { date } = req.query;
     const filter = {};
     if (date) {
-      const start = new Date(date);
-      start.setHours(0, 0, 0, 0);
-      const end = new Date(date);
-      end.setHours(23, 59, 59, 999);
+      const { startOfDay: start, endOfDay: end } = istDayBoundaries(date);
       filter.createdAt = { $gte: start, $lte: end };
     }
 

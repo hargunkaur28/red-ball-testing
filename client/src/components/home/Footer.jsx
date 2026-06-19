@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useAcademyInfo } from '../../hooks/useAcademyInfo';
 
 const programs = [
   { label: 'Box Cricket', to: '/sports/box-cricket' },
@@ -51,6 +52,7 @@ const WhatsAppIcon = () => (
 );
 
 export default function Footer() {
+  const academy = useAcademyInfo();
   const [email, setEmail] = useState('');
   const [subLoading, setSubLoading] = useState(false);
 
@@ -179,13 +181,13 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5 text-sm text-[#0D0D0D]/70" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               <li>
-                <a href="tel:+919350076653" className="hover:text-[#C8102E] transition-colors">+91 93500 76653</a>
+                <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="hover:text-[#C8102E] transition-colors">{academy.phone}</a>
               </li>
               <li>
-                <a href="mailto:redballcricketground@gmail.com" className="hover:text-[#C8102E] transition-colors">redballcricketground@gmail.com</a>
+                <a href={`mailto:${academy.email}`} className="hover:text-[#C8102E] transition-colors">{academy.email}</a>
               </li>
               <li className="pt-1 leading-relaxed">
-                Sector 22-D, Jhajjar Road, near Village-Maina Rohtak, Haryana 124001
+                {academy.address}
               </li>
             </ul>
           </div>

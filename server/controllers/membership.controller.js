@@ -4,6 +4,7 @@ const Payment = require('../models/Payment');
 const Admission = require('../models/Admission');
 const Attendance = require('../models/Attendance');
 const User = require('../models/User');
+const { todayISTBoundaries } = require('../utils/istUtils');
 const { calculateGST } = require('../utils/gstCalculator');
 const { getDurationMs } = require('../utils/dateUtils');
 const { verifyPaymentSignature, fetchPaymentDetails, createRazorpayOrder } = require('../config/razorpay');
@@ -325,8 +326,7 @@ exports.checkInMembership = async (req, res) => {
       return res.status(400).json({ message: 'Membership has expired. Please renew.' });
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const { startOfDay: today } = todayISTBoundaries();
 
     const entitlement = await calculateEntitlement(membership.studentId._id);
     if (entitlement.entitlementType === 'none') {

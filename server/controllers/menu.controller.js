@@ -1,8 +1,15 @@
 const MenuItem = require('../models/MenuItem');
 const MenuCategory = require('../models/MenuCategory');
+const cache = require('../utils/memCache');
+
+const MENU_CACHE_KEY = 'public-menu';
+const MENU_TTL = 30_000; // 30s — short so restaurant managers see changes quickly
 
 exports.getMenu = async (req, res) => {
   try {
+    const cached = cache.get(MENU_CACHE_KEY);
+    if (cached) return res.json(cached);
+
     const categories = await MenuCategory.find({ isActive: true }).sort({ sortOrder: 1 });
     let items = await MenuItem.find({ isActive: true }).populate('categoryId', 'name icon').sort({ name: 1 });
     
@@ -127,7 +134,9 @@ exports.getMenu = async (req, res) => {
       items = await MenuItem.find({ isActive: true }).sort({ name: 1 });
     }
 
-    res.json({ categories, items });
+    const payload = { categories, items };
+    cache.set(MENU_CACHE_KEY, payload, MENU_TTL);
+    res.json(payload);
   } catch (error) { res.status(500).json({ message: 'Server error.' }); }
 };
 
@@ -149,6 +158,7 @@ exports.createItem = async (req, res) => {
     }
     const item = await MenuItem.create(data);
     const populated = await item.populate('categoryId', 'name icon');
+    cache.invalidate(MENU_CACHE_KEY);
     const io = req.app.get('io');
     if (io) { io.emit('menu:updated'); io.emit('dashboard:refresh'); }
     res.status(201).json({ item: populated });
@@ -166,6 +176,7 @@ exports.updateItem = async (req, res) => {
     }
     const item = await MenuItem.findByIdAndUpdate(req.params.id, data, { new: true }).populate('categoryId', 'name icon');
     if (!item) return res.status(404).json({ message: 'Item not found.' });
+    cache.invalidate(MENU_CACHE_KEY);
     const io = req.app.get('io');
     if (io) { io.emit('menu:updated'); io.emit('dashboard:refresh'); }
     res.json({ item });
@@ -175,6 +186,7 @@ exports.updateItem = async (req, res) => {
 exports.deleteItem = async (req, res) => {
   try {
     await MenuItem.findByIdAndUpdate(req.params.id, { isActive: false });
+    cache.invalidate(MENU_CACHE_KEY);
     const io = req.app.get('io');
     if (io) { io.emit('menu:updated'); io.emit('dashboard:refresh'); }
     res.json({ message: 'Item archived.' });
@@ -184,6 +196,7 @@ exports.deleteItem = async (req, res) => {
 exports.createCategory = async (req, res) => {
   try {
     const category = await MenuCategory.create(req.body);
+    cache.invalidate(MENU_CACHE_KEY);
     res.status(201).json({ category });
   } catch (error) { res.status(500).json({ message: 'Server error.' }); }
 };
@@ -192,6 +205,7 @@ exports.updateCategory = async (req, res) => {
   try {
     const category = await MenuCategory.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!category) return res.status(404).json({ message: 'Category not found.' });
+    cache.invalidate(MENU_CACHE_KEY);
     res.json({ category });
   } catch (error) { res.status(500).json({ message: 'Server error.' }); }
 };
@@ -201,6 +215,7 @@ exports.deleteCategory = async (req, res) => {
     const count = await MenuItem.countDocuments({ categoryId: req.params.id, isActive: true });
     if (count > 0) return res.status(400).json({ message: `Cannot delete — ${count} item(s) still use this category.` });
     await MenuCategory.findByIdAndDelete(req.params.id);
+    cache.invalidate(MENU_CACHE_KEY);
     res.json({ success: true });
   } catch (error) { res.status(500).json({ message: 'Server error.' }); }
 };

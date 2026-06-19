@@ -1128,7 +1128,18 @@ export default function EntryPortal() {
                     </>
                   )}
 
-                  {!data?.hasActiveCheckIn && !data?.hasMembership && !data?.hasPrepaidPass && (
+                  {!data?.hasActiveCheckIn && data?.hasSlotBooking && !data?.hasMembership && !data?.hasPrepaidPass && data?.validationAllowed !== false && (
+                    <>
+                      <div className="entry-status-badge badge-member">
+                        <BadgeCheck size={14} /> Slot Booked · {data?.slotBooking?.startTime}–{data?.slotBooking?.endTime}
+                      </div>
+                      <button className="entry-action-btn btn-checkin" onClick={handleCheckIn} disabled={actionLoading}>
+                        {actionLoading ? <Loader2 size={18} className="animate-spin" /> : 'Confirm Check-In'}
+                      </button>
+                    </>
+                  )}
+
+                  {!data?.hasActiveCheckIn && !data?.hasMembership && !data?.hasPrepaidPass && !data?.hasSlotBooking && (
                     <div className="bg-red-50/10 border border-red-500/30 rounded-xl p-5 mt-4 mb-4 text-center">
                       <AlertCircle className="w-10 h-10 text-red-400 mx-auto mb-3" />
                       <h4 className="text-red-300 font-bold text-xl mb-2">Access Denied / Wrong QR</h4>

@@ -11,6 +11,8 @@ const CouponUsage = require('../models/CouponUsage');
 const { validateCouponForCheckout } = require('../utils/couponValidator');
 const { calculateGST } = require('../utils/gstCalculator');
 const { createRazorpayOrder, verifyPaymentSignature, fetchPaymentDetails, createRefund } = require('../config/razorpay');
+const { sendSlotBookingConfirmationEmail } = require('../utils/emailService');
+const { IST_OFFSET_MS, nowIST, todayISTString, todayISTBoundaries, istDayBoundaries } = require('../utils/istUtils');
 
 const ALLOWED_MANUAL_PAYMENT_MODES = ['cash', 'upi', 'card', 'bank-transfer'];
 
@@ -42,10 +44,7 @@ exports.getSlots = async (req, res) => {
     const filter = {};
 
     if (date) {
-      const startOfDay = new Date(date);
-      startOfDay.setHours(0, 0, 0, 0);
-      const endOfDay = new Date(date);
-      endOfDay.setHours(23, 59, 59, 999);
+      const { startOfDay, endOfDay } = istDayBoundaries(date);
       filter.date = { $gte: startOfDay, $lte: endOfDay };
     }
 
@@ -175,8 +174,8 @@ exports.bulkDeleteSlots = async (req, res) => {
       targetCourtIds = courts.map((c) => c._id);
     }
 
-    const rangeStart = new Date(startDateStr); rangeStart.setHours(0, 0, 0, 0);
-    const rangeEnd = new Date(endDateStr); rangeEnd.setHours(23, 59, 59, 999);
+    const { startOfDay: rangeStart } = istDayBoundaries(startDateStr);
+    const { endOfDay: rangeEnd } = istDayBoundaries(endDateStr);
 
     const result = await Slot.deleteMany({
       courtId: { $in: targetCourtIds },
@@ -237,20 +236,18 @@ exports.bulkCreateSlots = async (req, res) => {
     const openCourtIds = courts.filter((c) => c.isOpen).map((c) => c._id.toString());
     const skippedClosedCount = allCourtIds.length - openCourtIds.length;
 
-    // Build list of dates
-    const start = new Date(startDateStr);
-    const end = new Date(endDateStr);
-    start.setHours(0, 0, 0, 0);
-    end.setHours(23, 59, 59, 999);
+    // Build list of dates — iterate in UTC to avoid DST/timezone drift
+    const start = new Date(startDateStr); // "YYYY-MM-DD" → UTC midnight
+    const end   = new Date(endDateStr);
 
     const dates = [];
     const cursor = new Date(start);
     while (cursor <= end) {
-      const dow = cursor.getDay();
+      const dow = cursor.getUTCDay();
       if (!weekdays || weekdays.length === 0 || weekdays.includes(dow)) {
         dates.push(new Date(cursor));
       }
-      cursor.setDate(cursor.getDate() + 1);
+      cursor.setUTCDate(cursor.getUTCDate() + 1);
     }
 
     // Build time slots
@@ -311,8 +308,8 @@ exports.bulkCreateSlots = async (req, res) => {
 
     // Delete existing slots for these courts within the date range before creating new ones
     const openCourtObjectIds = courts.filter((c) => c.isOpen).map((c) => c._id);
-    const rangeStart = new Date(start); rangeStart.setHours(0, 0, 0, 0);
-    const rangeEnd = new Date(end); rangeEnd.setHours(23, 59, 59, 999);
+    const { startOfDay: rangeStart } = istDayBoundaries(startDateStr);
+    const { endOfDay: rangeEnd } = istDayBoundaries(endDateStr);
     await Slot.deleteMany({
       courtId: { $in: openCourtObjectIds },
       date: { $gte: rangeStart, $lte: rangeEnd },
@@ -373,11 +370,8 @@ exports.bulkCreateSlots = async (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 exports.adminLiveOverview = async (req, res) => {
   try {
-    const dateStr = req.query.date || new Date().toISOString().split('T')[0];
-    const startOfDay = new Date(dateStr);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(dateStr);
-    endOfDay.setHours(23, 59, 59, 999);
+    const dateStr = req.query.date || todayISTString();
+    const { startOfDay, endOfDay } = istDayBoundaries(dateStr);
 
     const sports = await Sport.find({ active: true, deletedAt: null, slug: { $ne: 'all-services' } }).sort({ name: 1 });
 
@@ -425,11 +419,8 @@ exports.adminLiveOverview = async (req, res) => {
 exports.adminLiveSportDetail = async (req, res) => {
   try {
     const { sportId } = req.params;
-    const dateStr = req.query.date || new Date().toISOString().split('T')[0];
-    const startOfDay = new Date(dateStr);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(dateStr);
-    endOfDay.setHours(23, 59, 59, 999);
+    const dateStr = req.query.date || todayISTString();
+    const { startOfDay, endOfDay } = istDayBoundaries(dateStr);
 
     const sport = await Sport.findById(sportId);
     if (!sport) return res.status(404).json({ message: 'Sport not found.' });
@@ -505,10 +496,7 @@ exports.getPublicAvailableSlots = async (req, res) => {
     const sport = await Sport.findOne({ slug: sportSlug, active: true, deletedAt: null });
     if (!sport) return res.status(404).json({ message: 'Sport not found.' });
 
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
+    const { startOfDay, endOfDay } = istDayBoundaries(date);
 
     const filter = {
       sportId: sport._id,
@@ -637,15 +625,15 @@ exports.createSlotOrder = async (req, res) => {
     if (!slot) return res.status(404).json({ message: 'Slot not found.' });
 
     // Past-time guard: reject slots in the past or before the next full hour today
-    const nowLocal = new Date();
+    const _nowIST = nowIST();
     const slotDateObj = slot.date;
-    const todayLocalStr = `${nowLocal.getFullYear()}-${String(nowLocal.getMonth()+1).padStart(2,'0')}-${String(nowLocal.getDate()).padStart(2,'0')}`;
-    const slotDateLocalStr = `${slotDateObj.getFullYear()}-${String(slotDateObj.getMonth()+1).padStart(2,'0')}-${String(slotDateObj.getDate()).padStart(2,'0')}`;
-    if (slotDateLocalStr < todayLocalStr) {
+    const todayISTStr = _nowIST.toISOString().slice(0, 10);
+    const slotDateISTStr = new Date(slotDateObj.getTime() + IST_OFFSET_MS).toISOString().slice(0, 10);
+    if (slotDateISTStr < todayISTStr) {
       return res.status(409).json({ message: 'Cannot book a slot in the past.' });
     }
-    if (slotDateLocalStr === todayLocalStr) {
-      const curMin = nowLocal.getHours() * 60 + nowLocal.getMinutes();
+    if (slotDateISTStr === todayISTStr) {
+      const curMin = _nowIST.getUTCHours() * 60 + _nowIST.getUTCMinutes();
       const nextAllowedMin = Math.ceil(curMin / 60) * 60;
       if (timeToMinutes(slot.startTime) < nextAllowedMin) {
         return res.status(409).json({ message: 'Booking window for this slot has passed. Please choose a later slot.' });
@@ -654,10 +642,8 @@ exports.createSlotOrder = async (req, res) => {
 
     // Overlap guard: user must not have a confirmed booking at the same time on the same date
     if (req.user) {
-      const slotStart = new Date(slot.date);
-      slotStart.setHours(0, 0, 0, 0);
-      const slotEnd = new Date(slot.date);
-      slotEnd.setHours(23, 59, 59, 999);
+      const slotDateStr2 = slotDateISTStr;
+      const { startOfDay: slotStart, endOfDay: slotEnd } = istDayBoundaries(slotDateStr2);
       const [sh, sm] = slot.startTime.split(':').map(Number);
       const [eh, em] = slot.endTime.split(':').map(Number);
       const newStart = sh * 60 + sm;
@@ -1235,6 +1221,24 @@ exports.adminManualBooking = async (req, res) => {
       booking.paymentId = payment._id;
       await booking.save();
 
+      // Fire-and-forget confirmation email to the player
+      const toEmail = playerEmail || matchedUser?.email;
+      if (toEmail) {
+        sendSlotBookingConfirmationEmail({
+          toEmail,
+          toName: playerName,
+          sportName: sport?.name || claimedSlot.sportSlug || 'Sport',
+          courtName: claimedSlot.courtNameSnapshot,
+          date: claimedSlot.date,
+          startTime: claimedSlot.startTime,
+          endTime: claimedSlot.endTime,
+          amountPaid: paid,
+          totalAmount: slotAmount,
+          paymentStatus,
+          bookingRef: booking.bookingId,
+        }).catch((err) => console.error('[Email] Slot booking confirmation failed:', err.message));
+      }
+
       // Upsert reference price for future online bookings at the same rate
       let referencePriceCreated = false;
       let referencePriceWarning = null;
@@ -1617,8 +1621,7 @@ exports.getMembershipAvailableSlots = async (req, res) => {
       return res.status(403).json({ message: 'Your membership does not cover this sport.' });
     }
 
-    const startOfDay = new Date(date); startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(date); endOfDay.setHours(23, 59, 59, 999);
+    const { startOfDay, endOfDay } = istDayBoundaries(date);
 
     const slots = await Slot.find({
       sportId: sport._id,
@@ -1647,20 +1650,17 @@ exports.getMembershipAvailableSlots = async (req, res) => {
         .map((b) => b.slotId?._id?.toString())
     );
 
-    // Past-time filtering for today — use IST (UTC+5:30); server runs UTC.
-    const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
-    const nowIST = new Date(Date.now() + IST_OFFSET_MS);
-    const todayLocalStr = `${nowIST.getUTCFullYear()}-${String(nowIST.getUTCMonth()+1).padStart(2,'0')}-${String(nowIST.getUTCDate()).padStart(2,'0')}`;
-    const isToday = date === todayLocalStr;
+    // Past-time filtering for today
+    const _nowIST2 = nowIST();
+    const isToday = date === todayISTString();
     let nextAllowedMinutes = 0;
     if (isToday) {
-      const curMin = nowIST.getUTCHours() * 60 + nowIST.getUTCMinutes();
+      const curMin = _nowIST2.getUTCHours() * 60 + _nowIST2.getUTCMinutes();
       nextAllowedMinutes = Math.ceil(curMin / 60) * 60;
     }
 
     // Cross-sport overlap check: all confirmed bookings by this user on this date (any sport)
-    const startOfDayForOverlap = new Date(date); startOfDayForOverlap.setHours(0,0,0,0);
-    const endOfDayForOverlap = new Date(date); endOfDayForOverlap.setHours(23,59,59,999);
+    const { startOfDay: startOfDayForOverlap, endOfDay: endOfDayForOverlap } = istDayBoundaries(date);
     const allUserBookings = await SlotBooking.find({
       userId: req.user.userId,
       status: { $in: ['confirmed', 'checked-in'] },

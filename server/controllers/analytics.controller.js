@@ -7,14 +7,12 @@ const OneTimePlay = require('../models/OneTimePlay');
 const Slot = require('../models/Slot');
 const SlotBooking = require('../models/SlotBooking');
 const Attendance = require('../models/Attendance');
+const { todayISTBoundaries, istDayBoundaries } = require('../utils/istUtils');
 
 // GET /api/analytics/overview — Dashboard summary cards
 exports.getOverview = async (req, res) => {
   try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 59, 999);
+    const { startOfDay: today, endOfDay } = todayISTBoundaries();
     const sevenDays = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
     const [
@@ -184,8 +182,7 @@ exports.getSportsPopularity = async (req, res) => {
 // GET /api/analytics/restaurant — Restaurant analytics
 exports.getRestaurantAnalytics = async (req, res) => {
   try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const { startOfDay: today } = todayISTBoundaries();
 
     const todayOrders = await Order.countDocuments({ createdAt: { $gte: today } });
     const todaySales = await Order.aggregate([
@@ -258,10 +255,7 @@ exports.getRecentActivity = async (req, res) => {
 // GET /api/analytics/occupancy — Live occupancy data
 exports.getOccupancy = async (req, res) => {
   try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 59, 999);
+    const { startOfDay: today, endOfDay } = todayISTBoundaries();
 
     const [activePlayers, checkedIn, ongoingSessions, slots] = await Promise.all([
       SlotBooking.aggregate([

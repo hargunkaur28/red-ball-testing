@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import SEOHead from '../../components/seo/SEOHead';
 import SEOLandingLayout, { ContactBand } from '../../components/seo/SEOLandingLayout';
 import { breadcrumbSchema } from '../../components/seo/schemas';
+import { useAcademyInfo } from '../../hooks/useAcademyInfo';
 
 const schema = breadcrumbSchema([{ name: 'Privacy Policy', path: '/privacy-policy' }]);
 
@@ -15,6 +16,7 @@ const Section = ({ title, children }) => (
 );
 
 export default function PrivacyPolicy() {
+  const academy = useAcademyInfo();
   return (
     <SEOLandingLayout>
       <SEOHead
@@ -86,7 +88,7 @@ export default function PrivacyPolicy() {
             By creating an account, you agree to receive transactional messages (booking confirmations, payment receipts, membership reminders) via SMS and/or email. These are service messages, not marketing, and are required for the normal operation of the platform.
           </p>
           <p>
-            If we send promotional communications, you can opt out by contacting us at <a href="mailto:redballcricketground@gmail.com" className="text-[#C8102E] hover:underline">redballcricketground@gmail.com</a>.
+            If we send promotional communications, you can opt out by contacting us at <a href={`mailto:${academy.email}`} className="text-[#C8102E] hover:underline">{academy.email}</a>.
           </p>
         </Section>
 
@@ -125,7 +127,7 @@ export default function PrivacyPolicy() {
             <li>Request deletion of your account and data</li>
             <li>Withdraw consent for non-essential communications</li>
           </ul>
-          <p>To exercise these rights, contact us at <a href="mailto:redballcricketground@gmail.com" className="text-[#C8102E] hover:underline">redballcricketground@gmail.com</a>.</p>
+          <p>To exercise these rights, contact us at <a href={`mailto:${academy.email}`} className="text-[#C8102E] hover:underline">{academy.email}</a>.</p>
         </Section>
 
         <Section title="Children's Privacy">
@@ -156,10 +158,10 @@ export default function PrivacyPolicy() {
         <Section title="Contact Us">
           <p>For privacy-related queries, contact:</p>
           <p>
-            <strong>Red Ball Sports Arena</strong><br />
-            Sector 22-D, Jhajjar Road, near Village-Maina, Rohtak, Haryana 124001<br />
-            Email: <a href="mailto:redballcricketground@gmail.com" className="text-[#C8102E] hover:underline">redballcricketground@gmail.com</a><br />
-            Phone: <a href="tel:+919350076653" className="text-[#C8102E] hover:underline">+91 93500 76653</a>
+            <strong>{academy.academyName}</strong><br />
+            {academy.address}<br />
+            Email: <a href={`mailto:${academy.email}`} className="text-[#C8102E] hover:underline">{academy.email}</a><br />
+            Phone: <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="text-[#C8102E] hover:underline">{academy.phone}</a>
           </p>
         </Section>
 

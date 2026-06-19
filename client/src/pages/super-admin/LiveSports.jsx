@@ -79,19 +79,23 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
     if (duration <= 0) return toast.error('End time must be after start time.');
     setCreating(true);
     try {
-      // Reuse bulk endpoint for a single slot on one court/date
-      await api.post('/slots/admin/bulk', {
+      // Use single-slot endpoint so existing bulk slots for this court/date are NOT deleted
+      await api.post('/slots', {
+        name: `${court.name} • ${createForm.startTime}–${createForm.endTime}`,
+        sport: sport.slug,
         sportId: sport._id,
-        courtIds: [court._id],
-        startDateStr: date,
-        endDateStr: date,
-        weekdays: [0, 1, 2, 3, 4, 5, 6],
-        slotStartTime: createForm.startTime,
-        slotEndTime: createForm.endTime,
-        slotDurationMin: duration,
-        gapBetweenMin: 0,
-        priceMode: 'flat',
-        flatPrice: parseFloat(createForm.pricePerSlot) || 0,
+        sportSlug: sport.slug,
+        courtId: court._id,
+        courtNameSnapshot: court.name,
+        capacity: 1,
+        startTime: createForm.startTime,
+        endTime: createForm.endTime,
+        duration,
+        date,
+        pricePerSlot: parseFloat(createForm.pricePerSlot) || 0,
+        pricingType: 'flat',
+        priceLabel: '',
+        isBookable: true,
       });
       toast.success(`Slot ${createForm.startTime}–${createForm.endTime} created.`);
       setCreateForm({ startTime: '', endTime: '', pricePerSlot: '' });

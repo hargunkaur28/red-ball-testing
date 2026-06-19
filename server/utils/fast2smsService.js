@@ -152,19 +152,24 @@ function buildKitchenSmsMessage(order) {
   if (remaining > 0) itemParts.push(`+${remaining} more`);
   const itemStr = itemParts.length ? ` | ${itemParts.join(', ')}` : '';
 
+  const remarks = order.specialInstructions ? ` Note:${order.specialInstructions.slice(0, 30)}` : '';
+  const coupon = order.couponCode && order.couponDiscountAmount > 0
+    ? ` Disc:Rs${Math.round(order.couponDiscountAmount)}`
+    : '';
+
   if (type === 'table') {
     const tableLabel = order.tableId?.label || order.tableId?.tableNumber || 'Table';
-    return `New Red Ball order ${num}: ${tableLabel}, ${amount}${itemStr}. Check Restaurant Panel.`;
+    return `New Red Ball order ${num}: ${tableLabel}, ${amount}${coupon}${itemStr}${remarks}. Check Panel.`;
   }
 
   if (type === 'delivery') {
     const name = order.customerName ? ` for ${order.customerName}` : '';
-    return `New Red Ball order ${num}: Delivery${name}, ${amount}${itemStr}. Check Restaurant Panel.`;
+    return `New Red Ball order ${num}: Delivery${name}, ${amount}${coupon}${itemStr}${remarks}. Check Panel.`;
   }
 
   // pickup
   const name = order.customerName ? ` for ${order.customerName}` : '';
-  return `New Red Ball order ${num}: Pickup${name}, ${amount}${itemStr}. Check Restaurant Panel.`;
+  return `New Red Ball order ${num}: Pickup${name}, ${amount}${coupon}${itemStr}${remarks}. Check Panel.`;
 }
 
 /**

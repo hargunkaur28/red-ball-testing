@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
 import api from '../../lib/axios';
+import { useAcademyInfo } from '../../hooks/useAcademyInfo';
 
 const hours = [
   { day: 'Monday – Friday', time: '6:00 AM – 8:00 PM' },
@@ -11,6 +12,7 @@ const hours = [
 ];
 
 export default function ContactSection() {
+  const academy = useAcademyInfo();
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -61,19 +63,19 @@ export default function ContactSection() {
                 <div className="flex items-start gap-3">
                   <MapPin size={20} className="text-[#C8102E] shrink-0 mt-1" />
                   <p className="text-[#9CA3AF] text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                    Sector 22-D, Jhajjar Road, near Village-Maina Rohtak, Haryana 124001
+                    {academy.address}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone size={20} className="text-[#C8102E] shrink-0" />
                   <div className="flex items-center gap-3 text-sm text-[#9CA3AF]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                    <a href="tel:+919350076653" className="hover:text-white transition-colors">+91 93500 76653</a>
+                    <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="hover:text-white transition-colors">{academy.phone}</a>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail size={20} className="text-[#C8102E] shrink-0" />
-                  <a href="mailto:redballcricketground@gmail.com" className="text-sm text-[#9CA3AF] hover:text-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                    redballcricketground@gmail.com
+                  <a href={`mailto:${academy.email}`} className="text-sm text-[#9CA3AF] hover:text-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                    {academy.email}
                   </a>
                 </div>
               </div>

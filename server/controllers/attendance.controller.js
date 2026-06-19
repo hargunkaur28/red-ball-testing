@@ -2,14 +2,12 @@ const Attendance = require('../models/Attendance');
 const Sport = require('../models/Sport');
 const { DEFAULT_ALLOWED_DURATION_MINUTES, getEffectiveConfig, applySessionCheckout } = require('../utils/sessionCalculator');
 const { validateCheckIn, calculateEntitlement } = require('../utils/entitlementEngine');
+const { todayISTBoundaries, istDayBoundaries, currentISTHour } = require('../utils/istUtils');
 
 // GET /api/attendance/today — Get today's attendance
 exports.getTodayAttendance = async (req, res) => {
   try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(today);
-    endOfDay.setHours(23, 59, 59, 999);
+    const { startOfDay: today, endOfDay } = todayISTBoundaries();
 
     const attendance = await Attendance.find({
       date: { $gte: today, $lte: endOfDay },
@@ -116,10 +114,8 @@ exports.getUserAttendance = async (req, res) => {
     const filter = { userId: req.params.userId };
 
     if (startDate && endDate) {
-      const start = new Date(startDate);
-      start.setHours(0, 0, 0, 0);
-      const end = new Date(endDate);
-      end.setHours(23, 59, 59, 999);
+      const { startOfDay: start } = istDayBoundaries(startDate);
+      const { endOfDay: end } = istDayBoundaries(endDate);
       filter.date = { $gte: start, $lte: end };
     }
 
@@ -180,10 +176,7 @@ exports.checkIn = async (req, res) => {
     const entitlement = sport ? await calculateEntitlement(userId) : null;
     const activeSessions = await Attendance.find({ userId, checkOutTime: null, sessionStatus: 'Active' });
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(today);
-    endOfDay.setHours(23, 59, 59, 999);
+    const { startOfDay: today, endOfDay } = todayISTBoundaries();
 
     // Check if already checked in for this specific sport today (prevent duplicate)
     let attendance = await Attendance.findOne({
@@ -383,10 +376,8 @@ exports.getStats = async (req, res) => {
     const filter = {};
 
     if (startDate && endDate) {
-      const start = new Date(startDate);
-      start.setHours(0, 0, 0, 0);
-      const end = new Date(endDate);
-      end.setHours(23, 59, 59, 999);
+      const { startOfDay: start } = istDayBoundaries(startDate);
+      const { endOfDay: end } = istDayBoundaries(endDate);
       filter.date = { $gte: start, $lte: end };
     }
 
@@ -406,11 +397,14 @@ exports.getStats = async (req, res) => {
   }
 };
 
+const IST_MS = 5.5 * 60 * 60 * 1000;
+const toISTHour = (d) => new Date(new Date(d).getTime() + IST_MS).getUTCHours();
+
 function getPeakHours(records) {
   const hours = {};
   records.forEach((record) => {
     if (record.checkInTime) {
-      const hour = new Date(record.checkInTime).getHours();
+      const hour = toISTHour(record.checkInTime);
       hours[hour] = (hours[hour] || 0) + 1;
     }
   });
@@ -422,8 +416,7 @@ function getAttendanceByHour(records) {
   for (let i = 0; i < 24; i++) {
     byHour[i] = records.filter((r) => {
       if (!r.checkInTime) return false;
-      const hour = new Date(r.checkInTime).getHours();
-      return hour === i;
+      return toISTHour(r.checkInTime) === i;
     }).length;
   }
   return byHour;

@@ -1,11 +1,6 @@
 import { Link } from 'react-router-dom';
 import Footer from '../home/Footer';
-
-const NAP = {
-  phone: '+91 93500 76653',
-  email: 'redballcricketground@gmail.com',
-  address: 'Sector 22-D, Jhajjar Road, near Village-Maina, Rohtak, Haryana 124001',
-};
+import { useAcademyInfo } from '../../hooks/useAcademyInfo';
 
 export function CTAStrip() {
   return (
@@ -57,20 +52,21 @@ export function FAQSection({ faqs }) {
 }
 
 export function ContactBand() {
+  const academy = useAcademyInfo();
   return (
     <div className="bg-[#F9F6F1] border-t border-black/10 py-8 px-4">
       <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#0D0D0D]/70" style={{ fontFamily: "'DM Sans', sans-serif" }}>
         <div className="flex items-center gap-2">
           <span>📍</span>
-          <span>{NAP.address}</span>
+          <span>{academy.address}</span>
         </div>
         <div className="flex items-center gap-2">
           <span>📞</span>
-          <a href={`tel:${NAP.phone.replace(/\s/g, '')}`} className="hover:text-[#C8102E] transition-colors">{NAP.phone}</a>
+          <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="hover:text-[#C8102E] transition-colors">{academy.phone}</a>
         </div>
         <div className="flex items-center gap-2">
           <span>✉️</span>
-          <a href={`mailto:${NAP.email}`} className="hover:text-[#C8102E] transition-colors">{NAP.email}</a>
+          <a href={`mailto:${academy.email}`} className="hover:text-[#C8102E] transition-colors">{academy.email}</a>
         </div>
       </div>
     </div>

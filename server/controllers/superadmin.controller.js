@@ -488,6 +488,167 @@ exports.getOneTimeEntries = async (req, res) => {
   }
 };
 
+// GET /api/super-admin/slot-bookings — All paid slot bookings (online + manual admin)
+exports.getSlotBookings = async (req, res) => {
+  try {
+    const { search, sport, paymentStatus, status, sessionStatus, startDate, endDate, page = 1, limit = 20 } = req.query;
+    const limitNum = Math.min(parseInt(limit) || 20, 100);
+    const skip = (parseInt(page) - 1) * limitNum;
+
+    const query = {
+      bookingType: { $in: ['slot-booking', 'one-time-play'] },
+      isMembershipBooking: { $ne: true },
+    };
+
+    // Sport + search each need their own $or — combine with $and to avoid overwriting
+    const andClauses = [];
+    if (sport) {
+      andClauses.push({ $or: [
+        { sportNameSnapshot: { $regex: new RegExp(sport, 'i') } },
+        { slotName:          { $regex: new RegExp(sport, 'i') } },
+      ]});
+    }
+    if (search) {
+      const re = { $regex: search, $options: 'i' };
+      andClauses.push({ $or: [
+        { playerName: re }, { playerPhone: re }, { playerEmail: re },
+        { bookingId: re },  { courtNameSnapshot: re },
+      ]});
+    }
+    if (andClauses.length) query.$and = andClauses;
+
+    if (paymentStatus && paymentStatus !== 'all') query.paymentStatus = paymentStatus;
+
+    // sessionStatus maps to booking.status for the DB query; complex cases get post-filtered
+    const POST_FILTER_SESSIONS = ['attended', 'overtime', 'missed', 'upcoming'];
+    const needsPostFilter = sessionStatus && POST_FILTER_SESSIONS.includes(sessionStatus);
+
+    if (status && status !== 'all') {
+      query.status = status;
+    } else if (sessionStatus && sessionStatus !== 'all') {
+      switch (sessionStatus) {
+        case 'active':    query.status = 'checked-in'; break;
+        case 'no-show':   query.status = 'no-show';    break;
+        case 'cancelled': query.status = 'cancelled';  break;
+        case 'attended':
+        case 'overtime':  query.status = 'completed';  break;
+        case 'missed':
+        case 'upcoming':  query.status = 'confirmed';  break;
+      }
+    }
+
+    if (startDate || endDate) {
+      query.createdAt = {};
+      if (startDate) query.createdAt.$gte = new Date(startDate);
+      if (endDate)   query.createdAt.$lte = new Date(new Date(endDate).setHours(23, 59, 59, 999));
+    }
+
+    // For simple session filters use DB pagination; complex ones need all matching docs first
+    let rawBookings;
+    let total;
+    if (needsPostFilter) {
+      rawBookings = await SlotBooking.find(query)
+        .populate({ path: 'slotId', select: 'date' })
+        .populate({ path: 'userId', select: 'name email phone' })
+        .populate({ path: 'sportId', select: 'name' })
+        .sort({ createdAt: -1 })
+        .lean();
+    } else {
+      [total, rawBookings] = await Promise.all([
+        SlotBooking.countDocuments(query),
+        SlotBooking.find(query)
+          .populate({ path: 'slotId', select: 'date' })
+          .populate({ path: 'userId', select: 'name email phone' })
+          .populate({ path: 'sportId', select: 'name' })
+          .sort({ createdAt: -1 })
+          .skip(skip)
+          .limit(limitNum)
+          .lean(),
+      ]);
+    }
+
+    // Fetch attendance for overtime info
+    const bookingIds = rawBookings.map((b) => b._id);
+    const attendanceRecords = await Attendance.find({
+      relatedBookingId: { $in: bookingIds },
+      relatedBookingType: { $in: ['slot-booking', 'one-time-play', 'membership-slot'] },
+    }).select('relatedBookingId overtimeMinutes lateAmount sessionStatus checkInTime checkOutTime').lean();
+    const attByBooking = new Map(attendanceRecords.map((a) => [String(a.relatedBookingId), a]));
+
+    const IST_MS = 5.5 * 60 * 60 * 1000;
+    function deriveSessionStatus(sb) {
+      if (sb.status === 'cancelled') return 'cancelled';
+      if (sb.status === 'no-show') return 'no-show';
+      if (sb.status === 'checked-in') return 'active';
+      if (sb.status === 'completed') {
+        const att = attByBooking.get(String(sb._id));
+        return (att?.overtimeMinutes > 0) ? 'overtime' : 'attended';
+      }
+      const slotDate = sb.slotId?.date;
+      if (slotDate) {
+        const slotIST = new Date(new Date(slotDate).getTime() + IST_MS);
+        const todayIST = new Date(Date.now() + IST_MS).toISOString().slice(0, 10);
+        if (slotIST.toISOString().slice(0, 10) < todayIST) return 'missed';
+      }
+      return 'upcoming';
+    }
+
+    let allNormalized = rawBookings.map((sb) => {
+      const att = attByBooking.get(String(sb._id));
+      return {
+        _id: sb._id,
+        bookingId: sb.bookingId,
+        bookingType: sb.bookingType,
+        isManualEntry: !!sb.isManualEntry,
+        playerName: sb.playerName,
+        playerPhone: sb.playerPhone || '—',
+        playerEmail: sb.playerEmail || '—',
+        sport: sb.sportNameSnapshot || sb.sportId?.name || sb.slotName || '—',
+        courtName: sb.courtNameSnapshot || '—',
+        date: sb.slotId?.date || sb.createdAt,
+        startTime: sb.startTime,
+        endTime: sb.endTime,
+        duration: sb.duration,
+        price: sb.price,
+        gstAmount: sb.gstAmount || 0,
+        totalAmount: sb.totalAmount,
+        amountPaid: sb.amountPaid || 0,
+        amountDue: sb.amountDue || 0,
+        status: sb.status,
+        sessionStatus: deriveSessionStatus(sb),
+        overtimeMinutes: att?.overtimeMinutes || 0,
+        lateAmount: att?.lateAmount || 0,
+        paymentStatus: sb.paymentStatus,
+        checkInTime: sb.checkInTime || att?.checkInTime,
+        checkOutTime: sb.checkOutTime || att?.checkOutTime,
+        notes: sb.notes || '',
+        createdAt: sb.createdAt,
+      };
+    });
+
+    // Post-filter for session statuses that can't be resolved by booking.status alone
+    if (needsPostFilter) {
+      allNormalized = allNormalized.filter((b) => b.sessionStatus === sessionStatus);
+      total = allNormalized.length;
+    }
+
+    const normalized = needsPostFilter
+      ? allNormalized.slice(skip, skip + limitNum)
+      : allNormalized;
+
+    res.json({
+      success: true,
+      total,
+      page: parseInt(page),
+      totalPages: Math.ceil(total / limitNum),
+      bookings: normalized,
+    });
+  } catch (err) {
+    console.error('getSlotBookings error:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 // GET /api/super-admin/users
 exports.getUsers = async (req, res) => {
   try {

@@ -4,6 +4,10 @@ const academySettingsController = require('../controllers/academySettings.contro
 const auth = require('../middleware/auth.middleware');
 const authorize = require('../middleware/role.middleware');
 
+// Public — no auth required
+router.get('/public', academySettingsController.getPublicAcademySettings);
+
+// Superadmin only
 router.use(auth);
 router.use(authorize('superadmin'));
 
