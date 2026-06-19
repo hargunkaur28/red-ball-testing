@@ -99,11 +99,11 @@ export default function Footer() {
               "Where Every Delivery Counts."
             </p>
             <div className="flex items-center gap-3">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+              <a href="https://www.instagram.com/red_ball_cricket_ground/" target="_blank" rel="noopener noreferrer"
                  className="social-icon text-[#0D0D0D]/50 hover:text-[#C8102E] hover:scale-[1.2] transition-all duration-200">
                 <InstagramIcon />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+              <a href="https://www.facebook.com/RBCGRohtak/" target="_blank" rel="noopener noreferrer"
                  className="social-icon text-[#0D0D0D]/50 hover:text-[#C8102E] hover:scale-[1.2] transition-all duration-200">
                 <FacebookIcon />
               </a>

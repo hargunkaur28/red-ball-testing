@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import SEOHead from '../../components/seo/SEOHead';
 import SEOLandingLayout, { CTAStrip, ContactBand } from '../../components/seo/SEOLandingLayout';
 import { blogPosts, getBlogCoverImage } from '../../data/blogPosts';
+import api from '../../lib/axios';
 
 const categoryColors = {
   Cricket: 'bg-red-100 text-red-700',
@@ -16,7 +18,40 @@ const categoryColors = {
   'Kids Academy': 'bg-pink-100 text-pink-700',
 };
 
+const staticBySlug = Object.fromEntries(blogPosts.map(p => [p.slug, p]));
+
 export default function BlogIndex() {
+  const { data } = useQuery({
+    queryKey: ['blog-index-posts'],
+    queryFn: () => api.get('/blog?status=published&limit=100').then(r => r.data),
+    staleTime: 2 * 60 * 1000,
+  });
+
+  const dbPosts = data?.posts ?? [];
+  const dbBySlug = Object.fromEntries(dbPosts.map(p => [p.slug, p]));
+
+  // Static posts with DB data overlaid where available
+  const staticMerged = blogPosts.map(p => ({
+    ...p,
+    coverImage: dbBySlug[p.slug]?.coverImage || getBlogCoverImage(p.slug),
+    title: dbBySlug[p.slug]?.title || p.title,
+    excerpt: dbBySlug[p.slug]?.excerpt || p.metaDescription || '',
+  }));
+
+  // DB-only posts (created via admin, not in static data)
+  const dbOnly = dbPosts
+    .filter(p => !staticBySlug[p.slug])
+    .map(p => ({
+      slug: p.slug,
+      title: p.title,
+      category: p.category,
+      date: p.createdAt,
+      coverImage: p.coverImage || getBlogCoverImage(p.slug),
+      excerpt: p.excerpt || '',
+    }));
+
+  const allPosts = [...staticMerged, ...dbOnly];
+
   return (
     <SEOLandingLayout>
       <SEOHead
@@ -59,11 +94,11 @@ export default function BlogIndex() {
 
       <section className="max-w-5xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {blogPosts.map(post => (
+          {allPosts.map(post => (
             <Link key={post.slug} to={`/blog/${post.slug}`} className="group block bg-white border border-black/8 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
               <div className="h-44 overflow-hidden bg-[#F0EDEA]">
                 <img
-                  src={getBlogCoverImage(post.slug)}
+                  src={post.coverImage}
                   alt={post.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
@@ -74,13 +109,15 @@ export default function BlogIndex() {
                   <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${categoryColors[post.category] || 'bg-gray-100 text-gray-600'}`}>
                     {post.category}
                   </span>
-                  <span className="text-xs text-[#0D0D0D]/40">{post.date}</span>
+                  <span className="text-xs text-[#0D0D0D]/40">
+                    {post.date ? new Date(post.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
+                  </span>
                 </div>
                 <h2 className="font-bold text-[#0D0D0D] text-sm leading-snug mb-2 group-hover:text-[#C8102E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                   {post.title}
                 </h2>
                 <p className="text-xs text-[#0D0D0D]/60 leading-relaxed line-clamp-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                  {post.metaDescription}
+                  {post.excerpt}
                 </p>
               </div>
             </Link>
