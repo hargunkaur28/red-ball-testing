@@ -81,6 +81,7 @@ export default function Settings() {
       address: fd.get('address'),
       phone: fd.get('phone'),
       email: fd.get('email'),
+      operatingHours: fd.get('operatingHours'),
     };
     updateAcademyMutation.mutate(payload);
   };
@@ -148,8 +149,9 @@ export default function Settings() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div><label className="block text-sm text-[#666] mb-1">Academy Name</label><input name="academyName" className="input-field" defaultValue={academySettings?.academyName || ''} required /></div>
                 <div><label className="block text-sm text-[#666] mb-1">Address</label><input name="address" className="input-field" defaultValue={academySettings?.address || ''} /></div>
-                <div><label className="block text-sm text-[#666] mb-1">Phone</label><input name="phone" className="input-field" defaultValue={academySettings?.phone || ''} placeholder="+91 XXXXXXXXXX" /></div>
-                <div><label className="block text-sm text-[#666] mb-1">Email</label><input name="email" type="email" className="input-field" defaultValue={academySettings?.email || ''} placeholder="redballcricketground@gmail.com" /></div>
+                <div><label className="block text-sm text-[#666] mb-1">Phone <span className="text-[#aaa] font-normal">(comma-separated for multiple)</span></label><input name="phone" className="input-field" defaultValue={academySettings?.phone || ''} placeholder="+91 XXXXXXXXXX, +91 XXXXXXXXXX" /></div>
+                <div><label className="block text-sm text-[#666] mb-1">Email</label><input name="email" type="email" className="input-field" defaultValue={academySettings?.email || ''} placeholder="info@redballsportsarena.in" /></div>
+                <div className="md:col-span-2"><label className="block text-sm text-[#666] mb-1">Operating Hours</label><input name="operatingHours" className="input-field" defaultValue={academySettings?.operatingHours || ''} placeholder="e.g. 5:00 AM – 11:00 PM, 7 days a week" /><p className="text-[11px] text-[#aaa] mt-1">Shown on the About page and footer.</p></div>
               </div>
               <button type="submit" disabled={updateAcademyMutation.isPending} className="btn-primary mt-4 gap-2">
                 {updateAcademyMutation.isPending && <Loader2 size={16} className="animate-spin" />}

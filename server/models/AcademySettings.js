@@ -18,6 +18,10 @@ const academySettingsSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  operatingHours: {
+    type: String,
+    default: ''
+  },
   updatedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

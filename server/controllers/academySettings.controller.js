@@ -16,6 +16,7 @@ exports.getPublicAcademySettings = async (req, res) => {
         address: settings?.address || '',
         phone: settings?.phone || '',
         email: settings?.email || '',
+        operatingHours: settings?.operatingHours || '',
       },
     };
     cache.set(PUBLIC_CACHE_KEY, payload, 5 * 60_000); // 5 min TTL
@@ -45,7 +46,7 @@ exports.getAcademySettings = async (req, res) => {
 
 exports.updateAcademySettings = async (req, res) => {
   try {
-    const { academyName, address, phone, email } = req.body;
+    const { academyName, address, phone, email, operatingHours } = req.body;
     let settings = await AcademySettings.findOne();
     
     if (!settings) {
@@ -56,7 +57,8 @@ exports.updateAcademySettings = async (req, res) => {
     if (address !== undefined) settings.address = address;
     if (phone !== undefined) settings.phone = phone;
     if (email !== undefined) settings.email = email;
-    
+    if (operatingHours !== undefined) settings.operatingHours = operatingHours;
+
     settings.updatedBy = req.user.id;
     await settings.save();
     cache.invalidate(PUBLIC_CACHE_KEY);

@@ -461,6 +461,8 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                       const totalSlots = slotsData?.slots?.length || 0;
                       const availableCount = (slotsData?.slots || []).filter(slotAvailable).length;
                       const isToday = selectedDate === todayStr();
+                      const unavailableSlots = (slotsData?.slots || []).filter(s => !s.isAvailable);
+                      const allPastTime = unavailableSlots.length > 0 && unavailableSlots.every(s => s.unavailableReason === 'past-time');
                       return (
                       <div className="space-y-4">
                         {/* Membership banner */}
@@ -503,10 +505,14 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                               <AlertTriangle size={22} className="text-red-400" />
                             </div>
                             <p className="text-white font-bold text-sm">
-                              {isToday ? 'All slots are booked for today.' : 'All slots are booked for this date.'}
+                              {allPastTime
+                                ? "Today's slots have all passed."
+                                : isToday ? 'All slots are booked for today.' : 'All slots are booked for this date.'}
                             </p>
                             <p className="text-white/35 text-xs">
-                              {totalSlots} slot{totalSlots !== 1 ? 's' : ''} exist but none are currently available.
+                              {allPastTime
+                                ? 'Booking window has closed for today. Try tomorrow!'
+                                : `${totalSlots} slot${totalSlots !== 1 ? 's' : ''} exist but none are currently available.`}
                             </p>
                             <button
                               onClick={() => setStep('date')}

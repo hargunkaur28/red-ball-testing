@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Loader2, Search, GraduationCap, ArrowLeft } from 'lucide-react';
+import { Loader2, Search, GraduationCap, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
 import api from '../lib/axios';
 import SportCard from '../components/sports/SportCard';
@@ -177,6 +177,41 @@ export default function BookSlotsMarketplace({ embedded = false }) {
                 </motion.div>
               ))}
             </div>
+          </motion.div>
+        )}
+
+        {/* Kids Academy strip — only in normal mode */}
+        {!isKidsMode && !loading && sports.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mt-8 rounded-3xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, rgba(200,16,46,0.12) 0%, rgba(200,16,46,0.04) 100%)',
+              border: '1px solid rgba(200,16,46,0.2)',
+            }}
+          >
+            <div
+              className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-20"
+              style={{ background: '#C8102E' }}
+            />
+            <div className="relative z-10">
+              <p className="text-[#C8102E] font-black text-xl leading-tight mb-1">
+                Want to Train Your Kids Too?
+              </p>
+              <p className="text-white/50 text-sm">
+                Cricket, swimming, badminton &amp; more — dedicated coaches for kids &amp; beginners.
+              </p>
+            </div>
+            <Link
+              to="/book-slots?program=kids-academy"
+              className="relative z-10 px-7 py-3 rounded-xl bg-[#C8102E] text-white font-black text-sm uppercase tracking-wider hover:bg-[#a50d26] transition-colors shrink-0 whitespace-nowrap shadow-lg"
+              style={{ boxShadow: '0 6px 20px rgba(200,16,46,0.25)' }}
+            >
+              Explore Kids Academy
+            </Link>
           </motion.div>
         )}
 

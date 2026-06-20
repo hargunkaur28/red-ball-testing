@@ -3,6 +3,7 @@ node_modules
 .env.*
 *.log
 .DS_Store
+.claude
 
 # Temporary DB migration scripts
 server/exportCollections.js

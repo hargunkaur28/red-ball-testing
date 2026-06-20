@@ -13,7 +13,7 @@ const programs = [
 ];
 
 const quickLinks = [
-  { label: 'About Us', href: '#about' },
+  { label: 'About Us', to: '/about' },
   { label: 'Membership Plans', to: '/buy-membership' },
   { label: 'Book a Ground', to: '/book-slots' },
   { label: 'Contact', href: '#contact' },
@@ -51,8 +51,11 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
+const primaryPhone = (phone) => (phone || '').split(',')[0].trim().replace(/\D/g, '');
+
 export default function Footer() {
   const academy = useAcademyInfo();
+  const waPhone = primaryPhone(academy.phone) || '919992101885';
   const [email, setEmail] = useState('');
   const [subLoading, setSubLoading] = useState(false);
 
@@ -107,7 +110,7 @@ export default function Footer() {
                  className="social-icon text-[#0D0D0D]/50 hover:text-[#C8102E] hover:scale-[1.2] transition-all duration-200">
                 <FacebookIcon />
               </a>
-              <a href="https://wa.me/919350076653" target="_blank" rel="noopener noreferrer"
+              <a href={`https://wa.me/${waPhone}`} target="_blank" rel="noopener noreferrer"
                  className="social-icon text-[#0D0D0D]/50 hover:text-[#C8102E] hover:scale-[1.2] transition-all duration-200">
                 <WhatsAppIcon />
               </a>
@@ -186,6 +189,9 @@ export default function Footer() {
               <li>
                 <a href={`mailto:${academy.email}`} className="hover:text-[#C8102E] transition-colors">{academy.email}</a>
               </li>
+              {academy.operatingHours && (
+                <li className="pt-1 leading-relaxed">{academy.operatingHours}</li>
+              )}
               <li className="pt-1 leading-relaxed">
                 {academy.address}
               </li>

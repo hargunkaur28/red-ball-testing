@@ -269,6 +269,23 @@ export default function Navbar() {
               </a>
             );
           })}
+          {/* Kids Academy — mobile only */}
+          <Link
+            to="/kids-sports-academy-rohtak"
+            onClick={() => setDrawerOpen(false)}
+            className="text-xl py-3 border-b border-white/5 transition-all duration-250 flex items-center gap-2"
+            style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              letterSpacing: '2px',
+              color: '#F87171',
+              animationDelay: drawerOpen ? `${navLinks.length * 60}ms` : '0ms',
+              opacity: drawerOpen ? 1 : 0,
+              transform: drawerOpen ? 'translateX(0)' : 'translateX(24px)',
+              transition: `opacity 250ms ease ${navLinks.length * 60}ms, transform 250ms ease ${navLinks.length * 60}ms`,
+            }}
+          >
+            Kids Academy
+          </Link>
         </nav>
 
         {/* Drawer CTAs */}

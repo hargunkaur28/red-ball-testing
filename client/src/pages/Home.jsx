@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
-import { Users, CreditCard, CalendarDays, ArrowRight } from 'lucide-react';
+import { Users, CreditCard, CalendarDays, ArrowRight, Star } from 'lucide-react';
 import api from '../lib/axios';
 import CinematicIntro from '../components/CinematicIntro';
 import Navbar from '../components/home/Navbar';
@@ -170,6 +170,42 @@ function KidsAcademyBanner() {
             </Link>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function KidsAcademyStrip() {
+  return (
+    <section className="relative overflow-hidden bg-[#0C0F0F]">
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'linear-gradient(90deg, rgba(200,16,46,0.12) 0%, rgba(200,16,46,0.04) 60%, transparent 100%)' }}
+      />
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-7 flex flex-col sm:flex-row items-center justify-between gap-5">
+        <div className="flex items-center gap-4">
+          <div
+            className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 text-xl"
+            style={{ background: 'rgba(200,16,46,0.15)', border: '1px solid rgba(200,16,46,0.3)' }}
+          >
+            🧒
+          </div>
+          <div>
+            <p className="text-white font-black text-base sm:text-lg leading-tight" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '1.5px' }}>
+              Want to train your kids too?
+            </p>
+            <p className="text-white/45 text-xs sm:text-sm mt-0.5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              Cricket, swimming, badminton &amp; more — with dedicated coaches for kids.
+            </p>
+          </div>
+        </div>
+        <Link
+          to="/kids-sports-academy-rohtak"
+          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-white whitespace-nowrap shrink-0 transition-all hover:scale-[1.03] active:scale-[0.97]"
+          style={{ background: 'linear-gradient(135deg, #C8102E 0%, #8B0B1E 100%)', boxShadow: '0 4px 16px rgba(200,16,46,0.3)' }}
+        >
+          Explore Kids Academy <ArrowRight size={14} />
+        </Link>
       </div>
     </section>
   );

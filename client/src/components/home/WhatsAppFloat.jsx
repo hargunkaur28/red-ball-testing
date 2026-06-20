@@ -1,7 +1,14 @@
+import { useAcademyInfo } from '../../hooks/useAcademyInfo';
+
+const primaryPhone = (phone) => (phone || '').split(',')[0].trim().replace(/\D/g, '');
+
 export default function WhatsAppFloat() {
+  const academy = useAcademyInfo();
+  const phone = primaryPhone(academy.phone) || '919992101885';
+
   return (
     <a
-      href="https://wa.me/919350076653?text=Hi%2C%20I%27d%20like%20to%20enquire%20about%20Red%20Ball%20Box%20Cricket%20Academy"
+      href={`https://wa.me/${phone}?text=Hi%2C%20I%27d%20like%20to%20enquire%20about%20Red%20Ball%20Box%20Cricket%20Academy`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contact us on WhatsApp"

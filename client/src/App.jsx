@@ -176,6 +176,8 @@ const InterCollegeCricketTournaments = lazy(() => import('./pages/seo/InterColle
 
 // Blog Pages
 const BlogIndex = lazy(() => import('./pages/blog/BlogIndex'));
+
+const About = lazy(() => import('./pages/About'));
 const BlogPost = lazy(() => import('./pages/blog/BlogPost'));
 
 // ── Auth Guard ─────────────────────────────────────────────────────
@@ -398,6 +400,7 @@ export default function App() {
 
               {/* Blog */}
               <Route path="/blog" element={<BlogIndex />} />
+              <Route path="/about" element={<About />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
 
               {/* Redirect root */}

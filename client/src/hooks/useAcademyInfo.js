@@ -4,8 +4,9 @@ import api from '../lib/axios';
 const FALLBACK = {
   academyName: 'Red Ball Sports Arena',
   address: 'Sector 22-D, Jhajjar Road, near Village-Maina, Rohtak, Haryana 124001',
-  phone: '+91 93500 76653',
+  phone: '+91 99921 01885',
   email: 'info@redballsportsarena.in',
+  operatingHours: '5:00 AM – 11:00 PM, 7 days a week',
 };
 
 export function useAcademyInfo() {
