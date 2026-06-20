@@ -94,6 +94,15 @@ export default function AboutSection() {
 
 
 
+              {/* Full About link */}
+              <Link
+                to="/about"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#C8102E] hover:underline underline-offset-4 transition-all"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                Read our full story →
+              </Link>
+
               {/* Stats Row */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-gray-100 mt-8">
                 {stats.map((stat, i) => (
