@@ -364,9 +364,9 @@ const startServer = async () => {
 
   const User = require('./models/User');
 
-  const existingAdmin = await User.findOne({ role: 'superadmin' });
+  let existingAdmin = await User.findOne({ role: 'superadmin' }).select('+password');
   if (!existingAdmin) {
-    await User.create({
+    existingAdmin = await User.create({
       name: process.env.SUPER_ADMIN_NAME || 'Super Admin',
       email: process.env.SUPER_ADMIN_EMAIL,
       phone: '9999999999',
@@ -374,9 +374,26 @@ const startServer = async () => {
       role: 'superadmin',
     });
     console.log(`🔐 Superadmin seeded: ${process.env.SUPER_ADMIN_EMAIL}`);
+  } else {
+    let modified = false;
+    if (existingAdmin.email !== process.env.SUPER_ADMIN_EMAIL) {
+      existingAdmin.email = process.env.SUPER_ADMIN_EMAIL;
+      modified = true;
+    }
+    if (process.env.SUPER_ADMIN_PASSWORD) {
+      const isSamePassword = await existingAdmin.comparePassword(process.env.SUPER_ADMIN_PASSWORD);
+      if (!isSamePassword) {
+        existingAdmin.password = process.env.SUPER_ADMIN_PASSWORD;
+        modified = true;
+      }
+    }
+    if (modified) {
+      await existingAdmin.save();
+      console.log(`🔐 Superadmin credentials updated to match environment variables.`);
+    }
   }
 
-  const existingManager = await User.findOne({ role: 'manager' });
+  const existingManager = await User.findOne({ role: 'manager' }).select('+password');
   if (!existingManager) {
     await User.create({
       name: process.env.MANAGER_NAME || 'Restaurant Manager',
@@ -386,6 +403,23 @@ const startServer = async () => {
       role: 'manager',
     });
     console.log(`👨‍🍳 Manager seeded: ${process.env.MANAGER_EMAIL}`);
+  } else {
+    let modified = false;
+    if (existingManager.email !== process.env.MANAGER_EMAIL) {
+      existingManager.email = process.env.MANAGER_EMAIL;
+      modified = true;
+    }
+    if (process.env.MANAGER_PASSWORD) {
+      const isSamePassword = await existingManager.comparePassword(process.env.MANAGER_PASSWORD);
+      if (!isSamePassword) {
+        existingManager.password = process.env.MANAGER_PASSWORD;
+        modified = true;
+      }
+    }
+    if (modified) {
+      await existingManager.save();
+      console.log(`👨‍🍳 Manager credentials updated to match environment variables.`);
+    }
   }
 
 
