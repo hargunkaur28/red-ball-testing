@@ -45,7 +45,7 @@ const handleFailedAttempt = async (user, req) => {
   const attempts = user.loginAttempts;
   const ts = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-  // 5+ attempts → 2-min lock + alert email to both admin and account owner
+  // 5+ attempts → 2-min lock + alert email to admin, manager, and account owner
   if (attempts >= 5) {
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
     if (!user.failedAlertSentAt || user.failedAlertSentAt < oneHourAgo) {
@@ -60,8 +60,14 @@ const handleFailedAttempt = async (user, req) => {
       };
       // Notify central admin
       sendFailedLoginAlert({ ...alertPayload, targetEmail: process.env.ADMIN_NOTIFICATION_EMAIL }).catch(() => {});
+      
+      // Notify restaurant manager (from .env MANAGER_EMAIL) only if the targeted account is a manager
+      if (user.role === 'manager' && process.env.MANAGER_EMAIL && process.env.MANAGER_EMAIL !== process.env.ADMIN_NOTIFICATION_EMAIL) {
+        sendFailedLoginAlert({ ...alertPayload, targetEmail: process.env.MANAGER_EMAIL }).catch(() => {});
+      }
+      
       // Also notify the account owner directly (all roles)
-      if (user.email && user.email !== process.env.ADMIN_NOTIFICATION_EMAIL) {
+      if (user.email && user.email !== process.env.ADMIN_NOTIFICATION_EMAIL && user.email !== process.env.MANAGER_EMAIL) {
         sendFailedLoginAlert({ ...alertPayload, targetEmail: user.email }).catch(() => {});
       }
     }

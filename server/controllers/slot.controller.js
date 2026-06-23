@@ -1257,7 +1257,7 @@ exports.adminManualBooking = async (req, res) => {
 
       // Fire-and-forget confirmation email to the player
       const toEmail = playerEmail || matchedUser?.email;
-      if (toEmail) {
+      if (toEmail && !payment.emailSentAt) {
         sendSlotBookingConfirmationEmail({
           toEmail,
           toName: playerName,
@@ -1271,6 +1271,8 @@ exports.adminManualBooking = async (req, res) => {
           paymentStatus,
           bookingRef: booking.bookingId,
         }).catch((err) => console.error('[Email] Slot booking confirmation failed:', err.message));
+
+        Payment.findByIdAndUpdate(payment._id, { emailSentAt: new Date() }).catch(() => {});
       }
 
       // Upsert reference price for future online bookings at the same rate

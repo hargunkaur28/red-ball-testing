@@ -181,6 +181,17 @@ export default function Sports() {
     },
   });
 
+  // ---- Unarchive mutation -------------------------------------------------
+  const unarchiveMutation = useMutation({
+    mutationFn: (id) => api.patch(`/sports/${id}/unarchive`),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['sports'] });
+      toast.success('Sport unarchived successfully');
+    },
+    onError: (err) =>
+      toast.error(err.response?.data?.message || 'Failed to unarchive sport'),
+  });
+
   // ---- Regenerate QR mutation ----------------------------------------------
   const regenerateQRMutation = useMutation({
     mutationFn: (id) => api.post(`/sports/${id}/regenerate-qr`),
@@ -329,11 +340,17 @@ export default function Sports() {
                 sport={sport}
                 onEdit={() => openEdit(sport)}
                 onToggle={() => toggleMutation.mutate({ id: sport._id })}
-                onArchive={() => archiveMutation.mutate({ id: sport._id })}
+                onArchive={() => {
+                  if (sport.deletedAt) {
+                    unarchiveMutation.mutate(sport._id);
+                  } else {
+                    archiveMutation.mutate({ id: sport._id });
+                  }
+                }}
                 onViewQR={() => setQrModal(sport)}
                 onConfig={() => setSessionConfigModal(sport)}
                 isToggling={toggleMutation.isPending}
-                isArchiving={archiveMutation.isPending}
+                isArchiving={sport.deletedAt ? unarchiveMutation.isPending : archiveMutation.isPending}
               />
             ))}
           </AnimatePresence>
@@ -448,7 +465,7 @@ export default function Sports() {
 // ===========================================================================
 // Sport Card
 // ===========================================================================
-function SportCard({ sport, onEdit, onToggle, onArchive, onViewQR, onConfig }) {
+function SportCard({ sport, onEdit, onToggle, onArchive, onViewQR, onConfig, isArchiving }) {
   const isActive = sport.active && !sport.deletedAt;
   const isArchived = !!sport.deletedAt;
   const isPlaceholder = (sport.memberCount ?? 0) === 0;
@@ -610,10 +627,21 @@ function SportCard({ sport, onEdit, onToggle, onArchive, onViewQR, onConfig }) {
           </button>
           <button
             onClick={onArchive}
-            className="flex-1 min-w-[80px] flex items-center justify-center gap-1.5 p-2 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-600 transition-colors text-xs font-semibold"
-            title="Archive sport"
+            disabled={isArchiving}
+            className={`flex-1 min-w-[80px] flex items-center justify-center gap-1.5 p-2 rounded-lg transition-colors text-xs font-semibold ${
+              isArchived
+                ? 'bg-green-50 text-green-600 hover:bg-green-100'
+                : 'bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-600'
+            }`}
+            title={isArchived ? 'Unarchive sport' : 'Archive sport'}
           >
-            <Archive size={14} /> Archive
+            {isArchiving ? (
+              <Loader2 className="animate-spin" size={14} />
+            ) : (
+              <>
+                <Archive size={14} /> {isArchived ? 'Unarchive' : 'Archive'}
+              </>
+            )}
           </button>
         </div>
       </div>

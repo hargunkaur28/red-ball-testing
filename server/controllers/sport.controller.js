@@ -433,6 +433,44 @@ exports.deleteSport = async (req, res) => {
   }
 };
 
+// PATCH /api/sports/:id/unarchive - Unarchive/Restore a sport
+exports.unarchiveSport = async (req, res) => {
+  try {
+    const sportId = req.params.id;
+    const sport = await Sport.findById(sportId);
+    if (!sport) {
+      return res.status(404).json({ success: false, message: 'Sport not found' });
+    }
+    if (!sport.deletedAt) {
+      return res.status(400).json({ success: false, message: 'Sport is not archived' });
+    }
+
+    sport.deletedAt = null;
+    sport.active = true; // Auto-activate on unarchiving for convenience
+
+    const restoredSport = await runTransaction(async (session) => {
+      const opts = session ? { session } : {};
+      await sport.save(opts);
+
+      // Re-enable associated auto-sync plans
+      await MembershipPlan.updateMany(
+        { sportsIncluded: sport.slug, autoSync: { $ne: false } },
+        { isActive: true },
+        opts
+      );
+
+      return sport;
+    });
+
+    cache.invalidate('public-sports');
+    res.json({ success: true, message: 'Sport unarchived and activated successfully', sport: restoredSport });
+  } catch (error) {
+    console.error('Unarchive Sport Error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
 // PATCH /api/sports/:id/toggle - Toggle active state
 exports.toggleActive = async (req, res) => {
   try {

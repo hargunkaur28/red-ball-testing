@@ -600,15 +600,14 @@ exports.publicVerifyPayment = async (req, res) => {
     const result = await runTransaction(async (session) => {
       const opts = session ? { session } : {};
 
-      let activeMembership = await Membership.findOne({
+      let existingMembership = await Membership.findOne({
         studentId: targetUserId,
         planId: plan._id,
-        status: 'active',
-      }, null, opts);
+      }, null, opts).sort({ createdAt: -1 });
 
       let startDate = new Date();
-      if (activeMembership && activeMembership.endDate > new Date()) {
-        startDate = new Date(activeMembership.endDate);
+      if (existingMembership && existingMembership.status === 'active' && existingMembership.endDate > new Date()) {
+        startDate = new Date(existingMembership.endDate);
       }
       const endDate = new Date(startDate.getTime() + getDurationMs(plan));
 
@@ -623,17 +622,21 @@ exports.publicVerifyPayment = async (req, res) => {
       await pendingPayment.save(opts);
 
       let membershipRec;
-      if (activeMembership) {
-        activeMembership.endDate = endDate;
-        activeMembership.paymentId = pendingPayment._id;
-        activeMembership.renewalHistory.push({
+      if (existingMembership) {
+        existingMembership.startDate = (existingMembership.status === 'active' && existingMembership.endDate > new Date())
+          ? existingMembership.startDate
+          : new Date();
+        existingMembership.endDate = endDate;
+        existingMembership.status = 'active';
+        existingMembership.paymentId = pendingPayment._id;
+        existingMembership.renewalHistory.push({
           date: new Date(),
           planId: plan._id,
           paymentId: pendingPayment._id,
           note: 'Public Online Renewal',
         });
-        await activeMembership.save(opts);
-        membershipRec = activeMembership;
+        await existingMembership.save(opts);
+        membershipRec = existingMembership;
       } else {
         [membershipRec] = await Membership.create([{
           studentId: targetUserId,
@@ -722,6 +725,8 @@ exports.publicVerifyPayment = async (req, res) => {
       invoiceNumber: payment.invoiceNumber,
       timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
     }).catch((err) => console.error('Admin alert email failed:', err.message));
+
+    Payment.findByIdAndUpdate(payment._id, { emailSentAt: new Date() }).catch(() => {});
 
     res.json({
       success: true,

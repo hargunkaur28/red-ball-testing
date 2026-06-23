@@ -41,6 +41,7 @@ router.get('/:id', auth, authorize('superadmin'), sportController.getSportById);
 router.post('/', auth, authorize('superadmin'), upload.single('imageFile'), sportController.createSport);
 router.put('/:id', auth, authorize('superadmin'), upload.single('imageFile'), sportController.updateSport);
 router.delete('/:id', auth, authorize('superadmin'), sportController.deleteSport);
+router.patch('/:id/unarchive', auth, authorize('superadmin'), sportController.unarchiveSport);
 router.patch('/:id/toggle', auth, authorize('superadmin'), sportController.toggleActive);
 router.post('/:id/regenerate-qr', auth, authorize('superadmin'), sportController.regenerateQR);
 router.post('/:id/kids-academy', auth, authorize('superadmin'), sportController.upsertKidsAcademy);
