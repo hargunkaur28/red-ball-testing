@@ -34,7 +34,7 @@ const slotLabel = (s) => {
 };
 
 // ── Court Detail Panel (floating right-side sheet) ────────────────────────────
-function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onToggleCourt, onDeleteCourt, onDeleteSlot, onSaved, onOpenBulk }) {
+function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onToggleCourt, onDeleteCourt, onDeleteSlot, onSaved, onOpenBulk, onOpenBulkDelete }) {
   const { court, slots } = group;
   const [editingSlotId, setEditingSlotId] = useState(null);
   const [editForm, setEditForm] = useState({});
@@ -156,6 +156,11 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
                 title="Bulk create slots"
                 className="w-8 h-8 rounded-lg flex items-center justify-center border border-[#EAEAEA] text-[#555] hover:bg-[#F5F5F5] transition-colors">
                 <Layers size={14} />
+              </button>
+              <button onClick={() => onOpenBulkDelete?.(court._id)}
+                title="Bulk delete slots"
+                className="w-8 h-8 rounded-lg flex items-center justify-center border border-[#EAEAEA] text-red-500 hover:bg-red-50 hover:border-red-200 transition-colors">
+                <Trash2 size={14} />
               </button>
               <button onClick={() => onToggleCourt(court)} title={court.isOpen ? 'Close court' : 'Open court'}
                 className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-colors ${court.isOpen ? 'border-red-200 text-red-500 hover:bg-red-50' : 'border-green-200 text-green-600 hover:bg-green-50'}`}>
@@ -814,6 +819,206 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
   );
 }
 
+// ── Bulk Delete Slot Modal ───────────────────────────────────────────────────
+function BulkDeleteSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
+  const [courtIds, setCourtIds] = useState(initialCourtIds ?? courts.filter((c) => c.isOpen).map((c) => c._id));
+  const [weekdays, setWeekdays] = useState([0, 1, 2, 3, 4, 5, 6]);
+  const [deleteMode, setDeleteMode] = useState('all'); // 'all' | 'specific'
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [startDate, setStartDate] = useState(todayStr());
+  const [endDate, setEndDate] = useState(addDays(todayStr(), 364));
+
+  const [deleting, setDeleting] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const toggleDay = (val) => setWeekdays((p) => p.includes(val) ? p.filter((d) => d !== val) : [...p, val]);
+  const toggleCourt = (id) => setCourtIds((p) => p.includes(id) ? p.filter((c) => c !== id) : [...p, id]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!courtIds.length) return toast.error('Select at least one court.');
+    if (!weekdays.length) return toast.error('Select at least one day.');
+    if (deleteMode === 'specific' && (!startTime || !endTime)) {
+      return toast.error('Please specify start and end time.');
+    }
+    const confirmed = window.confirm(
+      `Are you sure you want to delete these slots? This cannot be undone.`
+    );
+    if (!confirmed) return;
+
+    setDeleting(true);
+    try {
+      const payload = {
+        sportId: sport._id,
+        courtIds,
+        startDateStr: startDate,
+        endDateStr: endDate,
+        weekdays,
+      };
+      if (deleteMode === 'specific') {
+        payload.startTime = startTime;
+        payload.endTime = endTime;
+      }
+
+      const { data } = await api.delete('/slots/admin/bulk', { data: payload });
+      setResult(data);
+      toast.success(`Slots deleted successfully.`);
+      onSuccess();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Bulk deletion failed.');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+      <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }}
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-xl overflow-hidden my-4">
+
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#EAEAEA]">
+          <div>
+            <h3 className="font-bold text-[#111] text-base flex items-center gap-2">
+              <Trash2 size={16} className="text-red-600" /> Bulk Delete Slots
+            </h3>
+            <p className="text-xs text-[#999] mt-0.5">{sport?.name} · slots deleted across date range</p>
+          </div>
+          <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-[#F5F5F5] text-[#666]"><X size={16} /></button>
+        </div>
+
+        {result ? (
+          <div className="p-6 space-y-4">
+            <div className="text-center py-2">
+              <div className="w-14 h-14 rounded-full bg-red-50 border border-red-200 flex items-center justify-center mx-auto mb-3">
+                <Trash2 size={26} className="text-red-600" />
+              </div>
+              <h4 className="font-bold text-[#111] text-lg">Deleted!</h4>
+              <p className="text-sm text-[#555] mt-1">
+                Successfully deleted <strong className="text-red-600">{result.deletedCount} slot(s)</strong>.
+              </p>
+              {result.skippedBookedCount > 0 && (
+                <p className="text-xs text-amber-600 mt-2 font-medium">
+                  Skipped {result.skippedBookedCount} slot(s) because they have active bookings.
+                </p>
+              )}
+            </div>
+            <button onClick={onClose} className="w-full py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700">Close</button>
+          </div>
+        ) : courts.length === 0 ? (
+          <div className="p-6 flex flex-col items-center gap-4 text-center">
+            <div className="w-14 h-14 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center">
+              <Building2 size={26} className="text-amber-500" />
+            </div>
+            <div>
+              <p className="font-bold text-[#111] text-base">No courts set up yet</p>
+              <p className="text-sm text-[#666] mt-1">No courts exist for <strong>{sport?.name}</strong>.</p>
+            </div>
+            <button onClick={onClose} className="w-full py-2.5 rounded-xl bg-[#111] text-white text-sm font-semibold hover:bg-[#333]">Close</button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="p-5 space-y-5 overflow-y-auto max-h-[75vh]">
+
+            {/* Courts */}
+            <div>
+              <label className="text-xs font-bold text-[#333] flex items-center gap-1.5 mb-2">
+                <Building2 size={13} className="text-red-600" /> Courts ({courtIds.length}/{courts.length} selected)
+              </label>
+              <div className="flex flex-wrap gap-2">
+                <button type="button" onClick={() => setCourtIds(courts.map((c) => c._id))}
+                  className="text-[11px] px-2.5 py-1 rounded-full border border-[#EAEAEA] hover:bg-[#F5F5F5] text-[#666]">All</button>
+                <button type="button" onClick={() => setCourtIds([])}
+                  className="text-[11px] px-2.5 py-1 rounded-full border border-[#EAEAEA] hover:bg-[#F5F5F5] text-[#666]">None</button>
+                {courts.map((c) => (
+                  <button key={c._id} type="button" onClick={() => toggleCourt(c._id)}
+                    className={`text-[11px] px-3 py-1 rounded-full border font-medium transition-colors ${courtIds.includes(c._id) ? 'bg-red-600 border-red-600 text-white' : 'border-[#EAEAEA] text-[#555] hover:border-red-600/40'} ${!c.isOpen ? 'opacity-50' : ''}`}>
+                    {c.name}{!c.isOpen ? ' (closed)' : ''}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Weekdays */}
+            <div>
+              <label className="text-xs font-bold text-[#333] block mb-2">Delete on days</label>
+              <div className="flex gap-1.5 flex-wrap">
+                {DAYS.map((d) => (
+                  <button key={d.val} type="button" onClick={() => toggleDay(d.val)}
+                    className={`w-9 h-9 rounded-full text-xs font-bold border transition-colors ${weekdays.includes(d.val) ? 'bg-red-600 border-red-600 text-white' : 'border-[#EAEAEA] text-[#666] hover:border-red-600/40'}`}>
+                    {d.label}
+                  </button>
+                ))}
+                <button type="button" onClick={() => setWeekdays(DAYS.map((d) => d.val))}
+                  className="px-3 h-9 rounded-full text-[11px] border border-[#EAEAEA] text-[#666] hover:bg-[#F5F5F5]">All</button>
+                <button type="button" onClick={() => setWeekdays([1, 2, 3, 4, 5])}
+                  className="px-3 h-9 rounded-full text-[11px] border border-[#EAEAEA] text-[#666] hover:bg-[#F5F5F5]">Weekdays</button>
+              </div>
+            </div>
+
+            {/* Delete Mode */}
+            <div>
+              <label className="text-xs font-bold text-[#333] block mb-2">Delete Scope</label>
+              <div className="flex gap-2">
+                <button type="button" onClick={() => setDeleteMode('all')}
+                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border flex items-center justify-center gap-2 transition-colors ${deleteMode === 'all' ? 'bg-red-600 border-red-600 text-white' : 'border-[#EAEAEA] text-[#666] hover:bg-gray-50'}`}>
+                  Delete All Slots
+                </button>
+                <button type="button" onClick={() => setDeleteMode('specific')}
+                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border flex items-center justify-center gap-2 transition-colors ${deleteMode === 'specific' ? 'bg-red-600 border-red-600 text-white' : 'border-[#EAEAEA] text-[#666] hover:bg-gray-50'}`}>
+                  Delete Specific Slot Time
+                </button>
+              </div>
+            </div>
+
+            {/* Time Window */}
+            {deleteMode === 'specific' && (
+              <div className="grid grid-cols-2 gap-3 p-3 bg-red-50/50 border border-red-100 rounded-xl">
+                <div>
+                  <label className="text-[11px] text-[#666] font-bold mb-1 block">Slot starts at</label>
+                  <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)}
+                    className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-600/20 bg-white" />
+                </div>
+                <div>
+                  <label className="text-[11px] text-[#666] font-bold mb-1 block">Slot ends at</label>
+                  <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)}
+                    className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-600/20 bg-white" />
+                </div>
+              </div>
+            )}
+
+            {/* Date Range */}
+            <div>
+              <label className="text-xs font-bold text-[#333] block mb-2">Date Range</label>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[11px] text-[#999] mb-1 block">From</label>
+                  <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}
+                    className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-600/20 bg-white" />
+                </div>
+                <div>
+                  <label className="text-[11px] text-[#999] mb-1 block">To</label>
+                  <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}
+                    className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-600/20 bg-white" />
+                </div>
+              </div>
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex gap-3 pt-1">
+              <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-[#EAEAEA] text-sm font-medium text-[#666] hover:bg-[#F5F5F5]">Cancel</button>
+              <button type="submit" disabled={deleting || !courtIds.length || !weekdays.length}
+                className="flex-1 py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 disabled:opacity-60 flex items-center justify-center gap-2">
+                {deleting ? <Loader2 size={15} className="animate-spin" /> : <Trash2 size={15} />}
+                {deleting ? 'Deleting…' : 'Bulk Delete'}
+              </button>
+            </div>
+          </form>
+        )}
+      </motion.div>
+    </div>
+  );
+}
+
 // ── Manual Payment Modal ──────────────────────────────────────────────────────
 function ManualPaymentModal({ slot, onClose, onSuccess }) {
   const [form, setForm] = useState({
@@ -1296,6 +1501,7 @@ export default function LiveSports() {
   const [openCourtGroup, setOpenCourtGroup] = useState(null); // court detail panel
   const [manualPaymentSlot, setManualPaymentSlot] = useState(null);
   const [showBulkModal, setShowBulkModal] = useState(false);
+  const [showBulkDeleteModal, setShowBulkDeleteModal] = useState(false);
   const [bulkCourtPreselect, setBulkCourtPreselect] = useState(null);
   const [showAddCourt, setShowAddCourt] = useState(false);
 
@@ -1460,6 +1666,10 @@ export default function LiveSports() {
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C8102E] text-white text-xs font-semibold hover:bg-[#a50d27]">
                   <Zap size={13} /> Bulk Create Slots
                 </button>
+                <button onClick={() => { setBulkCourtPreselect(null); setShowBulkDeleteModal(true); }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition-colors">
+                  <Trash2 size={13} /> Bulk Delete Slots
+                </button>
                 <button onClick={() => setSelectedSportId(null)} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-[#F5F5F5] text-[#666]"><X size={16} /></button>
               </div>
             </div>
@@ -1480,6 +1690,10 @@ export default function LiveSports() {
                   <button onClick={() => { if (courts.length) { setBulkCourtPreselect(null); setShowBulkModal(true); } else toast.info('Add a court first.'); }}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C8102E] text-white text-xs font-semibold hover:bg-[#a50d27]">
                     <Zap size={13} /> Bulk Create Slots
+                  </button>
+                  <button onClick={() => { if (courts.length) { setBulkCourtPreselect(null); setShowBulkDeleteModal(true); } else toast.info('Add a court first.'); }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-red-200 text-red-600 text-xs font-semibold hover:bg-red-50 transition-colors">
+                    <Trash2 size={13} /> Bulk Delete Slots
                   </button>
                 </div>
               </div>
@@ -1509,6 +1723,7 @@ export default function LiveSports() {
             onDeleteSlot={handleDeleteSlot}
             onSaved={invalidateAll}
             onOpenBulk={(courtId) => { setBulkCourtPreselect(courtId ? [courtId] : null); setShowBulkModal(true); }}
+            onOpenBulkDelete={(courtId) => { setBulkCourtPreselect(courtId ? [courtId] : null); setShowBulkDeleteModal(true); }}
           />
         )}
       </AnimatePresence>
@@ -1526,6 +1741,12 @@ export default function LiveSports() {
             initialCourtIds={bulkCourtPreselect}
             onClose={() => setShowBulkModal(false)}
             onSuccess={() => { invalidateAll(); setShowBulkModal(false); }} />
+        )}
+        {showBulkDeleteModal && selectedSport && (
+          <BulkDeleteSlotModal sport={selectedSport} courts={courts}
+            initialCourtIds={bulkCourtPreselect}
+            onClose={() => setShowBulkDeleteModal(false)}
+            onSuccess={() => { invalidateAll(); setShowBulkDeleteModal(false); }} />
         )}
         {showAddCourt && selectedSport && (
           <AddCourtModal sport={selectedSport}

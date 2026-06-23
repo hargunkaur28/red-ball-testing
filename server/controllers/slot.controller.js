@@ -159,7 +159,7 @@ exports.deleteSlot = async (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 exports.bulkDeleteSlots = async (req, res) => {
   try {
-    const { sportId, courtIds, startDateStr, endDateStr } = req.body;
+    const { sportId, courtIds, startDateStr, endDateStr, startTime, endTime, weekdays } = req.body;
     if (!sportId || !startDateStr || !endDateStr) {
       return res.status(400).json({ message: 'sportId, startDateStr, endDateStr are required.' });
     }
@@ -177,15 +177,41 @@ exports.bulkDeleteSlots = async (req, res) => {
     const { startOfDay: rangeStart } = istDayBoundaries(startDateStr);
     const { endOfDay: rangeEnd } = istDayBoundaries(endDateStr);
 
-    const result = await Slot.deleteMany({
+    const filter = {
       courtId: { $in: targetCourtIds },
       date: { $gte: rangeStart, $lte: rangeEnd },
-    });
+    };
+
+    if (startTime) filter.startTime = startTime;
+    if (endTime) filter.endTime = endTime;
+
+    const slots = await Slot.find(filter);
+
+    const slotsToDelete = [];
+    let skippedBookedCount = 0;
+    for (const slot of slots) {
+      if (weekdays && weekdays.length > 0) {
+        const istDate = new Date(slot.date.getTime() + 5.5 * 60 * 60 * 1000);
+        const day = istDate.getUTCDay();
+        if (!weekdays.includes(day)) continue;
+      }
+      if (slot.currentBookings > 0) {
+        skippedBookedCount++;
+        continue;
+      }
+      slotsToDelete.push(slot._id);
+    }
+
+    const result = await Slot.deleteMany({ _id: { $in: slotsToDelete } });
 
     const io = req.app.get('io');
     if (io) io.emit('slots:bulk-created', { sportId });
 
-    res.json({ message: `Deleted ${result.deletedCount} slot(s).`, deletedCount: result.deletedCount });
+    res.json({
+      message: `Deleted ${result.deletedCount} slot(s).`,
+      deletedCount: result.deletedCount,
+      skippedBookedCount,
+    });
   } catch (error) {
     console.error('bulkDeleteSlots error:', error);
     res.status(500).json({ message: 'Bulk delete failed.', error: error.message });

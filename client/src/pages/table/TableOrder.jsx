@@ -936,7 +936,7 @@ export default function TableOrder() {
                 <button 
                   onClick={placeOrder} 
                   disabled={loading}
-                  className="w-full py-4 rounded-full bg-[#C8102E] hover:bg-[#A00D24] text-white font-extrabold text-sm uppercase tracking-widest shadow-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-4 px-6 rounded-full bg-[#C8102E] hover:bg-[#A00D24] text-white font-extrabold text-sm uppercase tracking-widest shadow-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
