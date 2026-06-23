@@ -366,59 +366,85 @@ const startServer = async () => {
 
   let existingAdmin = await User.findOne({ role: 'superadmin' }).select('+password');
   if (!existingAdmin) {
-    existingAdmin = await User.create({
-      name: process.env.SUPER_ADMIN_NAME || 'Super Admin',
-      email: process.env.SUPER_ADMIN_EMAIL,
-      phone: '9999999999',
-      password: process.env.SUPER_ADMIN_PASSWORD,
-      role: 'superadmin',
-    });
-    console.log(`🔐 Superadmin seeded: ${process.env.SUPER_ADMIN_EMAIL}`);
+    try {
+      existingAdmin = await User.create({
+        name: process.env.SUPER_ADMIN_NAME || 'Super Admin',
+        email: process.env.SUPER_ADMIN_EMAIL,
+        phone: '9999999999',
+        password: process.env.SUPER_ADMIN_PASSWORD,
+        role: 'superadmin',
+      });
+      console.log(`🔐 Superadmin seeded: ${process.env.SUPER_ADMIN_EMAIL}`);
+    } catch (err) {
+      console.error(`⚠️ Failed to seed Superadmin:`, err.message);
+    }
   } else {
-    let modified = false;
-    if (existingAdmin.email !== process.env.SUPER_ADMIN_EMAIL) {
-      existingAdmin.email = process.env.SUPER_ADMIN_EMAIL;
-      modified = true;
-    }
-    if (process.env.SUPER_ADMIN_PASSWORD) {
-      const isSamePassword = await existingAdmin.comparePassword(process.env.SUPER_ADMIN_PASSWORD);
-      if (!isSamePassword) {
-        existingAdmin.password = process.env.SUPER_ADMIN_PASSWORD;
-        modified = true;
+    try {
+      let modified = false;
+      if (existingAdmin.email !== process.env.SUPER_ADMIN_EMAIL) {
+        const emailConflict = await User.findOne({ email: process.env.SUPER_ADMIN_EMAIL });
+        if (emailConflict) {
+          console.warn(`⚠️ Cannot update Superadmin email to ${process.env.SUPER_ADMIN_EMAIL} - Email already taken by user ID: ${emailConflict._id}`);
+        } else {
+          existingAdmin.email = process.env.SUPER_ADMIN_EMAIL;
+          modified = true;
+        }
       }
-    }
-    if (modified) {
-      await existingAdmin.save();
-      console.log(`🔐 Superadmin credentials updated to match environment variables.`);
+      if (process.env.SUPER_ADMIN_PASSWORD) {
+        const isSamePassword = await existingAdmin.comparePassword(process.env.SUPER_ADMIN_PASSWORD);
+        if (!isSamePassword) {
+          existingAdmin.password = process.env.SUPER_ADMIN_PASSWORD;
+          modified = true;
+        }
+      }
+      if (modified) {
+        await existingAdmin.save();
+        console.log(`🔐 Superadmin credentials updated to match environment variables.`);
+      }
+    } catch (err) {
+      console.error(`⚠️ Failed to update Superadmin credentials:`, err.message);
     }
   }
 
   const existingManager = await User.findOne({ role: 'manager' }).select('+password');
   if (!existingManager) {
-    await User.create({
-      name: process.env.MANAGER_NAME || 'Restaurant Manager',
-      email: process.env.MANAGER_EMAIL,
-      phone: '8888888888',
-      password: process.env.MANAGER_PASSWORD,
-      role: 'manager',
-    });
-    console.log(`👨‍🍳 Manager seeded: ${process.env.MANAGER_EMAIL}`);
+    try {
+      await User.create({
+        name: process.env.MANAGER_NAME || 'Restaurant Manager',
+        email: process.env.MANAGER_EMAIL,
+        phone: '8888888888',
+        password: process.env.MANAGER_PASSWORD,
+        role: 'manager',
+      });
+      console.log(`👨‍🍳 Manager seeded: ${process.env.MANAGER_EMAIL}`);
+    } catch (err) {
+      console.error(`⚠️ Failed to seed Manager:`, err.message);
+    }
   } else {
-    let modified = false;
-    if (existingManager.email !== process.env.MANAGER_EMAIL) {
-      existingManager.email = process.env.MANAGER_EMAIL;
-      modified = true;
-    }
-    if (process.env.MANAGER_PASSWORD) {
-      const isSamePassword = await existingManager.comparePassword(process.env.MANAGER_PASSWORD);
-      if (!isSamePassword) {
-        existingManager.password = process.env.MANAGER_PASSWORD;
-        modified = true;
+    try {
+      let modified = false;
+      if (existingManager.email !== process.env.MANAGER_EMAIL) {
+        const emailConflict = await User.findOne({ email: process.env.MANAGER_EMAIL });
+        if (emailConflict) {
+          console.warn(`⚠️ Cannot update Manager email to ${process.env.MANAGER_EMAIL} - Email already taken by user ID: ${emailConflict._id}`);
+        } else {
+          existingManager.email = process.env.MANAGER_EMAIL;
+          modified = true;
+        }
       }
-    }
-    if (modified) {
-      await existingManager.save();
-      console.log(`👨‍🍳 Manager credentials updated to match environment variables.`);
+      if (process.env.MANAGER_PASSWORD) {
+        const isSamePassword = await existingManager.comparePassword(process.env.MANAGER_PASSWORD);
+        if (!isSamePassword) {
+          existingManager.password = process.env.MANAGER_PASSWORD;
+          modified = true;
+        }
+      }
+      if (modified) {
+        await existingManager.save();
+        console.log(`👨‍🍳 Manager credentials updated to match environment variables.`);
+      }
+    } catch (err) {
+      console.error(`⚠️ Failed to update Manager credentials:`, err.message);
     }
   }
 
