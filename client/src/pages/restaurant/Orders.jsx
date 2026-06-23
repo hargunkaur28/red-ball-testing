@@ -58,6 +58,7 @@ export default function RestaurantOrders() {
   const [draggedOrderId, setDraggedOrderId] = useState(null);
   const [draggedFromStatus, setDraggedFromStatus] = useState(null);
   const [dragOverColumn, setDragOverColumn] = useState(null);
+  const [confirmDrag, setConfirmDrag] = useState(null); // { orderId, orderNumber, fromStatus, toStatus }
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(Date.now()), 30000);
@@ -203,7 +204,7 @@ export default function RestaurantOrders() {
     const hasCancelledItems = order.items?.some(i => i.status === 'cancelled' || i.status === 'refunded');
     const isPrepOpen = prepInputs[order._id];
 
-    const isDraggable = status !== 'cancelled' && status !== 'delivered';
+    const isDraggable = status !== 'cancelled';
 
     return (
       <motion.div
@@ -500,36 +501,38 @@ export default function RestaurantOrders() {
             const config = statusConfig[colStatus];
             const columnOrders = orders.filter(o => o.status === colStatus);
 
-            // A drop is valid if the dragged card's next step === this column
-            const validDrop = draggedFromStatus && nextStatus[draggedFromStatus] === colStatus;
+            const validDrop = draggedFromStatus && draggedFromStatus !== colStatus;
             const isOver = dragOverColumn === colStatus;
 
             return (
               <div
                 key={colStatus}
                 onDragOver={(e) => {
-                  if (!validDrop) return;
+                  if (!draggedOrderId || draggedFromStatus === colStatus) return;
                   e.preventDefault();
                   e.dataTransfer.dropEffect = 'move';
                   setDragOverColumn(colStatus);
                 }}
                 onDragLeave={(e) => {
-                  // Only clear if leaving the column entirely (not entering a child)
                   if (!e.currentTarget.contains(e.relatedTarget)) setDragOverColumn(null);
                 }}
                 onDrop={(e) => {
                   e.preventDefault();
                   setDragOverColumn(null);
-                  if (!validDrop || !draggedOrderId) return;
-                  updateMutation.mutate({ id: draggedOrderId, status: colStatus });
+                  if (!draggedOrderId || draggedFromStatus === colStatus) return;
+                  const draggedOrder = orders.find(o => o._id === draggedOrderId);
+                  setConfirmDrag({
+                    orderId: draggedOrderId,
+                    orderNumber: draggedOrder?.orderNumber || draggedOrderId,
+                    fromStatus: draggedFromStatus,
+                    toStatus: colStatus,
+                  });
                   setDraggedOrderId(null);
                   setDraggedFromStatus(null);
                 }}
                 className={`rounded-3xl border-2 shadow-sm overflow-hidden flex flex-col h-[calc(100vh-200px)] min-h-[500px] transition-all duration-150 ${
                   isOver && validDrop
                     ? 'border-[#C8102E] ring-2 ring-[#C8102E]/40 scale-[1.01]'
-                    : draggedOrderId && !validDrop && colStatus !== draggedFromStatus
-                    ? 'opacity-40 cursor-not-allowed'
                     : config.color
                 }`}
               >
@@ -549,7 +552,7 @@ export default function RestaurantOrders() {
                 <div className="p-4 flex-1 space-y-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
                   {columnOrders.length === 0 && (
                     <div className={`text-center py-16 font-medium text-xs transition-colors ${isOver && validDrop ? 'text-[#C8102E]' : 'text-gray-400'}`}>
-                      {isOver && validDrop ? '↓ Drop to move here' : 'No active orders'}
+                      {isOver && validDrop ? '↓ Drop to move here' : `No ${config.label.toLowerCase()}`}
                     </div>
                   )}
                   <AnimatePresence>
@@ -742,6 +745,72 @@ export default function RestaurantOrders() {
                   className="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-sm font-bold transition-all"
                 >
                   Back
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Status Change Confirmation Dialog */}
+      <AnimatePresence>
+        {confirmDrag && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+              onClick={() => setConfirmDrag(null)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 24 }}
+              className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-white rounded-2xl shadow-2xl p-6"
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') setConfirmDrag(null);
+              }}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                  <RefreshCw size={20} className="text-amber-600" />
+                </div>
+                <div>
+                  <h3 className="font-black text-base text-gray-900">Change Order Status</h3>
+                  <p className="text-xs text-gray-500">This action will update the order immediately</p>
+                </div>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3 mb-4 border border-gray-100">
+                <p className="text-sm text-gray-700">
+                  Are you sure you want to move <span className="font-black text-black">{confirmDrag.orderNumber}</span> from{' '}
+                  <span className={`font-black ${
+                    confirmDrag.fromStatus === 'new' ? 'text-blue-600' :
+                    confirmDrag.fromStatus === 'preparing' ? 'text-amber-600' :
+                    confirmDrag.fromStatus === 'ready' ? 'text-green-600' : 'text-gray-600'
+                  }`}>{statusConfig[confirmDrag.fromStatus]?.label || confirmDrag.fromStatus}</span>{' '}
+                  to{' '}
+                  <span className={`font-black ${
+                    confirmDrag.toStatus === 'new' ? 'text-blue-600' :
+                    confirmDrag.toStatus === 'preparing' ? 'text-amber-600' :
+                    confirmDrag.toStatus === 'ready' ? 'text-green-600' : 'text-gray-600'
+                  }`}>{statusConfig[confirmDrag.toStatus]?.label || confirmDrag.toStatus}</span>?
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  autoFocus
+                  onClick={() => {
+                    updateMutation.mutate({ id: confirmDrag.orderId, status: confirmDrag.toStatus });
+                    setConfirmDrag(null);
+                  }}
+                  className="flex-1 py-2.5 bg-[#C8102E] hover:bg-[#A00D24] text-white rounded-xl text-sm font-black transition-all shadow-md"
+                >
+                  Yes, move it
+                </button>
+                <button
+                  onClick={() => setConfirmDrag(null)}
+                  className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-sm font-bold transition-all"
+                >
+                  Cancel
                 </button>
               </div>
             </motion.div>

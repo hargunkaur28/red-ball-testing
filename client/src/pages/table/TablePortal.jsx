@@ -64,7 +64,7 @@ export default function TablePortal({ embedded = false }) {
     }
   }, [googleAuth]);
   
-  const [orderType, setOrderType] = useState('pickup');
+  const [orderType, setOrderType] = useState('delivery');
   const [customer, setCustomer] = useState({ name: '', phone: '', address: '', lat: '', lng: '' });
   const [specialInstructions, setSpecialInstructions] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('razorpay');

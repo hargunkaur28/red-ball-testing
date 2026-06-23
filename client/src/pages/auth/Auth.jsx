@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import useAuthStore from '../../store/authStore';
 import { toast } from 'sonner';
 import api from '../../lib/axios';
+import Navbar from '../../components/home/Navbar';
 
 const FEATURES = [
   {
@@ -40,9 +41,7 @@ const FEATURES = [
 const css = `
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow:wght@300;400;500;600&display=swap');
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body { background: #080808; }
+.auth-root *, .auth-root *::before, .auth-root *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 .auth-root {
   min-height: 100vh;
@@ -53,6 +52,7 @@ body { background: #080808; }
   font-family: 'Barlow', sans-serif;
   position: relative;
   overflow: hidden;
+  padding-top: 72px;
 }
 
 .auth-card {
@@ -420,33 +420,7 @@ body { background: #080808; }
 }
 .toggle-btn:hover { color: #C8102E; }
 
-.demo-section { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.055); }
-.demo-toggle {
-  width: 100%; background: none; border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 6px;
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
-  font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(255,255,255,0.2); transition: color 0.2s;
-}
-.demo-toggle:hover { color: rgba(255,255,255,0.45); }
-.demo-toggle.active { color: rgba(200,16,46,0.75); }
 
-.demo-cred {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 9px 12px; border-radius: 9px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.055);
-  cursor: pointer; text-align: left; width: 100%;
-  transition: border-color 0.2s, background 0.2s;
-  margin-top: 7px;
-}
-.demo-cred:hover { border-color: rgba(200,16,46,0.3); background: rgba(255,255,255,0.06); }
-.demo-role {
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
-  font-size: 8.5px; letter-spacing: 0.15em; color: #C8102E;
-  text-transform: uppercase; margin-bottom: 2px;
-}
-.demo-email { font-size: 11px; color: rgba(255,255,255,0.45); }
 
 .back-btn {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
@@ -508,22 +482,10 @@ export default function Auth() {
   const [forgotStep, setForgotStep] = useState('email'); // 'email' | 'otp'
   const [forgotLoading, setForgotLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [showDemo, setShowDemo] = useState(false);
+
   const redirectTo = searchParams.get('redirectTo');
 
-  const demoCreds = [
-    { role: 'Super Admin', email: 'plutobluews@gmail.com', password: 'Admin@123', note: '' },
-    { role: 'Restaurant Manager', email: 'hargun134340@gmail.com', password: 'Manager@123', note: '' },
-    { role: 'Test User', email: 'hargun@gmail.com', password: 'RedBall@123', note: 'for testing subscription' },
-    { role: 'Test User', email: 'shine@tshd.com', password: 'shine123', note: 'for testing membership' },
-  ];
 
-  const handleDemoFill = (cred) => {
-    setFormData((prev) => ({ ...prev, email: cred.email, password: cred.password }));
-    setErrors({});
-    setRequiresCode(false);
-    setSecurityCode('');
-  };
   const { login, register, googleAuth, getRedirectPath } = useAuthStore();
 
   const googleButtonRef = useCallback((node) => {
@@ -666,6 +628,7 @@ export default function Auth() {
   return (
     <>
       <style>{css}</style>
+      <Navbar />
       <div className="auth-root">
         <div className="auth-card">
 
@@ -864,50 +827,7 @@ export default function Auth() {
                   <button className="toggle-btn" onClick={toggleAuth}>{isLogin ? 'Join the Academy' : 'Sign in here'}</button>
                 </div>
 
-                {isLogin && (
-                  <div className="demo-section">
-                    <button
-                      type="button"
-                      className={`demo-toggle${showDemo ? ' active' : ''}`}
-                      onClick={() => setShowDemo(!showDemo)}
-                    >
-                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-                      </svg>
-                      Demo Access
-                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transform: showDemo ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
-                        <polyline points="6 9 12 15 18 9"/>
-                      </svg>
-                    </button>
-                    <AnimatePresence>
-                      {showDemo && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          style={{ overflow: 'hidden' }}
-                        >
-                          {demoCreds.map((c) => (
-                            <button
-                              key={c.email}
-                              type="button"
-                              className="demo-cred"
-                              onClick={() => handleDemoFill(c)}
-                            >
-                              <div>
-                                <div className="demo-role">{c.role}{c.note && <span style={{ color: 'rgba(255,255,255,0.28)', fontFamily: 'Barlow,sans-serif', fontWeight: 400, fontSize: '8px', letterSpacing: '0.05em', textTransform: 'none', marginLeft: '6px' }}>— {c.note}</span>}</div>
-                                <div className="demo-email">{c.email}</div>
-                              </div>
-                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'rgba(255,255,255,0.18)', flexShrink: 0 }}>
-                                <polyline points="9 18 15 12 9 6"/>
-                              </svg>
-                            </button>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                )}
+
 
               </motion.div>
             </AnimatePresence>
