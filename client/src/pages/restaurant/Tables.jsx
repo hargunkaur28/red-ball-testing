@@ -144,14 +144,39 @@ export default function Tables() {
 
             {/* Actions */}
             <div className="space-y-2">
-              <button 
-                onClick={() => qrMutation.mutate(table._id)} 
-                disabled={qrMutation.isPending}
-                className="w-full py-3 bg-[#0D0D0D] hover:bg-[#161616] text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md"
-              >
-                <QrCode size={16} className="text-[#F5A623]" />
-                <span>{table.qrCode ? 'Regenerate QR Code' : 'Generate QR Code'}</span>
-              </button>
+              {table.qrCode ? (
+                <div className="flex gap-2">
+                  <button 
+                    onClick={() => {
+                      const link = document.createElement('a');
+                      link.href = table.qrCode;
+                      link.download = `table-qr-${table.tableNumber}.png`;
+                      link.click();
+                    }}
+                    className="flex-1 py-3 bg-[#C8102E] hover:bg-[#A00D24] text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md"
+                  >
+                    <Download size={16} />
+                    <span>Download</span>
+                  </button>
+                  <button 
+                    onClick={() => qrMutation.mutate(table._id)} 
+                    disabled={qrMutation.isPending}
+                    className="flex-1 py-3 bg-[#0D0D0D] hover:bg-[#161616] text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md"
+                  >
+                    <QrCode size={16} className="text-[#F5A623]" />
+                    <span>Regenerate</span>
+                  </button>
+                </div>
+              ) : (
+                <button 
+                  onClick={() => qrMutation.mutate(table._id)} 
+                  disabled={qrMutation.isPending}
+                  className="w-full py-3 bg-[#0D0D0D] hover:bg-[#161616] text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md"
+                >
+                  <QrCode size={16} className="text-[#F5A623]" />
+                  <span>Generate QR Code</span>
+                </button>
+              )}
             </div>
           </motion.div>
         ))}
