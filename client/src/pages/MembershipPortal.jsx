@@ -190,6 +190,11 @@ export default function MembershipPortal({ embedded = false }) {
     try {
       const { data: orderRes } = await api.post('/memberships/public-purchase', {
         planId: selectedPlanId,
+        customerDetails: isAuthenticated ? {
+          name: user.name,
+          email: user.email,
+          phone: user.phone
+        } : details,
       });
 
       if (!orderRes.success) {

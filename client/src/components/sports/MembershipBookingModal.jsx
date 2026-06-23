@@ -128,6 +128,11 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
         planId: plan._id,
         withTraining: trainingAvailable && withTraining,
         ...(isKidsAcademy && sport?._id ? { sportId: sport._id } : {}),
+        customerDetails: isAuthenticated ? {
+          name: user.name,
+          email: user.email,
+          phone: user.phone
+        } : details,
       });
 
       if (!orderRes.success) throw new Error(orderRes.message);

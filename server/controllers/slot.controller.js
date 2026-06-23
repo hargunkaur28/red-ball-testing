@@ -644,7 +644,7 @@ exports.getPublicAvailableSlots = async (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 exports.createSlotOrder = async (req, res) => {
   try {
-    const { slotId, couponId, couponCode } = req.body;
+    const { slotId, couponId, couponCode, playerName, playerPhone, playerEmail } = req.body;
     if (!slotId) return res.status(400).json({ message: 'slotId is required.' });
 
     const slot = await Slot.findById(slotId);
@@ -781,6 +781,7 @@ exports.createSlotOrder = async (req, res) => {
     const pendingPayment = await Payment.create({
       type: 'slot-booking',
       studentId: req.user?.userId || null,
+      customerName: playerName || undefined,
       amount: finalPrice,
       gstAmount: 0,
       gstPercent: 0,
@@ -809,7 +810,14 @@ exports.createSlotOrder = async (req, res) => {
       amount: Math.round(finalPrice * 100),
       currency: 'INR',
       receipt: `slot_${slot._id.toString().slice(-8)}_${Date.now().toString().slice(-6)}`,
-      notes: { paymentId: pendingPayment._id.toString(), slotId: slot._id.toString(), amount: finalPrice },
+      notes: {
+        paymentId: pendingPayment._id.toString(),
+        slotId: slot._id.toString(),
+        amount: finalPrice,
+        playerName: playerName || '',
+        playerPhone: playerPhone || '',
+        playerEmail: playerEmail || '',
+      },
     });
 
     // Bind Razorpay order ID to the pending payment

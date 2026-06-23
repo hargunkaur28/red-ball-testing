@@ -267,7 +267,12 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
 
     setSubmitting(true);
     try {
-      const orderPayload = { slotId: selectedSlot._id };
+      const orderPayload = {
+        slotId: selectedSlot._id,
+        playerName: isAuthenticated ? user.name : details.name,
+        playerPhone: isAuthenticated ? user.phone : details.phone,
+        playerEmail: isAuthenticated ? user.email : details.email,
+      };
       if (appliedCoupon) {
         orderPayload.couponId = appliedCoupon.couponId;
         orderPayload.couponCode = appliedCoupon.code;

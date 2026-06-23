@@ -396,7 +396,7 @@ exports.checkInMembership = async (req, res) => {
 
 exports.publicPurchaseOrder = async (req, res) => {
   try {
-    const { planId, withTraining, sportId } = req.body;
+    const { planId, withTraining, sportId, customerDetails } = req.body;
     const plan = await MembershipPlan.findById(planId);
 
     if (!plan || !plan.isActive) {
@@ -422,9 +422,37 @@ exports.publicPurchaseOrder = async (req, res) => {
 
     const totalAmount = plan.price + trainingAddon + admissionFeeAmount;
 
+    // Resolve or pre-create user profile to guarantee payment -> studentId link
+    let targetUserId = req.user?.userId;
+    let user = null;
+
+    if (!targetUserId && customerDetails?.email) {
+      user = await User.findOne({ email: customerDetails.email.toLowerCase() });
+      if (!user && customerDetails.phone) {
+        user = await User.findOne({ phone: customerDetails.phone });
+      }
+      if (!user) {
+        const bcrypt = require('bcryptjs');
+        const hashedPassword = await bcrypt.hash('User@123', 10);
+        user = await User.create({
+          name: customerDetails.name,
+          email: customerDetails.email.toLowerCase(),
+          phone: customerDetails.phone,
+          password: hashedPassword,
+          role: 'user',
+          isActive: true,
+        });
+      }
+      targetUserId = user._id;
+    } else if (targetUserId) {
+      user = await User.findById(targetUserId);
+    }
+
     // Create pending Payment BEFORE Razorpay order — snapshot binds verify to plan/training choice
     const pendingPayment = await Payment.create({
       type: 'membership',
+      studentId: targetUserId || undefined,
+      customerName: user?.name || customerDetails?.name || undefined,
       referenceId: plan._id,
       amount: totalAmount,
       gstAmount: 0,
@@ -445,7 +473,13 @@ exports.publicPurchaseOrder = async (req, res) => {
       amount: Math.round(totalAmount * 100),
       currency: 'INR',
       receipt: `PUBLIC_MEMB_${Date.now()}`,
-      notes: { paymentId: pendingPayment._id.toString(), planId: plan._id.toString() },
+      notes: {
+        paymentId: pendingPayment._id.toString(),
+        planId: plan._id.toString(),
+        customerName: user?.name || customerDetails?.name || '',
+        customerEmail: user?.email || customerDetails?.email || '',
+        customerPhone: user?.phone || customerDetails?.phone || '',
+      },
     });
 
     // Bind Razorpay order ID to the pending payment

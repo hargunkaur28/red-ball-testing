@@ -1,6 +1,9 @@
 const Payment = require('../models/Payment');
 const Membership = require('../models/Membership');
 const Admission = require('../models/Admission');
+const User = require('../models/User');
+const MembershipPlan = require('../models/MembershipPlan');
+const { getDurationMs } = require('../utils/dateUtils');
 const { calculateGST } = require('../utils/gstCalculator');
 const {
   verifyPaymentSignature,
@@ -448,17 +451,72 @@ async function activateOnPaymentSuccess(payment, req) {
   const io = req.app.get('io');
 
   if (payment.type === 'membership') {
-    const membership = await Membership.findOneAndUpdate(
+    let membership = await Membership.findOneAndUpdate(
       { paymentId: payment._id },
       { status: 'active' },
       { new: true }
     ).populate('planId').populate('studentId', 'name email phone');
+
+    // Webhook fallback: if membership was not created yet (e.g. browser closed), create it now!
+    if (!membership && payment.studentId) {
+      try {
+        const plan = await MembershipPlan.findById(payment.referenceId);
+        if (plan) {
+          const user = await User.findById(payment.studentId);
+          if (user) {
+            // Check if user already has an active membership for this plan
+            const activeMembership = await Membership.findOne({
+              studentId: user._id,
+              planId: plan._id,
+              status: 'active',
+            });
+
+            let startDate = new Date();
+            if (activeMembership && activeMembership.endDate > new Date()) {
+              startDate = new Date(activeMembership.endDate);
+            }
+            const endDate = new Date(startDate.getTime() + getDurationMs(plan));
+
+            membership = await Membership.create({
+              studentId: user._id,
+              planId: plan._id,
+              startDate,
+              endDate,
+              status: 'active',
+              paymentId: payment._id,
+            });
+
+            // Populate fields so welcome email/invoice builders can run
+            membership = await Membership.findById(membership._id)
+              .populate('planId')
+              .populate('studentId', 'name email phone');
+          }
+        }
+      } catch (err) {
+        console.error('[Webhook] Failed to auto-create membership:', err.message);
+      }
+    }
 
     if (membership) {
       await Admission.findOneAndUpdate(
         { membershipId: membership._id },
         { paymentStatus: 'paid' }
       );
+
+      // Mark admission as paid if this payment included an admission fee
+      if (payment.admissionFeeAmount > 0 && payment.admissionSportId) {
+        const AcademyAdmission = require('../models/AcademyAdmission');
+        await AcademyAdmission.findOneAndUpdate(
+          { userId: membership.studentId._id, sportId: payment.admissionSportId },
+          {
+            admissionPaid: true,
+            paidAt: new Date(),
+            paymentId: payment._id,
+            amount: payment.admissionFeeAmount,
+          },
+          { upsert: true, new: true }
+        );
+      }
 
       // Send welcome email with invoice (fire-and-forget)
       if (membership.studentId?.email) {
@@ -540,9 +598,144 @@ async function activateOnPaymentSuccess(payment, req) {
     if (payment.referenceId) {
       const SlotBooking = require('../models/SlotBooking');
       await SlotBooking.findByIdAndUpdate(payment.referenceId, { paymentStatus: 'paid' });
+    } else if (payment.slotId) {
+      // Webhook fallback: if slot booking was not created yet (e.g. browser closed), create it now!
+      try {
+        const Slot = require('../models/Slot');
+        const SlotBooking = require('../models/SlotBooking');
+        const Sport = require('../models/Sport');
+        const Coupon = require('../models/Coupon');
+        const CouponUsage = require('../models/CouponUsage');
+
+        // Check if a booking was already created for this paymentId (just in case)
+        let booking = await SlotBooking.findOne({ paymentId: payment._id });
+        if (!booking) {
+          // Claim slot capacity atomically
+          const claimedSlot = await Slot.findOneAndUpdate(
+            {
+              _id: payment.slotId,
+              isBookable: true,
+              status: { $ne: 'maintenance' },
+              $expr: { $lt: ['$currentBookings', '$capacity'] },
+            },
+            { $inc: { currentBookings: 1 } },
+            { new: true }
+          );
+
+          if (claimedSlot) {
+            const sport = claimedSlot.sportId ? await Sport.findById(claimedSlot.sportId).select('name slug') : null;
+            
+            // Resolve customer/player details from webhook payload notes, or fallback to User info, or fallback to payment info
+            const eventData = req?.body?.payload?.payment?.entity;
+            const playerName = eventData?.notes?.playerName || payment.customerName || 'Web Player';
+            const playerPhone = eventData?.notes?.playerPhone || (eventData?.contact ? eventData.contact.replace(/\D/g, '').slice(-10) : '0000000000');
+            const playerEmail = eventData?.notes?.playerEmail || eventData?.email || '';
+
+            booking = await SlotBooking.create({
+              slotId: claimedSlot._id,
+              slotName: claimedSlot.name,
+              sportId: claimedSlot.sportId,
+              sportSlug: claimedSlot.sportSlug || sport?.slug,
+              sportNameSnapshot: sport?.name,
+              courtId: claimedSlot.courtId,
+              courtNameSnapshot: claimedSlot.courtNameSnapshot,
+              userId: payment.studentId || undefined,
+              bookingType: 'one-time-play',
+              playerName,
+              playerPhone,
+              playerEmail,
+              numberOfPlayers: 1,
+              startTime: claimedSlot.startTime,
+              endTime: claimedSlot.endTime,
+              duration: claimedSlot.duration,
+              price: payment.totalAmount,
+              gstAmount: 0,
+              totalAmount: payment.totalAmount,
+              status: 'confirmed',
+              paymentStatus: 'paid',
+              amountDue: payment.totalAmount,
+              amountPaid: payment.totalAmount,
+              isReference: !!payment.isReference,
+              waivedAmount: payment.waivedAmount ?? 0,
+              originalAmount: payment.originalAmount,
+              discountApplied: payment.discountAmount > 0,
+              discountId: payment.discountId || null,
+              discountPercent: payment.discountPercent || 0,
+              discountAmount: payment.discountAmount || 0,
+              paymentId: payment._id,
+              // Coupon snapshot
+              ...(payment.couponId && {
+                couponId: payment.couponId,
+                couponCode: payment.couponCode,
+                couponDiscountAmount: payment.couponDiscountAmount,
+                finalAmount: payment.totalAmount,
+              }),
+            });
+
+            payment.referenceId = booking._id;
+            if (!payment.customerName) {
+              payment.customerName = playerName;
+            }
+            await payment.save();
+
+            await Slot.findByIdAndUpdate(payment.slotId, { $push: { bookings: booking._id } });
+
+            // Record coupon usage
+            if (payment.couponId && payment.studentId) {
+              try {
+                await Coupon.findByIdAndUpdate(payment.couponId, { $inc: { usedCount: 1 } });
+                await CouponUsage.create({
+                  couponId: payment.couponId,
+                  userId: payment.studentId,
+                  orderType: 'sports',
+                  referenceId: booking._id,
+                  discountAmount: payment.couponDiscountAmount,
+                  usedAt: new Date(),
+                });
+              } catch (couponErr) {
+                console.error('[Webhook] Coupon usage record error (non-fatal):', couponErr.message);
+              }
+            }
+
+            // Send confirmation email
+            const { sendSlotBookingConfirmationEmail } = require('../utils/emailService');
+            sendSlotBookingConfirmationEmail({
+              toEmail: playerEmail,
+              toName: playerName,
+              sportName: sport?.name || claimedSlot.sportSlug || 'Sport',
+              courtName: claimedSlot.courtNameSnapshot,
+              date: claimedSlot.date,
+              startTime: claimedSlot.startTime,
+              endTime: claimedSlot.endTime,
+              amountPaid: payment.totalAmount,
+              totalAmount: payment.totalAmount,
+              paymentStatus: 'paid',
+              bookingRef: booking.bookingId,
+            }).catch((err) => console.error('[Webhook Email] Slot confirmation failed:', err.message));
+          } else {
+            // Slot filled between order creation and webhook — attempt auto-refund
+            console.warn('[Webhook] Slot booking failed because capacity is full. Initiating auto-refund.');
+            try {
+              if (payment.razorpayPaymentId) {
+                await createRefund(payment.razorpayPaymentId, payment.totalAmount);
+                payment.status = 'refunded';
+              } else {
+                payment.status = 'refund-pending';
+              }
+              payment.adminNote = 'Auto-refund: Slot filled before payment webhook capture';
+              await payment.save();
+            } catch (refundErr) {
+              console.error('[Webhook] Auto-refund failed:', refundErr.message);
+              payment.status = 'refund-pending';
+              payment.adminNote = `Auto-refund failed: ${refundErr.message}`;
+              await payment.save();
+            }
+          }
+        }
+      } catch (bookingErr) {
+        console.error('[Webhook] Failed to auto-create slot booking:', bookingErr.message);
+      }
     }
-    // If no referenceId: booking hasn't been created yet — /slot-verify will handle it
-    // when the user's browser completes the flow. Webhook just marks payment paid here.
   }
 
   // Notify admin of every successful payment (fire-and-forget)
