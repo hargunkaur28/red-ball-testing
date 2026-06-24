@@ -9,6 +9,7 @@ const Payment = require('../models/Payment');
 const Sport = require('../models/Sport');
 const Slot = require('../models/Slot');
 const ReferencePrice = require('../models/ReferencePrice');
+const { istDayBoundaries } = require('../utils/istUtils');
 
 // GET /api/super-admin/memberships - Manage and view memberships with attendance aggregation
 exports.getMemberships = async (req, res) => {
@@ -19,7 +20,11 @@ exports.getMemberships = async (req, res) => {
 
     // 1. Filter by Status
     if (status) {
-      query.status = status;
+      if (!['just_bought', 'just_renewed', 'bought_renewed'].includes(status)) {
+        query.status = status;
+      } else if (status === 'just_renewed') {
+        query['renewalHistory.0'] = { $exists: true };
+      }
     }
 
     // 2. Filter by User Search (name, phone, or email)
@@ -127,10 +132,27 @@ exports.getMemberships = async (req, res) => {
       })
     );
 
-    // Sort by checkin date/time wise (latest first). Fallback to membership createdAt.
+    // Sort by checkin/renewal/purchase date/time wise (latest first)
     enrichedMemberships.sort((a, b) => {
-      const timeA = a.lastCheckIn ? new Date(a.lastCheckIn).getTime() : 0;
-      const timeB = b.lastCheckIn ? new Date(b.lastCheckIn).getTime() : 0;
+      const getLatestTime = (m) => {
+        let maxTime = m.createdAt ? new Date(m.createdAt).getTime() : 0;
+        if (m.lastCheckIn) {
+          maxTime = Math.max(maxTime, new Date(m.lastCheckIn).getTime());
+        }
+        if (m.renewalHistory && m.renewalHistory.length > 0) {
+          m.renewalHistory.forEach(r => {
+            const rTime = r.date || r.renewedAt;
+            if (rTime) {
+              maxTime = Math.max(maxTime, new Date(rTime).getTime());
+            }
+          });
+        }
+        return maxTime;
+      };
+
+      const timeA = getLatestTime(a);
+      const timeB = getLatestTime(b);
+      
       if (timeA !== timeB) {
         return timeB - timeA;
       }
@@ -230,23 +252,24 @@ exports.getOvertimeSessions = async (req, res) => {
       ])
     ]);
 
-    // Fallback for older attendance records missing snapshot data
+    // Fallback and dynamic enrichment with slot booking and late minutes
+    const { enrichSessionWithSlotAndLateMinutes } = require('../utils/sessionCalculator');
     const enrichedSessions = await Promise.all(sessions.map(async (session) => {
-      if (session.membershipPlanSnapshot || session.relatedBookingType === 'one-time-play' || session.entitlementType === 'one-time-play') {
-        return session;
-      }
+      let enriched = await enrichSessionWithSlotAndLateMinutes(session);
       
-      if (session.userId && session.userId._id) {
-        const activeMembership = await Membership.findOne({ 
-          studentId: session.userId._id, 
-          status: 'active' 
-        }).populate('planId', 'name').lean();
-        
-        if (activeMembership && activeMembership.planId) {
-          session.membershipPlanSnapshot = activeMembership.planId.name;
+      if (!enriched.membershipPlanSnapshot && enriched.relatedBookingType !== 'one-time-play' && enriched.entitlementType !== 'one-time-play') {
+        if (enriched.userId && enriched.userId._id) {
+          const activeMembership = await Membership.findOne({ 
+            studentId: enriched.userId._id, 
+            status: 'active' 
+          }).populate('planId', 'name').lean();
+          
+          if (activeMembership && activeMembership.planId) {
+            enriched.membershipPlanSnapshot = activeMembership.planId.name;
+          }
         }
       }
-      return session;
+      return enriched;
     }));
 
     res.json({
@@ -281,8 +304,14 @@ exports.getOneTimeEntries = async (req, res) => {
     }
     if (startDate || endDate) {
       otpQuery.date = {};
-      if (startDate) otpQuery.date.$gte = new Date(startDate);
-      if (endDate) otpQuery.date.$lte = new Date(endDate);
+      if (startDate) {
+        const { startOfDay } = istDayBoundaries(startDate);
+        otpQuery.date.$gte = startOfDay;
+      }
+      if (endDate) {
+        const { endOfDay } = istDayBoundaries(endDate);
+        otpQuery.date.$lte = endOfDay;
+      }
     }
     // POS Walk-ins are always considered paid and completed when logged.
     // If filters query non-matching status/payment state, we omit them
@@ -313,8 +342,14 @@ exports.getOneTimeEntries = async (req, res) => {
     }
     if (startDate || endDate) {
       sbQuery.createdAt = {};
-      if (startDate) sbQuery.createdAt.$gte = new Date(startDate);
-      if (endDate) sbQuery.createdAt.$lte = new Date(endDate);
+      if (startDate) {
+        const { startOfDay } = istDayBoundaries(startDate);
+        sbQuery.createdAt.$gte = startOfDay;
+      }
+      if (endDate) {
+        const { endOfDay } = istDayBoundaries(endDate);
+        sbQuery.createdAt.$lte = endOfDay;
+      }
     }
 
     // Build filters for OneTimeAccess (Prepaid Online Passes)
@@ -333,8 +368,14 @@ exports.getOneTimeEntries = async (req, res) => {
     }
     if (startDate || endDate) {
       otaQuery.purchasedAt = {};
-      if (startDate) otaQuery.purchasedAt.$gte = new Date(startDate);
-      if (endDate) otaQuery.purchasedAt.$lte = new Date(endDate);
+      if (startDate) {
+        const { startOfDay } = istDayBoundaries(startDate);
+        otaQuery.purchasedAt.$gte = startOfDay;
+      }
+      if (endDate) {
+        const { endOfDay } = istDayBoundaries(endDate);
+        otaQuery.purchasedAt.$lte = endOfDay;
+      }
     }
 
     const [otpCount, sbCount, otaCount] = await Promise.all([
@@ -491,7 +532,7 @@ exports.getOneTimeEntries = async (req, res) => {
 // GET /api/super-admin/slot-bookings — All paid slot bookings (online + manual admin)
 exports.getSlotBookings = async (req, res) => {
   try {
-    const { search, sport, paymentStatus, status, sessionStatus, startDate, endDate, page = 1, limit = 20 } = req.query;
+    const { search, sport, paymentStatus, status, sessionStatus, startDate, endDate, page = 1, limit = 20, timeframe } = req.query;
     const limitNum = Math.min(parseInt(limit) || 20, 100);
     const skip = (parseInt(page) - 1) * limitNum;
 
@@ -539,32 +580,81 @@ exports.getSlotBookings = async (req, res) => {
 
     if (startDate || endDate) {
       query.createdAt = {};
-      if (startDate) query.createdAt.$gte = new Date(startDate);
-      if (endDate)   query.createdAt.$lte = new Date(new Date(endDate).setHours(23, 59, 59, 999));
+      if (startDate) {
+        const { startOfDay } = istDayBoundaries(startDate);
+        query.createdAt.$gte = startOfDay;
+      }
+      if (endDate) {
+        const { endOfDay } = istDayBoundaries(endDate);
+        query.createdAt.$lte = endOfDay;
+      }
     }
 
-    // For simple session filters use DB pagination; complex ones need all matching docs first
+    // Build slot-date filtering pipeline
+    const matchPipeline = [
+      { $match: query },
+      {
+        $lookup: {
+          from: 'slots',
+          localField: 'slotId',
+          foreignField: '_id',
+          as: 'slotInfo'
+        }
+      },
+      { $unwind: { path: '$slotInfo', preserveNullAndEmptyArrays: true } }
+    ];
+
+    const { todayISTBoundaries } = require('../utils/istUtils');
+    const { endOfDay } = todayISTBoundaries();
+
+    if (timeframe === 'future') {
+      matchPipeline.push({ $match: { 'slotInfo.date': { $gt: endOfDay } } });
+    } else if (timeframe === 'current_past') {
+      matchPipeline.push({
+        $match: {
+          $or: [
+            { slotInfo: { $exists: false } },
+            { 'slotInfo': null },
+            { 'slotInfo.date': { $lte: endOfDay } }
+          ]
+        }
+      });
+    }
+
     let rawBookings;
     let total;
+
     if (needsPostFilter) {
-      rawBookings = await SlotBooking.find(query)
+      const matchedDocs = await SlotBooking.aggregate([...matchPipeline, { $project: { _id: 1 } }]);
+      const matchedIds = matchedDocs.map((d) => d._id);
+
+      rawBookings = await SlotBooking.find({ _id: { $in: matchedIds } })
         .populate({ path: 'slotId', select: 'date' })
         .populate({ path: 'userId', select: 'name email phone' })
         .populate({ path: 'sportId', select: 'name' })
         .sort({ createdAt: -1 })
         .lean();
     } else {
-      [total, rawBookings] = await Promise.all([
-        SlotBooking.countDocuments(query),
-        SlotBooking.find(query)
-          .populate({ path: 'slotId', select: 'date' })
-          .populate({ path: 'userId', select: 'name email phone' })
-          .populate({ path: 'sportId', select: 'name' })
-          .sort({ createdAt: -1 })
-          .skip(skip)
-          .limit(limitNum)
-          .lean(),
-      ]);
+      const countResult = await SlotBooking.aggregate([...matchPipeline, { $count: 'count' }]);
+      total = countResult[0]?.count || 0;
+
+      const paginatedPipeline = [
+        ...matchPipeline,
+        { $sort: { createdAt: -1 } },
+        { $skip: skip },
+        { $limit: limitNum },
+        { $project: { _id: 1 } }
+      ];
+
+      const matchedDocs = await SlotBooking.aggregate(paginatedPipeline);
+      const matchedIds = matchedDocs.map((d) => d._id);
+
+      rawBookings = await SlotBooking.find({ _id: { $in: matchedIds } })
+        .populate({ path: 'slotId', select: 'date' })
+        .populate({ path: 'userId', select: 'name email phone' })
+        .populate({ path: 'sportId', select: 'name' })
+        .sort({ createdAt: -1 })
+        .lean();
     }
 
     // Fetch attendance for overtime info
@@ -588,7 +678,18 @@ exports.getSlotBookings = async (req, res) => {
       if (slotDate) {
         const slotIST = new Date(new Date(slotDate).getTime() + IST_MS);
         const todayIST = new Date(Date.now() + IST_MS).toISOString().slice(0, 10);
-        if (slotIST.toISOString().slice(0, 10) < todayIST) return 'missed';
+        const slotDateStr = slotIST.toISOString().slice(0, 10);
+        
+        if (slotDateStr < todayIST) {
+          return 'missed';
+        } else if (slotDateStr === todayIST) {
+          // If the slot is today, check if its end time (HH:MM) has passed in IST
+          const nowIST = new Date(Date.now() + IST_MS);
+          const currentHHMM = `${String(nowIST.getUTCHours()).padStart(2, '0')}:${String(nowIST.getUTCMinutes()).padStart(2, '0')}`;
+          if (sb.endTime && currentHHMM > sb.endTime) {
+            return 'missed';
+          }
+        }
       }
       return 'upcoming';
     }

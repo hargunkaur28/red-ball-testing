@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import api from '../../lib/axios';
 import { formatCurrency, formatDate, getStatusColor, getInitials } from '../../lib/utils';
 import {
-  Search, ChevronLeft, ChevronRight, X,
+  Search, ChevronLeft, ChevronRight, X, Plus,
   CreditCard, User, Loader2, Users, CheckCircle, AlertCircle, Clock, Pencil, Calendar,
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -57,6 +57,9 @@ const STATUS_OPTIONS = [
   { value: 'expired', label: 'Expired' },
   { value: 'frozen', label: 'Frozen' },
   { value: 'cancelled', label: 'Cancelled' },
+  { value: 'just_bought', label: 'Just Bought' },
+  { value: 'just_renewed', label: 'Just Renewed' },
+  { value: 'bought_renewed', label: 'Both (Bought & Renewed)' },
 ];
 
 const PLAN_TYPE_OPTIONS = [
@@ -68,6 +71,99 @@ const PLAN_TYPE_OPTIONS = [
 // ═══════════════════════════════════════════════════════════
 export default function Memberships() {
   const [activeTab, setActiveTab] = useState('memberships');
+
+  const qc = useQueryClient();
+
+  // ── Add Membership Modal state ──────────────────────────
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [userType, setUserType] = useState('existing'); // 'existing' | 'new'
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [searchUserQuery, setSearchUserQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchingUsers, setSearchingUsers] = useState(false);
+  const [newUser, setNewUser] = useState({ name: '', phone: '', email: '' });
+  const [selectedPlanId, setSelectedPlanId] = useState('');
+  const [paymentMode, setPaymentMode] = useState('cash');
+  const [submitting, setSubmitting] = useState(false);
+
+  // ── plans query (for adding membership) ─────────────────
+  const { data: plansData } = useQuery({
+    queryKey: ['membership-plans-list'],
+    queryFn: () => api.get('/plans').then((r) => r.data),
+    staleTime: 5 * 60 * 1000,
+  });
+  const plans = plansData?.plans || [];
+
+  // ── user search helper ──────────────────────────────────
+  const handleSearchUser = async (q) => {
+    setSearchUserQuery(q);
+    if (q.trim().length < 2) {
+      setSearchResults([]);
+      return;
+    }
+    try {
+      setSearchingUsers(true);
+      const res = await api.get(`/super-admin/users?search=${encodeURIComponent(q)}&limit=10`);
+      setSearchResults(res.data?.users || []);
+    } catch {
+      // Search failed — handled silently
+    } finally {
+      setSearchingUsers(false);
+    }
+  };
+
+  // ── manual membership creation submission ───────────────
+  const handleAddMembershipSubmit = async (e) => {
+    e.preventDefault();
+    if (userType === 'existing' && !selectedUser) {
+      toast.error('Please select an existing user.');
+      return;
+    }
+    if (userType === 'new' && (!newUser.name || !newUser.phone || !newUser.email)) {
+      toast.error('Please fill in all new user fields.');
+      return;
+    }
+    if (!selectedPlanId) {
+      toast.error('Please select a membership plan.');
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      const payload = {
+        planId: selectedPlanId,
+        paymentMode,
+      };
+
+      if (userType === 'existing') {
+        payload.studentId = selectedUser._id;
+      } else {
+        payload.name = newUser.name;
+        payload.phone = newUser.phone;
+        payload.email = newUser.email;
+      }
+
+      const res = await api.post('/memberships/assign', payload);
+      toast.success('Membership bought manually! User email has been sent.');
+      
+      // Invalidate queries to refresh the lists
+      qc.invalidateQueries({ queryKey: ['super-admin-memberships'] });
+      qc.invalidateQueries({ queryKey: ['super-admin-users'] });
+      
+      // Reset form
+      setShowAddModal(false);
+      setSelectedUser(null);
+      setSearchUserQuery('');
+      setSearchResults([]);
+      setNewUser({ name: '', phone: '', email: '' });
+      setSelectedPlanId('');
+      setPaymentMode('cash');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to assign membership.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   // ── filter state ──────────────────────────────────────
   const [search, setSearch] = useState('');
@@ -167,7 +263,10 @@ export default function Memberships() {
       const sportsIncluded = plan.sportsIncluded || [];
       const checkins = m.checkins || [];
 
-      if (checkins.length > 0) {
+      const hasCheckins = checkins.length > 0;
+
+      // 1. Add the real check-ins
+      if (hasCheckins) {
         checkins.forEach((c, idx) => {
           rows.push({
             ...c,
@@ -179,23 +278,41 @@ export default function Memberships() {
             sportsIncluded,
           });
         });
-      } else {
-        rows.push({
-          _rowKey: `${m._id}-empty`,
-          isFirst: true,
-          checkInTime: null,
-          checkOutTime: null,
-          sessionStatus: null,
-          membership: m,
-          student,
-          plan,
-          sportsIncluded,
+      }
+
+      // 2. Add initial purchase event row (using createdAt or fallback to startDate)
+      rows.push({
+        _rowKey: `${m._id}-purchase`,
+        isFirst: !hasCheckins,
+        checkInTime: m.createdAt || m.startDate,
+        checkOutTime: null,
+        isPurchaseEvent: true,
+        membership: m,
+        student,
+        plan,
+        sportsIncluded,
+      });
+
+      // 3. Add renewal events from renewalHistory
+      if (m.renewalHistory && m.renewalHistory.length > 0) {
+        m.renewalHistory.forEach((r, rIdx) => {
+          rows.push({
+            _rowKey: `${m._id}-renewal-${rIdx}`,
+            isFirst: false,
+            checkInTime: r.date || r.renewedAt,
+            checkOutTime: null,
+            isRenewalEvent: true,
+            membership: m,
+            student,
+            plan,
+            sportsIncluded,
+          });
         });
       }
     });
 
     // Sort by check-in date/time wise (latest first)
-    return rows.sort((a, b) => {
+    const sortedRows = rows.sort((a, b) => {
       const timeA = a.checkInTime ? new Date(a.checkInTime).getTime() : 0;
       const timeB = b.checkInTime ? new Date(b.checkInTime).getTime() : 0;
       if (timeA !== timeB) {
@@ -205,7 +322,19 @@ export default function Memberships() {
       const createdB = b.membership?.createdAt ? new Date(b.membership.createdAt).getTime() : 0;
       return createdB - createdA;
     });
-  }, [memberships]);
+
+    if (status === 'just_bought') {
+      return sortedRows.filter(r => r.isPurchaseEvent);
+    }
+    if (status === 'just_renewed') {
+      return sortedRows.filter(r => r.isRenewalEvent);
+    }
+    if (status === 'bought_renewed') {
+      return sortedRows.filter(r => r.isPurchaseEvent || r.isRenewalEvent);
+    }
+
+    return sortedRows;
+  }, [memberships, status]);
 
   // ── search handler ────────────────────────────────────
   const handleSearchChange = (e) => {
@@ -229,9 +358,17 @@ export default function Memberships() {
   return (
     <div className="min-h-screen">
       {/* ── Page header ─────────────────────────────────── */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-[#111] font-[Inter]">Memberships</h1>
-        <p className="text-sm text-text-muted mt-1">View and track all membership records and registered users</p>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-semibold text-[#111] font-[Inter]">Memberships</h1>
+          <p className="text-sm text-text-muted mt-1">View and track all membership records and registered users</p>
+        </div>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="btn-primary gap-2 h-11"
+        >
+          <Plus size={18} /> Add Membership
+        </button>
       </div>
 
       {/* ── Tabs ────────────────────────────────────────── */}
@@ -432,12 +569,42 @@ export default function Memberships() {
 
                       {/* Check-in Time */}
                       <td className="px-4 py-3 text-[#444] text-xs leading-5 whitespace-nowrap">
-                        {formatDateTime(row.checkInTime)}
+                        {row.isPurchaseEvent ? (
+                          <div className="flex flex-col gap-0.5">
+                            <span className="inline-flex items-center text-blue-600 font-bold bg-blue-50 border border-blue-100 px-2 py-0.5 rounded text-[10px] uppercase tracking-wide w-fit font-[Inter]">
+                              Just Bought
+                            </span>
+                            <span className="text-[10px] text-[#888]">{formatDateTime(row.checkInTime)}</span>
+                          </div>
+                        ) : row.isRenewalEvent ? (
+                          <div className="flex flex-col gap-0.5">
+                            <span className="inline-flex items-center text-purple-600 font-bold bg-purple-50 border border-purple-100 px-2 py-0.5 rounded text-[10px] uppercase tracking-wide w-fit font-[Inter]">
+                              Just Renewed
+                            </span>
+                            <span className="text-[10px] text-[#888]">{formatDateTime(row.checkInTime)}</span>
+                          </div>
+                        ) : (
+                          formatDateTime(row.checkInTime)
+                        )}
                       </td>
 
                       {/* Check-out Time */}
                       <td className="px-4 py-3 text-xs leading-5 whitespace-nowrap">
-                        {row.checkOutTime ? (
+                        {row.isPurchaseEvent ? (
+                          <div className="flex flex-col gap-0.5">
+                            <span className="inline-flex items-center text-blue-600 font-bold bg-blue-50 border border-blue-100 px-2 py-0.5 rounded text-[10px] uppercase tracking-wide w-fit font-[Inter]">
+                              Just Bought
+                            </span>
+                            <span className="text-[10px] text-[#888]">{formatDateTime(row.checkInTime)}</span>
+                          </div>
+                        ) : row.isRenewalEvent ? (
+                          <div className="flex flex-col gap-0.5">
+                            <span className="inline-flex items-center text-purple-600 font-bold bg-purple-50 border border-purple-100 px-2 py-0.5 rounded text-[10px] uppercase tracking-wide w-fit font-[Inter]">
+                              Just Renewed
+                            </span>
+                            <span className="text-[10px] text-[#888]">{formatDateTime(row.checkInTime)}</span>
+                          </div>
+                        ) : row.checkOutTime ? (
                           <span className="text-[#444]">{formatDateTime(row.checkOutTime)}</span>
                         ) : row.checkInTime ? (
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-50 text-green-700 text-[10px] font-bold uppercase tracking-wider border border-green-200">
@@ -784,6 +951,240 @@ export default function Memberships() {
             data={paymentEditModal}
             onClose={() => setPaymentEditModal(null)}
           />
+        )}
+      </AnimatePresence>
+
+      {/* Add Membership Modal */}
+      <AnimatePresence>
+        {showAddModal && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowAddModal(false)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
+            />
+
+            {/* Modal Container */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 16 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+            >
+              <div
+                className="bg-white rounded-2xl shadow-2xl w-full max-w-md pointer-events-auto p-6 relative max-h-[90vh] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4 border-b border-[#EAEAEA] pb-3">
+                  <h3 className="text-base font-bold text-[#111] font-[Inter]">Buy Membership (Manual)</h3>
+                  <button
+                    onClick={() => setShowAddModal(false)}
+                    className="p-1 rounded-lg hover:bg-[#F5F5F5] text-[#666] transition-colors"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+
+                <form onSubmit={handleAddMembershipSubmit} className="space-y-4">
+                  {/* User Type Toggle */}
+                  <div className="flex bg-[#F5F5F5] p-1 rounded-xl gap-1">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUserType('existing');
+                        setSelectedUser(null);
+                      }}
+                      className={`flex-1 text-center py-2 text-xs font-semibold rounded-lg transition-all ${
+                        userType === 'existing'
+                          ? 'bg-white text-[#111] shadow-sm'
+                          : 'text-[#666] hover:text-[#111]'
+                      }`}
+                    >
+                      Existing User
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUserType('new');
+                        setSelectedUser(null);
+                      }}
+                      className={`flex-1 text-center py-2 text-xs font-semibold rounded-lg transition-all ${
+                        userType === 'new'
+                          ? 'bg-white text-[#111] shadow-sm'
+                          : 'text-[#666] hover:text-[#111]'
+                      }`}
+                    >
+                      Register New User
+                    </button>
+                  </div>
+
+                  {/* Existing User Selection */}
+                  {userType === 'existing' && (
+                    <div>
+                      {selectedUser ? (
+                        <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl p-3">
+                          <div>
+                            <p className="text-sm font-semibold text-green-850">{selectedUser.name}</p>
+                            <p className="text-xs text-green-700">
+                              {selectedUser.email} &middot; {selectedUser.phone}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedUser(null)}
+                            className="p-1 rounded-lg hover:bg-green-100 text-green-800 transition-colors"
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="relative">
+                          <label className="block text-xs font-semibold text-[#666] mb-1">Search User</label>
+                          <div className="relative">
+                            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
+                            <input
+                              type="text"
+                              placeholder="Type name, phone or email..."
+                              value={searchUserQuery}
+                              onChange={(e) => handleSearchUser(e.target.value)}
+                              className="input-field pl-9"
+                            />
+                          </div>
+                          {searchingUsers && (
+                            <div className="absolute right-3 top-[30px]">
+                              <Loader2 size={14} className="animate-spin text-[#888]" />
+                            </div>
+                          )}
+                          {searchResults.length > 0 && (
+                            <div className="absolute left-0 right-0 bg-white border border-[#EAEAEA] rounded-xl shadow-xl mt-1 max-h-48 overflow-y-auto z-50">
+                              {searchResults.map((u) => (
+                                <div
+                                  key={u._id}
+                                  onClick={() => {
+                                    setSelectedUser(u);
+                                    setSearchResults([]);
+                                  }}
+                                  className="px-4 py-2 hover:bg-[#F5F5F5] cursor-pointer text-sm border-b border-[#F9F9F9] last:border-0"
+                                >
+                                  <p className="font-semibold text-[#111]">{u.name}</p>
+                                  <p className="text-xs text-[#666]">
+                                    {u.email} &middot; {u.phone}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Register New User Fields */}
+                  {userType === 'new' && (
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-xs font-semibold text-[#666] mb-1">Full Name</label>
+                        <input
+                          type="text"
+                          required
+                          value={newUser.name}
+                          onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                          className="input-field"
+                          placeholder="John Doe"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-[#666] mb-1">Phone Number</label>
+                        <input
+                          type="tel"
+                          required
+                          value={newUser.phone}
+                          onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
+                          className="input-field"
+                          placeholder="9876543210"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-[#666] mb-1">Email Address</label>
+                        <input
+                          type="email"
+                          required
+                          value={newUser.email}
+                          onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                          className="input-field"
+                          placeholder="john@example.com"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Plan Selector */}
+                  <div>
+                    <label className="block text-xs font-semibold text-[#666] mb-1">Select Plan</label>
+                    <select
+                      value={selectedPlanId}
+                      onChange={(e) => setSelectedPlanId(e.target.value)}
+                      className="input-field bg-white"
+                      required
+                    >
+                      <option value="">-- Choose a Plan --</option>
+                      {plans.map((p) => (
+                        <option key={p._id} value={p._id}>
+                          {p.name} (₹{p.price} &middot; {p.duration} days)
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Payment Method */}
+                  <div>
+                    <label className="block text-xs font-semibold text-[#666] mb-1">Payment Method</label>
+                    <select
+                      value={paymentMode}
+                      onChange={(e) => setPaymentMode(e.target.value)}
+                      className="input-field bg-white"
+                    >
+                      <option value="cash">Cash</option>
+                      <option value="upi">UPI / QR Scan</option>
+                      <option value="card">Debit/Credit Card</option>
+                      <option value="bank-transfer">Bank Transfer</option>
+                    </select>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowAddModal(false);
+                        setSelectedUser(null);
+                        setSearchUserQuery('');
+                        setSearchResults([]);
+                        setNewUser({ name: '', phone: '', email: '' });
+                        setSelectedPlanId('');
+                        setPaymentMode('cash');
+                      }}
+                      className="btn-ghost flex-1 h-10 text-sm"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      className="btn-primary flex-1 h-10 text-sm gap-2"
+                    >
+                      {submitting && <Loader2 size={14} className="animate-spin" />}
+                      Confirm Buy
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 

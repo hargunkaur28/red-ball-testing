@@ -229,10 +229,10 @@ export default function TablePortal({ embedded = false }) {
             toast.success(`Added ${item.name} to cart`);
           }
         } else {
-          console.error('Menu item or sizes not found in response');
+          // Menu item or sizes not found — handled silently
         }
       }).catch(err => {
-        console.error('Failed to fetch menu item:', err);
+        // Failed to fetch menu item — handled silently
       });
     }
   }, [location.search, addItem]);
@@ -274,7 +274,7 @@ export default function TablePortal({ embedded = false }) {
             })
             .catch(err => {
               toast.dismiss(loadingToast);
-              console.error('Reverse geocoding error:', err);
+              // Reverse geocoding error — handled silently
               setCustomer(prev => ({
                 ...prev,
                 lat: lat.toString(),
@@ -419,7 +419,6 @@ export default function TablePortal({ embedded = false }) {
               toast.success(`${res.data.order.orderNumber} sent to restaurant.`);
               if (orderType === 'table' && selectedTable) navigate(`/table/${selectedTable}`);
             } catch (error) {
-              console.error('Order record error:', error.response?.data || error.message);
               toast.error(error.response?.data?.message || 'Failed to record order after payment. Please contact support.');
             }
           },
@@ -812,7 +811,14 @@ export default function TablePortal({ embedded = false }) {
                 {orderType === 'delivery' && (
                   <div className="space-y-2">
                     <textarea className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:border-[#C8102E] outline-none min-h-[80px]" placeholder="Delivery address" value={customer.address} onChange={e => setCustomer({ ...customer, address: e.target.value })} />
-                    <button type="button" onClick={useLiveLocation} className="flex items-center gap-2 text-xs text-[#F5A623] hover:text-[#C8102E] transition-colors"><MapPin size={14} /> Fetch live location</button>
+                    <button
+                      type="button"
+                      onClick={useLiveLocation}
+                      className="flex items-center gap-2 text-xs text-[#F5A623] hover:text-white bg-[#F5A623]/10 hover:bg-[#F5A623]/20 border border-[#F5A623]/20 hover:border-[#F5A623]/50 px-3 py-2 rounded-xl transition-all duration-300 font-semibold w-fit active:scale-95 shadow-sm shadow-[#F5A623]/5"
+                    >
+                      <MapPin size={14} className="animate-pulse" />
+                      <span>Fetch live location</span>
+                    </button>
                   </div>
                 )}
 

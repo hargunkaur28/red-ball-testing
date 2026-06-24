@@ -49,6 +49,17 @@ const bookingStatusStyles = {
   cancelled: 'text-red-300 bg-red-500/10 border-red-400/20',
 };
 
+const hasNoSlots = (p) => {
+  if (!p) return false;
+  if (p.requiresSlotBooking === false) return true;
+  if (p.isAllServices) return true;
+  // Fallback for older database records
+  const name = (p.name || '').trim().toLowerCase();
+  if (name.includes('gym')) return true;
+  const sports = (p.sportsIncluded || []).map(s => (s || '').trim().toLowerCase());
+  return sports.every(s => s === 'gym' || s === 'all' || s === 'all-services');
+};
+
 function Surface({ children, className = '' }) {
   return (
     <div className={`rounded-[28px] border border-[#222A2A] bg-[#111515] shadow-2xl shadow-black/25 ${className}`}>
@@ -348,14 +359,16 @@ export default function Membership() {
                 {/* Book Slot button */}
                 {isActive && !isPending && (
                   <div className="mt-5 flex items-center gap-3">
-                    <button
-                      onClick={() => setBookingModal(membership)}
-                      className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-black uppercase tracking-wider text-white transition-all hover:opacity-90 active:scale-[0.98]"
-                      style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }}
-                    >
-                      <CalendarPlus size={15} />
-                      Book Slot
-                    </button>
+                    {!hasNoSlots(plan) && (
+                      <button
+                        onClick={() => setBookingModal(membership)}
+                        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-black uppercase tracking-wider text-white transition-all hover:opacity-90 active:scale-[0.98]"
+                        style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }}
+                      >
+                        <CalendarPlus size={15} />
+                        Book Slot
+                      </button>
+                    )}
                     {payment && (
                       <button
                         onClick={() => window.open(`/api/payments/${payment._id}/invoice/print`, '_blank')}

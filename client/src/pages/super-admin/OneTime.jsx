@@ -147,8 +147,6 @@ export default function OneTime() {
 
   const sports = sportsData?.sports ?? sportsData ?? [];
 
-
-
   /* fetch prepaid passes */
   const { data: passesData, isLoading: isPassesLoading, isError: isPassesError } = useQuery({
     queryKey: ['admin-flexible-passes'],
@@ -157,17 +155,56 @@ export default function OneTime() {
     onError: () => toast.error('Failed to load prepaid passes'),
   });
 
+  /* fetch future slot bookings */
+  const { data: futureSlotsData, isLoading: isFutureSlotsLoading, isError: isFutureSlotsError } = useQuery({
+    queryKey: ['admin-future-slot-bookings'],
+    queryFn: () => {
+      const params = new URLSearchParams();
+      params.append('timeframe', 'future');
+      params.append('limit', '1000');
+      return api.get(`/super-admin/slot-bookings?${params.toString()}`).then((r) => r.data);
+    },
+    enabled: activeTab === 'passes',
+    onError: () => toast.error('Failed to load future slot bookings'),
+  });
+
   const passes = passesData?.passes ?? [];
+  const futureSlots = futureSlotsData?.bookings ?? [];
+
+  const normalizedFutureSlots = futureSlots.map((sb) => ({
+    _id: sb._id,
+    isFutureSlot: true,
+    bookingId: sb.bookingId,
+    userId: {
+      name: sb.playerName,
+      phone: sb.playerPhone,
+      email: sb.playerEmail || '',
+    },
+    sportId: {
+      name: sb.sport,
+    },
+    paymentId: {
+      status: sb.paymentStatus,
+      amountPaid: sb.amountPaid,
+    },
+    accessStatus: sb.status === 'cancelled' ? 'cancelled' : 'unused',
+    purchasedAt: sb.createdAt,
+    expiresAt: sb.date || sb.createdAt,
+    originalBooking: sb,
+  }));
+
+  const combinedPasses = [...passes, ...normalizedFutureSlots];
 
   // Filter passes client-side
-  const filteredPasses = passes.filter((pass) => {
+  const filteredPasses = combinedPasses.filter((pass) => {
     if (search) {
       const q = search.toLowerCase();
       const name = pass.userId?.name?.toLowerCase() || '';
       const email = pass.userId?.email?.toLowerCase() || '';
       const phone = pass.userId?.phone || '';
       const id = pass._id?.toLowerCase() || '';
-      if (!name.includes(q) && !email.includes(q) && !phone.includes(q) && !id.includes(q)) {
+      const bid = pass.bookingId?.toLowerCase() || '';
+      if (!name.includes(q) && !email.includes(q) && !phone.includes(q) && !id.includes(q) && !bid.includes(q)) {
         return false;
       }
     }
@@ -202,11 +239,22 @@ export default function OneTime() {
     return true;
   });
 
-  const passesTotal = filteredPasses.length;
+  // Group and sort logic:
+  // 1. Future slot bookings sorted ascending by slot play date (expiresAt)
+  const futureSlotGroup = filteredPasses.filter((p) => p.isFutureSlot);
+  futureSlotGroup.sort((a, b) => new Date(a.expiresAt) - new Date(b.expiresAt));
+
+  // 2. Prepaid passes sorted descending by purchase creation date (purchasedAt)
+  const prepaidPassGroup = filteredPasses.filter((p) => !p.isFutureSlot);
+  prepaidPassGroup.sort((a, b) => new Date(b.purchasedAt) - new Date(a.purchasedAt));
+
+  const orderedPasses = [...futureSlotGroup, ...prepaidPassGroup];
+
+  const passesTotal = orderedPasses.length;
   const passesTotalPages = Math.max(1, Math.ceil(passesTotal / limit));
   const passesFrom = passesTotal === 0 ? 0 : (page - 1) * limit + 1;
   const passesTo = Math.min(page * limit, passesTotal);
-  const paginatedPasses = filteredPasses.slice((page - 1) * limit, page * limit);
+  const paginatedPasses = orderedPasses.slice((page - 1) * limit, page * limit);
 
   /* fetch slot bookings */
   const { data: slotsData, isLoading: isSlotsLoading, isError: isSlotsError } = useQuery({
@@ -222,7 +270,8 @@ export default function OneTime() {
       if (bookingStatus !== 'All') params.append('status', bookingStatus.toLowerCase());
       if (sessionStatus !== 'All') params.append('sessionStatus', sessionStatus.toLowerCase());
       if (startDate) params.append('startDate', startDate);
-      if (endDate) params.append('endDate', endDate);
+      if (endDate)   params.append('endDate', endDate);
+      params.append('timeframe', 'current_past');
       params.append('page', page);
       params.append('limit', limit);
       return api.get(`/super-admin/slot-bookings?${params.toString()}`).then((r) => r.data);
@@ -242,8 +291,8 @@ export default function OneTime() {
   const displayTotalPages = activeTab === 'slots' ? slotsTotalPages : passesTotalPages;
   const displayFrom = activeTab === 'slots' ? slotsFrom : passesFrom;
   const displayTo = activeTab === 'slots' ? slotsTo : passesTo;
-  const showLoading = activeTab === 'slots' ? isSlotsLoading : isPassesLoading;
-  const showError = activeTab === 'slots' ? isSlotsError : isPassesError;
+  const showLoading = activeTab === 'slots' ? isSlotsLoading : (isPassesLoading || isFutureSlotsLoading);
+  const showError = activeTab === 'slots' ? isSlotsError : (isPassesError || isFutureSlotsError);
 
   const passesHeaders = [
     'Pass ID',
@@ -715,11 +764,22 @@ export default function OneTime() {
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.03 }}
-                        onClick={() => handleSelectPass(pass)}
+                        onClick={() => {
+                          if (pass.isFutureSlot) {
+                            setSelectedEntry({
+                              ...pass.originalBooking,
+                              type: 'slot-booking',
+                              amount: pass.originalBooking.price,
+                              notes: pass.originalBooking.notes || `Court: ${pass.originalBooking.courtNameSnapshot || '—'}\nBooked by: ${pass.originalBooking.isManualEntry ? 'Admin (Manual)' : 'Online'}`
+                            });
+                          } else {
+                            handleSelectPass(pass);
+                          }
+                        }}
                         className="border-b border-[#F0F0F0] table-row cursor-pointer transition-colors"
                       >
                         <td className="px-4 py-3 font-mono text-xs text-[#666]">
-                          {pass._id?.slice(-8).toUpperCase()}
+                          {pass.isFutureSlot ? pass.bookingId : pass._id?.slice(-8).toUpperCase()}
                         </td>
                         <td className="px-4 py-3">
                           <p className="font-semibold text-[#111]">{user.name || 'Walk-in User'}</p>
@@ -732,17 +792,23 @@ export default function OneTime() {
                           {formatDateTime(pass.purchasedAt)}
                         </td>
                         <td className="px-4 py-3 text-[#666] whitespace-nowrap text-xs">
-                          {formatDateTime(pass.expiresAt)}
+                          {pass.isFutureSlot ? (
+                            <span className="font-semibold text-blue-600">
+                              {formatDate(pass.expiresAt)} ({pass.originalBooking.startTime}–{pass.originalBooking.endTime})
+                            </span>
+                          ) : (
+                            formatDateTime(pass.expiresAt)
+                          )}
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
-                            <span className={`badge ${getStatusBadge(pass.accessStatus)} capitalize`}>
-                              {pass.accessStatus}
+                            <span className={`badge ${pass.isFutureSlot ? (pass.originalBooking.status === 'confirmed' ? 'badge-info' : 'badge-warning') : getStatusBadge(pass.accessStatus)} capitalize`}>
+                              {pass.isFutureSlot ? `Scheduled: ${pass.originalBooking.status}` : pass.accessStatus}
                             </span>
                             {attendance.lateAmount > 0 && (
                               <span className="text-xs font-semibold text-red-600">+{formatCurrency(attendance.lateAmount)} OT</span>
                             )}
-                            {(pass.accessStatus === 'unused' || pass.accessStatus === 'active') && (
+                            {!pass.isFutureSlot && (pass.accessStatus === 'unused' || pass.accessStatus === 'active') && (
                               <button
                                 onClick={(e) => handleMarkCompleted(e, pass._id)}
                                 className="text-[10px] font-bold text-[#666] border border-[#DDD] rounded px-1.5 py-0.5 hover:border-green-500 hover:text-green-600 transition-colors whitespace-nowrap"
@@ -1056,7 +1122,9 @@ export default function OneTime() {
                     </div>
                     <div className="space-y-1.5">
                       <div className="flex justify-between text-sm"><span className="text-[#666]">Paid</span><span className="font-medium text-[#111]">{formatCurrency(selectedEntry.amountPaid)}</span></div>
-                      <div className="flex justify-between text-sm"><span className="text-[#666]">Due</span><span className={`font-medium ${selectedEntry.amountDue > 0 ? 'text-red-600' : 'text-[#111]'}`}>{formatCurrency(selectedEntry.amountDue)}</span></div>
+                      {selectedEntry.totalAmount - selectedEntry.amountPaid > 0 && (
+                        <div className="flex justify-between text-sm"><span className="text-[#666]">Due</span><span className="font-medium text-red-600">{formatCurrency(selectedEntry.totalAmount - selectedEntry.amountPaid)}</span></div>
+                      )}
                     </div>
                   </div>
                 )}

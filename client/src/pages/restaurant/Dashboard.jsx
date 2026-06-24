@@ -53,6 +53,7 @@ export default function RestaurantDashboard() {
     socket.emit('join-managers', { token: localStorage.getItem('accessToken') });
     socket.on('order:new', invalidate);
     socket.on('order:updated', invalidate);
+    socket.on('order:cancelled', invalidate);
     socket.on('menu:updated', () => qc.invalidateQueries({ queryKey: ['menu'] }));
     socket.on('restaurant:kitchenStatus', ({ status }) => {
       qc.setQueryData(['kitchen-status'], { kitchenStatus: status });
@@ -60,6 +61,7 @@ export default function RestaurantDashboard() {
     return () => {
       socket.off('order:new', invalidate);
       socket.off('order:updated', invalidate);
+      socket.off('order:cancelled', invalidate);
       socket.off('menu:updated');
       socket.off('restaurant:kitchenStatus');
     };
@@ -73,7 +75,7 @@ export default function RestaurantDashboard() {
 
   const validOrders = (orders?.orders || []).filter(o => ['cash', 'upi', 'online'].includes(o.paymentMethod) || o.paymentStatus === 'paid');
   const todaysValidOrders = validOrders.filter(o => isToday(o.createdAt));
-  const activeOrders = validOrders.filter(o => ['new', 'preparing'].includes(o.status));
+  const activeOrders = validOrders.filter(o => ['new', 'preparing', 'cancelled'].includes(o.status));
   const todaySales = todaysValidOrders.filter(o => o.status === 'delivered').reduce((s, o) => s + o.totalAmount, 0);
   const outOfStockCount = (menuData?.items || []).filter(item => !item.isAvailable).length;
 
@@ -132,12 +134,11 @@ export default function RestaurantDashboard() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard title="Active Orders" value={activeOrders.length} icon={<ClipboardList size={20} />} accent />
         <StatCard title="Today's Orders" value={todaysValidOrders.length} icon={<ShoppingBag size={20} />} accent />
         <StatCard title="Today's Sales" value={todaySales} icon={<IndianRupee size={20} />} subtitle={formatCurrency(todaySales)} />
         <StatCard title="Out of Stock" value={outOfStockCount} icon={<AlertTriangle size={20} />} accent />
-        <StatCard title="Avg Prep Time" value={15} icon={<Timer size={20} />} subtitle="minutes" />
       </div>
 
       <div className="card">
@@ -150,7 +151,7 @@ export default function RestaurantDashboard() {
         </div>
         <div className="space-y-3">
           {activeOrders.slice(0, 8).map(o => (
-            <div key={o._id} className="p-4 rounded-xl bg-[#F7F7F7] border border-[#EAEAEA] hover:border-[#D0D0D0] transition-colors">
+            <div key={o._id} className={`p-4 rounded-xl transition-colors border ${o.status === 'cancelled' ? 'bg-red-50/10 border-red-200 shadow-sm' : 'bg-[#F7F7F7] border-[#EAEAEA] hover:border-[#D0D0D0]'}`}>
               {/* Top row: Order number + Status */}
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -159,7 +160,7 @@ export default function RestaurantDashboard() {
                     {o.orderType === 'delivery' ? <><Bike size={12} /> Delivery</> : o.orderType === 'pickup' ? <><Package size={12} /> Pickup</> : o.tableId?.label || 'Dine-in'}
                   </span>
                 </div>
-                <span className={`badge ${o.status === 'new' ? 'badge-info' : 'badge-warning'}`}>{o.status}</span>
+                <span className={`badge ${o.status === 'cancelled' ? 'badge-danger bg-red-600 text-white font-black border border-red-700' : o.status === 'new' ? 'badge-info' : 'badge-warning'}`}>{o.status}</span>
               </div>
 
               {/* Customer info */}
@@ -180,13 +181,18 @@ export default function RestaurantDashboard() {
 
               {/* Order items */}
               {o.items && o.items.length > 0 && (
-                <div className="text-xs text-[#666] mb-2 bg-white rounded-lg px-3 py-2 border border-[#F0F0F0]">
-                  {o.items.slice(0, 4).map((item, idx) => (
-                    <span key={idx}>
-                      {idx > 0 && <span className="text-[#ccc] mx-1">•</span>}
-                      <span className="font-medium text-[#333]">{item.quantity}×</span> {item.name}{item.size ? ` (${item.size})` : ''}
-                    </span>
-                  ))}
+                <div className="text-xs text-[#666] mb-2 bg-white rounded-lg px-3 py-2 border border-[#F0F0F0] flex flex-wrap gap-y-1">
+                  {o.items.slice(0, 4).map((item, idx) => {
+                    const isCancelled = item.status === 'cancelled' || item.status === 'refunded' || o.status === 'cancelled';
+                    return (
+                      <span key={idx} className={`inline-flex items-center gap-1 mr-2 ${isCancelled ? 'line-through text-red-500/70 font-medium' : ''}`}>
+                        {idx > 0 && <span className="text-[#ccc] mr-1">•</span>}
+                        <span className="font-semibold text-[#333]">{item.quantity}×</span>
+                        <span>{item.name}{item.size ? ` (${item.size})` : ''}</span>
+                        {isCancelled && <span className="text-[9px] font-black text-red-600 uppercase tracking-wider bg-red-50 px-1 py-0.2 rounded border border-red-200/50 no-underline inline-block">(Cancelled)</span>}
+                      </span>
+                    );
+                  })}
                   {o.items.length > 4 && <span className="text-[#999] ml-1">+{o.items.length - 4} more</span>}
                 </div>
               )}

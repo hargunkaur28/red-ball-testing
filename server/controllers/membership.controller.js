@@ -29,7 +29,23 @@ exports.getPlans = async (req, res) => {
 // POST /api/plans
 exports.createPlan = async (req, res) => {
   try {
-    const plan = await MembershipPlan.create({ ...req.body, createdBy: req.user.userId });
+    let requiresSlotBooking = req.body.requiresSlotBooking;
+    const sports = (req.body.sportsIncluded || []).map(s => (s || '').trim().toLowerCase());
+    const isAll = req.body.isAllServices || sports.some(s => s === 'all' || s === 'all-services');
+
+    if (requiresSlotBooking === undefined) {
+      requiresSlotBooking = true;
+      if (isAll || (sports.length > 0 && sports.every(s => s === 'gym'))) {
+        requiresSlotBooking = false;
+      }
+    }
+
+    const plan = await MembershipPlan.create({
+      ...req.body,
+      isAllServices: isAll,
+      requiresSlotBooking,
+      createdBy: req.user.userId
+    });
     res.status(201).json({ plan });
   } catch (error) {
     res.status(500).json({ message: 'Server error.', error: error.message });
@@ -39,7 +55,24 @@ exports.createPlan = async (req, res) => {
 // PUT /api/plans/:id
 exports.updatePlan = async (req, res) => {
   try {
-    const plan = await MembershipPlan.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    let requiresSlotBooking = req.body.requiresSlotBooking;
+    const sports = (req.body.sportsIncluded || []).map(s => (s || '').trim().toLowerCase());
+    const isAll = req.body.isAllServices || sports.some(s => s === 'all' || s === 'all-services');
+
+    if (requiresSlotBooking === undefined) {
+      requiresSlotBooking = true;
+      if (isAll || (sports.length > 0 && sports.every(s => s === 'gym'))) {
+        requiresSlotBooking = false;
+      }
+    }
+
+    const planData = {
+      ...req.body,
+      isAllServices: isAll,
+      requiresSlotBooking
+    };
+
+    const plan = await MembershipPlan.findByIdAndUpdate(req.params.id, planData, { new: true });
     if (!plan) return res.status(404).json({ message: 'Plan not found.' });
     res.json({ plan });
   } catch (error) {
@@ -82,30 +115,57 @@ exports.getStudentMembership = async (req, res) => {
 // POST /api/memberships/assign
 exports.assignMembership = async (req, res) => {
   try {
-    const { studentId, planId, paymentMode } = req.body;
+    const { studentId, planId, paymentMode, name, phone, email } = req.body;
     const plan = await MembershipPlan.findById(planId);
     if (!plan) return res.status(404).json({ message: 'Plan not found.' });
+
+    // 1. Resolve User (create new if studentId is not provided)
+    let targetUserId = studentId;
+    let user;
+    if (!targetUserId) {
+      if (!email || !phone || !name) {
+        return res.status(400).json({ message: 'Name, email, and phone are required to register a new user.' });
+      }
+      user = await User.findOne({
+        $or: [{ email: email.toLowerCase() }, { phone }],
+      });
+      if (!user) {
+        user = await User.create({
+          name,
+          email: email.toLowerCase(),
+          phone,
+          password: 'User@123',
+          role: 'user',
+        });
+      }
+      targetUserId = user._id;
+    } else {
+      user = await User.findById(targetUserId);
+      if (!user) return res.status(404).json({ message: 'User not found.' });
+    }
 
     const startDate = new Date();
     const endDate = new Date(startDate.getTime() + getDurationMs(plan));
     const isPaidNow = paymentMode && paymentMode !== 'online';
 
-    // Create payment
+    // 2. Create Payment
     const payment = await Payment.create({
-      studentId,
+      studentId: targetUserId,
       type: 'membership',
       referenceId: plan._id,
       amount: plan.price,
       gstAmount: 0,
       gstPercent: 0,
       totalAmount: plan.price,
+      amountPaid: isPaidNow ? plan.price : 0,
+      remainingAmount: isPaidNow ? 0 : plan.price,
       status: isPaidNow ? 'paid' : 'pending',
       paymentMode: isPaidNow ? paymentMode : undefined,
     });
 
-    // Create membership — active only if paid
+    // 3. Create Membership (active if paid)
     const membership = await Membership.create({
-      studentId,
+      studentId: targetUserId,
       planId,
       startDate,
       endDate,
@@ -113,9 +173,56 @@ exports.assignMembership = async (req, res) => {
       paymentId: payment._id,
     });
 
-    invalidateEntitlementCache(studentId);
+    invalidateEntitlementCache(targetUserId);
 
-    res.status(201).json({ membership, payment });
+    // 4. Send Emails if paid/active
+    if (isPaidNow) {
+      const fmt = (d) => new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+      const invoiceItems = [{ description: plan.name, quantity: 1, rate: plan.price, amount: plan.price }];
+
+      const invoiceHtml = buildInvoiceHTML({
+        invoiceNumber: payment.invoiceNumber,
+        date: fmt(payment.createdAt || new Date()),
+        studentName: user.name,
+        studentPhone: user.phone || '',
+        studentEmail: user.email,
+        items: invoiceItems,
+        subtotal: plan.price,
+        gstPercent: 0,
+        gstAmount: 0,
+        totalAmount: plan.price,
+        paymentMode: `Manual (${paymentMode})`,
+        paymentId: payment._id.toString(),
+        status: 'PAID',
+      });
+
+      sendMembershipWelcomeEmail({
+        toEmail: user.email,
+        toName: user.name,
+        planName: plan.name,
+        startDate: fmt(membership.startDate),
+        endDate: fmt(membership.endDate),
+        totalAmount: plan.price,
+        invoiceHtml,
+        invoiceNumber: payment.invoiceNumber,
+      }).catch((err) => console.error('[Assign] Welcome email failed:', err.message));
+
+      sendAdminPaymentAlert({
+        adminEmail: process.env.ADMIN_NOTIFICATION_EMAIL,
+        payerName: user.name,
+        payerEmail: user.email,
+        payerPhone: user.phone,
+        paymentType: `Membership — ${plan.name} (Manual)`,
+        amount: plan.price,
+        paymentMode: paymentMode,
+        invoiceNumber: payment.invoiceNumber,
+        timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+      }).catch((err) => console.error('[Assign] Admin alert email failed:', err.message));
+
+      Payment.findByIdAndUpdate(payment._id, { emailSentAt: new Date() }).catch(() => {});
+    }
+
+    res.status(201).json({ success: true, membership, payment, user });
   } catch (error) {
     res.status(500).json({ message: 'Server error.', error: error.message });
   }
@@ -344,8 +451,9 @@ exports.checkInMembership = async (req, res) => {
     } else {
       // Fallback for weird edge cases
       const activeSessions = await Attendance.find({ userId: membership.studentId._id, checkOutTime: null, sessionStatus: 'Active' });
-      if (entitlement.concurrentSessionLimit !== null && activeSessions.length >= entitlement.concurrentSessionLimit) {
-        return res.status(409).json({ message: 'Already checked in. Duplicate scan blocked.', attendance: activeSessions[0] });
+      if (activeSessions.length >= 1) {
+        const activeSportName = activeSessions[0]?.sport || 'another sport';
+        return res.status(409).json({ message: `You have an active session for ${activeSportName}. Please check out first.`, attendance: activeSessions[0] });
       }
     }
 
@@ -370,6 +478,10 @@ exports.checkInMembership = async (req, res) => {
       relatedBookingId: membership._id,
       relatedBookingType: 'membership',
     });
+
+    const { resolveLateMinutesForAttendance } = require('../utils/sessionCalculator');
+    attendance.lateMinutes = await resolveLateMinutesForAttendance(attendance);
+    await attendance.save();
 
     const io = req.app.get('io');
     if (io) {

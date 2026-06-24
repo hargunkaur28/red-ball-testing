@@ -6,10 +6,12 @@ export function cn(...inputs) {
 }
 
 export function formatCurrency(amount) {
+  const hasDecimal = amount % 1 !== 0;
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
-    maximumFractionDigits: 0,
+    minimumFractionDigits: hasDecimal ? 2 : 0,
+    maximumFractionDigits: hasDecimal ? 2 : 0,
   }).format(amount);
 }
 

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { AlertTriangle, ChevronLeft, ChevronRight, Clock, IndianRupee, Search, X } from 'lucide-react';
@@ -32,6 +32,14 @@ export default function SessionOvertime() {
   const [collectionStatus, setCollectionStatus] = useState('');
   const [page, setPage] = useState(1);
   const limit = 12;
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTick((t) => t + 1);
+    }, 10000);
+    return () => clearInterval(timer);
+  }, []);
 
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const searchTimer = useMemo(() => {
@@ -221,11 +229,47 @@ export default function SessionOvertime() {
                       )}
                     </td>
                     <td className="px-4 py-3 text-[#444] whitespace-nowrap">{session.allowedDurationMinutes || 75} min</td>
-                    <td className="px-4 py-3 text-[#111] font-medium whitespace-nowrap">{session.actualDurationMinutes || session.duration || 0} min</td>
+                    <td className="px-4 py-3 text-[#111] font-medium whitespace-nowrap">
+                      {session.checkOutTime ? (
+                        session.lateMinutes > 0 ? (
+                          <>
+                            <span className="text-red-600 font-bold">{session.lateMinutes} min</span>
+                            <span> + {Math.max(0, (session.actualDurationMinutes || session.duration || 0) - session.lateMinutes)} min</span>
+                          </>
+                        ) : (
+                          `${session.actualDurationMinutes || session.duration || 0} min`
+                        )
+                      ) : (
+                        (() => {
+                          const elapsed = Math.max(0, Math.floor((Date.now() - new Date(session.checkInTime).getTime()) / 60000));
+                          if (session.lateMinutes > 0) {
+                            return (
+                              <>
+                                <span className="text-red-600 font-bold">{session.lateMinutes} min</span>
+                                <span> + {elapsed} min</span>
+                              </>
+                            );
+                          }
+                          return `${elapsed} min`;
+                        })()
+                      )}
+                    </td>
                     <td className="px-4 py-3 whitespace-nowrap">
-                      {(session.overtimeMinutes || 0) > 0 ? (
-                        <span className="text-red-700 font-semibold">{session.overtimeMinutes} min</span>
-                      ) : '-'}
+                      {session.checkOutTime ? (
+                        (session.overtimeMinutes || 0) > 0 ? (
+                          <span className="text-red-700 font-semibold">{session.overtimeMinutes} min</span>
+                        ) : '-'
+                      ) : (
+                        (() => {
+                          const elapsed = Math.max(0, Math.floor((Date.now() - new Date(session.checkInTime).getTime()) / 60000));
+                          const allowed = session.allowedDurationMinutes || 75;
+                          // ot = elapsed + lateMinutes - allowed (elapsed is strictly checkIn to now)
+                          const ot = elapsed + (session.lateMinutes || 0) - allowed;
+                          return ot > 0 ? (
+                            <span className="text-red-700 font-semibold">{ot} min</span>
+                          ) : '-';
+                        })()
+                      )}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">
                       {(session.lateAmount || 0) > 0 ? (

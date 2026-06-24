@@ -134,7 +134,26 @@ exports.getPublicSportBySlug = async (req, res) => {
     const allPlans = await MembershipPlan.find({ isActive: true }).sort({ price: 1 });
     const plans = allPlans.filter(p => planIsValidForSmartEntry(p, sport, activeSportKeys));
 
-    res.json({ success: true, sport, plans });
+    // If logged in, check if user has a ReferencePrice for this sport
+    let userRefPrice = null;
+    const userId = req.user?.userId || req.user?._id;
+    if (userId) {
+      const ReferencePrice = require('../models/ReferencePrice');
+      userRefPrice = await ReferencePrice.findOne({
+        sportId: sport._id,
+        userId: userId,
+      });
+    }
+
+    let sportObj = sport.toObject();
+    if (userRefPrice) {
+      sportObj.hourlyPrice = userRefPrice.referencePrice;
+      sportObj.daySlotPrice = userRefPrice.referencePrice;
+      sportObj.nightSlotPrice = userRefPrice.referencePrice;
+      sportObj.isReferencePrice = true;
+    }
+
+    res.json({ success: true, sport: sportObj, plans });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -198,6 +217,8 @@ const syncMembershipPlans = async (sport, session) => {
       existingPlan.name = `${sport.name} ${def.nameSuffix}`;
       existingPlan.trainingAvailable = !!sport.trainingAvailable;
       existingPlan.trainingPrice = sport.trainingAvailable ? (sport.trainingPrice || 0) : 0;
+      existingPlan.requiresSlotBooking = sport.slug !== 'gym' && sport.slug !== 'all-services';
+      existingPlan.isAllServices = sport.slug === 'all-services';
       await existingPlan.save(opts);
     } else {
       // Create new plan if it doesn't exist
@@ -213,6 +234,8 @@ const syncMembershipPlans = async (sport, session) => {
         features: [`Full access to ${sport.name} facilities`],
         trainingAvailable: !!sport.trainingAvailable,
         trainingPrice: sport.trainingAvailable ? (sport.trainingPrice || 0) : 0,
+        requiresSlotBooking: sport.slug !== 'gym' && sport.slug !== 'all-services',
+        isAllServices: sport.slug === 'all-services',
       }], opts);
     }
   }
@@ -572,7 +595,7 @@ const findValidSlotBooking = async (userId, sportId) => {
       const slotDate = b.slotId?.date;
       const slotIST = slotDate ? new Date(slotDate.getTime() + IST) : null;
       const slotDateStr = slotIST ? slotIST.toISOString().slice(0, 10) : null;
-      const startMins = timeToMinutes(b.startTime) - 10;
+      const startMins = timeToMinutes(b.startTime) - 5;
       const endMins = timeToMinutes(b.endTime);
       if (!slotDate) return false;
       if (slotDateStr !== todayISTStr) return false;
@@ -602,6 +625,53 @@ const findValidSlotBooking = async (userId, sportId) => {
     return null;
   } catch (err) {
     console.error('[SlotEntry] findValidSlotBooking error:', err.message);
+    return null;
+  }
+};
+
+const findEarlySlotBookingMinutes = async (userId, sportId) => {
+  try {
+    const User = require('../models/User');
+    const IST = 5.5 * 60 * 60 * 1000;
+    const nowIST = new Date(Date.now() + IST);
+    const nowMins = nowIST.getUTCHours() * 60 + nowIST.getUTCMinutes();
+    const todayISTStr = nowIST.toISOString().slice(0, 10);
+
+    const user = await User.findById(userId).select('phone').lean();
+    const phone = user?.phone ? user.phone.replace(/\D/g, '').slice(-10) : null;
+
+    const orClauses = [{ userId }];
+    if (phone) orClauses.push({ playerPhone: { $regex: phone + '$' } });
+
+    const bookings = await SlotBooking.find({
+      $or: orClauses,
+      sportId,
+      status: 'confirmed',
+    }).populate({ path: 'slotId', select: 'date' }).lean();
+
+    let minRemaining = null;
+
+    for (const b of bookings) {
+      const slotDate = b.slotId?.date;
+      if (!slotDate) continue;
+      const slotIST = new Date(slotDate.getTime() + IST);
+      const slotDateStr = slotIST.toISOString().slice(0, 10);
+      if (slotDateStr !== todayISTStr) continue;
+
+      const startMins = timeToMinutes(b.startTime) - 5;
+
+      // If we are before startMins
+      if (nowMins < startMins) {
+        const remaining = startMins - nowMins;
+        if (minRemaining === null || remaining < minRemaining) {
+          minRemaining = remaining;
+        }
+      }
+    }
+
+    return minRemaining;
+  } catch (err) {
+    console.error('[SlotEntry] findEarlySlotBookingMinutes error:', err.message);
     return null;
   }
 };
@@ -722,14 +792,53 @@ exports.entryCheck = async (req, res) => {
     // Check for a valid slot booking as an additional entitlement path
     let hasSlotBooking = false;
     let validSlotBookingForCheck = null;
+    let slotBookingRequired = true;
+    let hasUpcomingSlot = false;
+
     if (req.user) {
+      const isGym = sport.slug === 'gym';
+      const hasAllServicesMembership = entitlement && (
+        entitlement.isAllServices || 
+        (entitlement.allowedSports || []).some(s => s === 'all-services' || s === 'all')
+      );
+      slotBookingRequired = !(isGym || hasAllServicesMembership);
+
       validSlotBookingForCheck = await findValidSlotBooking(req.user.userId, sport._id);
-      if (validSlotBookingForCheck) {
-        hasSlotBooking = true;
-        if (!validationAllowed) {
-          validationAllowed = true;
-          validationReason = null;
+
+      if (slotBookingRequired) {
+        if (validSlotBookingForCheck) {
+          hasSlotBooking = true;
+          hasUpcomingSlot = true;
+          if (validSlotBookingForCheck.isMembershipBooking) {
+            // Membership booking requires valid membership entitlement
+            if (!validationAllowed) {
+              // Keep validationAllowed as false and validationReason as is
+            }
+          } else {
+            // Paid slot booking bypasses membership checks
+            validationAllowed = true;
+            validationReason = null;
+          }
+        } else {
+          // No valid slot booking found
+          if (!activeCheckIn) {
+            validationAllowed = false;
+            const earlyMins = await findEarlySlotBookingMinutes(req.user.userId, sport._id);
+            if (earlyMins !== null) {
+              validationReason = `u can check in ${earlyMins} mins`;
+              hasUpcomingSlot = true;
+            } else {
+              validationReason = 'No active slot booking found for this sport. Please book a slot before checking in.';
+            }
+          }
         }
+      } else {
+        // Slot booking NOT required (Gym or All Services)
+        if (validSlotBookingForCheck) {
+          hasSlotBooking = true;
+          hasUpcomingSlot = true;
+        }
+        // Slot booking is not required, so lack of slot booking does not reject entry
       }
     }
 
@@ -756,12 +865,14 @@ exports.entryCheck = async (req, res) => {
       hasMembership,
       hasPrepaidPass,
       hasSlotBooking,
+      hasUpcomingSlot,
       slotBooking: validSlotBookingForCheck ? {
         _id: validSlotBookingForCheck._id,
         startTime: validSlotBookingForCheck.startTime,
         endTime: validSlotBookingForCheck.endTime,
         sportNameSnapshot: validSlotBookingForCheck.sportNameSnapshot,
       } : null,
+      slotBookingRequired,
       entitlementSource,
       entitlement,
       validationAllowed,
@@ -788,18 +899,43 @@ exports.entryCheckIn = async (req, res) => {
     const sport = await Sport.findOne({ $or: [{ qrSlug: req.params.qrSlug }, { slug: req.params.qrSlug }] });
     if (!sport || sport.deletedAt) return res.status(404).json({ success: false, message: 'Invalid QR code.' });
 
+    // Validate membership/pass using the Entitlement Engine
+    const validation = await validateCheckIn(req.user.userId, sport.slug);
+    const { entitlement } = validation;
+
+    const isGym = sport.slug === 'gym';
+    const hasAllServicesMembership = entitlement && (
+      entitlement.isAllServices || 
+      (entitlement.allowedSports || []).some(s => s === 'all-services' || s === 'all')
+    );
+    const slotBookingRequired = !(isGym || hasAllServicesMembership);
+
     // Check for a valid slot booking (time-window based entitlement)
     const validSlotBooking = await findValidSlotBooking(req.user.userId, sport._id);
 
-    // Validate membership/pass using the Entitlement Engine
-    const validation = await validateCheckIn(req.user.userId, sport.slug);
+    if (slotBookingRequired) {
+      if (!validSlotBooking) {
+        checkInLocks.delete(lockKey);
+        const earlyMins = await findEarlySlotBookingMinutes(req.user.userId, sport._id);
+        if (earlyMins !== null) {
+          return res.status(403).json({ success: false, message: `u can check in ${earlyMins} mins` });
+        }
+        return res.status(403).json({ success: false, message: 'No active slot booking found for this sport. Please book a slot before checking in.' });
+      }
 
-    // Reject only if BOTH membership validation failed AND no valid slot booking
-    if (!validation.allowed && !validSlotBooking) {
-      return res.status(403).json({ success: false, message: validation.reason, activeSessions: validation.activeSessions });
+      // Reject if it is a membership slot booking but membership validation failed
+      if (validSlotBooking.isMembershipBooking && !validation.allowed) {
+        checkInLocks.delete(lockKey);
+        return res.status(403).json({ success: false, message: validation.reason, activeSessions: validation.activeSessions });
+      }
+    } else {
+      // Slot booking NOT required (Gym or All Services)
+      // They just need a valid membership/pass entitlement.
+      if (!validation.allowed) {
+        checkInLocks.delete(lockKey);
+        return res.status(403).json({ success: false, message: validation.reason, activeSessions: validation.activeSessions });
+      }
     }
-
-    const { entitlement } = validation;
 
     const config = await getEffectiveConfig(sport.slug);
 
@@ -834,6 +970,17 @@ exports.entryCheckIn = async (req, res) => {
         throw new Error(`You already have an active session for ${sport.name}. Please check out first.`);
       }
 
+      // Cross-sport check: prevent check-in while another sport session is active
+      const anyActiveSession = await Attendance.findOne({
+        userId: req.user.userId,
+        checkOutTime: null,
+        sessionStatus: 'Active',
+      }, null, opts);
+      if (anyActiveSession) {
+        const activeSportName = anyActiveSession.sport || 'another sport';
+        throw new Error(`You have an active session for ${activeSportName}. Please check out of ${activeSportName} first before checking into ${sport.name}.`);
+      }
+
       // For all-services memberships: prevent re-check-in to the same sport on the same day
       if (matchingMembership) {
         const plan = matchingMembership.planId;
@@ -858,6 +1005,10 @@ exports.entryCheckIn = async (req, res) => {
 
       const { startOfDay: today } = todayISTBoundaries();
 
+      const resolvedLateFeePerMinute = config.lateFeePerMinuteOverride != null
+        ? config.lateFeePerMinuteOverride
+        : (sport.hourlyPrice || 0) / 60;
+
       let allowedDurationMinutes = config.allowedDurationMinutes;
       let hourlyRateAtCheckIn = sport.hourlyPrice || 0;
       let relatedBookingId = matchingMembership?._id || null;
@@ -868,30 +1019,30 @@ exports.entryCheckIn = async (req, res) => {
 
       // Membership-slot path: user booked a slot via membership — always takes priority over free-roam membership
       if (validSlotBooking?.isMembershipBooking) {
-        allowedDurationMinutes = validSlotBooking.duration;
+        allowedDurationMinutes = config.allowedDurationMinutes || validSlotBooking.duration;
         hourlyRateAtCheckIn = 0;
         relatedBookingId = validSlotBooking._id;
         relatedBookingType = 'membership-slot';
         membershipPlanSnapshot = `${validSlotBooking.sportNameSnapshot || sport.name} Slot ${validSlotBooking.startTime}–${validSlotBooking.endTime} (Membership)`;
         entitlementType = 'membership-slot';
         currentSessionConfig = {
-          allowedDurationMinutes: validSlotBooking.duration,
+          allowedDurationMinutes: config.allowedDurationMinutes || validSlotBooking.duration,
           overtimeThresholdMinutes: 0,
-          lateFeePerMinute: 0,
+          lateFeePerMinute: resolvedLateFeePerMinute,
           configVersionSnapshot: 1,
         };
       // Paid slot-booking path
       } else if (validSlotBooking && (!validation.allowed || validation.entitlementSource === 'none')) {
-        allowedDurationMinutes = validSlotBooking.duration;
+        allowedDurationMinutes = config.allowedDurationMinutes || validSlotBooking.duration;
         hourlyRateAtCheckIn = 0;
         relatedBookingId = validSlotBooking._id;
         relatedBookingType = 'slot-booking';
         membershipPlanSnapshot = `${validSlotBooking.sportNameSnapshot || sport.name} Slot ${validSlotBooking.startTime}–${validSlotBooking.endTime}`;
         entitlementType = 'slot-booking';
         currentSessionConfig = {
-          allowedDurationMinutes: validSlotBooking.duration,
+          allowedDurationMinutes: config.allowedDurationMinutes || validSlotBooking.duration,
           overtimeThresholdMinutes: 0,
-          lateFeePerMinute: 0,
+          lateFeePerMinute: resolvedLateFeePerMinute,
           configVersionSnapshot: 1,
         };
       } else if (validation.entitlementSource === 'one-time-play') {
@@ -930,6 +1081,10 @@ exports.entryCheckIn = async (req, res) => {
         relatedBookingType,
       }], opts);
 
+      const { resolveLateMinutesForAttendance } = require('../utils/sessionCalculator');
+      attendance.lateMinutes = await resolveLateMinutesForAttendance(attendance);
+      await attendance.save(opts);
+
       if (validation.entitlementSource === 'one-time-play') {
         const OneTimeAccess = require('../models/OneTimeAccess');
         await OneTimeAccess.findByIdAndUpdate(validation.matchingPass._id, {
@@ -939,8 +1094,8 @@ exports.entryCheckIn = async (req, res) => {
         }, opts);
       }
 
-      // Mark membership slot booking as checked-in
-      if (validSlotBooking?.isMembershipBooking) {
+      // Mark slot booking as checked-in
+      if (validSlotBooking) {
         const SlotBooking = require('../models/SlotBooking');
         await SlotBooking.findByIdAndUpdate(validSlotBooking._id, {
           status: 'checked-in',
@@ -1036,9 +1191,12 @@ exports.entryCheckOut = async (req, res) => {
       const opts = session ? { session } : {};
       
       const checkoutAt = new Date();
+      const { resolveLateMinutesForAttendance } = require('../utils/sessionCalculator');
+      const lateMinutes = await resolveLateMinutesForAttendance(attendance);
       applySessionCheckout(attendance, {
         checkOutTime: checkoutAt,
         hourlyPrice: sport.hourlyPrice || 0,
+        lateMinutes,
       });
       await attendance.save(opts);
 

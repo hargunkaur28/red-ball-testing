@@ -33,7 +33,7 @@ router.delete('/hero-cards/:cardId', auth, authorize('superadmin'), sportControl
 // SUPERADMIN SPORT MANAGEMENT ROUTES
 // ==========================================
 router.get('/public', sportController.getPublicSports);
-router.get('/public/:slug', sportController.getPublicSportBySlug);
+router.get('/public/:slug', optionalAuth, sportController.getPublicSportBySlug);
 router.get('/kids-academy/public', sportController.listPublicKidsAcademy);
 router.get('/kids-academy', auth, authorize('superadmin'), sportController.listKidsAcademy);
 router.get('/', auth, authorize('superadmin'), sportController.getAllSports);

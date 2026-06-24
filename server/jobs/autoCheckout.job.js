@@ -23,10 +23,13 @@ const startAutoCheckout = (io) => {
 
       for (const session of staleSessions) {
         const sport = session.sport ? await Sport.findOne({ name: session.sport }) : null;
+        const { resolveLateMinutesForAttendance } = require('../utils/sessionCalculator');
+        const lateMinutes = await resolveLateMinutesForAttendance(session);
         applySessionCheckout(session, {
           checkOutTime: new Date(),
           hourlyPrice: sport?.hourlyPrice || session.hourlyRateAtCheckIn || 0,
           autoClosed: true,
+          lateMinutes,
         });
         session.notes = (session.notes || '') + ` [Auto-checkout after ${autoCheckoutMinutes}min inactivity]`;
         await session.save();

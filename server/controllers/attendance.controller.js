@@ -37,18 +37,26 @@ exports.getActiveSessions = async (req, res) => {
       sessionStatus: 'Active',
     })
       .populate('userId', 'name email phone')
-      .sort({ checkInTime: -1 });
+      .sort({ checkInTime: -1 })
+      .lean();
+
+    const { enrichSessionWithSlotAndLateMinutes } = require('../utils/sessionCalculator');
+    const enrichedSessions = [];
+    for (const session of activeSessions) {
+      const enriched = await enrichSessionWithSlotAndLateMinutes(session);
+      enrichedSessions.push(enriched);
+    }
 
     // Get entitlement info for context
     const entitlement = await calculateEntitlement(req.user.userId);
 
     const remainingSlots = entitlement.isAllServices
       ? null
-      : Math.max(0, entitlement.concurrentSessionLimit - activeSessions.length);
+      : Math.max(0, entitlement.concurrentSessionLimit - enrichedSessions.length);
 
     res.json({
-      activeSessions,
-      sessionCount: activeSessions.length,
+      activeSessions: enrichedSessions,
+      sessionCount: enrichedSessions.length,
       entitlement: {
         type: entitlement.entitlementType,
         concurrentSessionLimit: entitlement.concurrentSessionLimit === null ? 'unlimited' : entitlement.concurrentSessionLimit,
@@ -242,6 +250,10 @@ exports.checkIn = async (req, res) => {
       },
     });
 
+    const { resolveLateMinutesForAttendance } = require('../utils/sessionCalculator');
+    const lateMinutes = await resolveLateMinutesForAttendance(attendance);
+    attendance.lateMinutes = lateMinutes;
+
     await attendance.save();
 
     // Emit socket event
@@ -294,9 +306,12 @@ exports.checkOut = async (req, res) => {
     const sportDoc = attendance.sport
       ? await Sport.findOne({ name: { $regex: new RegExp(`^${attendance.sport}$`, 'i') } })
       : null;
+    const { resolveLateMinutesForAttendance } = require('../utils/sessionCalculator');
+    const lateMinutes = await resolveLateMinutesForAttendance(attendance);
     applySessionCheckout(attendance, {
       checkOutTime: new Date(),
       hourlyPrice: sportDoc?.hourlyPrice || attendance.hourlyRateAtCheckIn || 0,
+      lateMinutes,
     });
     await attendance.save();
 

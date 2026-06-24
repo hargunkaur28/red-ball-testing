@@ -8,6 +8,7 @@ const User = require('../models/User');
 const ReferencePrice = require('../models/ReferencePrice');
 const Coupon = require('../models/Coupon');
 const CouponUsage = require('../models/CouponUsage');
+const Attendance = require('../models/Attendance');
 const { validateCouponForCheckout } = require('../utils/couponValidator');
 const { calculateGST } = require('../utils/gstCalculator');
 const { createRazorpayOrder, verifyPaymentSignature, fetchPaymentDetails, createRefund } = require('../config/razorpay');
@@ -461,10 +462,34 @@ exports.adminLiveSportDetail = async (req, res) => {
     const bookingsBySlot = {};
     const slotIds = slots.map((s) => s._id);
     const bookings = await SlotBooking.find({ slotId: { $in: slotIds } })
-      .select('slotId playerName playerPhone playerEmail paymentStatus status isManualEntry isReference amountDue amountPaid waivedAmount isMembershipBooking bookingType membershipId membershipPlanSnapshot')
-      .populate({ path: 'membershipId', select: 'planId', populate: { path: 'planId', select: 'name' } });
+      .select('slotId playerName playerPhone playerEmail paymentStatus status isManualEntry isReference amountDue amountPaid waivedAmount isMembershipBooking bookingType membershipId membershipPlanSnapshot referenceNote')
+      .populate({ path: 'membershipId', select: 'planId', populate: { path: 'planId', select: 'name' } })
+      .lean();
+
+    // Fetch attendance for overtime and check-in details
+    const bookingIds = bookings.map((b) => b._id);
+    const attendances = await Attendance.find({ relatedBookingId: { $in: bookingIds } })
+      .select('relatedBookingId overtimeMinutes checkInTime checkOutTime status')
+      .lean();
+
+    const attMap = {};
+    for (const att of attendances) {
+      if (att.relatedBookingId) {
+        attMap[att.relatedBookingId.toString()] = att;
+      }
+    }
 
     for (const b of bookings) {
+      const att = attMap[b._id.toString()];
+      if (att) {
+        b.attendance = {
+          overtimeMinutes: att.overtimeMinutes || 0,
+          checkInTime: att.checkInTime,
+          checkOutTime: att.checkOutTime,
+          status: att.status,
+        };
+      }
+
       const key = b.slotId.toString();
       if (!bookingsBySlot[key]) bookingsBySlot[key] = [];
       bookingsBySlot[key].push(b);
@@ -1007,7 +1032,7 @@ exports.verifySlotPayment = async (req, res) => {
         totalAmount: paymentRecord.totalAmount,
         status: 'confirmed',
         paymentStatus: 'paid',
-        amountDue: paymentRecord.totalAmount,
+        amountDue: 0,
         amountPaid: paymentRecord.totalAmount,
         isReference: !!paymentRecord.isReference,
         waivedAmount: paymentRecord.waivedAmount ?? 0,
@@ -1056,6 +1081,27 @@ exports.verifySlotPayment = async (req, res) => {
       }
 
       await Slot.findByIdAndUpdate(slotId, { $push: { bookings: booking._id } });
+
+      // Fire-and-forget confirmation email to the player (standard checkout flow)
+      const toEmail = playerEmail || booking.playerEmail;
+      if (toEmail && !paymentRecord.emailSentAt) {
+        const { sendSlotBookingConfirmationEmail } = require('../utils/emailService');
+        sendSlotBookingConfirmationEmail({
+          toEmail,
+          toName: playerName || booking.playerName || 'Player',
+          sportName: sport?.name || claimedSlot.sportSlug || 'Sport',
+          courtName: claimedSlot.courtNameSnapshot,
+          date: claimedSlot.date,
+          startTime: claimedSlot.startTime,
+          endTime: claimedSlot.endTime,
+          amountPaid: paymentRecord.totalAmount,
+          totalAmount: paymentRecord.totalAmount,
+          paymentStatus: 'paid',
+          bookingRef: booking.bookingId,
+        }).catch((err) => console.error('[Email] Slot booking confirmation failed:', err.message));
+
+        Payment.findByIdAndUpdate(paymentRecord._id, { emailSentAt: new Date() }).catch(() => {});
+      }
 
       const io = req.app.get('io');
       if (io) {
@@ -1222,7 +1268,7 @@ exports.adminManualBooking = async (req, res) => {
         paymentStatus,
         isManualEntry: true,
         isReference: !!isReference,
-        amountDue: slotAmount,
+        amountDue: Math.max(0, slotAmount - paid - (waivedAmount || 0)),
         amountPaid: paid,
         waivedAmount,
         createdBy: req.user.userId,

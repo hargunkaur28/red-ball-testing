@@ -9,6 +9,7 @@ import socket from '../../lib/socket';
 import {
   Clock, ChefHat, CheckCircle, Truck, X, DollarSign, FileText, User,
   LayoutGrid, List, MapPin, Timer, Ban, RefreshCw, ExternalLink,
+  ChevronDown, Eye,
 } from 'lucide-react';
 
 
@@ -51,8 +52,10 @@ export default function RestaurantOrders() {
   const [prepInputs, setPrepInputs] = useState({});
   const [prepValues, setPrepValues] = useState({});
   const [prepCustom, setPrepCustom] = useState({});
+  const [expandedAddresses, setExpandedAddresses] = useState({});
   const [cancelDialog, setCancelDialog] = useState(null);
   const [cancelRemark, setCancelRemark] = useState('');
+  const [viewingOrderDetails, setViewingOrderDetails] = useState(null);
 
   // Drag-and-drop state
   const [draggedOrderId, setDraggedOrderId] = useState(null);
@@ -231,10 +234,11 @@ export default function RestaurantOrders() {
         } ${draggedOrderId === order._id ? 'opacity-50 scale-95' : ''}`}
       >
         {/* Header row */}
-        <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-          <span className="font-mono font-black text-xs text-black">{order.orderNumber}</span>
-          <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${diffMins > 25 ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'}`}>
-            ⏱️ {getTimeAgo(diffMins)}
+        <div className="flex items-center justify-between border-b border-gray-100 pb-2 flex-nowrap gap-2">
+          <span className="font-mono font-black text-xs text-black shrink-0 whitespace-nowrap">{order.orderNumber}</span>
+          <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap shrink-0 inline-flex items-center gap-1 ${diffMins > 25 ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'}`}>
+            <span>⏱️</span>
+            <span>{getTimeAgo(diffMins)}</span>
           </span>
         </div>
 
@@ -260,14 +264,33 @@ export default function RestaurantOrders() {
           {order.orderType === 'delivery' && (
             <div className="mt-1 space-y-1">
               {order.deliveryAddress && (
-                <p className="text-xs text-gray-600 flex items-start gap-1 font-medium">
-                  <MapPin size={11} className="mt-0.5 shrink-0 text-[#C8102E]" />
-                  <span>{order.deliveryAddress}</span>
-                </p>
+                <div className="text-xs font-medium">
+                  <button
+                    onClick={() => setExpandedAddresses(prev => ({ ...prev, [order._id]: !prev[order._id] }))}
+                    className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors py-1 cursor-pointer outline-none w-full text-left"
+                  >
+                    <MapPin size={12} className="text-[#C8102E] shrink-0" />
+                    <span className="text-xs font-bold text-gray-600">Delivery Address</span>
+                    <ChevronDown
+                      size={12}
+                      className={`transition-transform duration-200 ${expandedAddresses[order._id] ? 'rotate-180' : ''}`}
+                    />
+                  </button>
+                  {expandedAddresses[order._id] && (
+                    <p className="mt-1 text-[11px] text-gray-600 bg-white border border-gray-100 rounded-lg p-2 leading-normal select-text break-words">
+                      {order.deliveryAddress}
+                    </p>
+                  )}
+                </div>
               )}
-              {(order.deliveryLocation?.mapsUrl || (order.deliveryLocation?.lat && order.deliveryLocation?.lng)) && (
+              {(order.deliveryLocation?.mapsUrl || (order.deliveryLocation?.lat && order.deliveryLocation?.lng) || order.deliveryAddress) && (
                 <a
-                  href={order.deliveryLocation.mapsUrl || `https://maps.google.com/?q=${order.deliveryLocation.lat},${order.deliveryLocation.lng}`}
+                  href={
+                    order.deliveryLocation?.mapsUrl ||
+                    (order.deliveryLocation?.lat && order.deliveryLocation?.lng
+                      ? `https://maps.google.com/?q=${order.deliveryLocation.lat},${order.deliveryLocation.lng}`
+                      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.deliveryAddress)}`)
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-[11px] font-black text-blue-600 hover:text-blue-800 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-full transition-all"
@@ -280,7 +303,7 @@ export default function RestaurantOrders() {
         </div>
 
         {/* Prep time badge / setter */}
-        {status !== 'delivered' && status !== 'cancelled' && (
+        {status === 'preparing' && (
           <div>
             {order.estimatedPrepMinutes && !isPrepOpen ? (
               <div className="flex items-center justify-between bg-amber-50 border border-amber-200 rounded-xl px-3 py-1.5">
@@ -295,7 +318,7 @@ export default function RestaurantOrders() {
                   Edit
                 </button>
               </div>
-            ) : isPrepOpen ? (
+            ) : (
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-2 space-y-2">
                 <p className="text-xs font-bold text-amber-800 flex items-center gap-1"><Timer size={12} /> Set Prep Time</p>
                 <div className="flex flex-wrap gap-1.5">
@@ -334,26 +357,25 @@ export default function RestaurantOrders() {
                     Confirm
                   </button>
                   <button
-                    onClick={() => { setPrepInputs(p => ({ ...p, [order._id]: false })); setPrepCustom(p => ({ ...p, [order._id]: '' })); }}
+                    onClick={() => {
+                      if (order.estimatedPrepMinutes) {
+                        setPrepInputs(p => ({ ...p, [order._id]: false }));
+                      }
+                      setPrepCustom(p => ({ ...p, [order._id]: '' }));
+                      setPrepValues(p => ({ ...p, [order._id]: null }));
+                    }}
                     className="px-3 py-1.5 bg-gray-100 text-gray-600 text-[11px] font-black rounded-lg hover:bg-gray-200 transition-all"
                   >
                     Cancel
                   </button>
                 </div>
               </div>
-            ) : (
-              <button
-                onClick={() => setPrepInputs(p => ({ ...p, [order._id]: true }))}
-                className="w-full py-1.5 bg-gray-50 hover:bg-amber-50 border border-dashed border-gray-200 hover:border-amber-300 text-gray-400 hover:text-amber-600 text-[11px] font-bold rounded-xl transition-all flex items-center justify-center gap-1"
-              >
-                <Timer size={12} /> Set Prep Time
-              </button>
             )}
           </div>
         )}
 
         {/* Payment status */}
-        {isManualPending ? (
+        {isManualPending && (
           <div className="bg-red-50 border border-red-200 rounded-xl p-2 text-xs text-red-700 animate-pulse flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-1.5 font-bold">
               <DollarSign size={14} /> Collect Payment from Table
@@ -364,11 +386,6 @@ export default function RestaurantOrders() {
             >
               Mark Paid
             </button>
-          </div>
-        ) : (
-          <div className="bg-green-50 border border-green-200 rounded-xl p-1.5 text-[11px] text-green-700 font-extrabold flex items-center gap-1">
-            <CheckCircle size={13} />
-            <span className="uppercase tracking-wider">Paid via {order.paymentMethod}</span>
           </div>
         )}
 
@@ -438,7 +455,14 @@ export default function RestaurantOrders() {
         {/* Total & actions */}
         <div className="border-t border-gray-100 pt-2">
           <div className="flex justify-between items-center text-sm font-extrabold mb-3 text-black">
-            <span>Bill Total</span>
+            <div className="flex items-center gap-2">
+              <span className="shrink-0">Bill Total</span>
+              {!isManualPending && (
+                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-green-50 text-green-700 text-[9px] font-extrabold border border-green-200 uppercase tracking-wider shrink-0">
+                  <CheckCircle size={10} /> Paid
+                </span>
+              )}
+            </div>
             <span className="font-mono text-[#C8102E]">{formatCurrency(order.totalAmount)}</span>
           </div>
 
@@ -565,14 +589,15 @@ export default function RestaurantOrders() {
         </div>
       ) : (
         /* List View */
-        <div className="card overflow-hidden border border-gray-100 shadow-sm mt-4">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+        <div className="card p-0 overflow-hidden border border-gray-100 shadow-sm mt-4 w-full max-w-full">
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-left border-collapse min-w-[950px]">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-100">
                   <th className="px-6 py-4 text-[11px] font-black uppercase tracking-widest text-gray-500">Time & Table</th>
                   <th className="px-6 py-4 text-[11px] font-black uppercase tracking-widest text-gray-500">Customer</th>
                   <th className="px-6 py-4 text-[11px] font-black uppercase tracking-widest text-gray-500">Items</th>
+                  <th className="px-6 py-4 text-[11px] font-black uppercase tracking-widest text-gray-500">Details</th>
                   <th className="px-6 py-4 text-[11px] font-black uppercase tracking-widest text-gray-500">Status / Prep</th>
                   <th className="px-6 py-4 text-[11px] font-black uppercase tracking-widest text-gray-500">Amount</th>
                   <th className="px-6 py-4 text-[11px] font-black uppercase tracking-widest text-gray-500 text-center">Actions</th>
@@ -581,7 +606,7 @@ export default function RestaurantOrders() {
               <tbody className="divide-y divide-gray-50">
                 {orders.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-20 text-center text-gray-400 italic text-sm">No live orders.</td>
+                    <td colSpan={7} className="px-6 py-20 text-center text-gray-400 italic text-sm">No live orders.</td>
                   </tr>
                 ) : (
                   orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(order => {
@@ -595,16 +620,24 @@ export default function RestaurantOrders() {
                       <tr key={order._id} className="hover:bg-gray-50/50 transition-colors">
                         <td className="px-6 py-4">
                           <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              <span className="font-mono text-xs font-bold bg-gray-100 px-2 py-0.5 rounded-full">{order.orderNumber}</span>
-                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${diffMins > 25 ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'}`}>⏱️ {getTimeAgo(diffMins)}</span>
+                            <div className="flex items-center gap-2 flex-nowrap">
+                              <span className="font-mono text-xs font-bold bg-gray-100 px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">{order.orderNumber}</span>
+                              <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap shrink-0 inline-flex items-center gap-1 ${diffMins > 25 ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'}`}>
+                                <span>⏱️</span>
+                                <span>{getTimeAgo(diffMins)}</span>
+                              </span>
                             </div>
                             <div className="text-xs text-black font-black uppercase tracking-tighter">
                               {order.orderType === 'delivery' ? '🛵 Delivery' : order.orderType === 'pickup' ? '🏃 Pickup' : (order.tableId?.label || 'Dine-in')}
                             </div>
-                            {order.orderType === 'delivery' && (order.deliveryLocation?.mapsUrl || order.deliveryLocation?.lat) && (
+                            {order.orderType === 'delivery' && (order.deliveryLocation?.mapsUrl || order.deliveryLocation?.lat || order.deliveryAddress) && (
                               <a
-                                href={order.deliveryLocation.mapsUrl || `https://maps.google.com/?q=${order.deliveryLocation.lat},${order.deliveryLocation.lng}`}
+                                href={
+                                  order.deliveryLocation?.mapsUrl ||
+                                  (order.deliveryLocation?.lat && order.deliveryLocation?.lng
+                                    ? `https://maps.google.com/?q=${order.deliveryLocation.lat},${order.deliveryLocation.lng}`
+                                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.deliveryAddress)}`)
+                                }
                                 target="_blank" rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-600 hover:underline"
                               >
@@ -640,6 +673,16 @@ export default function RestaurantOrders() {
                               </div>
                             ))}
                           </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <button
+                            type="button"
+                            onClick={() => setViewingOrderDetails(order)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold text-xs transition-all active:scale-95 cursor-pointer border border-gray-200 shadow-sm"
+                          >
+                            <Eye size={14} className="text-[#C8102E] shrink-0" />
+                            <span>View Details</span>
+                          </button>
                         </td>
                         <td className="px-6 py-4">
                           <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border ${sConf?.color || 'bg-gray-100'} shadow-sm mb-1`}>
@@ -811,6 +854,179 @@ export default function RestaurantOrders() {
                   className="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-sm font-bold transition-all"
                 >
                   Cancel
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Order Details Modal */}
+      <AnimatePresence>
+        {viewingOrderDetails && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+              onClick={() => setViewingOrderDetails(null)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 24 }}
+              className="fixed z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+            >
+              {/* Header */}
+              <div className="bg-gray-50 px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-black text-sm text-black bg-gray-200 px-2.5 py-0.5 rounded-full">
+                    {viewingOrderDetails.orderNumber}
+                  </span>
+                  <span className="text-xs text-gray-500 font-semibold">
+                    Order Details
+                  </span>
+                </div>
+                <button
+                  onClick={() => setViewingOrderDetails(null)}
+                  className="p-1.5 rounded-lg hover:bg-gray-200 text-gray-400 transition-all"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-5">
+                {/* Status and Method Banner */}
+                <div className="flex items-center justify-between bg-gray-50 border border-gray-100 rounded-2xl p-3 text-xs">
+                  <div className="space-y-1">
+                    <span className="text-gray-400 font-bold uppercase tracking-wider block text-[10px]">Order Status</span>
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[10px] font-black uppercase tracking-wider ${
+                      viewingOrderDetails.status === 'delivered' ? 'bg-green-50 text-green-700 border-green-200' :
+                      viewingOrderDetails.status === 'preparing' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                      viewingOrderDetails.status === 'ready' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                      viewingOrderDetails.status === 'cancelled' ? 'bg-red-50 text-red-700 border-red-200' :
+                      'bg-gray-100 text-gray-650 border-gray-200'
+                    }`}>
+                      {viewingOrderDetails.status}
+                    </span>
+                  </div>
+                  <div className="space-y-1 text-right">
+                    <span className="text-gray-400 font-bold uppercase tracking-wider block text-[10px]">Payment Status</span>
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[10px] font-black uppercase tracking-wider ${
+                      viewingOrderDetails.paymentStatus === 'paid' ? 'bg-green-50 text-green-700 border-green-200' :
+                      'bg-red-50 text-red-700 border-red-200'
+                    }`}>
+                      {viewingOrderDetails.paymentMethod?.toUpperCase()} · {viewingOrderDetails.paymentStatus?.toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Customer Details */}
+                <div className="space-y-2">
+                  <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Customer Details</h4>
+                  <div className="bg-gray-50 border border-gray-100 rounded-2xl p-4 space-y-2.5 text-xs text-gray-700">
+                    <div className="flex justify-between">
+                      <span className="text-gray-400 font-semibold">Name:</span>
+                      <span className="font-bold text-black">{viewingOrderDetails.customerName || viewingOrderDetails.customerId?.name || 'Guest'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400 font-semibold">Phone:</span>
+                      <span className="font-bold text-black">{viewingOrderDetails.customerPhone || 'N/A'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400 font-semibold">Order Type:</span>
+                      <span className="font-bold text-[#C8102E] uppercase">
+                        {viewingOrderDetails.orderType === 'delivery' ? '🛵 Delivery' : viewingOrderDetails.orderType === 'pickup' ? '🏃 Pickup' : `🍽️ Dine-In (${viewingOrderDetails.tableId?.label || 'Table'})`}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Delivery Address / Instructions */}
+                {(viewingOrderDetails.deliveryAddress || viewingOrderDetails.specialInstructions) && (
+                  <div className="space-y-2.5">
+                    <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Delivery & Instructions</h4>
+                    
+                    {viewingOrderDetails.deliveryAddress && (
+                      <div className="bg-blue-50/60 border border-blue-100 rounded-2xl p-4 text-xs text-blue-950 leading-relaxed shadow-sm">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <div className="flex items-center gap-1 font-bold text-blue-800">
+                            <MapPin size={13} className="text-[#C8102E] shrink-0" />
+                            <span>Delivery Address:</span>
+                          </div>
+                          <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(viewingOrderDetails.deliveryAddress)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-[10px] font-black text-blue-600 hover:text-blue-850"
+                          >
+                            <ExternalLink size={10} /> Maps
+                          </a>
+                        </div>
+                        <p className="text-gray-700 select-text break-words leading-normal">{viewingOrderDetails.deliveryAddress}</p>
+                      </div>
+                    )}
+
+                    {viewingOrderDetails.specialInstructions && (
+                      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs text-amber-900 leading-relaxed shadow-sm">
+                        <div className="flex items-center gap-1 font-bold text-amber-800 mb-1.5">
+                          <FileText size={13} className="shrink-0 text-amber-700" />
+                          <span>Special Instructions:</span>
+                        </div>
+                        <p className="italic font-semibold leading-normal">{viewingOrderDetails.specialInstructions}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Items List */}
+                <div className="space-y-2">
+                  <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Items Summary</h4>
+                  <div className="border border-gray-100 rounded-2xl divide-y divide-gray-100 overflow-hidden bg-white shadow-sm">
+                    {viewingOrderDetails.items?.map((item, idx) => {
+                      const isCancelled = item.status === 'cancelled' || item.status === 'refunded';
+                      return (
+                        <div key={idx} className={`p-3 flex items-start justify-between gap-3 text-xs ${isCancelled ? 'bg-red-50/50' : 'hover:bg-gray-50/40'}`}>
+                          <div>
+                            <p className="font-bold text-black">
+                              <span className="text-[#C8102E] font-black">{item.quantity}×</span> {item.name}
+                              {item.size && item.size !== 'Regular' && <span className="text-gray-500 font-normal text-[11px]"> ({item.size})</span>}
+                            </p>
+                            {item.kitchenNote && <p className="text-[10px] text-gray-400 italic mt-0.5">Note: {item.kitchenNote}</p>}
+                            {isCancelled && (
+                              <span className="inline-flex text-[9px] font-black uppercase tracking-wider text-red-500 mt-1">
+                                {item.status}
+                              </span>
+                            )}
+                          </div>
+                          <span className={`font-mono font-semibold ${isCancelled ? 'line-through text-gray-400' : 'text-gray-700'}`}>
+                            {formatCurrency(item.price * item.quantity)}
+                          </span>
+                        </div>
+                      );
+                    })}
+                    {/* Bill Summary */}
+                    <div className="p-3.5 bg-gray-50 space-y-1.5 text-xs font-semibold border-t border-gray-100">
+                      <div className="flex justify-between text-gray-500">
+                        <span>Total Amount:</span>
+                        <span className="font-mono font-bold text-[#C8102E] text-sm">
+                          {formatCurrency(viewingOrderDetails.totalAmount)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="bg-gray-50 px-6 py-4 border-t border-gray-100 flex gap-2">
+                <button
+                  onClick={() => setViewingOrderDetails(null)}
+                  className="flex-1 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold rounded-xl text-xs transition-all active:scale-95"
+                >
+                  Close Details
                 </button>
               </div>
             </motion.div>

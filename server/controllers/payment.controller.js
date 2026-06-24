@@ -736,7 +736,7 @@ async function activateOnPaymentSuccess(payment, req) {
             totalAmount: payment.totalAmount,
             status: 'confirmed',
             paymentStatus: 'paid',
-            amountDue: payment.totalAmount,
+            amountDue: 0,
             amountPaid: payment.totalAmount,
             isReference: !!payment.isReference,
             waivedAmount: payment.waivedAmount ?? 0,

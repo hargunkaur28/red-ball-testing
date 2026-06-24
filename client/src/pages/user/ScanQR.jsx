@@ -237,8 +237,6 @@ export default function ScanQR() {
   const navigate = useNavigate();
   const [scanning, setScanning] = useState(false);
   const [status, setStatus] = useState('idle'); // idle | scanning | success | error
-  const [manualMode, setManualMode] = useState(false);
-  const [manualCode, setManualCode] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const scannerRef = useRef(null);
   const html5QrRef = useRef(null);
@@ -260,7 +258,7 @@ export default function ScanQR() {
         }
         html5QrRef.current.clear();
       } catch (e) {
-        console.warn('Error stopping scanner:', e);
+        // Scanner stop error — handled silently
       }
       html5QrRef.current = null;
     }
@@ -299,7 +297,7 @@ export default function ScanQR() {
             try {
               return originalRemoveChild.call(this, child);
             } catch (e) {
-              console.warn('Ignored removeChild on container:', e);
+              // Ignored removeChild on container — handled silently
             }
           }
           return child;
@@ -320,24 +318,11 @@ export default function ScanQR() {
         () => {} // ignore scan failures (frames without QR)
       );
     } catch (err) {
-      console.error('Camera error:', err);
+      // Camera error — handled silently
       setStatus('error');
-      setErrorMsg('Camera access denied or not available. Try manual entry instead.');
+      setErrorMsg('Camera access denied or not available.');
       setScanning(false);
     }
-  };
-
-  const handleManualGo = () => {
-    const slug = extractSlug(manualCode) || manualCode.trim();
-    if (!slug) {
-      toast.error('Please enter a valid QR code or entry URL');
-      return;
-    }
-    stopScanner().then(() => {
-      navigate(`/entry/${slug}`);
-    }).catch(() => {
-      navigate(`/entry/${slug}`);
-    });
   };
 
   useEffect(() => {
@@ -454,28 +439,7 @@ export default function ScanQR() {
           </button>
         )}
 
-        {/* Manual Entry Toggle */}
-        {!manualMode ? (
-          <button className="scan-btn btn-manual" onClick={() => setManualMode(true)}>
-            Or enter code manually
-          </button>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-          >
-            <div className="manual-input-wrap">
-              <input
-                className="manual-input"
-                placeholder="Paste entry URL or code..."
-                value={manualCode}
-                onChange={e => setManualCode(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleManualGo()}
-              />
-              <button className="manual-go" onClick={handleManualGo}>Go</button>
-            </div>
-          </motion.div>
-        )}
+
 
         {/* Instructions */}
         <div className="scan-instructions">

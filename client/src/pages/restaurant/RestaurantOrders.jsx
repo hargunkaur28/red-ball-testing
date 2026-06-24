@@ -60,6 +60,16 @@ export default function RestaurantOrders() {
 
   const orders = data?.orders || [];
 
+  // Keep selectedOrder in sync with refetched database orders (for live status updates)
+  useEffect(() => {
+    if (selectedOrder && orders.length > 0) {
+      const updated = orders.find(o => o._id === selectedOrder._id);
+      if (updated) {
+        setSelectedOrder(updated);
+      }
+    }
+  }, [orders, selectedOrder]);
+
   const filteredOrders = orders.filter(o => {
     // Only show cash orders or paid online orders
     const isValidPayment = ['cash', 'upi', 'online'].includes(o.paymentMethod) || o.paymentStatus === 'paid';
@@ -94,6 +104,36 @@ export default function RestaurantOrders() {
       queryClient.invalidateQueries({ queryKey: ['restaurant-orders-history'] });
       toast.success('Order status updated');
     }
+  });
+
+  const refundOrderMutation = useMutation({
+    mutationFn: ({ id }) => api.put(`/orders/${id}/status`, { paymentStatus: 'refunded' }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['restaurant-orders-history'] });
+      setSelectedOrder(prev => {
+        if (prev && prev._id === data.data.order._id) {
+          return data.data.order;
+        }
+        return prev;
+      });
+      toast.success('Order marked as refunded.');
+    },
+    onError: (e) => toast.error(e.response?.data?.message || 'Failed to refund order.'),
+  });
+
+  const refundItemMutation = useMutation({
+    mutationFn: ({ orderId, itemId }) => api.put(`/orders/${orderId}/items/${itemId}/refund`, { note: 'Manual refund by manager' }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['restaurant-orders-history'] });
+      setSelectedOrder(prev => {
+        if (prev && prev._id === data.data.order._id) {
+          return data.data.order;
+        }
+        return prev;
+      });
+      toast.success('Item marked as refunded.');
+    },
+    onError: (e) => toast.error(e.response?.data?.message || 'Failed to mark refund.'),
   });
 
   return (
@@ -219,9 +259,14 @@ export default function RestaurantOrders() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="text-xs text-gray-600 max-w-[200px] truncate">
-                        {order.items.map(i => `${i.quantity}x ${i.name}`).join(', ')}
-                      </div>
+                       <div className="text-xs text-gray-600 max-w-[200px] truncate flex items-center gap-1.5">
+                         <span className="truncate">{order.items.map(i => `${i.quantity}x ${i.name}`).join(', ')}</span>
+                         {order.items.some(i => i.status === 'cancelled' || i.status === 'refunded') && (
+                           <span className="shrink-0 inline-flex px-1.5 py-0.5 text-[9px] font-extrabold bg-red-50 text-red-600 border border-red-100 rounded-md uppercase tracking-wider">
+                             Cancelled Items
+                           </span>
+                         )}
+                       </div>
                     </td>
                     <td className="px-6 py-4">
                       {getStatusBadge(order.status)}
@@ -231,33 +276,43 @@ export default function RestaurantOrders() {
                       <p className="text-[10px] text-gray-400 uppercase font-black tracking-widest">{order.paymentMethod}</p>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex items-center justify-center gap-2">
-                        <button 
-                          onClick={() => setSelectedOrder(order)}
-                          title="View Details"
-                          className="p-2 rounded-lg bg-gray-100 text-gray-500 hover:bg-black hover:text-white transition-all"
-                        >
-                          <Eye size={14} />
-                        </button>
-                        {order.status !== 'delivered' && order.status !== 'cancelled' && (
-                          <div className="flex items-center gap-1">
-                            <button 
-                              onClick={() => updateStatusMutation.mutate({ id: order._id, status: 'delivered' })}
-                              className="p-2 rounded-lg bg-green-50 text-green-600 hover:bg-green-600 hover:text-white transition-all"
-                              title="Mark Delivered"
-                            >
-                              <CheckCircle2 size={14} />
-                            </button>
-                            <button 
-                              onClick={() => updateStatusMutation.mutate({ id: order._id, status: 'cancelled' })}
-                              className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all"
-                              title="Cancel Order"
-                            >
-                              <XCircle size={14} />
-                            </button>
-                          </div>
-                        )}
-                      </div>
+                       <div className="flex items-center justify-center gap-2">
+                         <button 
+                           onClick={() => setSelectedOrder(order)}
+                           title="View Details"
+                           className="p-2 rounded-lg bg-gray-100 text-gray-500 hover:bg-black hover:text-white transition-all"
+                         >
+                           <Eye size={14} />
+                         </button>
+                         {order.status !== 'delivered' && order.status !== 'cancelled' && (
+                           <div className="flex items-center gap-1">
+                             <button 
+                               onClick={() => updateStatusMutation.mutate({ id: order._id, status: 'delivered' })}
+                               className="p-2 rounded-lg bg-green-50 text-green-600 hover:bg-green-600 hover:text-white transition-all"
+                               title="Mark Delivered"
+                             >
+                               <CheckCircle2 size={14} />
+                             </button>
+                             <button 
+                               onClick={() => updateStatusMutation.mutate({ id: order._id, status: 'cancelled' })}
+                               className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all"
+                               title="Cancel Order"
+                             >
+                               <XCircle size={14} />
+                             </button>
+                           </div>
+                         )}
+                         {order.status === 'cancelled' && order.paymentStatus !== 'refunded' && (
+                           <button
+                             onClick={() => refundOrderMutation.mutate({ id: order._id })}
+                             disabled={refundOrderMutation.isPending}
+                             className="px-2.5 py-1 rounded-lg bg-purple-50 text-purple-600 hover:bg-purple-600 hover:text-white font-bold text-xs transition-all flex items-center gap-1 cursor-pointer border border-purple-200"
+                             title="Mark Refunded"
+                           >
+                             Refund
+                           </button>
+                         )}
+                       </div>
                     </td>
                   </tr>
                 ))
@@ -333,10 +388,21 @@ export default function RestaurantOrders() {
 
               {/* Status & Payment */}
               <div className="flex items-center gap-2">
-                <div className="flex-1 bg-gray-50 rounded-xl p-3 border border-gray-100">
-                  <p className="text-[10px] uppercase font-black text-gray-400 mb-1">Order Status</p>
-                  {getStatusBadge(selectedOrder.status)}
-                </div>
+                 <div className="flex-1 bg-gray-50 rounded-xl p-3 border border-gray-100">
+                   <p className="text-[10px] uppercase font-black text-gray-400 mb-1">Order Status</p>
+                   <div className="flex items-center justify-between">
+                     {getStatusBadge(selectedOrder.status)}
+                     {selectedOrder.status === 'cancelled' && selectedOrder.paymentStatus !== 'refunded' && (
+                       <button
+                         onClick={() => refundOrderMutation.mutate({ id: selectedOrder._id })}
+                         disabled={refundOrderMutation.isPending}
+                         className="px-2.5 py-1 bg-purple-50 text-purple-600 hover:bg-purple-600 hover:text-white rounded-lg text-[10px] font-black transition-all cursor-pointer border border-purple-200"
+                       >
+                         Mark Refunded
+                       </button>
+                     )}
+                   </div>
+                 </div>
                 <div className="flex-1 bg-gray-50 rounded-xl p-3 border border-gray-100">
                   <p className="text-[10px] uppercase font-black text-gray-400 mb-1">Payment</p>
                   <div className="flex items-center gap-1">
@@ -348,20 +414,54 @@ export default function RestaurantOrders() {
 
               {/* Items */}
               <div>
-                <h4 className="text-xs font-black uppercase tracking-wider text-gray-500 mb-2">Order Items</h4>
-                <div className="space-y-2">
-                  {selectedOrder.items.map((item, idx) => (
-                    <div key={idx} className="flex justify-between items-start p-3 bg-gray-50 rounded-xl border border-gray-100">
-                      <div>
-                        <p className="text-sm font-bold"><span className="text-[#C8102E] mr-1">{item.quantity}x</span> {item.name}</p>
-                        {item.size && item.size !== 'Regular' && <p className="text-xs text-gray-500">Size: {item.size}</p>}
-                        {item.kitchenNote && <p className="text-xs italic text-amber-600 mt-1">Note: {item.kitchenNote}</p>}
-                      </div>
-                      <p className="font-mono text-sm font-bold">{formatCurrency(item.price * item.quantity)}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                 <h4 className="text-xs font-black uppercase tracking-wider text-gray-500 mb-2">Order Items</h4>
+                 <div className="space-y-2">
+                   {selectedOrder.items.map((item, idx) => {
+                      const isCancelled = item.status === 'cancelled' || item.status === 'refunded';
+                      const isRefunded = item.status === 'refunded' || item.refundStatus === 'refunded';
+                      const needsRefund = !isRefunded && (
+                        item.refundStatus === 'pending' || 
+                        (item.status === 'cancelled' && 
+                         ['online', 'upi', 'card', 'razorpay'].includes(selectedOrder.paymentMethod) && 
+                         selectedOrder.paymentStatus === 'paid')
+                      );
+
+                      return (
+                        <div key={idx} className={`flex justify-between items-start p-3 rounded-xl border transition-all ${isCancelled ? 'bg-red-50/50 border-red-100' : 'bg-gray-50 border-gray-100'}`}>
+                          <div>
+                            <p className="text-sm font-bold flex items-center gap-1.5">
+                              <span className="text-[#C8102E]">{item.quantity}x</span>
+                              <span className={isCancelled ? 'line-through text-gray-400' : ''}>{item.name}</span>
+                              {isCancelled && (
+                                <span className={`inline-flex px-1.5 py-0.5 text-[9px] font-extrabold rounded-md uppercase tracking-wider ${
+                                  isRefunded ? 'bg-purple-100 text-purple-700' :
+                                  needsRefund ? 'bg-orange-100 text-orange-700 animate-pulse' :
+                                  'bg-red-100 text-red-700'
+                                }`}>
+                                  {isRefunded ? '✓ Refunded' : needsRefund ? 'Refund Pending' : 'Cancelled'}
+                                 </span>
+                              )}
+                            </p>
+                            {item.size && item.size !== 'Regular' && <p className="text-xs text-gray-500">Size: {item.size}</p>}
+                            {item.kitchenNote && <p className="text-xs italic text-amber-600 mt-1">Note: {item.kitchenNote}</p>}
+                          </div>
+                          <div className="flex flex-col items-end gap-1.5">
+                            <p className="font-mono text-sm font-bold">{formatCurrency(item.price * item.quantity)}</p>
+                            {needsRefund && (
+                              <button
+                                onClick={() => refundItemMutation.mutate({ orderId: selectedOrder._id, itemId: item._id })}
+                                disabled={refundItemMutation.isPending}
+                                className="px-2 py-0.5 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded text-[10px] font-bold transition-all cursor-pointer border border-purple-200"
+                              >
+                                Refund
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                 </div>
+               </div>
 
               {/* Special Instructions */}
               {selectedOrder.specialInstructions && (

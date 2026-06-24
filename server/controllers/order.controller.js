@@ -63,10 +63,9 @@ exports.getAll = async (req, res) => {
     const filter = {};
     if (status) filter.status = status;
     if (date) {
-      const [year, month, day] = date.split('-').map(Number);
-      const start = new Date(year, month - 1, day, 0, 0, 0, 0);
-      const end   = new Date(year, month - 1, day, 23, 59, 59, 999);
-      filter.createdAt = { $gte: start, $lte: end };
+      const { istDayBoundaries } = require('../utils/istUtils');
+      const { startOfDay, endOfDay } = istDayBoundaries(date);
+      filter.createdAt = { $gte: startOfDay, $lte: endOfDay };
     }
     const orders = await Order.find(filter)
       .populate('tableId', 'label tableNumber section')
@@ -333,7 +332,7 @@ exports.cancelItem = async (req, res) => {
     item.cancelledBy = req.user.role;
     if (reason) item.cancelReason = reason;
 
-    if (['online', 'upi', 'card'].includes(order.paymentMethod) && order.paymentStatus === 'paid') {
+    if (['online', 'upi', 'card', 'razorpay'].includes(order.paymentMethod) && order.paymentStatus === 'paid') {
       item.refundStatus = 'pending';
     }
 
@@ -366,7 +365,8 @@ exports.refundItem = async (req, res) => {
 
     const item = order.items.id(req.params.itemId);
     if (!item) return res.status(404).json({ message: 'Item not found.' });
-    if (item.refundStatus !== 'pending') {
+    const isOnlinePaid = ['online', 'upi', 'card', 'razorpay'].includes(order.paymentMethod) && order.paymentStatus === 'paid';
+    if (item.refundStatus !== 'pending' && !(item.status === 'cancelled' && isOnlinePaid)) {
       return res.status(400).json({ message: 'Item is not pending refund.' });
     }
 

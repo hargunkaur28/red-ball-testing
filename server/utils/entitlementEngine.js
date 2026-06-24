@@ -275,15 +275,34 @@ exports.validateCheckIn = async (userId, sportName) => {
     };
   }
 
-  // 5. Concurrent session limit
-  const currentLimit = entitlementSource === 'one-time-play' ? 1 : baseEntitlement.concurrentSessionLimit;
-  if (currentLimit !== null && activeSessions.length >= currentLimit) {
-    return {
-      allowed: false,
-      reason: 'You already have an active session. Please check out before starting another session.',
-      entitlement: baseEntitlement,
-      activeSessions,
-    };
+  // 5. Cross-sport active session check — only ONE session at a time
+  // If the user has an active session for a DIFFERENT sport, deny access
+  if (activeSessions.length > 0) {
+    const otherSportSession = activeSessions.find(
+      (s) => {
+        const sessionSport = (s.sport || '').trim().toLowerCase();
+        return sessionSport !== resolvedSportSlug && sessionSport !== sportObj.name.toLowerCase();
+      }
+    );
+    if (otherSportSession) {
+      const otherSportName = otherSportSession.sport || 'another sport';
+      return {
+        allowed: false,
+        reason: `You have an active session for ${otherSportName}. Please check out of ${otherSportName} first before checking into ${sportObj.name}.`,
+        entitlement: baseEntitlement,
+        activeSessions,
+      };
+    }
+
+    // If the active session count still exceeds 1 (shouldn't normally happen), deny
+    if (activeSessions.length >= 1) {
+      return {
+        allowed: false,
+        reason: 'You already have an active session. Please check out before starting another session.',
+        entitlement: baseEntitlement,
+        activeSessions,
+      };
+    }
   }
 
   // 6. Daily Limit Check (Only 1 check-in per day per sport)

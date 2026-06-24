@@ -610,8 +610,8 @@ export default function EntryPortal() {
                   navigate(target);
                   return;
                 }
-              } catch (e) {
-                console.error(e);
+              } catch {
+                // Intent parse error — handled silently
               }
             }
           } catch (err) {
@@ -657,6 +657,8 @@ export default function EntryPortal() {
   const [authMode, setAuthMode] = useState('signup');
   const [details, setDetails] = useState({ name: '', email: '', phone: '', password: '' });
   const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [autoAttempted, setAutoAttempted] = useState(false);
+  const [redirected, setRedirected] = useState(false);
 
   const handleSelectOption = (option) => {
     if (!isAuthenticated) {
@@ -703,9 +705,27 @@ export default function EntryPortal() {
 
   useEffect(() => {
     if (!loading && !isAuthenticated && data?.sport?.slug) {
-      window.location.replace(`/sports/${data.sport.slug}`);
+      window.location.replace(`https://www.redballsportsarena.in/sports/${data.sport.slug}`);
     }
   }, [loading, isAuthenticated, data?.sport?.slug]);
+
+  useEffect(() => {
+    if (!loading && isAuthenticated && data && !redirected) {
+      if (data.slotBookingRequired && !data.hasActiveCheckIn && !data.hasSlotBooking && !data.hasUpcomingSlot) {
+        setRedirected(true);
+        toast.error('You have to book a slot first');
+        if (data.hasMembership) {
+          setTimeout(() => {
+            navigate('/user/membership');
+          }, 1500);
+        } else {
+          setTimeout(() => {
+            window.location.replace(`https://www.redballsportsarena.in/sports/${data.sport.slug}`);
+          }, 1500);
+        }
+      }
+    }
+  }, [loading, isAuthenticated, data, navigate, redirected]);
 
   useEffect(() => {
     if (!data?.hasActiveCheckIn || !data?.activeCheckIn?.checkInTime) return;
@@ -817,6 +837,26 @@ export default function EntryPortal() {
       setActionLoading(false);
     }
   };
+
+  useEffect(() => {
+    setAutoAttempted(false);
+    setRedirected(false);
+  }, [qrSlug]);
+
+  useEffect(() => {
+    if (!loading && isAuthenticated && data && !successMessage && !actionLoading && !autoAttempted) {
+      if (data.hasActiveCheckIn) {
+        setAutoAttempted(true);
+        handleCheckOut();
+      } else if (
+        data.validationAllowed !== false &&
+        (data.hasMembership || data.hasPrepaidPass || data.hasSlotBooking)
+      ) {
+        setAutoAttempted(true);
+        handleCheckIn();
+      }
+    }
+  }, [loading, isAuthenticated, data, successMessage, actionLoading, autoAttempted]);
 
   const ensureSignedIn = async () => {
     if (isAuthenticated) return true;
@@ -1083,76 +1123,87 @@ export default function EntryPortal() {
                 </motion.section>
               ) : (
                 <motion.section key="options" initial={{ opacity: 0, x: -18 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 18 }}>
-                  <div className="entry-topbar">
-                    <div>
-                      <div className="entry-title">{data?.hasActiveCheckIn ? 'Confirm checkout' : 'Smart entry'}</div>
-                      <div className="entry-muted">
-                        {data?.hasActiveCheckIn
-                          ? 'You already have an active session for this sport. Confirm checkout to close it.'
-                          : 'Pick the access type you want to use today.'}
+                  {data?.validationAllowed === false ? (
+                    <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                      <div className="bg-red-50/10 border border-red-500/30 rounded-[28px] p-6 text-center max-w-sm mx-auto shadow-xl">
+                        <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" aria-hidden="true" />
+                        <h4 className="text-red-300 font-bold text-xl mb-2">Entry Not Permitted</h4>
+                        <p className="text-red-200/80 text-sm mt-1">{data.validationReason}</p>
                       </div>
-                    </div>
-                  </div>
-
-                  {data?.hasActiveCheckIn && (
-                    <>
-                      <div className="entry-status-badge badge-checked-in"><Clock size={14} /> Currently Checked In</div>
-                      <div className="checkout-summary">
-                        <div className="summary-row"><span>Sport</span><strong>{data?.sport?.name || 'Sport'}</strong></div>
-                        <div className="summary-row"><span>Checked in</span><strong>{data?.activeCheckIn?.checkInTime ? new Date(data.activeCheckIn.checkInTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '-'}</strong></div>
-                        <div className="summary-row"><span>Session duration</span><strong>{elapsedTime}</strong></div>
-                        <div className="summary-row"><span>Allowed time</span><strong>{data?.sport?.allowedDurationMinutes || 75} mins</strong></div>
-                      </div>
-                      <button className="entry-action-btn btn-checkout" onClick={handleCheckOut} disabled={actionLoading}>
-                        {actionLoading ? <Loader2 size={18} className="animate-spin" /> : 'Confirm Check-Out'}
-                      </button>
-                    </>
-                  )}
-
-                  {!data?.hasActiveCheckIn && (data?.hasMembership || data?.hasPrepaidPass) && data?.validationAllowed === false && (
-                    <div className="bg-red-50/10 border border-red-500/30 rounded-xl p-4 mb-4 text-center">
-                      <AlertCircle className="w-8 h-8 text-red-400 mx-auto mb-2" />
-                      <h4 className="text-red-300 font-semibold text-lg">Entry Not Permitted</h4>
-                      <p className="text-red-200/80 text-sm mt-1">{data.validationReason}</p>
-                    </div>
-                  )}
-
-                  {!data?.hasActiveCheckIn && (data?.hasMembership || data?.hasPrepaidPass) && data?.validationAllowed !== false && (
-                    <>
-                      <div className="entry-status-badge badge-member">
-                        <BadgeCheck size={14} /> {data?.hasPrepaidPass ? 'Prepaid Pass Ready' : 'Active Member'}
-                      </div>
-                      <button className="entry-action-btn btn-checkin" onClick={handleCheckIn} disabled={actionLoading}>
-                        {actionLoading ? <Loader2 size={18} className="animate-spin" /> : 'Confirm Check-In'}
-                      </button>
-                    </>
-                  )}
-
-                  {!data?.hasActiveCheckIn && data?.hasSlotBooking && !data?.hasMembership && !data?.hasPrepaidPass && data?.validationAllowed !== false && (
-                    <>
-                      <div className="entry-status-badge badge-member">
-                        <BadgeCheck size={14} /> Slot Booked · {data?.slotBooking?.startTime}–{data?.slotBooking?.endTime}
-                      </div>
-                      <button className="entry-action-btn btn-checkin" onClick={handleCheckIn} disabled={actionLoading}>
-                        {actionLoading ? <Loader2 size={18} className="animate-spin" /> : 'Confirm Check-In'}
-                      </button>
-                    </>
-                  )}
-
-                  {!data?.hasActiveCheckIn && !data?.hasMembership && !data?.hasPrepaidPass && !data?.hasSlotBooking && (
-                    <div className="bg-red-50/10 border border-red-500/30 rounded-xl p-5 mt-4 mb-4 text-center">
-                      <AlertCircle className="w-10 h-10 text-red-400 mx-auto mb-3" />
-                      <h4 className="text-red-300 font-bold text-xl mb-2">Access Denied / Wrong QR</h4>
-                      <p className="text-red-200/80 text-sm mb-6">
-                        You don't have an active membership or pass for <strong>{data?.sport?.name}</strong>.
-                      </p>
-                      <button
-                        onClick={() => navigate(`/sports/${data?.sport?.slug}`)}
-                        className="w-full py-3 px-4 rounded-xl bg-[#df1526] hover:bg-[#df1526]/80 active:scale-[0.98] transition-all text-white text-sm font-bold shadow-lg shadow-red-950/20 flex items-center justify-center gap-2"
+                      <button 
+                        className="entry-submit" 
+                        style={{ marginTop: 28, maxWidth: '220px', margin: '28px auto 0' }} 
+                        onClick={() => navigate('/user')}
                       >
-                        Book {data?.sport?.name} Slots
+                        Back to Dashboard
                       </button>
                     </div>
+                  ) : (
+                    <>
+                      <div className="entry-topbar">
+                        <div>
+                          <div className="entry-title">{data?.hasActiveCheckIn ? 'Confirm checkout' : 'Smart entry'}</div>
+                          <div className="entry-muted">
+                            {data?.hasActiveCheckIn
+                              ? 'You already have an active session for this sport. Confirm checkout to close it.'
+                              : 'Pick the access type you want to use today.'}
+                          </div>
+                        </div>
+                      </div>
+
+                      {data?.hasActiveCheckIn && (
+                        <>
+                          <div className="entry-status-badge badge-checked-in"><Clock size={14} /> Currently Checked In</div>
+                          <div className="checkout-summary">
+                            <div className="summary-row"><span>Sport</span><strong>{data?.sport?.name || 'Sport'}</strong></div>
+                            <div className="summary-row"><span>Checked in</span><strong>{data?.activeCheckIn?.checkInTime ? new Date(data.activeCheckIn.checkInTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '-'}</strong></div>
+                            <div className="summary-row"><span>Session duration</span><strong>{elapsedTime}</strong></div>
+                            <div className="summary-row"><span>Allowed time</span><strong>{data?.sport?.allowedDurationMinutes || 75} mins</strong></div>
+                          </div>
+                          <button className="entry-action-btn btn-checkout" onClick={handleCheckOut} disabled={actionLoading}>
+                            {actionLoading ? <Loader2 size={18} className="animate-spin" /> : 'Confirm Check-Out'}
+                          </button>
+                        </>
+                      )}
+
+                      {!data?.hasActiveCheckIn && (data?.hasMembership || data?.hasPrepaidPass) && data?.validationAllowed !== false && (
+                        <>
+                          <div className="entry-status-badge badge-member">
+                            <BadgeCheck size={14} /> {data?.hasPrepaidPass ? 'Prepaid Pass Ready' : 'Active Member'}
+                          </div>
+                          <button className="entry-action-btn btn-checkin" onClick={handleCheckIn} disabled={actionLoading}>
+                            {actionLoading ? <Loader2 size={18} className="animate-spin" /> : 'Confirm Check-In'}
+                          </button>
+                        </>
+                      )}
+
+                      {!data?.hasActiveCheckIn && data?.hasSlotBooking && !data?.hasMembership && !data?.hasPrepaidPass && data?.validationAllowed !== false && (
+                        <>
+                          <div className="entry-status-badge badge-member">
+                            <BadgeCheck size={14} /> Slot Booked · {data?.slotBooking?.startTime}–{data?.slotBooking?.endTime}
+                          </div>
+                          <button className="entry-action-btn btn-checkin" onClick={handleCheckIn} disabled={actionLoading}>
+                            {actionLoading ? <Loader2 size={18} className="animate-spin" /> : 'Confirm Check-In'}
+                          </button>
+                        </>
+                      )}
+
+                      {!data?.hasActiveCheckIn && !data?.hasMembership && !data?.hasPrepaidPass && !data?.hasSlotBooking && (
+                        <div className="bg-red-50/10 border border-red-500/30 rounded-xl p-5 mt-4 mb-4 text-center">
+                          <AlertCircle className="w-10 h-10 text-red-400 mx-auto mb-3" />
+                          <h4 className="text-red-300 font-bold text-xl mb-2">Access Denied / Wrong QR</h4>
+                          <p className="text-red-200/80 text-sm mb-6">
+                            You don't have an active membership or pass for <strong>{data?.sport?.name}</strong>.
+                          </p>
+                          <button
+                            onClick={() => navigate(`/sports/${data?.sport?.slug}`)}
+                            className="w-full py-3 px-4 rounded-xl bg-[#df1526] hover:bg-[#df1526]/80 active:scale-[0.98] transition-all text-white text-sm font-bold shadow-lg shadow-red-950/20 flex items-center justify-center gap-2"
+                          >
+                            Book {data?.sport?.name} Slots
+                          </button>
+                        </div>
+                      )}
+                    </>
                   )}
                 </motion.section>
               )}

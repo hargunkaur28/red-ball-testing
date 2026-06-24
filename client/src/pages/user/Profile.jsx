@@ -68,7 +68,6 @@ export default function Profile() {
       setPhotoFile(null);
       setPhotoPreview(null);
     } catch (err) {
-      console.error(err);
       toast.error(err.response?.data?.message || 'Failed to update profile details.');
     } finally {
       setProfileLoading(false);
@@ -116,7 +115,6 @@ export default function Profile() {
       setNewPassword('');
       setConfirmPassword('');
     } catch (err) {
-      console.error(err);
       toast.error(err.response?.data?.message || 'Failed to change password.');
     } finally {
       setPasswordLoading(false);

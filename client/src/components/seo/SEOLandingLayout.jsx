@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Footer from '../home/Footer';
+import Navbar from '../home/Navbar';
 import { useAcademyInfo } from '../../hooks/useAcademyInfo';
 
 export function CTAStrip() {
@@ -102,7 +103,7 @@ export function SportsNav({ activePath }) {
     { label: 'Blog', to: '/blog' },
   ];
   return (
-    <nav className="bg-white border-b border-black/10 sticky top-0 z-40" aria-label="Sports pages navigation">
+    <nav className="bg-white border-b border-black/10 sticky top-[72px] z-30" aria-label="Sports pages navigation">
       <div className="max-w-[1280px] mx-auto px-4 overflow-x-auto">
         <ul className="flex gap-1 py-2 min-w-max">
           <li>
@@ -130,8 +131,12 @@ export function SportsNav({ activePath }) {
 export default function SEOLandingLayout({ children }) {
   return (
     <div className="min-h-screen bg-white" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-      {children}
+      <Navbar />
+      <div className="pt-[72px]">
+        {children}
+      </div>
       <Footer />
     </div>
   );
 }
+

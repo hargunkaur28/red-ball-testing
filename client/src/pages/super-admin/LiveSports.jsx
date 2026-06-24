@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Zap, RefreshCw, ChevronRight, ChevronLeft, AlertTriangle,
   Check, Building2, X, Lock, Unlock, Loader2, Plus, Sun, Moon,
-  Layers, IndianRupee, LayoutGrid, Trash2, Pencil, Clock, Search, User, ShieldCheck, Crown,
+  Layers, IndianRupee, LayoutGrid, Trash2, Pencil, Clock, Search, User, ShieldCheck, Crown, Info,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import api from '../../lib/axios';
@@ -33,6 +33,210 @@ const slotLabel = (s) => {
   return 'Available';
 };
 
+// ── Booking Details Modal ────────────────────────────────────────────────────
+function BookingDetailsModal({ details, onClose }) {
+  const { booking, slot } = details;
+  const isMembership = booking.isMembershipBooking || booking.bookingType === 'membership-slot';
+  const planName = booking.membershipPlanSnapshot || booking.membershipId?.planId?.name || '';
+  
+  const getSlotTimingStatus = () => {
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+    const slotDateStr = new Date(slot.date).toISOString().split('T')[0];
+    
+    const toMinutes = (t) => {
+      const [h, m] = t.split(':').map(Number);
+      return h * 60 + m;
+    };
+    
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+    const startMinutes = toMinutes(slot.startTime);
+    const endMinutes = toMinutes(slot.endTime);
+    
+    if (slotDateStr < todayStr) return 'passed';
+    if (slotDateStr > todayStr) return 'upcoming';
+    
+    if (nowMinutes >= endMinutes) return 'passed';
+    if (nowMinutes >= startMinutes && nowMinutes < endMinutes) return 'active';
+    return 'upcoming';
+  };
+  
+  const timingStatus = getSlotTimingStatus();
+  const dateFormatted = new Date(slot.date).toLocaleDateString('en-IN', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+
+  return (
+    <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-[#EAEAEA] text-left"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#EAEAEA] bg-[#FAFAFA]">
+          <div>
+            <h3 className="font-bold text-[#111] text-base flex items-center gap-2">
+              <Crown size={16} className="text-violet-600" />
+              Booking Details
+            </h3>
+            <p className="text-xs text-[#999] mt-0.5">{slot.courtNameSnapshot || 'Facility Slot'}</p>
+          </div>
+          <button onClick={onClose} className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-[#EAEAEA] text-[#666]">
+            <X size={16} />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-5 space-y-4 text-sm text-[#333] max-h-[75vh] overflow-y-auto">
+          {/* Timing & Status Card */}
+          <div className="p-3.5 rounded-xl bg-gray-50 border border-[#EAEAEA] space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-xs font-semibold text-[#888] uppercase">Timing</span>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
+                timingStatus === 'active' 
+                  ? 'bg-emerald-100 text-emerald-700 animate-pulse' 
+                  : timingStatus === 'passed' 
+                    ? 'bg-gray-100 text-gray-500' 
+                    : 'bg-blue-100 text-blue-700'
+              }`}>
+                {timingStatus}
+              </span>
+            </div>
+            <p className="font-bold text-[#111]">{dateFormatted}</p>
+            <p className="text-xs font-semibold text-[#555]">{slot.startTime} – {slot.endTime} ({slot.duration} mins)</p>
+          </div>
+
+          {/* Player Info */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold text-[#999] uppercase tracking-wider">Player Info</h4>
+            <div className="grid grid-cols-3 gap-y-2 border border-[#F0F0F0] rounded-xl p-3 bg-white">
+              <span className="text-[#888]">Name:</span>
+              <span className="col-span-2 font-semibold text-[#111]">{booking.playerName}</span>
+              
+              <span className="text-[#888]">Phone:</span>
+              <span className="col-span-2 font-mono text-[#111]">{booking.playerPhone || '—'}</span>
+              
+              <span className="text-[#888]">Email:</span>
+              <span className="col-span-2 text-[#111] truncate">{booking.playerEmail || '—'}</span>
+            </div>
+          </div>
+
+          {/* Booking / Pricing Details */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold text-[#999] uppercase tracking-wider">Billing & Plan Type</h4>
+            <div className="border border-[#F0F0F0] rounded-xl p-3 bg-white space-y-2.5">
+              <div className="flex justify-between items-center">
+                <span className="text-[#888]">Booking Mode:</span>
+                {isMembership ? (
+                  <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full bg-violet-50 text-violet-700 border border-violet-200">
+                    <Crown size={10} /> Membership Slot
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">
+                    One-time Booking
+                  </span>
+                )}
+              </div>
+
+              {isMembership && (
+                <div className="flex justify-between items-center border-t border-[#FAFAFA] pt-2">
+                  <span className="text-[#888]">Membership Plan:</span>
+                  <span className="font-bold text-violet-700">{planName || 'Active Membership'}</span>
+                </div>
+              )}
+
+              {!isMembership && (
+                <div className="space-y-2 border-t border-[#FAFAFA] pt-2.5">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-[#888]">Slot Base Price:</span>
+                    <span className="font-medium text-[#111]">₹{slot.pricePerSlot}</span>
+                  </div>
+
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-[#888]">Amount Paid:</span>
+                    <span className="font-semibold text-green-700">₹{booking.amountPaid || 0}</span>
+                  </div>
+
+                  {booking.waivedAmount > 0 && (
+                    <div className="flex justify-between items-center text-xs px-2 py-1 bg-yellow-50 text-yellow-800 rounded border border-yellow-200">
+                      <span className="font-medium flex items-center gap-1">
+                        <ShieldCheck size={12} className="text-yellow-600" /> Reference Waived:
+                      </span>
+                      <span className="font-bold">-₹{booking.waivedAmount}</span>
+                    </div>
+                  )}
+
+                  {booking.amountDue > 0 && !booking.isReference && (
+                    <div className="flex justify-between items-center text-xs px-2 py-1 bg-red-50 text-red-800 rounded border border-red-200">
+                      <span className="font-medium">Amount Due (Pending):</span>
+                      <span className="font-bold">₹{booking.amountDue}</span>
+                    </div>
+                  )}
+
+                  {booking.isReference && (
+                    <div className="text-[11px] text-sky-700 bg-sky-50 border border-sky-150 rounded p-2 mt-1 space-y-1">
+                      <p className="font-semibold flex items-center gap-1">
+                        ✨ Reference Booking
+                      </p>
+                      {booking.referenceNote ? (
+                        <p className="italic text-sky-600/90">"{booking.referenceNote}"</p>
+                      ) : (
+                        <p className="text-sky-600/80">Waived remaining payment as reference booking.</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Overtime Info (for active or passed slots) */}
+          {(timingStatus === 'passed' || timingStatus === 'active') && (
+            <div className="space-y-2">
+              <h4 className="text-xs font-bold text-[#999] uppercase tracking-wider">Session Overtime</h4>
+              <div className="border border-[#F0F0F0] rounded-xl p-3 bg-white space-y-2.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-[#888]">Overtime Minutes:</span>
+                  {booking.attendance?.overtimeMinutes > 0 ? (
+                    <span className="font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded text-xs">
+                      ⚠️ {booking.attendance.overtimeMinutes} mins
+                    </span>
+                  ) : (
+                    <span className="font-medium text-gray-500">None</span>
+                  )}
+                </div>
+
+                {booking.attendance?.checkInTime && (
+                  <div className="flex justify-between items-center text-xs border-t border-[#FAFAFA] pt-2">
+                    <span className="text-[#888]">Checked In at:</span>
+                    <span className="font-mono text-[#555]">
+                      {new Date(booking.attendance.checkInTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                )}
+
+                {booking.attendance?.checkOutTime && (
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-[#888]">Checked Out at:</span>
+                    <span className="font-mono text-[#555]">
+                      {new Date(booking.attendance.checkOutTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 // ── Court Detail Panel (floating right-side sheet) ────────────────────────────
 function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onToggleCourt, onDeleteCourt, onDeleteSlot, onSaved, onOpenBulk, onOpenBulkDelete }) {
   const { court, slots } = group;
@@ -42,6 +246,7 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
   const [showCreateSlot, setShowCreateSlot] = useState(false);
   const [createForm, setCreateForm] = useState({ startTime: '', endTime: '', pricePerSlot: '' });
   const [creating, setCreating] = useState(false);
+  const [selectedBookingDetails, setSelectedBookingDetails] = useState(null);
 
   const openEdit = (s) => {
     setShowCreateSlot(false);
@@ -305,11 +510,18 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
                               <div key={b._id} className="flex items-start justify-between gap-2 text-[11px]">
                                 <div className="min-w-0">
                                   <span className="font-semibold block truncate">{b.playerName}</span>
-                                  {isMembership && (
-                                    <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-violet-100 text-violet-700 mt-0.5">
-                                      <Crown size={8} /> {planName || 'Membership'}
-                                    </span>
-                                  )}
+                                  <div className="flex flex-wrap gap-1 mt-0.5">
+                                    {isMembership && (
+                                      <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-violet-100 text-violet-700 leading-none">
+                                        <Crown size={8} /> {planName || 'Membership'}
+                                      </span>
+                                    )}
+                                    {b.isReference && (
+                                      <span className="inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 rounded bg-sky-100 text-sky-700 uppercase tracking-wide leading-none">
+                                        Ref
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
                                 <div className="flex items-center gap-1.5 shrink-0">
                                   <span className="opacity-60">{b.playerPhone}</span>
@@ -320,6 +532,13 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
                                       b.paymentStatus === 'paid' ? 'bg-green-200 text-green-800' : b.paymentStatus === 'partial' ? 'bg-amber-200 text-amber-800' : 'bg-red-200 text-red-800'
                                     }`}>{b.paymentStatus}</span>
                                   )}
+                                  <button
+                                    onClick={() => setSelectedBookingDetails({ booking: b, slot: s })}
+                                    className="w-5 h-5 flex items-center justify-center rounded text-current/60 hover:text-[#C8102E] hover:bg-white/60 transition-colors"
+                                    title="View booking details"
+                                  >
+                                    <Info size={11} />
+                                  </button>
                                 </div>
                               </div>
                             );
@@ -340,6 +559,15 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
           </div>
         </motion.div>
       </div>
+
+      <AnimatePresence>
+        {selectedBookingDetails && (
+          <BookingDetailsModal
+            details={selectedBookingDetails}
+            onClose={() => setSelectedBookingDetails(null)}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }

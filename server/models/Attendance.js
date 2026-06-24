@@ -43,6 +43,10 @@ const attendanceSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  lateMinutes: {
+    type: Number,
+    default: 0,
+  },
   hourlyRateAtCheckIn: {
     type: Number,
     default: 0,
@@ -107,7 +111,7 @@ const attendanceSchema = new mongoose.Schema({
   },
   relatedBookingType: {
     type: String,
-    enum: ['slot-booking', 'membership', 'one-time-play', 'coaching'],
+    enum: ['slot-booking', 'membership', 'one-time-play', 'coaching', 'membership-slot'],
   },
   notes: String,
 }, {

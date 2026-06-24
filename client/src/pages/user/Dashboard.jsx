@@ -147,10 +147,30 @@ export default function UserDashboard() {
   const activeSession = activeSessions[0];
   const sessionState = useMemo(() => {
     if (!activeSession?.checkInTime) return null;
-    const allowedMinutes = activeSession.allowedDurationMinutes || sessionData?.allowedDurationMinutes || 75;
-    const displayMinutes = 60; // UI always shows 60 min limit regardless of backend setting
+    
+    let displayMinutes = 60; // default
     const checkInMs = new Date(activeSession.checkInTime).getTime();
-    const endsAt = checkInMs + displayMinutes * 60000;
+    let endsAt;
+
+    if (activeSession.slotBooking && activeSession.slotBooking.endTime) {
+      // Slot booking: session ends at the slot's end time
+      const [hours, minutes] = activeSession.slotBooking.endTime.split(':').map(Number);
+      const sessionDate = new Date(activeSession.date || activeSession.checkInTime);
+      sessionDate.setHours(hours, minutes, 0, 0);
+      endsAt = sessionDate.getTime();
+
+      // Calculate the allowed duration for this slot
+      if (activeSession.slotBooking.startTime) {
+        const [startH, startM] = activeSession.slotBooking.startTime.split(':').map(Number);
+        const startMs = new Date(sessionDate).setHours(startH, startM, 0, 0);
+        displayMinutes = Math.round((endsAt - startMs) / 60000);
+      }
+    } else {
+      // Normal check-in (e.g. gym, walk-in membership): ends 60 mins after check-in
+      displayMinutes = activeSession.allowedDurationMinutes || sessionData?.allowedDurationMinutes || 60;
+      endsAt = checkInMs + displayMinutes * 60000;
+    }
+
     const remainingMs = endsAt - now;
     const remainingMinutes = Math.ceil(Math.max(0, remainingMs) / 60000);
     const overtimeMinutes = Math.max(0, Math.floor((now - endsAt) / 60000));
@@ -469,6 +489,80 @@ export default function UserDashboard() {
           </div>
         </div>
       )}
+      {/* Upcoming Membership Slot Bookings */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-extrabold text-white/70 uppercase tracking-wider">Upcoming Membership Bookings</h3>
+          {upcomingMembershipBookings.length > 0 && (
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(124,58,237,0.15)', color: '#a78bfa', border: '1px solid rgba(124,58,237,0.25)' }}>
+              {upcomingMembershipBookings.length} upcoming
+            </span>
+          )}
+        </div>
+        {membershipBookingsLoading ? (
+          <div className="text-sm text-white/45 py-2">Loading...</div>
+        ) : upcomingMembershipBookings.length === 0 ? (
+          <div className="ota-card text-center py-7 px-6 border-dashed">
+            <p className="text-white/55 text-sm">No upcoming membership bookings.</p>
+            <Link to="/user/book-slots" className="text-xs text-violet-400 font-bold mt-1 inline-block hover:underline">
+              Book a Slot via Membership →
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {upcomingMembershipBookings.map((booking) => {
+              const slotDate = booking.slotId?.date
+                ? new Date(booking.slotId.date).toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short' })
+                : '—';
+              const isToday = booking.slotId?.date
+                ? new Date(booking.slotId.date).toISOString().slice(0, 10) === new Date().toISOString().slice(0, 10)
+                : false;
+              const statusColors = {
+                confirmed: 'text-green-400',
+                'checked-in': 'text-blue-400',
+                completed: 'text-white/40',
+              };
+              const planName = booking.membershipId?.planId?.name || booking.membershipPlanSnapshot || 'Membership';
+              return (
+                <motion.div
+                  key={booking._id}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="ota-soft-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                >
+                  <div className="flex items-start gap-3 min-w-0">
+                    <div className="w-10 h-10 rounded-xl shrink-0 flex items-center justify-center" style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.25)' }}>
+                      <ShieldCheck size={16} className="text-violet-400" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-0.5">
+                        <p className="text-sm font-bold text-white truncate">
+                          {booking.sportNameSnapshot || 'Sport'}{booking.courtNameSnapshot ? ` · ${booking.courtNameSnapshot}` : ''}
+                        </p>
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold shrink-0" style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.25)', color: '#a78bfa' }}>
+                          {planName}
+                        </span>
+                      </div>
+                      <p className="text-xs text-white/45">
+                        {isToday ? <span className="text-amber-400 font-semibold">Today</span> : slotDate} · {booking.startTime}–{booking.endTime}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 shrink-0">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(124,58,237,0.1)', color: '#a78bfa', border: '1px solid rgba(124,58,237,0.2)' }}>
+                      Free
+                    </span>
+                    <span className={`text-[10px] font-bold uppercase tracking-wide ${statusColors[booking.status] || 'text-white/40'}`}>
+                      {booking.status}
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
       {/* One-Time Access + Slot Bookings (merged) */}
       <div id="my-passes-section" className="mb-8">
         <h3 className="text-sm font-extrabold text-white/70 uppercase tracking-wider mb-4">My One-Time Bookings</h3>
@@ -662,32 +756,93 @@ export default function UserDashboard() {
                 const slotDate = booking.slotId?.date
                   ? new Date(booking.slotId.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
                   : new Date(booking.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-                const statusColors = {
-                  confirmed: 'text-green-400',
-                  'checked-in': 'text-blue-400',
-                  completed: 'text-white/40',
-                  'no-show': 'text-red-400',
-                };
+
+                const isPast = (() => {
+                  const todayStr = new Date().toISOString().slice(0, 10);
+                  const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
+                  
+                  const slotDateStr = booking.slotId?.date
+                    ? new Date(booking.slotId.date).toISOString().slice(0, 10)
+                    : new Date(booking.createdAt).toISOString().slice(0, 10);
+                    
+                  if (slotDateStr < todayStr) return true;
+                  if (slotDateStr === todayStr) {
+                    const [endH, endM] = (booking.endTime || '0:0').split(':').map(Number);
+                    return endH * 60 + endM < nowMin;
+                  }
+                  return false;
+                })();
+
+                const isUpcoming = !isPast && booking.status === 'confirmed';
+
+                let displayStatus = booking.status;
+                let statusColorClass = 'text-white/40';
+
+                if (isPast) {
+                  if (booking.status === 'confirmed' || booking.status === 'pending') {
+                    displayStatus = 'missed';
+                    statusColorClass = 'text-red-400/60';
+                  } else if (booking.status === 'completed') {
+                    displayStatus = 'passed';
+                    statusColorClass = 'text-white/45';
+                  } else if (booking.status === 'no-show') {
+                    displayStatus = 'no show';
+                    statusColorClass = 'text-red-400';
+                  } else if (booking.status === 'checked-in') {
+                    displayStatus = 'checked in';
+                    statusColorClass = 'text-blue-400';
+                  }
+                } else {
+                  const statusColors = {
+                    confirmed: 'text-green-400',
+                    'checked-in': 'text-blue-400',
+                    completed: 'text-white/40',
+                    'no-show': 'text-red-400',
+                    pending: 'text-amber-400',
+                  };
+                  displayStatus = booking.status;
+                  statusColorClass = statusColors[booking.status] || 'text-white/40';
+                }
+
                 const amountToShow = booking.isReference
                   ? (booking.displayAmount ?? booking.amountPaid ?? 0)
                   : (booking.displayAmount ?? booking.totalAmount ?? 0);
+
                 return (
                   <motion.div
                     key={booking._id}
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="ota-soft-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                    className={`ota-soft-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                      isPast ? 'opacity-60 bg-white/[0.015] border-white/5' : 
+                      isUpcoming ? 'border-blue-500/25 bg-blue-500/5' : ''
+                    }`}
                   >
                     <div className="flex items-start gap-3 min-w-0">
                       <div className="w-10 h-10 rounded-xl shrink-0 flex items-center justify-center"
-                        style={{ background: 'rgba(200,16,46,0.1)', border: '1px solid rgba(200,16,46,0.2)' }}>
-                        <Zap size={16} className="text-[#C8102E]" />
+                        style={isPast ? {
+                          background: 'rgba(255,255,255,0.03)',
+                          border: '1px solid rgba(255,255,255,0.05)'
+                        } : isUpcoming ? {
+                          background: 'rgba(59,130,246,0.12)',
+                          border: '1px solid rgba(59,130,246,0.25)'
+                        } : {
+                          background: 'rgba(200,16,46,0.1)',
+                          border: '1px solid rgba(200,16,46,0.2)'
+                        }}>
+                        <Zap size={16} className={isPast ? 'text-white/30' : isUpcoming ? 'text-blue-400' : 'text-[#C8102E]'} />
                       </div>
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2 mb-0.5">
-                          <p className="text-sm font-bold text-white truncate">
+                          <p className={`text-sm font-bold truncate ${isPast ? 'text-white/70' : 'text-white'}`}>
                             {booking.sportNameSnapshot || 'Sport'}{booking.courtNameSnapshot ? ` · ${booking.courtNameSnapshot}` : ''}
                           </p>
+                          {isUpcoming && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider shrink-0"
+                              style={{ background: 'rgba(59,130,246,0.12)', border: '1px solid rgba(59,130,246,0.25)', color: '#60a5fa' }}>
+                              Upcoming
+                            </span>
+                          )}
                           {booking.isReference && (
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0"
                               style={{ background: 'rgba(234,179,8,0.12)', border: '1px solid rgba(234,179,8,0.25)', color: '#fbbf24' }}>
@@ -698,7 +853,7 @@ export default function UserDashboard() {
                             <span className="text-[10px] font-semibold text-white/30">Manual</span>
                           )}
                         </div>
-                        <p className="text-xs text-white/45">
+                        <p className={`text-xs ${isPast ? 'text-white/30' : 'text-white/45'}`}>
                           {slotDate} · {booking.startTime}–{booking.endTime}
                         </p>
                         {booking.isReference && (
@@ -710,7 +865,7 @@ export default function UserDashboard() {
                       <div className="text-right">
                         {booking.isReference ? (
                           <>
-                            <p className="text-sm font-extrabold text-white">
+                            <p className={`text-sm font-extrabold ${isPast ? 'text-white/60' : 'text-white'}`}>
                               Paid: ₹{Number(amountToShow).toLocaleString('en-IN')}
                             </p>
                             {(booking.waivedAmount ?? 0) > 0 && (
@@ -718,7 +873,7 @@ export default function UserDashboard() {
                             )}
                           </>
                         ) : (
-                          <p className="text-sm font-extrabold text-white">
+                          <p className={`text-sm font-extrabold ${isPast ? 'text-white/60' : 'text-white'}`}>
                             ₹{Number(amountToShow).toLocaleString('en-IN')}
                           </p>
                         )}
@@ -726,8 +881,8 @@ export default function UserDashboard() {
                           <p className="text-[10px] text-white/30 capitalize">{booking.paymentId.paymentMode}</p>
                         )}
                       </div>
-                      <span className={`text-[10px] font-bold uppercase tracking-wide ${statusColors[booking.status] || 'text-white/40'}`}>
-                        {booking.status}
+                      <span className={`text-[10px] font-bold uppercase tracking-wide ${statusColorClass}`}>
+                        {displayStatus}
                       </span>
                     </div>
                   </motion.div>
@@ -735,80 +890,6 @@ export default function UserDashboard() {
               })}
             </div>
           )}
-          </div>
-        )}
-      </div>
-
-      {/* Upcoming Membership Slot Bookings */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-extrabold text-white/70 uppercase tracking-wider">Upcoming Membership Bookings</h3>
-          {upcomingMembershipBookings.length > 0 && (
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(124,58,237,0.15)', color: '#a78bfa', border: '1px solid rgba(124,58,237,0.25)' }}>
-              {upcomingMembershipBookings.length} upcoming
-            </span>
-          )}
-        </div>
-        {membershipBookingsLoading ? (
-          <div className="text-sm text-white/45 py-2">Loading...</div>
-        ) : upcomingMembershipBookings.length === 0 ? (
-          <div className="ota-card text-center py-7 px-6 border-dashed">
-            <p className="text-white/55 text-sm">No upcoming membership bookings.</p>
-            <Link to="/user/book-slots" className="text-xs text-violet-400 font-bold mt-1 inline-block hover:underline">
-              Book a Slot via Membership →
-            </Link>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {upcomingMembershipBookings.map((booking) => {
-              const slotDate = booking.slotId?.date
-                ? new Date(booking.slotId.date).toLocaleDateString('en-IN', { weekday: 'short', day: '2-digit', month: 'short' })
-                : '—';
-              const isToday = booking.slotId?.date
-                ? new Date(booking.slotId.date).toISOString().slice(0, 10) === new Date().toISOString().slice(0, 10)
-                : false;
-              const statusColors = {
-                confirmed: 'text-green-400',
-                'checked-in': 'text-blue-400',
-                completed: 'text-white/40',
-              };
-              const planName = booking.membershipId?.planId?.name || booking.membershipPlanSnapshot || 'Membership';
-              return (
-                <motion.div
-                  key={booking._id}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="ota-soft-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-                >
-                  <div className="flex items-start gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-xl shrink-0 flex items-center justify-center" style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.25)' }}>
-                      <ShieldCheck size={16} className="text-violet-400" />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-2 mb-0.5">
-                        <p className="text-sm font-bold text-white truncate">
-                          {booking.sportNameSnapshot || 'Sport'}{booking.courtNameSnapshot ? ` · ${booking.courtNameSnapshot}` : ''}
-                        </p>
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold shrink-0" style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.25)', color: '#a78bfa' }}>
-                          {planName}
-                        </span>
-                      </div>
-                      <p className="text-xs text-white/45">
-                        {isToday ? <span className="text-amber-400 font-semibold">Today</span> : slotDate} · {booking.startTime}–{booking.endTime}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 shrink-0">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(124,58,237,0.1)', color: '#a78bfa', border: '1px solid rgba(124,58,237,0.2)' }}>
-                      Free
-                    </span>
-                    <span className={`text-[10px] font-bold uppercase tracking-wide ${statusColors[booking.status] || 'text-white/40'}`}>
-                      {booking.status}
-                    </span>
-                  </div>
-                </motion.div>
-              );
-            })}
           </div>
         )}
       </div>
@@ -861,12 +942,39 @@ export default function UserDashboard() {
             <p className="text-sm text-white/45 text-center py-6">No orders yet. Try ordering from the restaurant.</p>
           ) : (
             orders.orders.slice(0, 5).map(order => (
-              <div key={order._id} className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/7">
-                <div>
+              <div key={order._id} className="flex items-start justify-between p-3 rounded-xl bg-white/5 border border-white/7 gap-4">
+                <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-white">{order.orderNumber}</p>
-                  <p className="text-xs text-white/40">{order.items?.length} items • {new Date(order.createdAt).toLocaleDateString('en-IN')}</p>
+                  <p className="text-xs text-white/40 mb-2">{order.items?.length} items • {new Date(order.createdAt).toLocaleDateString('en-IN')}</p>
+                  
+                  {/* List order items */}
+                  {order.items && order.items.length > 0 && (
+                    <div className="space-y-1 mt-1 border-t border-white/5 pt-1.5">
+                      {order.items.map((item, idx) => {
+                        const isCancelled = item.status === 'cancelled' || item.status === 'refunded' || order.status === 'cancelled';
+                        const isRefunded = item.status === 'refunded' || item.refundStatus === 'completed';
+                        const statusLabel = isRefunded ? 'Refunded' : isCancelled ? 'Cancelled' : null;
+                        return (
+                          <div key={idx} className="flex items-center gap-1.5 flex-wrap text-[11px] text-white/70">
+                            <span className={isCancelled ? 'line-through text-red-400/50' : ''}>
+                              <span className="font-semibold text-white/90">{item.quantity}×</span> {item.name}{item.size ? ` (${item.size})` : ''}
+                            </span>
+                            {statusLabel && (
+                              <span className={`text-[8px] font-black px-1 rounded uppercase tracking-wider border ${
+                                isRefunded
+                                  ? 'text-blue-400 border-blue-400/20 bg-blue-500/10'
+                                  : 'text-red-400 border-red-400/20 bg-red-500/10'
+                              }`}>
+                                {statusLabel}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
-                <div className="text-right">
+                <div className="text-right shrink-0">
                   <p className="text-sm font-bold text-white">{formatCurrency(order.totalAmount)}</p>
                   <span className={`text-[10px] font-bold uppercase ${
                     order.status === 'delivered' ? 'text-green-600' :

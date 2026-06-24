@@ -20,6 +20,17 @@ const dropdownSports = [
   { label: 'All Services', href: '/sports/all-services', color: '#F5A623' },
 ];
 
+const parseBgColor = (colorStr) => {
+  if (!colorStr || colorStr === 'transparent' || colorStr === 'rgba(0, 0, 0, 0)') return null;
+  const match = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+  if (!match) return null;
+  const r = parseInt(match[1], 10);
+  const g = parseInt(match[2], 10);
+  const b = parseInt(match[3], 10);
+  const a = match[4] !== undefined ? parseFloat(match[4]) : 1;
+  return { r, g, b, a };
+};
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isLightSection, setIsLightSection] = useState(false);
@@ -31,26 +42,58 @@ export default function Navbar() {
     const onScroll = () => {
       setScrolled(window.scrollY > 80);
       
-      const sections = document.querySelectorAll('section, [data-theme]');
       let activeTheme = null;
-      
-      // Check which section is currently under the navbar (around y=60)
-      for (const section of sections) {
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= 60 && rect.bottom >= 60) {
-          const theme = section.getAttribute('data-theme');
-          if (theme) {
-            activeTheme = theme;
-          } else if (section.tagName.toLowerCase() === 'section') {
-            if (!activeTheme) {
-              activeTheme = 'dark';
+
+      // 1. Try smart dynamic background color detection
+      if (typeof document.elementsFromPoint === 'function') {
+        const header = document.querySelector('header');
+        const elements = document.elementsFromPoint(window.innerWidth / 2, 60);
+        
+        // Find the first element at y=60 that is not inside the header
+        const targetElement = elements.find(el => !header || (header !== el && !header.contains(el)));
+        
+        if (targetElement) {
+          let current = targetElement;
+          while (current && current !== document.documentElement) {
+            // Respect explicit data-theme override if present
+            const theme = current.getAttribute('data-theme');
+            if (theme === 'light' || theme === 'dark') {
+              activeTheme = theme;
+              break;
+            }
+            
+            // Check computed background color
+            const style = window.getComputedStyle(current);
+            const bgInfo = parseBgColor(style.backgroundColor);
+            if (bgInfo && bgInfo.a > 0.1) {
+              const luminance = (0.299 * bgInfo.r + 0.587 * bgInfo.g + 0.114 * bgInfo.b) / 255;
+              activeTheme = luminance > 0.5 ? 'light' : 'dark';
+              break;
+            }
+            
+            current = current.parentElement;
+          }
+        }
+      }
+
+      // 2. Fall back to standard section / data-theme bounds checking
+      if (activeTheme === null) {
+        const sections = document.querySelectorAll('section, [data-theme]');
+        for (const section of sections) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= 60 && rect.bottom >= 60) {
+            const theme = section.getAttribute('data-theme');
+            if (theme) {
+              activeTheme = theme;
+            } else if (section.tagName.toLowerCase() === 'section') {
+              if (!activeTheme) {
+                activeTheme = 'dark';
+              }
             }
           }
         }
       }
       
-      // The hero section at the very top might not trigger the above if we're at scrollY=0
-      // Default to dark (since hero is dark) if nothing matches
       setIsLightSection(activeTheme === 'light');
     };
 

@@ -152,7 +152,7 @@ export default function Dashboard() {
         recentLogs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         setCheckInLog(recentLogs.slice(0, 20));
       } catch (error) {
-        console.error('Error fetching recent attendance:', error);
+        // Error fetching recent attendance — handled silently
       }
     };
     fetchRecentFeed();

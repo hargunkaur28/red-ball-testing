@@ -13,7 +13,7 @@ export default class ErrorBoundary extends Component {
 
   componentDidCatch(error, errorInfo) {
     this.setState({ errorInfo });
-    console.error('ErrorBoundary caught:', error, errorInfo);
+    if (import.meta.env.DEV) console.error('ErrorBoundary caught:', error, errorInfo);
 
     // Auto-reload page if a dynamic import/chunk fetch error is detected
     const msg = error?.message || '';
@@ -27,7 +27,7 @@ export default class ErrorBoundary extends Component {
       );
 
     if (isChunkError) {
-      console.warn('Chunk/Module load error detected! Triggering automatic page reload to fetch the latest assets...');
+      if (import.meta.env.DEV) console.warn('Chunk/Module load error detected — auto-reloading...');
       window.location.reload();
     }
   }

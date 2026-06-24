@@ -31,6 +31,10 @@ const membershipPlanSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  requiresSlotBooking: {
+    type: Boolean,
+    default: true,
+  },
   price: {
     type: Number,
     required: [true, 'Price is required'],

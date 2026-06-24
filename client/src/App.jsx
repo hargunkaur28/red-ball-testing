@@ -38,6 +38,7 @@ const SACommunication = lazy(() => import('./pages/super-admin/Communication'));
 const SABlogs = lazy(() => import('./pages/super-admin/Blogs'));
 const SAOrderManagement = lazy(() => import('./pages/restaurant/RestaurantOrders'));
 const SAMenuItems = lazy(() => import('./pages/restaurant/Menu'));
+const SATables = lazy(() => import('./pages/restaurant/Tables'));
 
 // User
 const UserDashboard = lazy(() => import('./pages/user/Dashboard'));
@@ -239,6 +240,7 @@ export default function App() {
               <Route path="/sports/:slug" element={<SportDetailPage />} />
               <Route path="/buy-membership" element={<MembershipPortal />} />
               <Route path="/entry/:qrSlug" element={<EntryPortal />} />
+              <Route path="/memberships" element={<Navigate to="/user/membership" replace />} />
 
               {/* Super Admin Panel */}
               <Route path="/super-admin" element={
@@ -255,6 +257,7 @@ export default function App() {
                 <Route path="menu" element={<SAMenuItems />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="blogs" element={<SABlogs />} />
+                <Route path="tables" element={<SATables />} />
               </Route>
 
               {/* User/Student Panel */}
