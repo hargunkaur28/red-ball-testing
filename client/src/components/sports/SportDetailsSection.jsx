@@ -54,6 +54,34 @@ export default function SportDetailsSection({ sport }) {
         {description}
       </p>
 
+      {/* Training available banner */}
+      {sport?.trainingAvailable && (
+        <div
+          className="rounded-2xl p-4 flex items-start gap-3.5 relative overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, rgba(200,16,46,0.12) 0%, rgba(255,255,255,0.01) 100%)',
+            border: '1px solid rgba(200,16,46,0.25)',
+            boxShadow: '0 8px 24px rgba(200,16,46,0.05)'
+          }}
+        >
+          <div className="absolute top-0 bottom-0 left-0 w-1 bg-[#C8102E]" />
+          <span className="text-2xl mt-0.5 shrink-0 pl-1">🎓</span>
+          <div className="flex-1 pr-16 sm:pr-20">
+            <p className="text-white font-bold text-sm uppercase tracking-wide" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              Professional Coaching & Training Available
+            </p>
+            <p className="text-white/60 text-xs mt-1.5 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              Unlock your full potential with our expert-led academy sessions! You can add professional training/coaching as an add-on to your membership plans for just <strong className="text-[#F5A623] font-black text-sm">₹{sport.trainingPrice}</strong>.
+            </p>
+          </div>
+          {sport.trainingPrice > 0 && (
+            <div className="absolute top-4 right-4 bg-[#F5A623]/10 border border-[#F5A623]/35 px-2.5 py-1 rounded-full text-[11px] font-black text-[#F5A623] tracking-wide shrink-0 font-[Inter] shadow-sm">
+              +₹{sport.trainingPrice}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Rental equipment callout — hidden on mobile (shown separately above booking) */}
       {rentalText && (
         <div

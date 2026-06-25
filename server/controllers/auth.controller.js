@@ -58,8 +58,10 @@ const handleFailedAttempt = async (user, req) => {
         userAgent: getUA(req),
         timestamp: ts,
       };
-      // Notify central admin
-      sendFailedLoginAlert({ ...alertPayload, targetEmail: process.env.ADMIN_NOTIFICATION_EMAIL }).catch(() => {});
+      // Notify central admin only if the targeted account is a superadmin
+      if (user.role === 'superadmin') {
+        sendFailedLoginAlert({ ...alertPayload, targetEmail: process.env.ADMIN_NOTIFICATION_EMAIL }).catch(() => {});
+      }
       
       // Notify restaurant manager (from .env MANAGER_EMAIL) only if the targeted account is a manager
       if (user.role === 'manager' && process.env.MANAGER_EMAIL && process.env.MANAGER_EMAIL !== process.env.ADMIN_NOTIFICATION_EMAIL) {

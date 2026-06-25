@@ -34,6 +34,10 @@ const membershipSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Payment',
   },
+  withTraining: {
+    type: Boolean,
+    default: false,
+  },
   renewalHistory: [{
     date: Date,
     planId: { type: mongoose.Schema.Types.ObjectId, ref: 'MembershipPlan' },

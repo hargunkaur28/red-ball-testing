@@ -239,13 +239,16 @@ exports.checkIn = async (req, res) => {
       isUnlimited: entitlement?.isUnlimited || false,
       activeSessionCountSnapshot: activeSessions.length + 1,
       sportNameSnapshot: sport || '',
-      membershipPlanSnapshot: matchingMembership?.planId?.name || '',
+      membershipPlanSnapshot: matchingMembership?.planId?.name
+        ? `${matchingMembership.planId.name}${matchingMembership.withTraining ? ' (Training)' : ''}`
+        : '',
       relatedBookingId: matchingMembership?._id || null,
       // Session config snapshot
       currentSessionConfig: {
         allowedDurationMinutes: effectiveConfig.allowedDurationMinutes,
         overtimeThresholdMinutes: effectiveConfig.overtimeThresholdMinutes,
         lateFeePerMinute: effectiveConfig.lateFeePerMinuteOverride,
+        autoCheckoutAfterMinutes: effectiveConfig.autoCheckoutAfterMinutes,
         configVersionSnapshot: effectiveConfig.configVersion,
       },
     });

@@ -69,7 +69,57 @@ export default function UserDashboard() {
   });
 
   const passesList = useMemo(() => passesData?.passes || [], [passesData]);
-  const slotBookingsList = useMemo(() => slotBookingsData?.bookings || [], [slotBookingsData]);
+  const slotBookingsList = useMemo(() => {
+    const all = slotBookingsData?.bookings || [];
+    
+    const getBookingSortScore = (booking) => {
+      const todayStr = new Date().toISOString().slice(0, 10);
+      const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
+      
+      const slotDateStr = booking.slotId?.date
+        ? new Date(booking.slotId.date).toISOString().slice(0, 10)
+        : new Date(booking.createdAt).toISOString().slice(0, 10);
+        
+      let isPast = false;
+      if (slotDateStr < todayStr) {
+        isPast = true;
+      } else if (slotDateStr === todayStr) {
+        const [endH, endM] = (booking.endTime || '0:0').split(':').map(Number);
+        if (endH * 60 + endM < nowMin) {
+          isPast = true;
+        }
+      }
+
+      const isUpcoming = !isPast && booking.status === 'confirmed';
+      const isCheckedIn = !isPast && booking.status === 'checked-in';
+      
+      if (isUpcoming) return 1;
+      if (isCheckedIn) return 2;
+      if (!isPast) return 3;
+      return 4;
+    };
+
+    return [...all].sort((a, b) => {
+      const scoreA = getBookingSortScore(a);
+      const scoreB = getBookingSortScore(b);
+      if (scoreA !== scoreB) return scoreA - scoreB;
+      
+      const dateA = a.slotId?.date ? new Date(a.slotId.date) : new Date(a.createdAt);
+      const dateB = b.slotId?.date ? new Date(b.slotId.date) : new Date(b.createdAt);
+      
+      if (scoreA === 4) {
+        if (dateA.getTime() !== dateB.getTime()) return dateB - dateA;
+        const [ah, am] = (a.startTime || '0:0').split(':').map(Number);
+        const [bh, bm] = (b.startTime || '0:0').split(':').map(Number);
+        return (bh * 60 + bm) - (ah * 60 + am);
+      } else {
+        if (dateA.getTime() !== dateB.getTime()) return dateA - dateB;
+        const [ah, am] = (a.startTime || '0:0').split(':').map(Number);
+        const [bh, bm] = (b.startTime || '0:0').split(':').map(Number);
+        return (ah * 60 + am) - (bh * 60 + bm);
+      }
+    });
+  }, [slotBookingsData]);
   const hasReferenceBooking = useMemo(() => slotBookingsList.some(b => b.isReference), [slotBookingsList]);
 
   const upcomingMembershipBookings = useMemo(() => {
@@ -287,7 +337,12 @@ export default function UserDashboard() {
       </motion.div>
 
       {/* Active Sport Session (Standalone - only if not linked to a membership/pass) */}
-      {activeSession && sessionState && !activeMemberships.some(m => m._id === activeSession.relatedBookingId) && !passesList.some(p => p._id === activeSession.relatedBookingId) && (
+      {activeSession && sessionState && 
+        !activeMemberships.some(m => 
+          m._id === activeSession.relatedBookingId || 
+          (activeSession.relatedBookingType === 'membership-slot' && activeSession.slotBooking?.membershipId?.toString() === m._id.toString())
+        ) && 
+        !passesList.some(p => p._id === activeSession.relatedBookingId) && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -384,13 +439,20 @@ export default function UserDashboard() {
                       {sc.icon}
                       <span className="text-sm font-bold uppercase">{sc.text}</span>
                     </div>
-                    {activeSessions.some(s => s.relatedBookingId === m._id) && (
+                    {activeSessions.some(s => s.relatedBookingId === m._id || (s.relatedBookingType === 'membership-slot' && s.slotBooking?.membershipId?.toString() === m._id.toString())) && (
                       <span className={`px-2 py-0.5 shrink-0 whitespace-nowrap rounded text-[10px] font-extrabold uppercase tracking-wider ${sessionState?.tone?.split(' ')[1] || 'bg-green-500/10'} ${sessionState?.tone?.split(' ')[2] || 'text-green-200'} border ${sessionState?.tone?.split(' ')[0] || 'border-green-500/35'} animate-pulse`}>
                         {sessionState?.message === 'Overtime charges now active' ? 'Overtime Active' : 'Currently Checked In'}
                       </span>
                     )}
                   </div>
-                  <h2 className="text-2xl font-extrabold text-white">{plan?.name || 'No Plan'}</h2>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h2 className="text-2xl font-extrabold text-white">{plan?.name || 'No Plan'}</h2>
+                    {m.withTraining && (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[9px] font-bold bg-red-500/20 text-red-300 border border-red-500/30 uppercase tracking-wider font-[Inter] shrink-0">
+                        Training Included
+                      </span>
+                    )}
+                  </div>
                   <p className="text-sm opacity-75 mt-1">
                     {plan?.sportsIncluded?.join(' • ') || 'No sports assigned'}
                   </p>
@@ -420,7 +482,7 @@ export default function UserDashboard() {
                 </div>
               )}
 
-              {activeSessions.some(s => s.relatedBookingId === m._id) && (
+              {activeSessions.some(s => s.relatedBookingId === m._id || (s.relatedBookingType === 'membership-slot' && s.slotBooking?.membershipId?.toString() === m._id.toString())) && (
                 <div className={`mt-5 pt-5 border-t border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4`}>
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">

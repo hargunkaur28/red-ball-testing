@@ -62,8 +62,20 @@ export default function Navbar() {
               break;
             }
             
-            // Check computed background color
             const style = window.getComputedStyle(current);
+            
+            // Target hero sections or elements with background images (always dark banners on this site)
+            if (
+              current.id === 'hero' ||
+              current.classList.contains('hero') ||
+              current.classList.contains('hero-section') ||
+              (style.backgroundImage && style.backgroundImage !== 'none')
+            ) {
+              activeTheme = 'dark';
+              break;
+            }
+            
+            // Check computed background color
             const bgInfo = parseBgColor(style.backgroundColor);
             if (bgInfo && bgInfo.a > 0.1) {
               const luminance = (0.299 * bgInfo.r + 0.587 * bgInfo.g + 0.114 * bgInfo.b) / 255;

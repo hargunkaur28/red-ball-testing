@@ -2001,7 +2001,9 @@ exports.bookMembershipSlot = async (req, res) => {
       courtNameSnapshot: slot.courtNameSnapshot,
       userId: req.user.userId,
       membershipId: membership._id,
-      membershipPlanSnapshot: membership.planId?.name || '',
+      membershipPlanSnapshot: membership.planId?.name
+        ? `${membership.planId.name}${membership.withTraining ? ' (Training)' : ''}`
+        : '',
       isMembershipBooking: true,
       bookingType: 'membership-slot',
       playerName: user?.name || '',

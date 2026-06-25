@@ -100,6 +100,7 @@ const attendanceSchema = new mongoose.Schema({
     allowedDurationMinutes: Number,
     overtimeThresholdMinutes: Number,
     lateFeePerMinute: Number,
+    autoCheckoutAfterMinutes: Number,
     configVersionSnapshot: Number,
   },
   overtimeThresholdMinutes: {

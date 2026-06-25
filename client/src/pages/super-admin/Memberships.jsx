@@ -83,6 +83,7 @@ export default function Memberships() {
   const [searchingUsers, setSearchingUsers] = useState(false);
   const [newUser, setNewUser] = useState({ name: '', phone: '', email: '' });
   const [selectedPlanId, setSelectedPlanId] = useState('');
+  const [withTraining, setWithTraining] = useState(false);
   const [paymentMode, setPaymentMode] = useState('cash');
   const [submitting, setSubmitting] = useState(false);
 
@@ -133,6 +134,7 @@ export default function Memberships() {
       const payload = {
         planId: selectedPlanId,
         paymentMode,
+        withTraining,
       };
 
       if (userType === 'existing') {
@@ -157,6 +159,7 @@ export default function Memberships() {
       setSearchResults([]);
       setNewUser({ name: '', phone: '', email: '' });
       setSelectedPlanId('');
+      setWithTraining(false);
       setPaymentMode('cash');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to assign membership.');
@@ -533,7 +536,16 @@ export default function Memberships() {
                       <td className="px-4 py-3 text-[#444]">{student.phone || '—'}</td>
 
                       {/* Plan */}
-                      <td className="px-4 py-3 font-medium text-[#111]">{plan.name || '—'}</td>
+                      <td className="px-4 py-3 font-medium text-[#111]">
+                        <div className="flex items-center gap-1.5">
+                          <span>{plan.name || '—'}</span>
+                          {m.withTraining && (
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-50 text-red-700 border border-red-200 uppercase tracking-wide shrink-0 font-[Inter]">
+                              Training
+                            </span>
+                          )}
+                        </div>
+                      </td>
 
                       {/* Sports */}
                       <td className="px-4 py-3">
@@ -850,7 +862,14 @@ export default function Memberships() {
                                   <Users size={11} /> {mList.length} Memberships {isExpanded ? '▲' : '▼'}
                                 </span>
                               ) : primaryM ? (
-                                <span className="font-medium text-[#111]">{primaryM.planId?.name || '—'}</span>
+                                <div className="font-medium text-[#111] flex items-center gap-1.5">
+                                  <span>{primaryM.planId?.name || '—'}</span>
+                                  {primaryM.withTraining && (
+                                    <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-red-50 text-red-700 border border-red-200 uppercase tracking-wide shrink-0 font-[Inter]">
+                                      Training
+                                    </span>
+                                  )}
+                                </div>
                               ) : (
                                 <span className="text-text-muted text-xs">No membership</span>
                               )}
@@ -896,7 +915,14 @@ export default function Memberships() {
                                 <div className="space-y-2">
                                   {mList.map((m, idx) => (
                                     <div key={idx} className="flex items-center gap-4 bg-white border border-dark-border rounded-lg px-4 py-2.5 text-sm">
-                                      <span className="font-medium text-[#111] flex-1">{m.planId?.name || '—'}</span>
+                                      <div className="font-medium text-[#111] flex-1 flex items-center gap-1.5">
+                                        <span>{m.planId?.name || '—'}</span>
+                                        {m.withTraining && (
+                                          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-red-50 text-red-700 border border-red-200 uppercase tracking-wide shrink-0 font-[Inter]">
+                                            Training
+                                          </span>
+                                        )}
+                                      </div>
                                       <StatusBadge m={m} />
                                       <span className="text-xs text-text-muted whitespace-nowrap">
                                         {formatDate(m.startDate)} → {formatDate(m.endDate)}
@@ -1127,7 +1153,10 @@ export default function Memberships() {
                     <label className="block text-xs font-semibold text-[#666] mb-1">Select Plan</label>
                     <select
                       value={selectedPlanId}
-                      onChange={(e) => setSelectedPlanId(e.target.value)}
+                      onChange={(e) => {
+                        setSelectedPlanId(e.target.value);
+                        setWithTraining(false);
+                      }}
                       className="input-field bg-white"
                       required
                     >
@@ -1139,6 +1168,56 @@ export default function Memberships() {
                       ))}
                     </select>
                   </div>
+
+                  {/* Add Coaching/Training checkbox */}
+                  {(() => {
+                    const selectedPlan = plans.find((p) => p._id === selectedPlanId);
+                    if (!selectedPlan?.trainingAvailable || !(selectedPlan.trainingPrice > 0)) return null;
+                    return (
+                      <div className="flex items-center justify-between bg-red-50/50 border border-red-100 rounded-xl p-3">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            id="withTraining"
+                            checked={withTraining}
+                            onChange={(e) => setWithTraining(e.target.checked)}
+                            className="w-4 h-4 rounded text-red-600 focus:ring-red-500 border-gray-300 cursor-pointer"
+                          />
+                          <label htmlFor="withTraining" className="text-xs font-semibold text-[#111] cursor-pointer">
+                            Add Coaching/Training
+                          </label>
+                        </div>
+                        <span className="text-xs font-bold text-red-700">
+                          +₹{selectedPlan.trainingPrice}
+                        </span>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Pricing Breakdown */}
+                  {(() => {
+                    const selectedPlan = plans.find((p) => p._id === selectedPlanId);
+                    if (!selectedPlan) return null;
+                    const trainingPrice = withTraining && selectedPlan.trainingAvailable ? (selectedPlan.trainingPrice || 0) : 0;
+                    return (
+                      <div className="bg-[#FAFAFA] border border-dark-hover rounded-xl p-3 space-y-1.5 text-xs">
+                        <div className="flex justify-between text-[#666]">
+                          <span>Base Plan Price</span>
+                          <span>₹{selectedPlan.price}</span>
+                        </div>
+                        {trainingPrice > 0 && (
+                          <div className="flex justify-between text-[#666]">
+                            <span>Training Add-on</span>
+                            <span>+₹{trainingPrice}</span>
+                          </div>
+                        )}
+                        <div className="flex justify-between font-bold text-[#111] border-t border-[#EAEAEA] pt-1.5 text-sm">
+                          <span>Total Price</span>
+                          <span>₹{selectedPlan.price + trainingPrice}</span>
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   {/* Payment Method */}
                   <div>
@@ -1166,6 +1245,7 @@ export default function Memberships() {
                         setSearchResults([]);
                         setNewUser({ name: '', phone: '', email: '' });
                         setSelectedPlanId('');
+                        setWithTraining(false);
                         setPaymentMode('cash');
                       }}
                       className="btn-ghost flex-1 h-10 text-sm"
@@ -1268,7 +1348,19 @@ function DrawerContent({ membership: m, onClose }) {
         <section>
           <h3 className="text-xs font-semibold text-[#999] uppercase tracking-wider mb-3">Plan Details</h3>
           <div className="bg-[#FAFAFA] border border-dark-hover rounded-xl p-4 space-y-2.5">
-            <DetailRow label="Plan Name" value={plan.name || '—'} />
+            <DetailRow
+              label="Plan Name"
+              value={
+                <div className="flex items-center gap-1.5 justify-end">
+                  <span>{plan.name || '—'}</span>
+                  {m.withTraining && (
+                    <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-red-50 text-red-700 border border-red-200 uppercase tracking-wide shrink-0 font-[Inter]">
+                      Training
+                    </span>
+                  )}
+                </div>
+              }
+            />
             <DetailRow label="Duration" value={plan.duration ? `${plan.duration} days` : '—'} />
             <DetailRow label="Price" value={plan.price ? formatCurrency(plan.price) : '—'} />
             <DetailRow

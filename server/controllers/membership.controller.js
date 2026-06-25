@@ -115,9 +115,12 @@ exports.getStudentMembership = async (req, res) => {
 // POST /api/memberships/assign
 exports.assignMembership = async (req, res) => {
   try {
-    const { studentId, planId, paymentMode, name, phone, email } = req.body;
+    const { studentId, planId, paymentMode, name, phone, email, withTraining } = req.body;
     const plan = await MembershipPlan.findById(planId);
     if (!plan) return res.status(404).json({ message: 'Plan not found.' });
+
+    const trainingAddon = withTraining && plan.trainingAvailable ? (plan.trainingPrice || 0) : 0;
+    const totalAmount = plan.price + trainingAddon;
 
     // 1. Resolve User (create new if studentId is not provided)
     let targetUserId = studentId;
@@ -153,14 +156,16 @@ exports.assignMembership = async (req, res) => {
       studentId: targetUserId,
       type: 'membership',
       referenceId: plan._id,
-      amount: plan.price,
+      amount: totalAmount,
       gstAmount: 0,
       gstPercent: 0,
-      totalAmount: plan.price,
-      amountPaid: isPaidNow ? plan.price : 0,
-      remainingAmount: isPaidNow ? 0 : plan.price,
+      totalAmount: totalAmount,
+      amountPaid: isPaidNow ? totalAmount : 0,
+      remainingAmount: isPaidNow ? 0 : totalAmount,
       status: isPaidNow ? 'paid' : 'pending',
       paymentMode: isPaidNow ? paymentMode : undefined,
+      withTraining: !!trainingAddon,
+      trainingAmount: trainingAddon,
     });
 
     // 3. Create Membership (active if paid)
@@ -171,6 +176,7 @@ exports.assignMembership = async (req, res) => {
       endDate,
       status: isPaidNow ? 'active' : 'pending',
       paymentId: payment._id,
+      withTraining: !!trainingAddon,
     });
 
     invalidateEntitlementCache(targetUserId);
@@ -179,6 +185,9 @@ exports.assignMembership = async (req, res) => {
     if (isPaidNow) {
       const fmt = (d) => new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
       const invoiceItems = [{ description: plan.name, quantity: 1, rate: plan.price, amount: plan.price }];
+      if (trainingAddon > 0) {
+        invoiceItems.push({ description: 'Training Add-on', quantity: 1, rate: trainingAddon, amount: trainingAddon });
+      }
 
       const invoiceHtml = buildInvoiceHTML({
         invoiceNumber: payment.invoiceNumber,
@@ -187,10 +196,10 @@ exports.assignMembership = async (req, res) => {
         studentPhone: user.phone || '',
         studentEmail: user.email,
         items: invoiceItems,
-        subtotal: plan.price,
+        subtotal: totalAmount,
         gstPercent: 0,
         gstAmount: 0,
-        totalAmount: plan.price,
+        totalAmount: totalAmount,
         paymentMode: `Manual (${paymentMode})`,
         paymentId: payment._id.toString(),
         status: 'PAID',
@@ -199,10 +208,10 @@ exports.assignMembership = async (req, res) => {
       sendMembershipWelcomeEmail({
         toEmail: user.email,
         toName: user.name,
-        planName: plan.name,
+        planName: plan.name + (trainingAddon > 0 ? ' + Training' : ''),
         startDate: fmt(membership.startDate),
         endDate: fmt(membership.endDate),
-        totalAmount: plan.price,
+        totalAmount: totalAmount,
         invoiceHtml,
         invoiceNumber: payment.invoiceNumber,
       }).catch((err) => console.error('[Assign] Welcome email failed:', err.message));
@@ -212,8 +221,8 @@ exports.assignMembership = async (req, res) => {
         payerName: user.name,
         payerEmail: user.email,
         payerPhone: user.phone,
-        paymentType: `Membership — ${plan.name} (Manual)`,
-        amount: plan.price,
+        paymentType: `Membership — ${plan.name}${trainingAddon > 0 ? ' + Training' : ''} (Manual)`,
+        amount: totalAmount,
         paymentMode: paymentMode,
         invoiceNumber: payment.invoiceNumber,
         timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
@@ -471,10 +480,18 @@ exports.checkInMembership = async (req, res) => {
       checkInMethod: 'membership-id',
       sport: sportToUse || membership.planId?.sportsIncluded?.join(', '),
       entitlementType: entitlement.entitlementType,
-      currentSessionConfig: config,
+      currentSessionConfig: {
+        allowedDurationMinutes: config.allowedDurationMinutes,
+        overtimeThresholdMinutes: config.overtimeThresholdMinutes,
+        lateFeePerMinute: config.lateFeePerMinuteOverride,
+        autoCheckoutAfterMinutes: config.autoCheckoutAfterMinutes,
+        configVersionSnapshot: config.configVersion || 1,
+      },
       configVersionSnapshot: config.configVersion || 1,
       sportNameSnapshot: sportToUse || membership.planId?.sportsIncluded?.join(', '),
-      membershipPlanSnapshot: membership.planId?.name,
+      membershipPlanSnapshot: membership.planId?.name
+        ? `${membership.planId.name}${membership.withTraining ? ' (Training)' : ''}`
+        : undefined,
       relatedBookingId: membership._id,
       relatedBookingType: 'membership',
     });
@@ -741,6 +758,7 @@ exports.publicVerifyPayment = async (req, res) => {
         existingMembership.endDate = endDate;
         existingMembership.status = 'active';
         existingMembership.paymentId = pendingPayment._id;
+        existingMembership.withTraining = pendingPayment.withTraining || false;
         existingMembership.renewalHistory.push({
           date: new Date(),
           planId: plan._id,
@@ -757,6 +775,7 @@ exports.publicVerifyPayment = async (req, res) => {
           endDate,
           status: 'active',
           paymentId: pendingPayment._id,
+          withTraining: pendingPayment.withTraining || false,
         }], opts);
       }
 

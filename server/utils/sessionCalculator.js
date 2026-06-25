@@ -269,7 +269,7 @@ const enrichSessionWithSlotAndLateMinutes = async (session) => {
   // 1. Try resolving booking
   if (['slot-booking', 'membership-slot'].includes(sessionObj.relatedBookingType) && sessionObj.relatedBookingId) {
     try {
-      const booking = await SlotBooking.findById(sessionObj.relatedBookingId).select('startTime endTime').lean();
+      const booking = await SlotBooking.findById(sessionObj.relatedBookingId).select('startTime endTime membershipId').lean();
       if (booking) {
         startTime = booking.startTime;
         endTime = booking.endTime;

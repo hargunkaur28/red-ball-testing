@@ -2036,7 +2036,7 @@ function SessionConfigModal({ sport, onClose }) {
   const isEditing = !!sportConfig._id;
 
   const updateMutation = useMutation({
-    mutationFn: (payload) => api.put('/session-config', payload),
+    mutationFn: (payload) => api.put(`/session-config/sport/${sport.slug}`, payload),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['session-configs'] });
       toast.success('Session configuration saved!');

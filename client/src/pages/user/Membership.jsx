@@ -333,7 +333,14 @@ export default function Membership() {
                         Membership Status: {currentStatus?.replace('_', ' ') || 'unknown'}
                       </span>
                     </div>
-                    <h2 className="text-3xl font-black tracking-tight text-white">{plan?.name || 'No Plan'}</h2>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <h2 className="text-3xl font-black tracking-tight text-white">{plan?.name || 'No Plan'}</h2>
+                      {membership.withTraining && (
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/30 font-[Inter] h-fit shrink-0">
+                          Training Included
+                        </span>
+                      )}
+                    </div>
                     <p className="mt-1 text-sm capitalize text-white/52">
                       {plan?.durationValue ? `${plan.durationValue} ${plan.durationUnit}` : plan?.duration || `${plan?.durationDays || 30} days`}
                     </p>
@@ -392,7 +399,19 @@ export default function Membership() {
                 <Surface className="p-6">
                   <h3 className="mb-5 text-sm font-black uppercase tracking-[0.18em] text-white/42">Plan Details</h3>
                   <div className="space-y-4">
-                    <DetailRow label="Plan Name" value={plan?.name} />
+                    <DetailRow
+                      label="Plan Name"
+                      value={
+                        <div className="flex items-center gap-2 justify-end">
+                          <span>{plan?.name}</span>
+                          {membership.withTraining && (
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/30 font-[Inter]">
+                              Training
+                            </span>
+                          )}
+                        </div>
+                      }
+                    />
                     <DetailRow label="Duration" value={plan?.durationValue ? `${plan.durationValue} ${plan.durationUnit}` : `${plan?.durationDays} days`} />
                     <DetailRow label="Price" value={formatCurrency(plan?.price || 0)} />
                     <DetailRow label="Start Date" value={membership.startDate ? new Date(membership.startDate).toLocaleDateString('en-IN') : emptyDash} />

@@ -1013,8 +1013,16 @@ exports.entryCheckIn = async (req, res) => {
       let hourlyRateAtCheckIn = sport.hourlyPrice || 0;
       let relatedBookingId = matchingMembership?._id || null;
       let relatedBookingType = 'membership';
-      let membershipPlanSnapshot = matchingMembership?.planId?.name || null;
-      let currentSessionConfig = config;
+      let membershipPlanSnapshot = matchingMembership?.planId?.name
+        ? `${matchingMembership.planId.name}${matchingMembership.withTraining ? ' (Training)' : ''}`
+        : null;
+      let currentSessionConfig = {
+        allowedDurationMinutes: config.allowedDurationMinutes,
+        overtimeThresholdMinutes: config.overtimeThresholdMinutes,
+        lateFeePerMinute: config.lateFeePerMinuteOverride,
+        autoCheckoutAfterMinutes: config.autoCheckoutAfterMinutes,
+        configVersionSnapshot: config.configVersion || 1,
+      };
       let entitlementType = entitlement.entitlementType;
 
       // Membership-slot path: user booked a slot via membership — always takes priority over free-roam membership
@@ -1023,12 +1031,13 @@ exports.entryCheckIn = async (req, res) => {
         hourlyRateAtCheckIn = 0;
         relatedBookingId = validSlotBooking._id;
         relatedBookingType = 'membership-slot';
-        membershipPlanSnapshot = `${validSlotBooking.sportNameSnapshot || sport.name} Slot ${validSlotBooking.startTime}–${validSlotBooking.endTime} (Membership)`;
+        membershipPlanSnapshot = `${validSlotBooking.sportNameSnapshot || sport.name} Slot ${validSlotBooking.startTime}–${validSlotBooking.endTime} (Membership)${matchingMembership?.withTraining ? ' (Training)' : ''}`;
         entitlementType = 'membership-slot';
         currentSessionConfig = {
           allowedDurationMinutes: config.allowedDurationMinutes || validSlotBooking.duration,
           overtimeThresholdMinutes: 0,
           lateFeePerMinute: resolvedLateFeePerMinute,
+          autoCheckoutAfterMinutes: config.autoCheckoutAfterMinutes,
           configVersionSnapshot: 1,
         };
       // Paid slot-booking path
@@ -1043,6 +1052,7 @@ exports.entryCheckIn = async (req, res) => {
           allowedDurationMinutes: config.allowedDurationMinutes || validSlotBooking.duration,
           overtimeThresholdMinutes: 0,
           lateFeePerMinute: resolvedLateFeePerMinute,
+          autoCheckoutAfterMinutes: config.autoCheckoutAfterMinutes,
           configVersionSnapshot: 1,
         };
       } else if (validation.entitlementSource === 'one-time-play') {
@@ -1056,6 +1066,7 @@ exports.entryCheckIn = async (req, res) => {
           allowedDurationMinutes: pass.allowedDurationMinutes || 60,
           overtimeThresholdMinutes: 0,
           lateFeePerMinute: pass.lateFeePerMinuteSnapshot || 0,
+          autoCheckoutAfterMinutes: config.autoCheckoutAfterMinutes,
           configVersionSnapshot: 1,
         };
       }
@@ -1385,6 +1396,7 @@ exports.entryPayVerify = async (req, res) => {
         allowedDurationMinutes: config.allowedDurationMinutes || 60,
         overtimeThresholdMinutes: 0,
         lateFeePerMinute,
+        autoCheckoutAfterMinutes: config.autoCheckoutAfterMinutes,
         configVersionSnapshot: 1
       };
 

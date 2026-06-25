@@ -92,6 +92,7 @@ exports.getMemberships = async (req, res) => {
           ];
           if (m.planId?.name) {
             orConditions.push({ membershipPlanSnapshot: m.planId.name });
+            orConditions.push({ membershipPlanSnapshot: `${m.planId.name} (Training)` });
           }
           // Fallback for legacy attendance records with null snapshots
           if (m.planId?.sportsIncluded && m.planId.sportsIncluded.length > 0) {
@@ -265,7 +266,7 @@ exports.getOvertimeSessions = async (req, res) => {
           }).populate('planId', 'name').lean();
           
           if (activeMembership && activeMembership.planId) {
-            enriched.membershipPlanSnapshot = activeMembership.planId.name;
+            enriched.membershipPlanSnapshot = `${activeMembership.planId.name}${activeMembership.withTraining ? ' (Training)' : ''}`;
           }
         }
       }
