@@ -31,9 +31,18 @@ export default function MembershipPlanCard({ plan, index = 0 }) {
   });
 
   const activeMemberships = membershipData?.memberships || [];
-  const matchingMembership = activeMemberships.find(
-    m => (m.planId?._id === plan._id || m.planId === plan._id) && ['active', 'pending', 'frozen'].includes(m.status)
-  );
+  const currentPlanSports = (plan.sportsIncluded || []).map(s => (s || '').trim().toLowerCase());
+
+  const matchingMembership = activeMemberships.find(m => {
+    if (!['active', 'pending', 'frozen'].includes(m.status)) return false;
+    // Direct plan match
+    if (m.planId?._id === plan._id || m.planId === plan._id) return true;
+    // All-services membership covers every sport
+    if (m.planId?.isAllServices) return true;
+    // Membership whose sportsIncluded overlaps with this plan's sports
+    const mSports = (m.planId?.sportsIncluded || []).map(s => (s || '').trim().toLowerCase());
+    return currentPlanSports.length > 0 && mSports.some(s => currentPlanSports.includes(s));
+  });
   const isInUse = !!matchingMembership;
 
   const daysLeft = matchingMembership?.endDate
