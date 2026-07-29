@@ -402,6 +402,17 @@ const css = `
   font-family: 'Inter', sans-serif;
 }
 .field-input:focus { border-color: rgba(200,16,46,0.62); }
+.field-input:-webkit-autofill,
+.field-input:-webkit-autofill:hover,
+.field-input:-webkit-autofill:focus,
+.field-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #151919 inset !important;
+  -webkit-text-fill-color: #fff !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  caret-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
 
 .entry-google {
   min-height: 48px;

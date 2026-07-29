@@ -299,9 +299,16 @@ const css = `
   transition: border-color 0.2s, background 0.2s;
   -webkit-appearance: none;
 }
-.field-input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px rgba(255,255,255,0.045) inset !important;
+.field-input:-webkit-autofill,
+.field-input:-webkit-autofill:hover,
+.field-input:-webkit-autofill:focus,
+.field-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #1a1a1a inset !important;
   -webkit-text-fill-color: #fff !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  caret-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s !important;
 }
 .field-input:focus {
   border-color: rgba(200,16,46,0.55);
