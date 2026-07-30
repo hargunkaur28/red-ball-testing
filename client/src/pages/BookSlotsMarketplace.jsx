@@ -73,7 +73,7 @@ export default function BookSlotsMarketplace({ embedded = false }) {
               </Link>
               <div
                 className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.25em] mb-4 ml-3"
-                style={{ background: 'rgba(200,16,46,0.13)', color: '#F87171', border: '1px solid rgba(200,16,46,0.28)' }}
+                style={{ background: 'rgba(197, 219, 59,0.13)', color: '#D6E86B', border: '1px solid rgba(197, 219, 59,0.28)' }}
               >
                 <GraduationCap size={11} /> For Kids &amp; Beginners
               </div>
@@ -189,16 +189,16 @@ export default function BookSlotsMarketplace({ embedded = false }) {
             transition={{ duration: 0.5 }}
             className="mt-8 rounded-3xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden"
             style={{
-              background: 'linear-gradient(135deg, rgba(200,16,46,0.12) 0%, rgba(200,16,46,0.04) 100%)',
-              border: '1px solid rgba(200,16,46,0.2)',
+              background: 'linear-gradient(135deg, rgba(197, 219, 59,0.12) 0%, rgba(197, 219, 59,0.04) 100%)',
+              border: '1px solid rgba(197, 219, 59,0.2)',
             }}
           >
             <div
               className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-20"
-              style={{ background: '#C8102E' }}
+              style={{ background: '#C5DB3B' }}
             />
             <div className="relative z-10">
-              <p className="text-[#C8102E] font-black text-xl leading-tight mb-1">
+              <p className="text-[#C5DB3B] font-black text-xl leading-tight mb-1">
                 Want to Train Your Kids Too?
               </p>
               <p className="text-white/50 text-sm">
@@ -207,8 +207,8 @@ export default function BookSlotsMarketplace({ embedded = false }) {
             </div>
             <Link
               to="/book-slots?program=kids-academy"
-              className="relative z-10 px-7 py-3 rounded-xl bg-[#C8102E] text-white font-black text-sm uppercase tracking-wider hover:bg-[#a50d26] transition-colors shrink-0 whitespace-nowrap shadow-lg"
-              style={{ boxShadow: '0 6px 20px rgba(200,16,46,0.25)' }}
+              className="relative z-10 px-7 py-3 rounded-xl bg-[#C5DB3B] text-white font-black text-sm uppercase tracking-wider hover:bg-[#96AC2E] transition-colors shrink-0 whitespace-nowrap shadow-lg"
+              style={{ boxShadow: '0 6px 20px rgba(197, 219, 59,0.25)' }}
             >
               Explore Kids Academy
             </Link>

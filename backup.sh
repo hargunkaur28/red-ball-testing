@@ -1,5 +1,5 @@
 #!/bin/bash
-# MongoDB Atlas Backup Script for Red Ball Sports Arena (Mac/Linux).
+# MongoDB Atlas Backup Script for Alchemy 360 Sports Arena (Mac/Linux).
 # Dumps all collections from the Atlas cluster using mongodump and compresses the output.
 
 DB_NAME=${1:-"red-ball"}

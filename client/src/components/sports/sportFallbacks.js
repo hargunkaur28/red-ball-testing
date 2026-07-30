@@ -22,7 +22,7 @@ const FALLBACKS = {
     tagline: 'Where Box Cricket Champions Are Made.',
     rentalEquipment: '🏏 Bat & Ball available for renting',
     description:
-      "Premium box cricket arenas with artificial turf, nets, high floodlights, and coaching zones. Red Ball is Rohtak's premier box cricket training and recreational play destination.",
+      "Premium box cricket arenas with artificial turf, nets, high floodlights, and coaching zones. Alchemy 360 is Rohtak's premier box cricket training and recreational play destination.",
     features: ['Turf Pitch', 'Practice Nets', 'Coaching', 'Floodlights', 'Box Cricket Cage'],
     chips: ['Box Cricket Arena', 'Floodlit'],
     thumbnail: 'https://mediarelations.gwu.edu/sites/g/files/zaxdzs5306/files/2024-06/adobestock_510555809.jpeg',
@@ -31,14 +31,14 @@ const FALLBACKS = {
       'https://mediarelations.gwu.edu/sites/g/files/zaxdzs5306/files/2024-06/adobestock_510555809.jpeg',
       'https://images.unsplash.com/photo-1540747913346-19212a4b423a?q=80&w=800&auto=format&fit=crop',
     ],
-    color: '#C8102E',
+    color: '#C5DB3B',
   },
   'box-cricket': {
     icon: '🏏',
     tagline: 'Where Box Cricket Champions Are Made.',
     rentalEquipment: '🏏 Bat & Ball available for renting',
     description:
-      "Premium box cricket arenas with artificial turf, nets, high floodlights, and coaching zones. Red Ball is Rohtak's premier box cricket training and recreational play destination.",
+      "Premium box cricket arenas with artificial turf, nets, high floodlights, and coaching zones. Alchemy 360 is Rohtak's premier box cricket training and recreational play destination.",
     features: ['Turf Pitch', 'Practice Nets', 'Coaching', 'Floodlights', 'Box Cricket Cage'],
     chips: ['Box Cricket Arena', 'Floodlit'],
     thumbnail: 'https://mediarelations.gwu.edu/sites/g/files/zaxdzs5306/files/2024-06/adobestock_510555809.jpeg',
@@ -47,7 +47,7 @@ const FALLBACKS = {
       'https://mediarelations.gwu.edu/sites/g/files/zaxdzs5306/files/2024-06/adobestock_510555809.jpeg',
       'https://images.unsplash.com/photo-1540747913346-19212a4b423a?q=80&w=800&auto=format&fit=crop',
     ],
-    color: '#C8102E',
+    color: '#C5DB3B',
   },
   swimming: {
     icon: '🏊',
@@ -101,7 +101,7 @@ const FALLBACKS = {
     tagline: 'The Ultimate Access Pass.',
     rentalEquipment: '',
     description:
-      'Gain VIP entry to all sports facilities at Red Ball Academy. Unlimited bookings for Box Cricket, Badminton, Pickleball, Swimming Pool, and Gym. Your absolute all-access pass to fitness and premium sports.',
+      'Gain VIP entry to all sports facilities at Alchemy 360 Academy. Unlimited bookings for Box Cricket, Badminton, Pickleball, Swimming Pool, and Gym. Your absolute all-access pass to fitness and premium sports.',
     features: ['Access All Sports', 'VIP Priority Booking', 'Custom Performance Logs', 'Personalized Support', 'Unlock All Events'],
     chips: ['All Access', 'VIP Perks', 'Best Value'],
     thumbnail: 'https://mediarelations.gwu.edu/sites/g/files/zaxdzs5306/files/2024-06/adobestock_510555809.jpeg',
@@ -120,13 +120,13 @@ const DEFAULT_FALLBACK = {
   icon: '🏆',
   tagline: 'World-Class Facilities Await.',
   description:
-    'A premium sports facility at Red Ball Academy — professionally maintained, well-equipped, and open to members and walk-ins alike. Book by the hour or grab a membership for unlimited access.',
+    'A premium sports facility at Alchemy 360 Academy — professionally maintained, well-equipped, and open to members and walk-ins alike. Book by the hour or grab a membership for unlimited access.',
   features: ['Professional Facility', 'Trained Staff', 'Locker Rooms', 'Coaching Available'],
   chips: [],
   thumbnail: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=600&auto=format&fit=crop',
   heroImage: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=1400&auto=format&fit=crop',
   images: ['https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=800&auto=format&fit=crop'],
-  color: '#C8102E',
+  color: '#C5DB3B',
 };
 
 export function getSportFallback(slugOrName = '') {

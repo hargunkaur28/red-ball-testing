@@ -139,7 +139,7 @@ export default function Menu() {
         subtitle={`Total Live Dishes: ${items.length} • Featured Recovery Items: ${items.filter(i => i.featured).length}`}
         action={
           <button 
-            className="px-6 py-3 bg-[#C8102E] hover:bg-[#A00D24] text-white font-extrabold text-xs rounded-2xl flex items-center gap-2 shadow-lg transition-all hover:scale-105" 
+            className="px-6 py-3 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white font-extrabold text-xs rounded-2xl flex items-center gap-2 shadow-lg transition-all hover:scale-105" 
             onClick={() => { setEditId(null); setForm({ ...emptyForm }); setDrawerOpen(true); }}
           >
             <Plus size={18} />
@@ -156,7 +156,7 @@ export default function Menu() {
           placeholder="Search dishes by name or category..." 
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C8102E] text-sm shadow-sm"
+          className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C5DB3B] text-sm shadow-sm"
         />
       </div>
 
@@ -281,7 +281,7 @@ export default function Menu() {
 
               {/* Nutrition stats pill */}
               <div className="flex items-center gap-3 bg-gray-50 p-2 rounded-xl text-[11px] font-extrabold text-gray-700 mb-4 border border-gray-100">
-                <span className="flex items-center gap-1 text-[#C8102E]">
+                <span className="flex items-center gap-1 text-[#C5DB3B]">
                   <Flame size={14} /> {item.calories} kcal
                 </span>
                 <span>•</span>
@@ -380,7 +380,7 @@ export default function Menu() {
                   <div>
                     <label className="block text-xs font-extrabold uppercase text-gray-600 mb-1">Dish Name *</label>
                     <input 
-                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm font-bold text-black focus:outline-none focus:border-[#C8102E]" 
+                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm font-bold text-black focus:outline-none focus:border-[#C5DB3B]" 
                       value={form.name} 
                       onChange={e => setForm({...form, name: e.target.value})} 
                       placeholder="e.g. Grass-Fed Whey Isolate Shake"
@@ -392,7 +392,7 @@ export default function Menu() {
                     <label className="block text-xs font-extrabold uppercase text-gray-600 mb-1">Premium Description</label>
                     <textarea 
                       rows="2" 
-                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm text-black focus:outline-none focus:border-[#C8102E] resize-none" 
+                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm text-black focus:outline-none focus:border-[#C5DB3B] resize-none" 
                       value={form.description} 
                       onChange={e => setForm({...form, description: e.target.value})} 
                       placeholder="Rich, premium post-workout recovery ingredients..."
@@ -404,7 +404,7 @@ export default function Menu() {
                     <div className="space-y-2">
                       <input 
                         type="url"
-                        className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-xs font-mono text-black focus:outline-none focus:border-[#C8102E]" 
+                        className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-xs font-mono text-black focus:outline-none focus:border-[#C5DB3B]" 
                         value={form.image} 
                         onChange={e => setForm({...form, image: e.target.value})} 
                         placeholder="https://images.unsplash.com/..."
@@ -431,7 +431,7 @@ export default function Menu() {
                     <div>
                       <label className="block text-xs font-extrabold uppercase text-gray-600 mb-1">Category</label>
                       <select 
-                        className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm font-bold text-black focus:outline-none focus:border-[#C8102E]"
+                        className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm font-bold text-black focus:outline-none focus:border-[#C5DB3B]"
                         value={form.category} 
                         onChange={e => setForm({...form, category: e.target.value})}
                       >
@@ -442,7 +442,7 @@ export default function Menu() {
                     <div>
                       <label className="block text-xs font-extrabold uppercase text-gray-600 mb-1">Diet Type</label>
                       <select
-                        className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm font-bold text-black focus:outline-none focus:border-[#C8102E]"
+                        className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm font-bold text-black focus:outline-none focus:border-[#C5DB3B]"
                         value={form.isVeg ? 'true' : 'false'}
                         onChange={e => setForm({...form, isVeg: e.target.value === 'true'})}
                       >
@@ -459,7 +459,7 @@ export default function Menu() {
                       <input 
                         type="number" 
                         min="0"
-                        className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-xs font-extrabold text-black focus:outline-none focus:border-[#C8102E]" 
+                        className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-xs font-extrabold text-black focus:outline-none focus:border-[#C5DB3B]" 
                         value={form.calories} 
                         onChange={e => setForm({...form, calories: Number(e.target.value)})} 
                       />
@@ -469,7 +469,7 @@ export default function Menu() {
                       <input 
                         type="number" 
                         min="0"
-                        className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-xs font-extrabold text-black focus:outline-none focus:border-[#C8102E]" 
+                        className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-xs font-extrabold text-black focus:outline-none focus:border-[#C5DB3B]" 
                         value={form.protein} 
                         onChange={e => setForm({...form, protein: Number(e.target.value)})} 
                       />
@@ -479,7 +479,7 @@ export default function Menu() {
                       <input 
                         type="number" 
                         min="1"
-                        className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-xs font-extrabold text-black focus:outline-none focus:border-[#C8102E]" 
+                        className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-xs font-extrabold text-black focus:outline-none focus:border-[#C5DB3B]" 
                         value={form.preparationTime} 
                         onChange={e => setForm({...form, preparationTime: Number(e.target.value)})} 
                       />
@@ -526,7 +526,7 @@ export default function Menu() {
                   <div className="border-t border-gray-100 pt-4">
                     <div className="flex items-center justify-between mb-2">
                       <label className="text-xs font-extrabold uppercase tracking-wider text-gray-600">Portion Sizes & Price *</label>
-                      <button type="button" onClick={addSize} className="text-xs text-[#C8102E] font-black flex items-center gap-1">
+                      <button type="button" onClick={addSize} className="text-xs text-[#C5DB3B] font-black flex items-center gap-1">
                         <Plus size={14} /> Add Size Option
                       </button>
                     </div>
@@ -534,7 +534,7 @@ export default function Menu() {
                       {form.sizes.map((s, i) => (
                         <div key={i} className="flex gap-2 items-center">
                           <input 
-                            className="w-1/2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs font-bold text-black focus:outline-none focus:border-[#C8102E]" 
+                            className="w-1/2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs font-bold text-black focus:outline-none focus:border-[#C5DB3B]" 
                             placeholder="Size Label (Regular, M, L)" 
                             value={s.label} 
                             onChange={e => updateSize(i, 'label', e.target.value)} 
@@ -542,7 +542,7 @@ export default function Menu() {
                           />
                           <input 
                             type="number" 
-                            className="w-1/2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs font-mono font-bold text-black focus:outline-none focus:border-[#C8102E]" 
+                            className="w-1/2 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs font-mono font-bold text-black focus:outline-none focus:border-[#C5DB3B]" 
                             placeholder="Price (₹)" 
                             min="0" 
                             value={s.price} 

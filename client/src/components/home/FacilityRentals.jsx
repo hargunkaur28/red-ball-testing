@@ -61,11 +61,11 @@ export default function FacilityRentals() {
             to={isAuthenticated ? '/user/book-slots' : '/book-slots'}
             className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider text-white transition-all duration-200 hover:gap-3 shrink-0 group"
             style={{
-              background: '#C8102E',
-              boxShadow: '0 6px 20px rgba(200,16,46,0.25)',
+              background: '#C5DB3B',
+              boxShadow: '0 6px 20px rgba(197, 219, 59,0.25)',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#a00d24'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = '#C8102E'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = '#96AC2E'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = '#C5DB3B'; }}
           >
             View All Sports
             <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-1" />
@@ -105,8 +105,8 @@ export default function FacilityRentals() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl px-6 py-5"
           style={{
-            background: 'rgba(200,16,46,0.06)',
-            border: '1px solid rgba(200,16,46,0.15)',
+            background: 'rgba(197, 219, 59,0.06)',
+            border: '1px solid rgba(197, 219, 59,0.15)',
           }}
         >
           <div>

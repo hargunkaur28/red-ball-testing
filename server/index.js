@@ -64,7 +64,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const allowedOrigins = [
   ...(!isProd ? ['http://localhost:5173'] : []),
-  'https://red-ball-delta.vercel.app',
+  'https://alchemy 360-delta.vercel.app',
   // Production domains
   'https://redballsportsarena.in',
   'https://www.redballsportsarena.in',

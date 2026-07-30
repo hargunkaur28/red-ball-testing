@@ -65,11 +65,11 @@ export default function Testimonials() {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div>
-              <p className="uppercase tracking-[5px] text-[13px] text-[#C8102E] mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <p className="uppercase tracking-[5px] text-[13px] text-[#C5DB3B] mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 TESTIMONIALS
               </p>
               <h2 className="section-heading text-[#0D0D0D]">
-                What Our Red Ball Families Are Saying
+                What Our Alchemy 360 Families Are Saying
               </h2>
             </div>
             <Link
@@ -102,7 +102,7 @@ export default function Testimonials() {
             {visibleTestimonials.map((t, i) => (
               <SwiperSlide key={i} className="!h-auto">
                 <div
-                  className="bg-white rounded-3xl p-8 border border-black/15 shadow-[0_8px_30px_rgba(0,0,0,0.08)] h-full min-h-[240px] flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-[#C8102E]/40 cursor-pointer group hover:shadow-xl"
+                  className="bg-white rounded-3xl p-8 border border-black/15 shadow-[0_8px_30px_rgba(0,0,0,0.08)] h-full min-h-[240px] flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-[#C5DB3B]/40 cursor-pointer group hover:shadow-xl"
                 >
                   {/* Sport Label */}
                   <div>

@@ -20,8 +20,8 @@ export default function TermsAndConditions() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Terms and Conditions | Red Ball Sports Arena Rohtak"
-        description="Terms and Conditions for Red Ball Sports Arena and Red Ball Academy, Rohtak, Haryana. Booking rules, membership terms, payments, cancellations & more."
+        title="Terms and Conditions | Alchemy 360 Sports Arena Rohtak"
+        description="Terms and Conditions for Alchemy 360 Sports Arena and Alchemy 360 Academy, Rohtak, Haryana. Booking rules, membership terms, payments, cancellations & more."
         canonical="/terms-and-conditions"
         schema={schema}
       />
@@ -32,7 +32,7 @@ export default function TermsAndConditions() {
           <Link to="/" className="text-white/50 text-xs hover:text-white mb-4 inline-block" style={{ fontFamily: "'DM Sans', sans-serif" }}>← Back to Home</Link>
           <h1 className="text-4xl md:text-5xl font-black" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>Terms and Conditions</h1>
           <p className="text-white/50 text-sm mt-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena / Red Ball Academy · Last updated: June 2026
+            Alchemy 360 Sports Arena / Alchemy 360 Academy · Last updated: June 2026
           </p>
         </div>
       </div>
@@ -42,7 +42,7 @@ export default function TermsAndConditions() {
 
         <Section title="About These Terms">
           <p>
-            These Terms and Conditions govern your use of the Red Ball Sports Arena website (<strong>redballsportsarena.in</strong>) and your access to all facilities and services operated by Red Ball Sports Arena / Red Ball Academy at Sector 22-D, Jhajjar Road, Rohtak, Haryana 124001.
+            These Terms and Conditions govern your use of the Alchemy 360 Sports Arena website (<strong>redballsportsarena.in</strong>) and your access to all facilities and services operated by Alchemy 360 Sports Arena / Alchemy 360 Academy at Sector 22-D, Jhajjar Road, Rohtak, Haryana 124001.
           </p>
           <p>
             By creating an account, booking a slot, purchasing a membership, or visiting the facility, you agree to these terms. Please read them carefully.
@@ -87,7 +87,7 @@ export default function TermsAndConditions() {
             <li>Appropriate sportswear and footwear is required for all sports activities. The facility is not responsible for injuries resulting from improper clothing or footwear.</li>
             <li>Smoking, alcohol, and non-prescribed substances are strictly prohibited on the premises.</li>
             <li>Children must be accompanied and supervised by a parent or guardian unless enrolled in a supervised kids program.</li>
-            <li>Users are responsible for their personal belongings. Red Ball Sports Arena is not liable for lost, stolen, or damaged property.</li>
+            <li>Users are responsible for their personal belongings. Alchemy 360 Sports Arena is not liable for lost, stolen, or damaged property.</li>
             <li>Any damage to facility equipment or property caused by a user must be compensated by that user.</li>
           </ul>
         </Section>
@@ -114,7 +114,7 @@ export default function TermsAndConditions() {
           <ul className="list-disc ml-5 space-y-2">
             <li>Enrollment in the kids sports academy requires accurate age and contact information for the child and parent/guardian.</li>
             <li>An admission fee may apply in addition to the membership fee. This is non-refundable once paid.</li>
-            <li>Red Ball Academy reserves the right to place a child in an appropriate age/skill batch, which may differ from the parent's preference.</li>
+            <li>Alchemy 360 Academy reserves the right to place a child in an appropriate age/skill batch, which may differ from the parent's preference.</li>
             <li>Photography or video of children during academy sessions requires express written permission.</li>
           </ul>
         </Section>
@@ -123,7 +123,7 @@ export default function TermsAndConditions() {
           <ul className="list-disc ml-5 space-y-2">
             <li>Court and facility availability is subject to maintenance schedules, seasonal adjustments, and operational hours.</li>
             <li>Operating hours may change during public holidays or special events. We will communicate changes in advance where possible.</li>
-            <li>Red Ball Sports Arena reserves the right to close or restrict any area for maintenance, safety, or legal reasons.</li>
+            <li>Alchemy 360 Sports Arena reserves the right to close or restrict any area for maintenance, safety, or legal reasons.</li>
           </ul>
         </Section>
 
@@ -131,13 +131,13 @@ export default function TermsAndConditions() {
           <ul className="list-disc ml-5 space-y-2">
             <li>Users participate in all sports and physical activities at their own risk.</li>
             <li>Users with medical conditions are advised to consult a physician before engaging in physical activity at the facility.</li>
-            <li>Red Ball Sports Arena is not liable for injuries resulting from normal sporting activity, provided facility equipment is maintained in safe condition.</li>
+            <li>Alchemy 360 Sports Arena is not liable for injuries resulting from normal sporting activity, provided facility equipment is maintained in safe condition.</li>
           </ul>
         </Section>
 
         <Section title="Limitation of Liability">
           <p>
-            To the maximum extent permitted by applicable law, Red Ball Sports Arena's liability for any claim arising out of your use of the facility or website is limited to the amount paid by you for the specific booking or service in question. We are not liable for indirect, consequential, or incidental damages.
+            To the maximum extent permitted by applicable law, Alchemy 360 Sports Arena's liability for any claim arising out of your use of the facility or website is limited to the amount paid by you for the specific booking or service in question. We are not liable for indirect, consequential, or incidental damages.
           </p>
         </Section>
 
@@ -158,13 +158,13 @@ export default function TermsAndConditions() {
             For queries about these Terms and Conditions:<br />
             <strong>{academy.academyName}</strong><br />
             {academy.address}<br />
-            Email: <a href={`mailto:${academy.email}`} className="text-[#C8102E] hover:underline">{academy.email}</a><br />
-            Phone: <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="text-[#C8102E] hover:underline">{academy.phone}</a>
+            Email: <a href={`mailto:${academy.email}`} className="text-[#C5DB3B] hover:underline">{academy.email}</a><br />
+            Phone: <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="text-[#C5DB3B] hover:underline">{academy.phone}</a>
           </p>
         </Section>
 
         <div className="pt-6 border-t border-black/10">
-          <Link to="/privacy-policy" className="text-[#C8102E] text-sm font-semibold hover:underline" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <Link to="/privacy-policy" className="text-[#C5DB3B] text-sm font-semibold hover:underline" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             View Privacy Policy →
           </Link>
         </div>

@@ -127,10 +127,10 @@ function RichEditor({ value, onChange }) {
         [contenteditable]:empty:before { content: attr(data-placeholder); color: #aaa; pointer-events: none; }
         [contenteditable] h2 { font-size: 1.25rem; font-weight: 700; margin: 1rem 0 .5rem; }
         [contenteditable] h3 { font-size: 1.05rem; font-weight: 700; margin: .75rem 0 .4rem; }
-        [contenteditable] blockquote { border-left: 3px solid #C8102E; padding-left: .75rem; color: #555; margin: .75rem 0; }
+        [contenteditable] blockquote { border-left: 3px solid #C5DB3B; padding-left: .75rem; color: #555; margin: .75rem 0; }
         [contenteditable] ul { list-style: disc; padding-left: 1.5rem; margin: .5rem 0; }
         [contenteditable] ol { list-style: decimal; padding-left: 1.5rem; margin: .5rem 0; }
-        [contenteditable] a { color: #C8102E; text-decoration: underline; }
+        [contenteditable] a { color: #C5DB3B; text-decoration: underline; }
         [contenteditable] img { max-width: 100%; border-radius: .5rem; margin: .5rem 0; }
       `}</style>
     </div>

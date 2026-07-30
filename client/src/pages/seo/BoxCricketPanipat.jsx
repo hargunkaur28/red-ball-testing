@@ -6,19 +6,19 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a box cricket ground near Panipat?',
-    a: 'Red Ball Sports Arena in Rohtak is the nearest venue with a proper box cricket facility to Panipat — approximately 95 km and 90 minutes away. Box 360, Rohtak\'s first 24/7 circular box cricket ground, is available for bookings by Panipat teams.',
+    a: 'Alchemy 360 Sports Arena in Rohtak is the nearest venue with a proper box cricket facility to Panipat — approximately 95 km and 90 minutes away. Box 360, Rohtak\'s first 24/7 circular box cricket ground, is available for bookings by Panipat teams.',
   },
   {
-    q: 'What makes Box 360 at Red Ball special compared to other box cricket grounds?',
+    q: 'What makes Box 360 at Alchemy 360 special compared to other box cricket grounds?',
     a: 'Box 360 is circular — not rectangular like conventional box cricket grounds. This unique format means batsmen play in all 360 degrees, fielders face constant pressure from every angle, and the game is faster, more intense, and more exciting. It\'s available 24/7 and is the first of its kind in Rohtak.',
   },
   {
-    q: 'Can a Panipat team travel to Red Ball for a box cricket tournament?',
-    a: 'Yes. Teams from Panipat are welcome to compete in the Rohtak Cricket League (RCL) hosted at Red Ball. RCL matches are broadcast live on YouTube, Siti Cable, and DEN Networks — making it a proper competitive platform with regional media reach.',
+    q: 'Can a Panipat team travel to Alchemy 360 for a box cricket tournament?',
+    a: 'Yes. Teams from Panipat are welcome to compete in the Rohtak Cricket League (RCL) hosted at Alchemy 360. RCL matches are broadcast live on YouTube, Siti Cable, and DEN Networks — making it a proper competitive platform with regional media reach.',
   },
   {
     q: 'Is Box 360 available for late-night bookings from Panipat?',
-    a: 'Yes. Box 360 at Red Ball operates 24/7, including late-night slots under floodlights. Panipat teams can book early morning or late evening — ideal for groups who want to avoid peak traffic on the drive to Rohtak.',
+    a: 'Yes. Box 360 at Alchemy 360 operates 24/7, including late-night slots under floodlights. Panipat teams can book early morning or late evening — ideal for groups who want to avoid peak traffic on the drive to Rohtak.',
   },
   {
     q: 'How do I book Box 360 for a Panipat group visit?',
@@ -47,8 +47,8 @@ export default function BoxCricketPanipat() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Box Cricket Near Panipat | Box 360 at Red Ball Sports Arena Rohtak"
-        description="Box cricket near Panipat — Red Ball's Box 360, Rohtak's first 24/7 circular box cricket ground, 95 km / 90 minutes from Panipat. RCL tournaments. Book your match."
+        title="Box Cricket Near Panipat | Box 360 at Alchemy 360 Sports Arena Rohtak"
+        description="Box cricket near Panipat — Alchemy 360's Box 360, Rohtak's first 24/7 circular box cricket ground, 95 km / 90 minutes from Panipat. RCL tournaments. Book your match."
         canonical="/box-cricket-panipat"
         schema={schema}
       />
@@ -57,15 +57,15 @@ export default function BoxCricketPanipat() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Box Cricket · Near Panipat</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Box Cricket · Near Panipat</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Box Cricket Near Panipat
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Panipat teams looking for box cricket that goes beyond the ordinary need to make one trip to Red Ball Sports Arena in Rohtak. At 95 km and 90 minutes away, Box 360 — Rohtak's first 24/7 circular box cricket ground — offers a cricket format that simply doesn't exist anywhere closer to Panipat. One visit and you'll understand why Panipat cricketers keep coming back.
+            Panipat teams looking for box cricket that goes beyond the ordinary need to make one trip to Alchemy 360 Sports Arena in Rohtak. At 95 km and 90 minutes away, Box 360 — Rohtak's first 24/7 circular box cricket ground — offers a cricket format that simply doesn't exist anywhere closer to Panipat. One visit and you'll understand why Panipat cricketers keep coming back.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Box Cricket
             </Link>
             <Link to="/cricket-ground-panipat" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -80,13 +80,13 @@ export default function BoxCricketPanipat() {
           Why Panipat Cricketers Come to Box 360 in Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Box cricket in Panipat typically means standard rectangular enclosures — functional, but limited. Box 360 at Red Ball Sports Arena in Rohtak is a different proposition entirely. The circular format — Rohtak's first of its kind, available 24 hours a day — eliminates corners and forces a complete, all-direction game. Batting, bowling, and fielding all feel different in the circular arena, and the intensity of play is noticeably higher. Panipat teams plan a 90-minute drive to Red Ball as a proper cricket event, not just a casual booking. For those looking to compete, the Rohtak Cricket League (RCL) — broadcast live on YouTube, Siti Cable, and DEN Networks — provides a regional stage that makes the journey an even more compelling proposition.
+          Box cricket in Panipat typically means standard rectangular enclosures — functional, but limited. Box 360 at Alchemy 360 Sports Arena in Rohtak is a different proposition entirely. The circular format — Rohtak's first of its kind, available 24 hours a day — eliminates corners and forces a complete, all-direction game. Batting, bowling, and fielding all feel different in the circular arena, and the intensity of play is noticeably higher. Panipat teams plan a 90-minute drive to Alchemy 360 as a proper cricket event, not just a casual booking. For those looking to compete, the Rohtak Cricket League (RCL) — broadcast live on YouTube, Siti Cable, and DEN Networks — provides a regional stage that makes the journey an even more compelling proposition.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: 'Box 360 — 360° Circular Cricket', desc: 'No other box cricket ground in the region matches Box 360\'s circular format. Available 24/7, including night sessions under floodlights — worth every kilometre of the 95 km drive from Panipat.' },
             { title: 'Compete in the RCL on TV', desc: 'The Rohtak Cricket League is broadcast live on YouTube, Siti Cable, and DEN Networks. Panipat teams can enter RCL and play competitive cricket with real broadcast reach across the region.' },
-            { title: 'Celebrate After the Match + Restaurant', desc: 'After a great box cricket session, teams from Panipat can dine together at Red Ball\'s on-site restaurant — a proper post-match meal before the drive back.' },
+            { title: 'Celebrate After the Match + Restaurant', desc: 'After a great box cricket session, teams from Panipat can dine together at Alchemy 360\'s on-site restaurant — a proper post-match meal before the drive back.' },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>
@@ -98,7 +98,7 @@ export default function BoxCricketPanipat() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Red Ball Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Box Cricket Rohtak', to: '/box-cricket-rohtak' },
@@ -107,7 +107,7 @@ export default function BoxCricketPanipat() {
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
-                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C8102E] hover:text-[#C8102E] transition-colors"
+                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {item.label}
               </Link>

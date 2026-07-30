@@ -65,9 +65,9 @@ export default function PhoneCollectModal({ open, onClose, onSuccess, theme = 'd
             )}
 
             <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${
-              isDark ? 'bg-[#C8102E]/15 border border-[#C8102E]/30' : 'bg-red-50 border border-red-200'
+              isDark ? 'bg-[#C5DB3B]/15 border border-[#C5DB3B]/30' : 'bg-[#C5DB3B]/10 border border-[#C5DB3B]/30'
             }`}>
-              <Phone size={20} className="text-[#C8102E]" />
+              <Phone size={20} className="text-[#C5DB3B]" />
             </div>
 
             <h2 className={`text-lg font-bold mb-1 ${isDark ? 'text-white' : 'text-[#111]'}`}>
@@ -80,8 +80,8 @@ export default function PhoneCollectModal({ open, onClose, onSuccess, theme = 'd
             <form onSubmit={handleSubmit}>
               <div className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 mb-4 ${
                 isDark
-                  ? 'bg-white/5 border-white/12 focus-within:border-[#C8102E]/60'
-                  : 'bg-gray-50 border-gray-200 focus-within:border-[#C8102E]'
+                  ? 'bg-white/5 border-white/12 focus-within:border-[#C5DB3B]/60'
+                  : 'bg-gray-50 border-gray-200 focus-within:border-[#C5DB3B]'
               } transition-colors`}>
                 <span className={`text-sm font-medium shrink-0 ${isDark ? 'text-white/50' : 'text-gray-400'}`}>+91</span>
                 <div className={`w-px h-4 ${isDark ? 'bg-white/15' : 'bg-gray-300'}`} />
@@ -102,7 +102,7 @@ export default function PhoneCollectModal({ open, onClose, onSuccess, theme = 'd
               <button
                 type="submit"
                 disabled={loading || phone.replace(/\D/g, '').length < 10}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#C8102E] hover:bg-[#a80e27] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition-all"
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition-all"
               >
                 {loading ? <Loader2 size={15} className="animate-spin" /> : <ArrowRight size={15} />}
                 {loading ? 'Saving…' : 'Save & Continue'}

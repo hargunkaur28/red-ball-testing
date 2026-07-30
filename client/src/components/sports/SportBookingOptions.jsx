@@ -10,7 +10,7 @@ import OneTimeBookingModal from './OneTimeBookingModal';
 export default function SportBookingOptions({ sport, plans = [], plansLoading = false }) {
   const [modalOpen, setModalOpen] = useState(false);
   const fallback = getSportFallback(sport?.slug || sport?.name || '');
-  const accentColor = fallback.color || '#C8102E';
+  const accentColor = fallback.color || '#C5DB3B';
 
   const isDayNight = sport?.slotPricingMode === 'dayNight';
   const hasOneTime = (sport?.hourlyPrice > 0) ||

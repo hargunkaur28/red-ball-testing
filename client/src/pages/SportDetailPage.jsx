@@ -44,12 +44,12 @@ export default function SportDetailPage({ embedded = false }) {
         style={{ background: '#0A0D0D' }}
       >
         <div className="flex flex-col items-center gap-4 text-center px-6">
-          <AlertTriangle size={40} className="text-[#C8102E]" />
+          <AlertTriangle size={40} className="text-[#C5DB3B]" />
           <h2 className="text-white font-black text-2xl">Facility Not Found</h2>
           <p className="text-white/40 text-sm">This sport or facility may not be available.</p>
           <button
             onClick={() => navigate(-1)}
-            className="px-6 py-2.5 rounded-xl bg-[#C8102E] text-white font-bold text-sm mt-2 hover:bg-[#a00d24] transition-colors"
+            className="px-6 py-2.5 rounded-xl bg-[#C5DB3B] text-white font-bold text-sm mt-2 hover:bg-[#96AC2E] transition-colors"
           >
             Go Back
           </button>
@@ -60,7 +60,7 @@ export default function SportDetailPage({ embedded = false }) {
 
   const fallback = getSportFallback(sport.slug || sport.name);
   const rentalText = sport.rentalEquipment || fallback.rentalEquipment || '';
-  const accentColor = fallback.color || '#C8102E';
+  const accentColor = fallback.color || '#C5DB3B';
   const backHref = embedded ? '/user/book-slots' : '/book-slots';
 
   return (

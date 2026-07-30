@@ -36,9 +36,9 @@ export default function SportIllustration({ slug, color, className = 'w-full h-f
           {/* Blade */}
           <path d="M40 38 L50 38 L50 82 C50 84, 40 84, 40 82 Z" fill="url(#woodGrad)" stroke="#7c4e0e" strokeWidth="1" />
           {/* Colored rubber grip accents */}
-          <line x1="43" y1="20" x2="47" y2="20" stroke={color || '#C8102E'} strokeWidth="1.5" />
-          <line x1="43" y1="26" x2="47" y2="26" stroke={color || '#C8102E'} strokeWidth="1.5" />
-          <line x1="43" y1="32" x2="47" y2="32" stroke={color || '#C8102E'} strokeWidth="1.5" />
+          <line x1="43" y1="20" x2="47" y2="20" stroke={color || '#C5DB3B'} strokeWidth="1.5" />
+          <line x1="43" y1="26" x2="47" y2="26" stroke={color || '#C5DB3B'} strokeWidth="1.5" />
+          <line x1="43" y1="32" x2="47" y2="32" stroke={color || '#C5DB3B'} strokeWidth="1.5" />
         </g>
         
         {/* Cricket Ball */}

@@ -85,7 +85,7 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
   const [showMembershipPopup, setShowMembershipPopup] = useState(false);
 
   const fallback = getSportFallback(sport?.slug || sport?.name || '');
-  const accentColor = fallback.color || '#C8102E';
+  const accentColor = fallback.color || '#C5DB3B';
 
   // Reset when modal opens
   useEffect(() => {
@@ -287,7 +287,7 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: orderRes.razorpayOrder.amount,
         currency: orderRes.razorpayOrder.currency,
-        name: 'Red Ball Academy',
+        name: 'Alchemy 360 Academy',
         description: `${sport.name} — ${selectedSlot.startTime}–${selectedSlot.endTime}${selectedSlot.courtNameSnapshot ? ' · ' + selectedSlot.courtNameSnapshot : ''}`,
         order_id: orderRes.razorpayOrder.id,
         theme: { color: accentColor },

@@ -35,7 +35,7 @@ const css = `
 }
 
 .entry-hero {
-  background: #df1526;
+  background: #C5DB3B;
   padding: 46px 42px 28px;
   display: flex;
   flex-direction: column;
@@ -52,7 +52,7 @@ const css = `
   width: 220px;
   height: 220px;
   border-radius: 50%;
-  background: rgba(170,0,18,0.16);
+  background: rgba(150,172,46,0.16);
 }
 
 .entry-brand-block {
@@ -237,8 +237,8 @@ const css = `
 .entry-action-btn:disabled, .plan-card.disabled, .entry-submit:disabled { opacity: 0.55; cursor: not-allowed; }
 .btn-checkin { background: #10b981; color: #fff; }
 .btn-checkout { background: #ef4444; color: #fff; }
-.entry-submit { background: #C8102E; color: #fff; box-shadow: 0 14px 30px rgba(200,16,46,0.28); }
-.entry-submit:hover { background: #a90e27; }
+.entry-submit { background: #C5DB3B; color: #fff; box-shadow: 0 14px 30px rgba(197, 219, 59,0.28); }
+.entry-submit:hover { background: #96AC2E; }
 
 .entry-divider {
   height: 0;
@@ -270,8 +270,8 @@ const css = `
 }
 
 .plan-card:hover, .plan-card.selected {
-  border-color: rgba(200,16,46,0.62);
-  background: rgba(200,16,46,0.1);
+  border-color: rgba(197, 219, 59,0.62);
+  background: rgba(197, 219, 59,0.1);
 }
 
 .plan-icon {
@@ -287,7 +287,7 @@ const css = `
 
 .plan-name { display: block; font-size: 18px; line-height: 1.1; font-weight: 900; margin-bottom: 5px; letter-spacing: -0.04em; text-shadow: 0 2px 0 rgba(0,0,0,0.35); }
 .plan-duration { display: block; font-size: 12px; color: rgba(255,255,255,0.74); }
-.plan-price { font-size: 20px; font-weight: 900; color: #ff2d4f; white-space: nowrap; letter-spacing: -0.04em; }
+.plan-price { font-size: 20px; font-weight: 900; color: #C5DB3B; white-space: nowrap; letter-spacing: -0.04em; }
 
 .plan-card.membership-plan .plan-icon {
   background: transparent;
@@ -401,7 +401,7 @@ const css = `
   outline: none;
   font-family: 'Inter', sans-serif;
 }
-.field-input:focus { border-color: rgba(200,16,46,0.62); }
+.field-input:focus { border-color: rgba(197, 219, 59,0.62); }
 .field-input:-webkit-autofill,
 .field-input:-webkit-autofill:hover,
 .field-input:-webkit-autofill:focus,
@@ -433,7 +433,7 @@ const css = `
 }
 
 .entry-google:not([disabled]):hover {
-  border-color: rgba(200,16,46,0.45);
+  border-color: rgba(197, 219, 59,0.45);
   background: rgba(255,255,255,0.075);
 }
 
@@ -901,7 +901,7 @@ export default function EntryPortal() {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: orderResponse.rzpOrder.amount,
       currency: orderResponse.rzpOrder.currency,
-      name: 'Red Ball Academy',
+      name: 'Alchemy 360 Academy',
       description,
       order_id: orderResponse.rzpOrder.id,
       handler: async (response) => {
@@ -931,7 +931,7 @@ export default function EntryPortal() {
         email: details.email || user?.email || '',
         contact: validPhone(details.phone || user?.phone),
       },
-      theme: { color: '#C8102E' },
+      theme: { color: '#C5DB3B' },
       modal: {
         ondismiss: () => toast.message('Payment cancelled. You can try again from this page.'),
       },
@@ -1022,7 +1022,7 @@ export default function EntryPortal() {
             <div className="entry-brand-block">
               <div className="entry-brand-row">
                 <span className="entry-mark" aria-hidden="true" />
-                <div className="entry-kicker">Red Ball Academy</div>
+                <div className="entry-kicker">Alchemy 360 Academy</div>
               </div>
               <div className="entry-sport-name">{data?.sport?.name || 'Sport'}</div>
               <p className="entry-hero-copy">Choose walk-in access or a membership, confirm your details, and complete secure Razorpay payment before entry.</p>
@@ -1208,7 +1208,7 @@ export default function EntryPortal() {
                           </p>
                           <button
                             onClick={() => navigate(`/sports/${data?.sport?.slug}`)}
-                            className="w-full py-3 px-4 rounded-xl bg-[#df1526] hover:bg-[#df1526]/80 active:scale-[0.98] transition-all text-white text-sm font-bold shadow-lg shadow-red-950/20 flex items-center justify-center gap-2"
+                            className="w-full py-3 px-4 rounded-xl bg-[#C5DB3B] hover:bg-[#C5DB3B]/80 active:scale-[0.98] transition-all text-white text-sm font-bold shadow-lg shadow-[#C5DB3B]/20 flex items-center justify-center gap-2"
                           >
                             Book {data?.sport?.name} Slots
                           </button>

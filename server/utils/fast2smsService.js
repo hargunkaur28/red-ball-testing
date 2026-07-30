@@ -159,17 +159,17 @@ function buildKitchenSmsMessage(order) {
 
   if (type === 'table') {
     const tableLabel = order.tableId?.label || order.tableId?.tableNumber || 'Table';
-    return `New Red Ball order ${num}: ${tableLabel}, ${amount}${coupon}${itemStr}${remarks}. Check Panel.`;
+    return `New Alchemy 360 order ${num}: ${tableLabel}, ${amount}${coupon}${itemStr}${remarks}. Check Panel.`;
   }
 
   if (type === 'delivery') {
     const name = order.customerName ? ` for ${order.customerName}` : '';
-    return `New Red Ball order ${num}: Delivery${name}, ${amount}${coupon}${itemStr}${remarks}. Check Panel.`;
+    return `New Alchemy 360 order ${num}: Delivery${name}, ${amount}${coupon}${itemStr}${remarks}. Check Panel.`;
   }
 
   // pickup
   const name = order.customerName ? ` for ${order.customerName}` : '';
-  return `New Red Ball order ${num}: Pickup${name}, ${amount}${coupon}${itemStr}${remarks}. Check Panel.`;
+  return `New Alchemy 360 order ${num}: Pickup${name}, ${amount}${coupon}${itemStr}${remarks}. Check Panel.`;
 }
 
 /**
@@ -255,7 +255,7 @@ function buildCricketReminderMessage(booking) {
   const timeStr  = startFmt && endFmt ? `${startFmt}-${endFmt}` : startFmt;
   const courtStr = court ? ` at ${court}` : '';
 
-  return `Reminder: Your Cricket slot at Red Ball is ${dateStr} ${timeStr}${courtStr}. Please arrive on time. -Red Ball Academy`;
+  return `Reminder: Your Cricket slot at Alchemy 360 is ${dateStr} ${timeStr}${courtStr}. Please arrive on time. -Alchemy 360 Academy`;
 }
 
 /**

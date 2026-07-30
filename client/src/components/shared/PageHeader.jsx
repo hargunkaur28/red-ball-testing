@@ -1,4 +1,4 @@
-export default function PageHeader({ title, subtitle, action, preTitle = '[RED BALL ACADEMY]' }) {
+export default function PageHeader({ title, subtitle, action, preTitle = '[ALCHEMY 360 ACADEMY]' }) {
   return (
     <div className="flex items-center justify-between mb-8 mt-2">
       <div>

@@ -1,27 +1,27 @@
-# Red Ball Cricket Academy & Sports Ground
+# Alchemy 360 Cricket Academy & Sports Ground
 
-Welcome to the official repository of **Red Ball**, a premium multi-sports facility and cricket academy located in Rohtak, Haryana. 
+Welcome to the official repository of **Alchemy 360**, a premium multi-sports facility and cricket academy located in Rohtak, Haryana. 
 
 This platform serves as the digital gateway for athletes, members, and visitors to interact with the facility, book play times, manage memberships, and order from the on-site restaurant.
 
 ---
 
-## 🏏 What is Red Ball?
+## 🏏 What is Alchemy 360?
 
-**Red Ball** is more than just a cricket ground—it is a state-of-the-art sports complex designed to nurture athletic talent and provide premium spaces for recreational play. From professional-grade pitches to floodlit courts, Red Ball is the ultimate hub for sports lovers.
+**Alchemy 360** is more than just a cricket ground—it is a state-of-the-art sports complex designed to nurture athletic talent and provide premium spaces for recreational play. From professional-grade pitches to floodlit courts, Alchemy 360 is the ultimate hub for sports lovers.
 
 ### 📍 Location & Contact
 *   **Academy Location:** Haryana 124001
 
 ## 👥 Who is this Platform for?
 
-The Red Ball web portal connects everyone involved with the academy and ground:
+The Alchemy 360 web portal connects everyone involved with the academy and ground:
 
 ### 1. **Players & Recreational Athletes**
 Allows anyone to book world-class sports facilities by the hour. No long-term commitment or membership required—simply pick a sport, select a time slot, and play.
 
 ### 2. **Academy Members & Trainees**
-Designed for members enrolled in training programs, particularly the **Red Ball Cricket Academy** (affiliated/registered with the Haryana Cricket Association). Trainees can manage their schedules, view coaching details under Head Coach Mandeep Singh, and track membership status.
+Designed for members enrolled in training programs, particularly the **Alchemy 360 Cricket Academy** (affiliated/registered with the Haryana Cricket Association). Trainees can manage their schedules, view coaching details under Head Coach Mandeep Singh, and track membership status.
 
 ### 3. **Diners & Visitors**
 Integrated with the on-site restaurant, the portal lets visitors view menus, place orders, and coordinate table service while enjoying their time at the sports ground.

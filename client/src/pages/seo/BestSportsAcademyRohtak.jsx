@@ -5,15 +5,15 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 
 const faqs = [
   {
-    q: 'What makes Red Ball the best sports academy in Rohtak?',
-    a: 'Red Ball Sports Arena combines professional infrastructure, expert coaching across multiple sports, flexible membership options, digital booking, and a kids sports academy — making it the most complete sports facility in Rohtak.',
+    q: 'What makes Alchemy 360 the best sports academy in Rohtak?',
+    a: 'Alchemy 360 Sports Arena combines professional infrastructure, expert coaching across multiple sports, flexible membership options, digital booking, and a kids sports academy — making it the most complete sports facility in Rohtak.',
   },
   {
-    q: 'Which sports can I learn at Red Ball Academy Rohtak?',
+    q: 'Which sports can I learn at Alchemy 360 Academy Rohtak?',
     a: 'You can train in cricket (box cricket), badminton, pickleball, swimming, and fitness/gym. Kids programs are available for cricket and badminton.',
   },
   {
-    q: 'Is Red Ball Academy good for beginners?',
+    q: 'Is Alchemy 360 Academy good for beginners?',
     a: 'Yes. Our coaches work with all skill levels, from first-timers to competitive players. We offer beginner batches for kids and adults in multiple sports.',
   },
   {
@@ -21,7 +21,7 @@ const faqs = [
     a: "We offer monthly, quarterly, and annual memberships, as well as one-time slot bookings for those who don't want a commitment.",
   },
   {
-    q: 'Is there parking available at Red Ball Sports Arena?',
+    q: 'Is there parking available at Alchemy 360 Sports Arena?',
     a: 'Yes, parking is available at the facility. Our location on Jhajjar Road, Sector 22-D, Rohtak provides easy road access.',
   },
 ];
@@ -36,8 +36,8 @@ export default function BestSportsAcademyRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Best Sports Academy in Rohtak | Red Ball Sports Arena"
-        description="Red Ball Sports Arena is the best sports academy in Rohtak, Haryana. Multi-sport facility with cricket, badminton, pickleball, swimming, gym & kids programs. Book online."
+        title="Best Sports Academy in Rohtak | Alchemy 360 Sports Arena"
+        description="Alchemy 360 Sports Arena is the best sports academy in Rohtak, Haryana. Multi-sport facility with cricket, badminton, pickleball, swimming, gym & kids programs. Book online."
         canonical="/best-sports-academy-rohtak"
         schema={schema}
       />
@@ -46,15 +46,15 @@ export default function BestSportsAcademyRohtak() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Rohtak's Top Sports Destination</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Rohtak's Top Sports Destination</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Best Sports Academy in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena stands out as Rohtak's most comprehensive sports facility. With multi-sport infrastructure, expert coaches, digital access, and a family-friendly environment, it's the clear choice for serious players and casual enthusiasts alike.
+            Alchemy 360 Sports Arena stands out as Rohtak's most comprehensive sports facility. With multi-sport infrastructure, expert coaches, digital access, and a family-friendly environment, it's the clear choice for serious players and casual enthusiasts alike.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/sports-academy-rohtak" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports-academy-rohtak" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Explore Academy
             </Link>
             <Link to="/buy-membership" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -66,7 +66,7 @@ export default function BestSportsAcademyRohtak() {
 
       <section className="max-w-4xl mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0D0D0D] mb-6" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-          What Sets Red Ball Apart
+          What Sets Alchemy 360 Apart
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
@@ -91,7 +91,7 @@ export default function BestSportsAcademyRohtak() {
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-xl font-bold text-[#0D0D0D] mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-            Explore All Sports at Red Ball Academy Rohtak
+            Explore All Sports at Alchemy 360 Academy Rohtak
           </h2>
           <div className="flex flex-wrap gap-3">
             {[
@@ -104,7 +104,7 @@ export default function BestSportsAcademyRohtak() {
               { label: "Kids' Academy", to: '/kids-sports-academy-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
-                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C8102E] hover:text-[#C8102E] transition-colors"
+                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {item.label}
               </Link>

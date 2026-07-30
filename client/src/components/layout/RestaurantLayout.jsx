@@ -90,9 +90,9 @@ export default function RestaurantLayout() {
           </button>
           <div className="ml-4">
             <h1 className="text-sm font-black text-[#111111] tracking-tight uppercase leading-none" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
-              Red Ball Sports Café
+              Alchemy 360 Sports Café
             </h1>
-            <p className="text-[10px] font-bold text-[#C8102E] uppercase tracking-widest mt-0.5">
+            <p className="text-[10px] font-bold text-[#C5DB3B] uppercase tracking-widest mt-0.5">
               Management Portal
             </p>
           </div>

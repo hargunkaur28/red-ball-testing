@@ -75,7 +75,7 @@ export default function CinematicIntro({ onComplete }) {
 
     // Kinetic Text sequence triggers
     const textTimeline = [
-      { time: 1800, word: 'RED BALL' },
+      { time: 1800, word: 'ALCHEMY 360' },
       { time: 2000, word: 'PLAY BOLDER' },
       { time: 2200, word: 'TRAIN HARDER' },
       { time: 2400, word: 'BOOK. PLAY. COMPETE.' }
@@ -97,7 +97,7 @@ export default function CinematicIntro({ onComplete }) {
       const cx = width / 2;
       const cy = height / 2;
       const bgGlow = ctx.createRadialGradient(cx, cy, 10, cx, cy, Math.max(width, height) * 0.6);
-      bgGlow.addColorStop(0, elapsed > 1500 ? 'rgba(220, 38, 38, 0.15)' : 'rgba(30, 10, 10, 0.3)');
+      bgGlow.addColorStop(0, elapsed > 1500 ? 'rgba(197, 219, 59, 0.15)' : 'rgba(30, 10, 10, 0.3)');
       bgGlow.addColorStop(1, 'rgba(4, 4, 4, 0.95)');
       ctx.fillStyle = bgGlow;
       ctx.fillRect(0, 0, width, height);
@@ -168,7 +168,7 @@ export default function CinematicIntro({ onComplete }) {
         ball.stretch = 1 + easeLaunch * 0.4;
         
         // Draw fast moving radial light streaks and high-velocity blurs
-        ctx.strokeStyle = 'rgba(220, 38, 38, 0.6)';
+        ctx.strokeStyle = 'rgba(197, 219, 59, 0.6)';
         streaks.forEach((s) => {
           s.x -= s.speed * (1 + easeLaunch * 2);
           if (s.x < -s.length) {
@@ -317,7 +317,7 @@ export default function CinematicIntro({ onComplete }) {
                   animate={{ opacity: 1, scale: 1.1, filter: 'blur(0px)', letterSpacing: '0.02em' }}
                   exit={{ opacity: 0, scale: 1.4, filter: 'blur(12px)' }}
                   transition={{ duration: 0.18, ease: 'easeOut' }}
-                  className="absolute text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-serif font-extrabold tracking-tight text-white uppercase text-center drop-shadow-[0_10px_30px_rgba(220,38,38,0.5)]"
+                  className="absolute text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-serif font-extrabold tracking-tight text-white uppercase text-center drop-shadow-[0_10px_30px_rgba(197,219,59,0.5)]"
                 >
                   {currentWord}
                 </motion.h2>
@@ -331,7 +331,7 @@ export default function CinematicIntro({ onComplete }) {
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: [0.9, 1, 0] }}
               transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="absolute inset-0 bg-gradient-to-r from-white via-[#DC2626] to-white mix-blend-screen pointer-events-none" 
+              className="absolute inset-0 bg-gradient-to-r from-white via-[#C5DB3B] to-white mix-blend-screen pointer-events-none"
             />
           )}
 

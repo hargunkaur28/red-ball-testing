@@ -81,7 +81,7 @@ exports.create = async (req, res) => {
     if (!user) {
       user = await User.create({
         name, email, phone, gender, address,
-        password: password || 'RedBall@123',
+        password: password || 'Alchemy360@123',
         role: 'user',
       });
     } else {

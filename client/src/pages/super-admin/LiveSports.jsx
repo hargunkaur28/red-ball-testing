@@ -354,7 +354,7 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
             <div className="flex items-center gap-1.5 shrink-0">
               <button onClick={() => { setShowCreateSlot((v) => !v); setEditingSlotId(null); }}
                 title="Create single slot"
-                className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-colors ${showCreateSlot ? 'bg-[#C8102E] border-[#C8102E] text-white' : 'border-[#EAEAEA] text-[#555] hover:bg-[#F5F5F5]'}`}>
+                className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-colors ${showCreateSlot ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white' : 'border-[#EAEAEA] text-[#555] hover:bg-[#F5F5F5]'}`}>
                 <Plus size={14} />
               </button>
               <button onClick={() => onOpenBulk?.(court._id)}
@@ -399,13 +399,13 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
                       <label className="text-[10px] text-[#999] block mb-0.5">Start time</label>
                       <input type="time" value={createForm.startTime}
                         onChange={(e) => setCreateForm((p) => ({ ...p, startTime: e.target.value }))}
-                        className="w-full border border-[#EAEAEA] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20 bg-white" />
+                        className="w-full border border-[#EAEAEA] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20 bg-white" />
                     </div>
                     <div>
                       <label className="text-[10px] text-[#999] block mb-0.5">End time</label>
                       <input type="time" value={createForm.endTime}
                         onChange={(e) => setCreateForm((p) => ({ ...p, endTime: e.target.value }))}
-                        className="w-full border border-[#EAEAEA] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20 bg-white" />
+                        className="w-full border border-[#EAEAEA] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20 bg-white" />
                     </div>
                   </div>
                   <div>
@@ -413,13 +413,13 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
                     <input type="number" min={0} value={createForm.pricePerSlot}
                       onChange={(e) => setCreateForm((p) => ({ ...p, pricePerSlot: e.target.value }))}
                       placeholder="e.g. 500"
-                      className="w-full border border-[#EAEAEA] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20 bg-white" />
+                      className="w-full border border-[#EAEAEA] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20 bg-white" />
                   </div>
                   <div className="flex gap-2">
                     <button type="button" onClick={() => setShowCreateSlot(false)}
                       className="flex-1 py-2 rounded-xl border border-[#EAEAEA] text-[11px] font-medium text-[#666] hover:bg-[#F0F0F0]">Cancel</button>
                     <button type="submit" disabled={creating}
-                      className="flex-1 py-2 rounded-xl bg-[#C8102E] text-white text-[11px] font-bold flex items-center justify-center gap-1.5 hover:bg-[#a50d27] disabled:opacity-60">
+                      className="flex-1 py-2 rounded-xl bg-[#C5DB3B] text-white text-[11px] font-bold flex items-center justify-center gap-1.5 hover:bg-[#96AC2E] disabled:opacity-60">
                       {creating ? <Loader2 size={12} className="animate-spin" /> : <Plus size={12} />} Create Slot
                     </button>
                   </div>
@@ -436,12 +436,12 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
                 No slots for this date.
                 <div className="mt-3 flex items-center gap-3 justify-center">
                   <button onClick={() => setShowCreateSlot(true)}
-                    className="flex items-center gap-1.5 text-[#C8102E] text-xs font-semibold hover:underline">
+                    className="flex items-center gap-1.5 text-[#C5DB3B] text-xs font-semibold hover:underline">
                     <Plus size={12} /> Create first slot
                   </button>
                   <span className="text-[#DDD]">·</span>
                   <button onClick={() => onOpenBulk?.(court._id)}
-                    className="flex items-center gap-1.5 text-[#555] text-xs font-semibold hover:text-[#C8102E] hover:underline">
+                    className="flex items-center gap-1.5 text-[#555] text-xs font-semibold hover:text-[#C5DB3B] hover:underline">
                     <Layers size={12} /> Bulk Create
                   </button>
                 </div>
@@ -534,7 +534,7 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
                                   )}
                                   <button
                                     onClick={() => setSelectedBookingDetails({ booking: b, slot: s })}
-                                    className="w-5 h-5 flex items-center justify-center rounded text-current/60 hover:text-[#C8102E] hover:bg-white/60 transition-colors"
+                                    className="w-5 h-5 flex items-center justify-center rounded text-current/60 hover:text-[#C5DB3B] hover:bg-white/60 transition-colors"
                                     title="View booking details"
                                   >
                                     <Info size={11} />
@@ -640,12 +640,12 @@ function AddCourtModal({ sport, onClose, onSuccess }) {
           <div>
             <label className="text-xs font-medium text-[#666] block mb-1">Court Name *</label>
             <input autoFocus value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g., Badminton Court 1"
-              className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+              className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
           </div>
           <div className="flex gap-3">
             <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-[#EAEAEA] text-sm font-medium text-[#666] hover:bg-[#F5F5F5]">Cancel</button>
             <button type="submit" disabled={saving}
-              className="flex-1 py-2.5 rounded-xl bg-[#C8102E] text-white text-sm font-semibold hover:bg-[#a50d27] disabled:opacity-60 flex items-center justify-center gap-2">
+              className="flex-1 py-2.5 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-2">
               {saving ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />} Add Court
             </button>
           </div>
@@ -775,7 +775,7 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
         <div className="flex items-center justify-between px-5 py-4 border-b border-[#EAEAEA]">
           <div>
             <h3 className="font-bold text-[#111] text-base flex items-center gap-2">
-              <Layers size={16} className="text-[#C8102E]" /> Bulk Create Slots
+              <Layers size={16} className="text-[#C5DB3B]" /> Bulk Create Slots
             </h3>
             <p className="text-xs text-[#999] mt-0.5">{sport?.name} · slots created for next 365 days</p>
           </div>
@@ -803,7 +803,7 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
                 {result.skippedClosedCourts} closed court{result.skippedClosedCourts !== 1 ? 's' : ''} skipped
               </div>
             )}
-            <button onClick={onClose} className="w-full py-2.5 rounded-xl bg-[#C8102E] text-white text-sm font-semibold hover:bg-[#a50d27]">Close</button>
+            <button onClick={onClose} className="w-full py-2.5 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E]">Close</button>
           </div>
         ) : courts.length === 0 ? (
           <div className="p-6 flex flex-col items-center gap-4 text-center">
@@ -822,7 +822,7 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
             {/* Courts */}
             <div>
               <label className="text-xs font-bold text-[#333] flex items-center gap-1.5 mb-2">
-                <Building2 size={13} className="text-[#C8102E]" /> Courts ({form.courtIds.length}/{courts.length} selected)
+                <Building2 size={13} className="text-[#C5DB3B]" /> Courts ({form.courtIds.length}/{courts.length} selected)
               </label>
               {courts.length === 0 ? (
                 <p className="text-xs text-[#999]">No courts. Add courts first.</p>
@@ -834,7 +834,7 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
                     className="text-[11px] px-2.5 py-1 rounded-full border border-[#EAEAEA] hover:bg-[#F5F5F5] text-[#666]">None</button>
                   {courts.map((c) => (
                     <button key={c._id} type="button" onClick={() => toggleCourt(c._id)}
-                      className={`text-[11px] px-3 py-1 rounded-full border font-medium transition-colors ${form.courtIds.includes(c._id) ? 'bg-[#C8102E] border-[#C8102E] text-white' : 'border-[#EAEAEA] text-[#555] hover:border-[#C8102E]/40'} ${!c.isOpen ? 'opacity-50' : ''}`}>
+                      className={`text-[11px] px-3 py-1 rounded-full border font-medium transition-colors ${form.courtIds.includes(c._id) ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white' : 'border-[#EAEAEA] text-[#555] hover:border-[#C5DB3B]/40'} ${!c.isOpen ? 'opacity-50' : ''}`}>
                       {c.name}{!c.isOpen ? ' (closed)' : ''}
                     </button>
                   ))}
@@ -848,7 +848,7 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
               <div className="flex gap-1.5 flex-wrap">
                 {DAYS.map((d) => (
                   <button key={d.val} type="button" onClick={() => toggleDay(d.val)}
-                    className={`w-9 h-9 rounded-full text-xs font-bold border transition-colors ${form.weekdays.includes(d.val) ? 'bg-[#C8102E] border-[#C8102E] text-white' : 'border-[#EAEAEA] text-[#666] hover:border-[#C8102E]/40'}`}>
+                    className={`w-9 h-9 rounded-full text-xs font-bold border transition-colors ${form.weekdays.includes(d.val) ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white' : 'border-[#EAEAEA] text-[#666] hover:border-[#C5DB3B]/40'}`}>
                     {d.label}
                   </button>
                 ))}
@@ -867,12 +867,12 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
                 <div>
                   <label className="text-[11px] text-[#999] mb-1 block">Window starts</label>
                   <input type="time" value={form.slotStartTime} onChange={(e) => set('slotStartTime', e.target.value)}
-                    className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                    className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
                 </div>
                 <div>
                   <label className="text-[11px] text-[#999] mb-1 block">Window ends</label>
                   <input type="time" value={form.slotEndTime} onChange={(e) => set('slotEndTime', e.target.value)}
-                    className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                    className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
                 </div>
               </div>
 
@@ -880,7 +880,7 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
               <div className="flex flex-wrap gap-1.5 mb-2">
                 {QUICK_DURATIONS.map((d) => (
                   <button key={d} type="button" onClick={() => set('slotDurationMin', d)}
-                    className={`px-3 h-8 rounded-full text-xs font-bold border transition-colors ${form.slotDurationMin === d ? 'bg-[#C8102E] border-[#C8102E] text-white' : 'border-[#EAEAEA] text-[#666] hover:border-[#C8102E]/40'}`}>
+                    className={`px-3 h-8 rounded-full text-xs font-bold border transition-colors ${form.slotDurationMin === d ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white' : 'border-[#EAEAEA] text-[#666] hover:border-[#C5DB3B]/40'}`}>
                     {d < 60 ? `${d}m` : `${d / 60}hr${d > 60 ? 's' : ''}`}
                   </button>
                 ))}
@@ -890,12 +890,12 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
                 value={QUICK_DURATIONS.includes(form.slotDurationMin) ? '' : form.slotDurationMin || ''}
                 onChange={(e) => set('slotDurationMin', Number(e.target.value) || '')}
                 onFocus={() => { if (QUICK_DURATIONS.includes(form.slotDurationMin)) set('slotDurationMin', ''); }}
-                className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
 
               <div className="mt-3">
                 <label className="text-[11px] text-[#999] mb-1 block">Gap between slots</label>
                 <select value={form.gapBetweenMin} onChange={(e) => set('gapBetweenMin', Number(e.target.value))}
-                  className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20">
+                  className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20">
                   <option value={0}>No gap</option>
                   <option value={5}>5 min</option>
                   <option value={10}>10 min</option>
@@ -909,15 +909,15 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
             {/* Pricing */}
             <div>
               <label className="text-xs font-bold text-[#333] flex items-center gap-1.5 mb-2">
-                <IndianRupee size={13} className="text-[#C8102E]" /> Slot Pricing
+                <IndianRupee size={13} className="text-[#C5DB3B]" /> Slot Pricing
               </label>
               <div className="flex gap-2 mb-3">
                 <button type="button" onClick={() => set('priceMode', 'flat')}
-                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border flex items-center justify-center gap-2 transition-colors ${form.priceMode === 'flat' ? 'bg-[#C8102E] border-[#C8102E] text-white' : 'border-[#EAEAEA] text-[#666]'}`}>
+                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border flex items-center justify-center gap-2 transition-colors ${form.priceMode === 'flat' ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white' : 'border-[#EAEAEA] text-[#666]'}`}>
                   <Layers size={13} /> Flat — one price
                 </button>
                 <button type="button" onClick={() => set('priceMode', 'dayNight')}
-                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border flex items-center justify-center gap-2 transition-colors ${form.priceMode === 'dayNight' ? 'bg-[#C8102E] border-[#C8102E] text-white' : 'border-[#EAEAEA] text-[#666]'}`}>
+                  className={`flex-1 py-2 rounded-xl text-sm font-semibold border flex items-center justify-center gap-2 transition-colors ${form.priceMode === 'dayNight' ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white' : 'border-[#EAEAEA] text-[#666]'}`}>
                   <Moon size={13} /> Day / Night
                 </button>
               </div>
@@ -925,7 +925,7 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
                 <div>
                   <label className="text-[11px] text-[#999] mb-1 block">Price per slot (₹)</label>
                   <input type="number" min={0} value={form.flatPrice} onChange={(e) => set('flatPrice', e.target.value)} placeholder="e.g. 500"
-                    className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                    className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -934,17 +934,17 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
                     <div>
                       <label className="text-[11px] text-[#999] mb-1 flex items-center gap-1"><Sun size={11} /> Day (₹)</label>
                       <input type="number" min={0} value={form.dayPrice} onChange={(e) => set('dayPrice', e.target.value)} placeholder="e.g. 500"
-                        className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                        className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
                     </div>
                     <div>
                       <label className="text-[11px] text-[#999] mb-1 block">Start time</label>
                       <input type="time" value={form.dayStartTime} onChange={(e) => set('dayStartTime', e.target.value)}
-                        className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                        className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
                     </div>
                     <div>
                       <label className="text-[11px] text-[#999] mb-1 block">End time</label>
                       <input type="time" value={form.dayEndTime} onChange={(e) => set('dayEndTime', e.target.value)}
-                        className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                        className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
                     </div>
                   </div>
                   {/* Night row */}
@@ -952,17 +952,17 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
                     <div>
                       <label className="text-[11px] text-[#999] mb-1 flex items-center gap-1"><Moon size={11} /> Night (₹)</label>
                       <input type="number" min={0} value={form.nightPrice} onChange={(e) => set('nightPrice', e.target.value)} placeholder="e.g. 700"
-                        className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                        className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
                     </div>
                     <div>
                       <label className="text-[11px] text-[#999] mb-1 block">Start time</label>
                       <input type="time" value={form.nightStartTime} onChange={(e) => set('nightStartTime', e.target.value)}
-                        className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                        className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
                     </div>
                     <div>
                       <label className="text-[11px] text-[#999] mb-1 block">End time</label>
                       <input type="time" value={form.nightEndTime} onChange={(e) => set('nightEndTime', e.target.value)}
-                        className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                        className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
                     </div>
                   </div>
                 </div>
@@ -973,11 +973,11 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs font-bold text-[#333] flex items-center gap-1.5">
-                  <Clock size={13} className="text-[#C8102E]" /> Custom Slot Overrides
+                  <Clock size={13} className="text-[#C5DB3B]" /> Custom Slot Overrides
                   <span className="font-normal text-[#999]">— different duration for specific windows</span>
                 </label>
                 <button type="button" onClick={addCustomSlot}
-                  className="flex items-center gap-1 text-[11px] font-semibold text-[#C8102E] hover:underline">
+                  className="flex items-center gap-1 text-[11px] font-semibold text-[#C5DB3B] hover:underline">
                   <Plus size={11} /> Add
                 </button>
               </div>
@@ -993,19 +993,19 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
                       <div key={i} className="flex items-center gap-2 p-2.5 rounded-xl border border-[#EAEAEA] bg-[#FAFAFA]">
                         <div className="flex items-center gap-1.5 flex-1 min-w-0">
                           <input type="time" value={cs.startTime} onChange={(e) => setCustomSlot(i, 'startTime', e.target.value)}
-                            className="flex-1 border border-[#EAEAEA] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                            className="flex-1 border border-[#EAEAEA] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
                           <span className="text-[#999] text-xs shrink-0">to</span>
                           <input type="time" value={cs.endTime} onChange={(e) => setCustomSlot(i, 'endTime', e.target.value)}
-                            className="flex-1 border border-[#EAEAEA] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                            className="flex-1 border border-[#EAEAEA] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
                         </div>
                         {dur && (
-                          <span className="text-[10px] font-bold text-[#C8102E] bg-red-50 px-2 py-1 rounded-full shrink-0">
+                          <span className="text-[10px] font-bold text-[#C5DB3B] bg-[#C5DB3B]/10 px-2 py-1 rounded-full shrink-0">
                             {dur >= 60 ? `${dur / 60 % 1 === 0 ? dur / 60 : (dur / 60).toFixed(1)}hr` : `${dur}m`}
                           </span>
                         )}
                         <input type="number" min={0} value={cs.price} onChange={(e) => setCustomSlot(i, 'price', e.target.value)}
                           placeholder="₹ price"
-                          className="w-20 border border-[#EAEAEA] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                          className="w-20 border border-[#EAEAEA] rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
                         <button type="button" onClick={() => removeCustomSlot(i)}
                           className="w-6 h-6 flex items-center justify-center rounded-md text-[#BBB] hover:text-red-500 hover:bg-red-50 transition-colors shrink-0">
                           <X size={12} />
@@ -1035,7 +1035,7 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
               </button>
               <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-[#EAEAEA] text-sm font-medium text-[#666] hover:bg-[#F5F5F5]">Cancel</button>
               <button type="submit" disabled={saving || clearing || !form.courtIds.length || !form.weekdays.length}
-                className="flex-1 py-2.5 rounded-xl bg-[#C8102E] text-white text-sm font-semibold hover:bg-[#a50d27] disabled:opacity-60 flex items-center justify-center gap-2">
+                className="flex-1 py-2.5 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-2">
                 {saving ? <Loader2 size={15} className="animate-spin" /> : <Zap size={15} />}
                 {saving ? 'Creating…' : 'Create Slots'}
               </button>
@@ -1372,7 +1372,7 @@ function ManualPaymentModal({ slot, onClose, onSuccess }) {
                   onChange={(e) => setUserQuery(e.target.value)}
                   onFocus={() => userResults.length > 0 && setShowDropdown(true)}
                   placeholder="Type to search registered users…"
-                  className="w-full border border-[#EAEAEA] rounded-lg pl-8 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20"
+                  className="w-full border border-[#EAEAEA] rounded-lg pl-8 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20"
                 />
                 {userSearching && <Loader2 size={12} className="absolute right-3 top-2.5 animate-spin text-[#AAA]" />}
                 {showDropdown && userResults.length > 0 && (
@@ -1411,31 +1411,31 @@ function ManualPaymentModal({ slot, onClose, onSuccess }) {
             <div>
               <label className="text-xs font-medium text-[#666] block mb-1">Name *</label>
               <input value={form.playerName} onChange={(e) => set('playerName', e.target.value)} placeholder="Customer name"
-                className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
             </div>
             <div>
               <label className="text-xs font-medium text-[#666] block mb-1">Phone *</label>
               <input value={form.playerPhone} onChange={(e) => set('playerPhone', e.target.value)} placeholder="10-digit phone"
-                className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
             </div>
           </div>
           <div>
             <label className="text-xs font-medium text-[#666] block mb-1">Email (optional)</label>
             <input value={form.playerEmail} onChange={(e) => set('playerEmail', e.target.value)} placeholder="customer@email.com"
-              className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+              className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-medium text-[#666] block mb-1">Amount Paid (₹)</label>
               <input type="number" value={form.amountPaid} onChange={(e) => set('amountPaid', e.target.value)}
                 placeholder={String(slot?.pricePerSlot || '')}
-                className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+                className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
               <p className="text-[10px] text-[#999] mt-0.5">Slot price: ₹{slot?.pricePerSlot}</p>
             </div>
             <div>
               <label className="text-xs font-medium text-[#666] block mb-1">Mode</label>
               <select value={form.paymentMode} onChange={(e) => set('paymentMode', e.target.value)}
-                className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20">
+                className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20">
                 <option value="cash">Cash</option>
                 <option value="upi">UPI</option>
                 <option value="card">Card</option>
@@ -1450,7 +1450,7 @@ function ManualPaymentModal({ slot, onClose, onSuccess }) {
             </div>
           )}
           <label className="flex items-center gap-2.5 cursor-pointer">
-            <input type="checkbox" checked={form.isReference} onChange={(e) => set('isReference', e.target.checked)} className="w-4 h-4 rounded accent-[#C8102E]" />
+            <input type="checkbox" checked={form.isReference} onChange={(e) => set('isReference', e.target.checked)} className="w-4 h-4 rounded accent-[#C5DB3B]" />
             <span className="text-sm text-[#333]">Reference booking (waive remaining)</span>
           </label>
           {form.isReference && linkedUser && (
@@ -1461,14 +1461,14 @@ function ManualPaymentModal({ slot, onClose, onSuccess }) {
           )}
           {form.isReference && (
             <input value={form.referenceNote} onChange={(e) => set('referenceNote', e.target.value)} placeholder="Reference note (e.g. VIP guest)"
-              className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+              className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
           )}
           <textarea value={form.notes} onChange={(e) => set('notes', e.target.value)} rows={2} placeholder="Notes (optional)"
-            className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20 resize-none" />
+            className="w-full border border-[#EAEAEA] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20 resize-none" />
           <div className="flex gap-3">
             <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-[#EAEAEA] text-sm font-medium text-[#666] hover:bg-[#F5F5F5]">Cancel</button>
             <button type="submit" disabled={submitting}
-              className="flex-1 py-2.5 rounded-xl bg-[#C8102E] text-white text-sm font-semibold hover:bg-[#a50d27] disabled:opacity-60 flex items-center justify-center gap-2">
+              className="flex-1 py-2.5 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-2">
               {submitting ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />} Confirm
             </button>
           </div>
@@ -1482,12 +1482,12 @@ function ManualPaymentModal({ slot, onClose, onSuccess }) {
 function SportOverviewCard({ item, selected, onClick }) {
   return (
     <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={onClick}
-      className={`rounded-2xl p-4 text-left w-full transition-all border ${selected ? 'border-[#C8102E] bg-[#C8102E]/5 shadow-lg shadow-[#C8102E]/10' : 'border-[#EAEAEA] bg-white hover:shadow-md'}`}>
+      className={`rounded-2xl p-4 text-left w-full transition-all border ${selected ? 'border-[#C5DB3B] bg-[#C5DB3B]/5 shadow-lg shadow-[#C5DB3B]/10' : 'border-[#EAEAEA] bg-white hover:shadow-md'}`}>
       <div className="flex items-center gap-2 mb-3">
         {item.sport.thumbnail ? (
           <img src={item.sport.thumbnail} className="w-8 h-8 rounded-lg object-cover" alt="" />
         ) : (
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#C8102E] to-[#8B0B1E] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#C5DB3B] to-[#96AC2E] flex items-center justify-center">
             <Zap size={14} className="text-white" />
           </div>
         )}
@@ -1502,7 +1502,7 @@ function SportOverviewCard({ item, selected, onClick }) {
         {item.closedCourts > 0 && <div className="bg-gray-50 rounded-lg px-2 py-1.5"><p className="font-bold text-gray-500">{item.closedCourts}</p><p className="text-gray-400">Closed</p></div>}
         {item.pendingPayments > 0 && <div className="bg-amber-50 rounded-lg px-2 py-1.5"><p className="font-bold text-amber-700">{item.pendingPayments}</p><p className="text-amber-600/70">Pending ₹</p></div>}
       </div>
-      {selected && <div className="mt-2 flex items-center gap-1 text-[#C8102E] text-[10px] font-semibold"><ChevronRight size={12} /> Viewing below</div>}
+      {selected && <div className="mt-2 flex items-center gap-1 text-[#C5DB3B] text-[10px] font-semibold"><ChevronRight size={12} /> Viewing below</div>}
     </motion.button>
   );
 }
@@ -1596,7 +1596,7 @@ function BookingsSection() {
           <div className="flex rounded-lg border border-[#EAEAEA] overflow-hidden text-xs font-semibold">
             {[['today', 'Today'], ['date', 'By Date'], ['month', 'By Month']].map(([val, lbl]) => (
               <button key={val} onClick={() => setMode(val)}
-                className={`px-3 py-1.5 transition-colors ${mode === val ? 'bg-[#C8102E] text-white' : 'text-[#555] hover:bg-[#F5F5F5]'}`}>
+                className={`px-3 py-1.5 transition-colors ${mode === val ? 'bg-[#C5DB3B] text-white' : 'text-[#555] hover:bg-[#F5F5F5]'}`}>
                 {lbl}
               </button>
             ))}
@@ -1604,16 +1604,16 @@ function BookingsSection() {
 
           {mode === 'date' && (
             <input type="date" value={pickedDate} onChange={e => setPickedDate(e.target.value)}
-              className="border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+              className="border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
           )}
           {mode === 'month' && (
             <input type="month" value={pickedMonth} onChange={e => setPickedMonth(e.target.value)}
-              className="border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+              className="border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
           )}
 
           {/* Sport filter */}
           <select value={sportFilter} onChange={e => setSportFilter(e.target.value)}
-            className="border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20 text-[#555]">
+            className="border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20 text-[#555]">
             <option value="">All Sports</option>
             {sportsList.map(s => <option key={s._id} value={s._id}>{s.name}</option>)}
           </select>
@@ -1825,13 +1825,13 @@ export default function LiveSports() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#111] flex items-center gap-2"><Zap size={22} className="text-[#C8102E]" /> Live Sports</h1>
+          <h1 className="text-2xl font-bold text-[#111] flex items-center gap-2"><Zap size={22} className="text-[#C5DB3B]" /> Live Sports</h1>
           <p className="text-sm text-[#999] mt-0.5">Real-time slot & booking overview</p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => changeDate(-1)} className="w-8 h-8 rounded-lg border border-[#EAEAEA] flex items-center justify-center hover:bg-[#F5F5F5]"><ChevronLeft size={16} /></button>
           <input type="date" value={date} onChange={(e) => { setDate(e.target.value); setSelectedSportId(null); setOpenCourtGroup(null); }}
-            className="border border-[#EAEAEA] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20" />
+            className="border border-[#EAEAEA] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
           <button onClick={() => changeDate(1)} className="w-8 h-8 rounded-lg border border-[#EAEAEA] flex items-center justify-center hover:bg-[#F5F5F5]"><ChevronRight size={16} /></button>
           {!isToday && (
             <button onClick={() => { setDate(todayStr()); setSelectedSportId(null); setOpenCourtGroup(null); }}
@@ -1887,11 +1887,11 @@ export default function LiveSports() {
               </div>
               <div className="flex items-center gap-2">
                 <button onClick={() => setShowAddCourt(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#EAEAEA] text-xs font-semibold text-[#555] hover:bg-[#F5F5F5] hover:border-[#C8102E]/30">
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#EAEAEA] text-xs font-semibold text-[#555] hover:bg-[#F5F5F5] hover:border-[#C5DB3B]/30">
                   <Building2 size={13} /> Add Court
                 </button>
                 <button onClick={() => { setBulkCourtPreselect(null); setShowBulkModal(true); }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C8102E] text-white text-xs font-semibold hover:bg-[#a50d27]">
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C5DB3B] text-white text-xs font-semibold hover:bg-[#96AC2E]">
                   <Zap size={13} /> Bulk Create Slots
                 </button>
                 <button onClick={() => { setBulkCourtPreselect(null); setShowBulkDeleteModal(true); }}
@@ -1916,7 +1916,7 @@ export default function LiveSports() {
                     <Plus size={13} /> Add Court
                   </button>
                   <button onClick={() => { if (courts.length) { setBulkCourtPreselect(null); setShowBulkModal(true); } else toast.info('Add a court first.'); }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C8102E] text-white text-xs font-semibold hover:bg-[#a50d27]">
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C5DB3B] text-white text-xs font-semibold hover:bg-[#96AC2E]">
                     <Zap size={13} /> Bulk Create Slots
                   </button>
                   <button onClick={() => { if (courts.length) { setBulkCourtPreselect(null); setShowBulkDeleteModal(true); } else toast.info('Add a court first.'); }}

@@ -90,7 +90,7 @@ export default function MembershipPlans() {
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
           className="text-center mb-16"
         >
-          <p className="uppercase tracking-[5px] text-[13px] text-[#C8102E] mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="uppercase tracking-[5px] text-[13px] text-[#C5DB3B] mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             MEMBERSHIP
           </p>
           <h2 className="section-heading text-white mb-4">
@@ -118,10 +118,10 @@ export default function MembershipPlans() {
                 variants={cardVariants}
                 onMouseEnter={() => setActivePlan(plan.price)}
                 onMouseLeave={() => setActivePlan('17,000')}
-                className={`rounded-2xl p-6 sm:p-8 relative transition-all duration-300 cursor-default ${
+                className={`rounded-2xl p-6 sm:p-8 relative transition-all duration-300 cursor-default border border-white/5 ${
                   isActive
-                    ? 'bg-[#C8102E] text-white md:scale-[1.05] shadow-[0_15px_40px_rgba(200,16,46,0.3)] z-10'
-                    : 'bg-[#151515] text-white border border-white/5'
+                    ? 'bg-[#151515] text-white md:scale-[1.05] shadow-[0_15px_40px_rgba(197, 219, 59,0.3)] z-10'
+                    : 'bg-[#151515] text-white'
                 }`}
               >
                 {/* Badge */}
@@ -139,7 +139,7 @@ export default function MembershipPlans() {
  
                 {/* Price */}
                 <div className="mb-2 flex items-baseline flex-wrap gap-1">
-                  <span className={`text-4xl sm:text-5xl md:text-6xl font-heading font-extrabold tracking-tight ${isActive ? 'text-white' : 'text-[#C8102E]'}`}>
+                  <span className={`text-4xl sm:text-5xl md:text-6xl font-heading font-extrabold tracking-tight ${isActive ? 'text-white' : 'text-[#C5DB3B]'}`}>
                     ₹{plan.price}
                   </span>
                   <span className={`text-sm sm:text-base font-medium ${isActive ? 'text-white/70' : 'text-white/45'}`} style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -171,7 +171,7 @@ export default function MembershipPlans() {
                   className={`block w-full text-center py-3.5 rounded-full font-semibold transition-all duration-200 hover:scale-[1.03] ${
                     isActive
                       ? 'bg-[#F5A623] text-[#0D0D0D] hover:bg-[#E09410]'
-                      : 'bg-[#C8102E] text-white hover:bg-[#8B0B1E]'
+                      : 'bg-[#C5DB3B] text-white hover:bg-[#96AC2E]'
                   }`}
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
@@ -192,7 +192,7 @@ export default function MembershipPlans() {
         >
           {perks.map((perk) => (
             <div key={perk.title} className="text-center p-2.5 sm:p-4 md:p-6 rounded-xl bg-[#151515] border border-white/5 shadow-[0_15px_40px_rgba(0,0,0,0.5)] flex flex-col items-center justify-start min-w-0">
-              <div className="text-[#C8102E] mb-1 md:mb-3 flex justify-center scale-90 sm:scale-100 shrink-0">{perk.icon}</div>
+              <div className="text-[#C5DB3B] mb-1 md:mb-3 flex justify-center scale-90 sm:scale-100 shrink-0">{perk.icon}</div>
               <h4 className="font-bold text-white text-[10px] sm:text-xs md:text-sm mb-1 line-clamp-2 md:line-clamp-1 leading-tight w-full" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {perk.title}
               </h4>

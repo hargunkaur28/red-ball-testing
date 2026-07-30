@@ -5,8 +5,8 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 
 const faqs = [
   {
-    q: 'What makes Red Ball Sports Complex different from other venues in Rohtak?',
-    a: 'Red Ball Sports Arena brings multiple sports under one roof — cricket, badminton, pickleball, swimming, and gym — along with digital booking, membership plans, and an on-site restaurant, making it a complete sports destination in Rohtak.',
+    q: 'What makes Alchemy 360 Sports Complex different from other venues in Rohtak?',
+    a: 'Alchemy 360 Sports Arena brings multiple sports under one roof — cricket, badminton, pickleball, swimming, and gym — along with digital booking, membership plans, and an on-site restaurant, making it a complete sports destination in Rohtak.',
   },
   {
     q: 'Can I bring my whole family to the sports complex?',
@@ -36,8 +36,8 @@ export default function SportsComplexRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Complex in Rohtak | Red Ball Sports Arena"
-        description="Red Ball Sports Complex in Rohtak, Haryana — cricket, badminton, pickleball, swimming & gym under one roof. Family-friendly with memberships and online slot booking."
+        title="Sports Complex in Rohtak | Alchemy 360 Sports Arena"
+        description="Alchemy 360 Sports Complex in Rohtak, Haryana — cricket, badminton, pickleball, swimming & gym under one roof. Family-friendly with memberships and online slot booking."
         canonical="/sports-complex-rohtak"
         schema={schema}
       />
@@ -46,15 +46,15 @@ export default function SportsComplexRohtak() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Rohtak, Haryana</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Rohtak, Haryana</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Sports Complex in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena is Rohtak's most complete sports complex — a single destination for cricket, badminton, pickleball, swimming, fitness, kids coaching, and post-game dining.
+            Alchemy 360 Sports Arena is Rohtak's most complete sports complex — a single destination for cricket, badminton, pickleball, swimming, fitness, kids coaching, and post-game dining.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Slots
             </Link>
             <Link to="/buy-membership" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -69,7 +69,7 @@ export default function SportsComplexRohtak() {
           A Complete Sports Complex for Rohtak Families
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Rohtak needed a proper multi-sport complex. Red Ball Sports Arena fills that gap. Our facility brings together sports courts, aquatic facilities, fitness infrastructure, and structured coaching — creating a venue families can rely on for daily training and weekend recreation.
+          Rohtak needed a proper multi-sport complex. Alchemy 360 Sports Arena fills that gap. Our facility brings together sports courts, aquatic facilities, fitness infrastructure, and structured coaching — creating a venue families can rely on for daily training and weekend recreation.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
           {[
@@ -78,7 +78,7 @@ export default function SportsComplexRohtak() {
             { num: '5 AM', label: 'Early Opening' },
           ].map(stat => (
             <div key={stat.label} className="bg-[#F9F6F1] rounded-xl p-6">
-              <div className="text-3xl font-black text-[#C8102E] mb-1" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>{stat.num}</div>
+              <div className="text-3xl font-black text-[#C5DB3B] mb-1" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>{stat.num}</div>
               <div className="text-xs text-[#0D0D0D]/60 font-semibold uppercase tracking-wider" style={{ fontFamily: "'DM Sans', sans-serif" }}>{stat.label}</div>
             </div>
           ))}
@@ -99,8 +99,8 @@ export default function SportsComplexRohtak() {
               { label: 'Gym', to: '/gym-in-rohtak', desc: 'Modern gym for strength and cardio.' },
               { label: "Kids' Academy", to: '/kids-sports-academy-rohtak', desc: 'Structured youth coaching for cricket and badminton.' },
             ].map(item => (
-              <Link key={item.label} to={item.to} className="bg-white border border-black/10 rounded-xl p-4 hover:border-[#C8102E]/40 transition-all group">
-                <span className="font-semibold text-[#0D0D0D] group-hover:text-[#C8102E] transition-colors text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.label}</span>
+              <Link key={item.label} to={item.to} className="bg-white border border-black/10 rounded-xl p-4 hover:border-[#C5DB3B]/40 transition-all group">
+                <span className="font-semibold text-[#0D0D0D] group-hover:text-[#C5DB3B] transition-colors text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.label}</span>
                 <p className="text-xs text-[#0D0D0D]/50 mt-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.desc}</p>
               </Link>
             ))}

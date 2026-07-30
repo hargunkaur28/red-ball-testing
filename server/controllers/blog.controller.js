@@ -100,7 +100,7 @@ exports.remove = async (req, res) => {
     if (post.coverImage) {
       const parts = post.coverImage.split('/');
       const file = parts[parts.length - 1];
-      const publicId = 'redball-uploads/' + file.split('.')[0];
+      const publicId = 'alchemy360-uploads/' + file.split('.')[0];
       cloudinary.uploader.destroy(publicId).catch(() => {});
     }
     res.json({ message: 'Deleted' });

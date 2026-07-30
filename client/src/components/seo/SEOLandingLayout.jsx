@@ -5,19 +5,19 @@ import { useAcademyInfo } from '../../hooks/useAcademyInfo';
 
 export function CTAStrip() {
   return (
-    <div className="bg-[#C8102E] py-10 px-4">
+    <div className="bg-[#C5DB3B] py-10 px-4">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-white text-2xl md:text-3xl font-bold mb-2" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
           Ready to Play? Book Your Slot Today.
         </h2>
         <p className="text-white/80 mb-6 text-sm md:text-base" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Red Ball Sports Arena — Rohtak, Haryana. Walk-in welcome, online bookings preferred.
+          Alchemy 360 Sports Arena — Rohtak, Haryana. Walk-in welcome, online bookings preferred.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Link to="/book-slots" className="bg-white text-[#C8102E] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#F9F6F1] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <Link to="/book-slots" className="bg-white text-[#C5DB3B] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#F9F6F1] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             Book Slots
           </Link>
-          <Link to="/buy-membership" className="border-2 border-white text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-white hover:text-[#C8102E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <Link to="/buy-membership" className="border-2 border-white text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-white hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             Buy Membership
           </Link>
           <Link to="/one-time-booking" className="border-2 border-white/50 text-white/90 font-bold px-6 py-3 rounded-full text-sm hover:border-white hover:text-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -40,7 +40,7 @@ export function FAQSection({ faqs }) {
           <details key={i} className="border border-black/10 rounded-xl p-5 group open:bg-[#F9F6F1]">
             <summary className="font-semibold text-[#0D0D0D] cursor-pointer list-none flex justify-between items-center" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               {faq.q}
-              <span className="ml-4 text-[#C8102E] group-open:rotate-45 transition-transform inline-block text-xl leading-none">+</span>
+              <span className="ml-4 text-[#C5DB3B] group-open:rotate-45 transition-transform inline-block text-xl leading-none">+</span>
             </summary>
             <p className="mt-3 text-[#0D0D0D]/70 text-sm leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               {faq.a}
@@ -63,11 +63,11 @@ export function ContactBand() {
         </div>
         <div className="flex items-center gap-2">
           <span>📞</span>
-          <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="hover:text-[#C8102E] transition-colors">{academy.phone}</a>
+          <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="hover:text-[#C5DB3B] transition-colors">{academy.phone}</a>
         </div>
         <div className="flex items-center gap-2">
           <span>✉️</span>
-          <a href={`mailto:${academy.email}`} className="hover:text-[#C8102E] transition-colors">{academy.email}</a>
+          <a href={`mailto:${academy.email}`} className="hover:text-[#C5DB3B] transition-colors">{academy.email}</a>
         </div>
       </div>
     </div>
@@ -107,7 +107,7 @@ export function SportsNav({ activePath }) {
       <div className="max-w-[1280px] mx-auto px-4 overflow-x-auto">
         <ul className="flex gap-1 py-2 min-w-max">
           <li>
-            <Link to="/" className="px-3 py-2 rounded-lg text-xs font-semibold text-[#0D0D0D]/60 hover:text-[#C8102E] transition-colors whitespace-nowrap" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/" className="px-3 py-2 rounded-lg text-xs font-semibold text-[#0D0D0D]/60 hover:text-[#C5DB3B] transition-colors whitespace-nowrap" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               ← Home
             </Link>
           </li>
@@ -115,7 +115,7 @@ export function SportsNav({ activePath }) {
             <li key={s.to}>
               <Link
                 to={s.to}
-                className={`px-3 py-2 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${activePath === s.to ? 'bg-[#C8102E] text-white' : 'text-[#0D0D0D]/60 hover:text-[#C8102E]'}`}
+                className={`px-3 py-2 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap ${activePath === s.to ? 'bg-[#C5DB3B] text-white' : 'text-[#0D0D0D]/60 hover:text-[#C5DB3B]'}`}
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >
                 {s.label}

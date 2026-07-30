@@ -5,12 +5,12 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 
 const faqs = [
   {
-    q: 'Does Red Ball have a cricket academy in Rohtak?',
-    a: 'Yes. Red Ball Academy offers cricket coaching on its box cricket ground in Rohtak. Coaching is available for all age groups including a structured kids cricket program.',
+    q: 'Does Alchemy 360 have a cricket academy in Rohtak?',
+    a: 'Yes. Alchemy 360 Academy offers cricket coaching on its box cricket ground in Rohtak. Coaching is available for all age groups including a structured kids cricket program.',
   },
   {
     q: 'What is box cricket and how is it different from regular cricket?',
-    a: 'Box cricket is a compact version of cricket played in an enclosed space with modified rules. It is fast-paced, great for practice, and can be played with smaller teams. Red Ball Sports Arena has a dedicated box cricket ground in Rohtak.',
+    a: 'Box cricket is a compact version of cricket played in an enclosed space with modified rules. It is fast-paced, great for practice, and can be played with smaller teams. Alchemy 360 Sports Arena has a dedicated box cricket ground in Rohtak.',
   },
   {
     q: 'Can I book the cricket ground for a private match?',
@@ -47,8 +47,8 @@ export default function CricketAcademyRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Cricket Academy in Rohtak | Box Cricket Ground | Red Ball"
-        description="Red Ball Cricket Academy in Rohtak, Haryana — professional coaching, box cricket ground booking, kids cricket programs. Book your cricket session online today."
+        title="Cricket Academy in Rohtak | Box Cricket Ground | Alchemy 360"
+        description="Alchemy 360 Cricket Academy in Rohtak, Haryana — professional coaching, box cricket ground booking, kids cricket programs. Book your cricket session online today."
         canonical="/cricket-academy-rohtak"
         schema={schema}
       />
@@ -57,15 +57,15 @@ export default function CricketAcademyRohtak() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Cricket · Rohtak, Haryana</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Cricket · Rohtak, Haryana</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Cricket Academy in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Cricket Academy in Rohtak offers professional-grade box cricket facilities and expert coaching. Whether you want to practice your game, book the ground for a match, or enrol your child — we've got you covered.
+            Alchemy 360 Cricket Academy in Rohtak offers professional-grade box cricket facilities and expert coaching. Whether you want to practice your game, book the ground for a match, or enrol your child — we've got you covered.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Cricket Slot
             </Link>
             <Link to="/buy-membership" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -77,7 +77,7 @@ export default function CricketAcademyRohtak() {
 
       <section className="max-w-4xl mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0D0D0D] mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-          Cricket at Red Ball Sports Arena, Rohtak
+          Cricket at Alchemy 360 Sports Arena, Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
           Our box cricket ground is purpose-built for exciting, fast-paced cricket. With a professional pitch, floodlighting for night sessions, and proper equipment, it's the ideal venue for both training and match play in Rohtak, Haryana.
@@ -98,7 +98,7 @@ export default function CricketAcademyRohtak() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Red Ball Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Alchemy 360 Sports Arena</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Box Cricket', to: '/box-cricket-rohtak' },
@@ -108,7 +108,7 @@ export default function CricketAcademyRohtak() {
               { label: "Kids' Academy", to: '/kids-sports-academy-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
-                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C8102E] hover:text-[#C8102E] transition-colors"
+                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {item.label}
               </Link>

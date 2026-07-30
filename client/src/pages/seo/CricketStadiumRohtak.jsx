@@ -5,27 +5,27 @@ import { stadiumOrArenaSchema, breadcrumbSchema, faqSchema } from '../../compone
 
 const faqs = [
   {
-    q: 'Is Red Ball Sports Arena a proper cricket stadium?',
-    a: 'Red Ball Sports Arena is a professional cricket facility — a floodlit, enclosed box cricket stadium with professional pitch conditions, spectator areas, and full amenities. It is the premier cricket venue in Rohtak.',
+    q: 'Is Alchemy 360 Sports Arena a proper cricket stadium?',
+    a: 'Alchemy 360 Sports Arena is a professional cricket facility — a floodlit, enclosed box cricket stadium with professional pitch conditions, spectator areas, and full amenities. It is the premier cricket venue in Rohtak.',
   },
   {
-    q: 'Does Red Ball host cricket tournaments and leagues?',
-    a: 'Yes. Red Ball is the home venue for the Rohtak Cricket League and regularly hosts corporate cricket tournaments, inter-college matches, and private competitions.',
+    q: 'Does Alchemy 360 host cricket tournaments and leagues?',
+    a: 'Yes. Alchemy 360 is the home venue for the Rohtak Cricket League and regularly hosts corporate cricket tournaments, inter-college matches, and private competitions.',
   },
   {
-    q: 'How many players can play at the Red Ball cricket stadium?',
+    q: 'How many players can play at the Alchemy 360 cricket stadium?',
     a: 'The cricket ground accommodates teams of 6 to 11 players per side, making it suitable for box cricket, T10, and modified formats.',
   },
   {
     q: 'Is there parking available at the cricket stadium?',
-    a: 'Yes. Red Ball Sports Arena has ample parking space for players, spectators, and event attendees.',
+    a: 'Yes. Alchemy 360 Sports Arena has ample parking space for players, spectators, and event attendees.',
   },
   {
     q: 'Can I book the cricket stadium for a private event?',
     a: 'Yes. The cricket stadium can be booked for private events, birthday tournaments, office cricket days, and corporate leagues. Contact us at +91 93500 76653 for event bookings.',
   },
   {
-    q: 'Is there a food court at the Red Ball cricket stadium?',
+    q: 'Is there a food court at the Alchemy 360 cricket stadium?',
     a: 'Yes. An on-site food court with in-ground delivery service is available. Players and spectators can order food directly to the ground.',
   },
 ];
@@ -42,8 +42,8 @@ export default function CricketStadiumRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Cricket Stadium in Rohtak | Red Ball Sports Arena"
-        description="Red Ball Sports Arena — Rohtak's premier cricket stadium with professional ground, floodlighting, seating, and online booking. Home of cricket in Rohtak, Haryana."
+        title="Cricket Stadium in Rohtak | Alchemy 360 Sports Arena"
+        description="Alchemy 360 Sports Arena — Rohtak's premier cricket stadium with professional ground, floodlighting, seating, and online booking. Home of cricket in Rohtak, Haryana."
         canonical="/cricket-stadium-rohtak"
         schema={schema}
       />
@@ -52,15 +52,15 @@ export default function CricketStadiumRohtak() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Cricket Stadium · Rohtak, Haryana</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Cricket Stadium · Rohtak, Haryana</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Cricket Stadium in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena is Rohtak's most complete cricket stadium facility — a floodlit, enclosed cricket ground with dedicated spectator areas, modern amenities, and professional match conditions. Hosting everything from friendly games to the Rohtak Cricket League, it is the definitive cricket destination in Haryana.
+            Alchemy 360 Sports Arena is Rohtak's most complete cricket stadium facility — a floodlit, enclosed cricket ground with dedicated spectator areas, modern amenities, and professional match conditions. Hosting everything from friendly games to the Rohtak Cricket League, it is the definitive cricket destination in Haryana.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Match Slot
             </Link>
             <Link to="/buy-membership" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -72,10 +72,10 @@ export default function CricketStadiumRohtak() {
 
       <section className="max-w-4xl mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0D0D0D] mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-          Red Ball — The Cricket Stadium Rohtak Has Been Waiting For
+          Alchemy 360 — The Cricket Stadium Rohtak Has Been Waiting For
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          From the moment you walk into Red Ball Sports Arena, you feel the difference. The cricket stadium is built for the complete experience: a well-maintained pitch, professional boundary setup, floodlit playing surface, spectator viewing areas, food court access, and digital QR entry. Whether you are playing a corporate match, a Rohtak Cricket League fixture, or a casual session with friends — this is the cricket stadium that sets the standard in Rohtak, Haryana.
+          From the moment you walk into Alchemy 360 Sports Arena, you feel the difference. The cricket stadium is built for the complete experience: a well-maintained pitch, professional boundary setup, floodlit playing surface, spectator viewing areas, food court access, and digital QR entry. Whether you are playing a corporate match, a Rohtak Cricket League fixture, or a casual session with friends — this is the cricket stadium that sets the standard in Rohtak, Haryana.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -93,7 +93,7 @@ export default function CricketStadiumRohtak() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Red Ball Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Alchemy 360 Sports Arena</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Cricket Ground', to: '/cricket-ground-rohtak' },
@@ -104,7 +104,7 @@ export default function CricketStadiumRohtak() {
               { label: 'Sports Complex', to: '/sports-complex-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
-                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C8102E] hover:text-[#C8102E] transition-colors"
+                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {item.label}
               </Link>

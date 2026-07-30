@@ -44,7 +44,7 @@ const buildInvoiceHTML = (data) => {
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="color:#ffffff;">
-                    <div style="font-size:20px;font-weight:700;letter-spacing:0.5px;">&#127Cricket; RED BALL BOX CRICKET ACADEMY</div>
+                    <div style="font-size:20px;font-weight:700;letter-spacing:0.5px;">&#127Cricket; ALCHEMY 360 BOX CRICKET ACADEMY</div>
                     <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:4px;">123 Sports Complex, City Name &nbsp;|&nbsp; +91 XXXXXXXXXX</div>
                   </td>
                   <td align="right" style="color:#ffffff;white-space:nowrap;">
@@ -139,7 +139,7 @@ const buildInvoiceHTML = (data) => {
           <!-- Footer -->
           <tr>
             <td style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:16px 32px;text-align:center;">
-              <div style="font-size:12px;color:#9ca3af;">Thank you for choosing Red Ball Box Cricket Academy!</div>
+              <div style="font-size:12px;color:#9ca3af;">Thank you for choosing Alchemy 360 Box Cricket Academy!</div>
               <div style="font-size:11px;color:#d1d5db;margin-top:4px;">This is a computer-generated invoice.</div>
             </td>
           </tr>

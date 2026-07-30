@@ -32,7 +32,7 @@ export default function FeaturedMenu() {
   return (
     <section className="relative pt-10 md:pt-16 pb-20 md:pb-32 bg-white overflow-hidden" data-theme="light">
       {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#C8102E]/5 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#C5DB3B]/5 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#F5A623]/5 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 relative z-10">
@@ -43,14 +43,14 @@ export default function FeaturedMenu() {
           transition={{ duration: 0.6 }}
           className="flex flex-col items-center text-center mb-16"
         >
-          <p className="uppercase tracking-[5px] text-[13px] text-[#C8102E] mb-3 font-body font-semibold flex items-center gap-2">
+          <p className="uppercase tracking-[5px] text-[13px] text-[#C5DB3B] mb-3 font-body font-semibold flex items-center gap-2">
             <Flame size={16} /> SIGNATURE DISHES
           </p>
           <h2 className="text-3xl md:text-5xl font-heading text-black tracking-wide mb-4">
             Featured Items
           </h2>
           <p className="text-black/60 max-w-xl font-body text-base md:text-lg">
-            Handpicked favorites from the Red Ball Kitchen, designed for ultimate taste and performance.
+            Handpicked favorites from the Alchemy 360 Kitchen, designed for ultimate taste and performance.
           </p>
         </motion.div>
 
@@ -75,7 +75,7 @@ export default function FeaturedMenu() {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute top-2 right-2 md:top-4 md:right-4 bg-white/90 backdrop-blur-md px-2 py-1 md:px-3 md:py-1 rounded-full border border-black/10 shadow-sm">
-                  <p className="text-[#C8102E] font-bold text-[10px] md:text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>₹{item.price || item.sizes?.[0]?.price}</p>
+                  <p className="text-[#C5DB3B] font-bold text-[10px] md:text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>₹{item.price || item.sizes?.[0]?.price}</p>
                 </div>
               </div>
 
@@ -86,7 +86,7 @@ export default function FeaturedMenu() {
                     {item.categoryId?.name || item.category || 'Category'}
                   </p>
                 </div>
-                <h3 className="text-base md:text-xl font-bold text-[#0D0D0D] mb-2 leading-tight group-hover:text-[#C8102E] transition-colors line-clamp-2">
+                <h3 className="text-base md:text-xl font-bold text-[#0D0D0D] mb-2 leading-tight group-hover:text-[#C5DB3B] transition-colors line-clamp-2">
                   {item.name}
                 </h3>
                 <p className="hidden md:block text-[#6B7280] text-sm line-clamp-2 mb-5 flex-1">
@@ -114,7 +114,7 @@ export default function FeaturedMenu() {
                     toast.success(`${item.name} added to cart`);
                     navigate('/table-portal');
                   }}
-                  className="mt-auto w-full flex items-center justify-center gap-1.5 py-2 md:py-2.5 rounded-lg bg-[#C8102E] text-white text-[10px] md:text-xs font-bold hover:bg-[#a00d24] transition-colors"
+                  className="mt-auto w-full flex items-center justify-center gap-1.5 py-2 md:py-2.5 rounded-lg bg-[#C5DB3B] text-white text-[10px] md:text-xs font-bold hover:bg-[#96AC2E] transition-colors"
                 >
                   <ShoppingCart size={12} />
                   <span className="hidden sm:inline">Add to Cart</span>

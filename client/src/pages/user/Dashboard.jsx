@@ -281,7 +281,7 @@ export default function UserDashboard() {
       `}</style>
 
       <div className="mb-8">
-        <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#df1526]">Red Ball Academy</p>
+        <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#C5DB3B]">Alchemy 360 Academy</p>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white">
             Welcome, {user?.name?.split(' ')[0] || 'Player'}
@@ -303,7 +303,7 @@ export default function UserDashboard() {
         animate={{ opacity: 1, y: 0 }}
         className={`relative overflow-hidden rounded-3xl text-white p-6 md:p-7 mb-8 border shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6 ${
           activeSession
-            ? 'bg-gradient-to-r from-[#2a050b] to-black border-[#C8102E]/45'
+            ? 'bg-gradient-to-r from-[#2a050b] to-black border-[#C5DB3B]/45'
             : 'bg-gradient-to-r from-[#111515] to-black border-[#222A2A]'
         }`}
       >
@@ -311,7 +311,7 @@ export default function UserDashboard() {
           <div className={`w-14 h-14 rounded-xl border flex items-center justify-center shrink-0 ${
             activeSession
               ? 'bg-white/10 border-white/20 text-white'
-              : 'bg-[#C8102E]/10 border-[#C8102E]/30 text-[#C8102E] animate-pulse'
+              : 'bg-[#C5DB3B]/10 border-[#C5DB3B]/30 text-[#C5DB3B] animate-pulse'
           }`}>
             {activeSession ? <TimerReset size={28} /> : <QrCode size={28} />}
           </div>
@@ -329,7 +329,7 @@ export default function UserDashboard() {
         <Link
           to="/user/scan"
           className={`w-full md:w-auto px-6 py-3 rounded-xl text-white font-bold text-sm active:scale-95 transition-all text-center flex items-center justify-center gap-2 ${
-            activeSession ? 'bg-white/12 border border-white/20 hover:bg-white/18' : 'bg-[#C8102E] hover:bg-[#a80e27]'
+            activeSession ? 'bg-white/12 border border-white/20 hover:bg-white/18' : 'bg-[#C5DB3B] hover:bg-[#96AC2E]'
           }`}
         >
           <QrCode size={16} /> {activeSession ? 'Scan to Check Out' : 'Scan QR Now'}
@@ -380,15 +380,15 @@ export default function UserDashboard() {
           <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/40 mb-4">Get Started</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Link to="/user/buy-memberships" className="group">
-              <div className="ota-card p-5 flex flex-col gap-3 hover:border-[#C8102E]/40 transition-all cursor-pointer h-full">
-                <div className="w-11 h-11 rounded-xl bg-[#C8102E]/10 border border-[#C8102E]/25 flex items-center justify-center text-[#C8102E] group-hover:bg-[#C8102E]/20 transition-colors">
+              <div className="ota-card p-5 flex flex-col gap-3 hover:border-[#C5DB3B]/40 transition-all cursor-pointer h-full">
+                <div className="w-11 h-11 rounded-xl bg-[#C5DB3B]/10 border border-[#C5DB3B]/25 flex items-center justify-center text-[#C5DB3B] group-hover:bg-[#C5DB3B]/20 transition-colors">
                   <Trophy size={22} strokeWidth={1.8} />
                 </div>
                 <div>
                   <h3 className="font-extrabold text-white text-base leading-tight">Buy Sport Membership</h3>
                   <p className="text-xs text-white/45 mt-1">Monthly, quarterly &amp; yearly plans for one or all sports</p>
                 </div>
-                <span className="mt-auto text-xs font-bold text-[#C8102E] group-hover:underline">View Plans →</span>
+                <span className="mt-auto text-xs font-bold text-[#C5DB3B] group-hover:underline">View Plans →</span>
               </div>
             </Link>
             <Link to="/user/buy-memberships?sport=all-services" className="group">
@@ -633,7 +633,7 @@ export default function UserDashboard() {
         ) : passesList.length === 0 && slotBookingsList.length === 0 ? (
           <div className="ota-card text-center py-7 px-6 border-dashed">
             <p className="text-white/55 text-sm">No one-time bookings yet.</p>
-            <Link to="/user/book-slots" className="text-xs text-[#df1526] font-bold mt-1 inline-block hover:underline">
+            <Link to="/user/book-slots" className="text-xs text-[#C5DB3B] font-bold mt-1 inline-block hover:underline">
               Book a Sport Slot →
             </Link>
           </div>
@@ -679,7 +679,7 @@ export default function UserDashboard() {
                     <div className="mt-5 flex items-center gap-2">
                       <Link
                         to="/user/scan"
-                        className="flex-1 px-4 py-2.5 rounded-xl bg-[#C8102E] hover:bg-[#a80e27] text-white text-xs font-extrabold text-center transition-colors flex items-center justify-center gap-1.5"
+                        className="flex-1 px-4 py-2.5 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-xs font-extrabold text-center transition-colors flex items-center justify-center gap-1.5"
                       >
                         <QrCode size={14} /> Scan QR to Start Session
                       </Link>
@@ -714,7 +714,7 @@ export default function UserDashboard() {
                   ? 'border-red-500/30 bg-red-500/5'
                   : passRemainingMs < 5 * 60000
                     ? 'border-orange-500/30 bg-orange-500/5'
-                    : 'border-[#C8102E]/30 bg-[#2a050b]/20';
+                    : 'border-[#C5DB3B]/30 bg-[#2a050b]/20';
 
                 return (
                   <motion.div
@@ -726,7 +726,7 @@ export default function UserDashboard() {
                     <div className={`absolute top-0 right-0 px-3 py-1 border-b border-l rounded-bl-xl text-[10px] font-extrabold uppercase tracking-wider animate-pulse ${
                       isPassOvertime
                         ? 'bg-red-500/20 border-red-500/30 text-red-400'
-                        : 'bg-[#C8102E]/20 border-[#C8102E]/30 text-[#C8102E]'
+                        : 'bg-[#C5DB3B]/20 border-[#C5DB3B]/30 text-[#C5DB3B]'
                     }`}>
                       {isPassOvertime ? 'Overtime' : 'Session Active'}
                     </div>
@@ -749,7 +749,7 @@ export default function UserDashboard() {
                     <div className="mt-5">
                       <Link
                         to="/user/scan"
-                        className="w-full px-4 py-2.5 rounded-xl bg-[#C8102E] hover:bg-[#a80e27] text-white text-xs font-extrabold text-center transition-colors flex items-center justify-center gap-1.5"
+                        className="w-full px-4 py-2.5 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-xs font-extrabold text-center transition-colors flex items-center justify-center gap-1.5"
                       >
                         <QrCode size={14} /> Scan QR to Check Out
                       </Link>
@@ -889,10 +889,10 @@ export default function UserDashboard() {
                           background: 'rgba(59,130,246,0.12)',
                           border: '1px solid rgba(59,130,246,0.25)'
                         } : {
-                          background: 'rgba(200,16,46,0.1)',
-                          border: '1px solid rgba(200,16,46,0.2)'
+                          background: 'rgba(197, 219, 59,0.1)',
+                          border: '1px solid rgba(197, 219, 59,0.2)'
                         }}>
-                        <Zap size={16} className={isPast ? 'text-white/30' : isUpcoming ? 'text-blue-400' : 'text-[#C8102E]'} />
+                        <Zap size={16} className={isPast ? 'text-white/30' : isUpcoming ? 'text-blue-400' : 'text-[#C5DB3B]'} />
                       </div>
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2 mb-0.5">
@@ -960,7 +960,7 @@ export default function UserDashboard() {
       <div className="grid grid-cols-2 gap-4 mb-8">
         <Link to="/user/membership">
           <motion.div whileHover={{ scale: 1.02 }} className="ota-card flex items-center gap-4 cursor-pointer p-5 hover:border-white/15 transition-all h-full">
-            <Trophy size={28} strokeWidth={1.5} className="text-[#df1526] shrink-0" />
+            <Trophy size={28} strokeWidth={1.5} className="text-[#C5DB3B] shrink-0" />
             <div>
               <h3 className="font-bold text-white text-sm sm:text-base">Membership</h3>
               <p className="text-[10px] sm:text-xs text-white/45">View plan, sports & invoices</p>
@@ -969,7 +969,7 @@ export default function UserDashboard() {
         </Link>
         <Link to="/user/table-portal">
           <motion.div whileHover={{ scale: 1.02 }} className="ota-card flex items-center gap-4 cursor-pointer p-5 hover:border-white/15 transition-all h-full">
-            <Utensils size={28} strokeWidth={1.5} className="text-[#df1526] shrink-0" />
+            <Utensils size={28} strokeWidth={1.5} className="text-[#C5DB3B] shrink-0" />
             <div>
               <h3 className="font-bold text-white text-sm sm:text-base">Order Food</h3>
               <p className="text-[10px] sm:text-xs text-white/45">Browse menu & place orders</p>
@@ -978,7 +978,7 @@ export default function UserDashboard() {
         </Link>
         <Link to="/user/orders">
           <motion.div whileHover={{ scale: 1.02 }} className="ota-card flex items-center gap-4 cursor-pointer p-5 hover:border-white/15 transition-all h-full">
-            <Calendar size={28} strokeWidth={1.5} className="text-[#df1526] shrink-0" />
+            <Calendar size={28} strokeWidth={1.5} className="text-[#C5DB3B] shrink-0" />
             <div>
               <h3 className="font-bold text-white text-sm sm:text-base">Order History</h3>
               <p className="text-[10px] sm:text-xs text-white/45">{orders?.orders?.length || 0} orders</p>
@@ -987,7 +987,7 @@ export default function UserDashboard() {
         </Link>
         <Link to="/user/profile">
           <motion.div whileHover={{ scale: 1.02 }} className="ota-card flex items-center gap-4 cursor-pointer p-5 hover:border-white/15 transition-all h-full">
-            <User size={28} strokeWidth={1.5} className="text-[#df1526] shrink-0" />
+            <User size={28} strokeWidth={1.5} className="text-[#C5DB3B] shrink-0" />
             <div>
               <h3 className="font-bold text-white text-sm sm:text-base">Profile</h3>
               <p className="text-[10px] sm:text-xs text-white/45">Manage photo & password</p>

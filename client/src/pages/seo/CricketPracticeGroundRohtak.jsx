@@ -5,12 +5,12 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 
 const faqs = [
   {
-    q: 'Is there a dedicated cricket practice ground at Red Ball?',
-    a: 'Yes. Red Ball Sports Arena has a dedicated practice area with batting nets, bowling crease markings, and a maintained pitch surface for structured practice sessions.',
+    q: 'Is there a dedicated cricket practice ground at Alchemy 360?',
+    a: 'Yes. Alchemy 360 Sports Arena has a dedicated practice area with batting nets, bowling crease markings, and a maintained pitch surface for structured practice sessions.',
   },
   {
     q: 'What time does the cricket practice ground open?',
-    a: 'The cricket practice facility at Red Ball opens at 5:00 AM, seven days a week — ideal for early morning sessions before school or work.',
+    a: 'The cricket practice facility at Alchemy 360 opens at 5:00 AM, seven days a week — ideal for early morning sessions before school or work.',
   },
   {
     q: 'Can I book the practice ground for net sessions?',
@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: 'Is coaching available during practice sessions?',
-    a: 'Yes. Coached practice sessions are available where a Red Ball cricket coach runs your batting or bowling drills. Alternatively, book an uncoached open practice slot.',
+    a: 'Yes. Coached practice sessions are available where a Alchemy 360 cricket coach runs your batting or bowling drills. Alternatively, book an uncoached open practice slot.',
   },
   {
     q: 'Is the practice ground available for full team practice?',
@@ -26,7 +26,7 @@ const faqs = [
   },
   {
     q: 'Do I need to bring my own cricket equipment?',
-    a: 'Basic cricket equipment is available at the Red Ball sports accessories shop. You can bring your own gear or purchase/rent equipment on-site.',
+    a: 'Basic cricket equipment is available at the Alchemy 360 sports accessories shop. You can bring your own gear or purchase/rent equipment on-site.',
   },
 ];
 
@@ -47,8 +47,8 @@ export default function CricketPracticeGroundRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Cricket Practice Ground in Rohtak | Nets & Drills | Red Ball Sports Arena"
-        description="Professional cricket practice ground in Rohtak at Red Ball Sports Arena — batting nets, bowling practice, floodlit facility, open from 5 AM. Book your practice session online."
+        title="Cricket Practice Ground in Rohtak | Nets & Drills | Alchemy 360 Sports Arena"
+        description="Professional cricket practice ground in Rohtak at Alchemy 360 Sports Arena — batting nets, bowling practice, floodlit facility, open from 5 AM. Book your practice session online."
         canonical="/cricket-practice-ground-rohtak"
         schema={schema}
       />
@@ -57,15 +57,15 @@ export default function CricketPracticeGroundRohtak() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Cricket Practice · Rohtak, Haryana</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Cricket Practice · Rohtak, Haryana</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Cricket Practice Ground in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena provides a dedicated cricket practice ground in Rohtak — with batting nets, full bowling runs, and a maintained pitch surface. Whether you want to work on your batting technique, bowling accuracy, or full team fielding drills, the Red Ball practice facility gives you professional conditions every session.
+            Alchemy 360 Sports Arena provides a dedicated cricket practice ground in Rohtak — with batting nets, full bowling runs, and a maintained pitch surface. Whether you want to work on your batting technique, bowling accuracy, or full team fielding drills, the Alchemy 360 practice facility gives you professional conditions every session.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Practice Slot
             </Link>
             <Link to="/buy-membership" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -80,7 +80,7 @@ export default function CricketPracticeGroundRohtak() {
           Train Seriously on Rohtak's Best Cricket Practice Ground
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          A proper practice ground makes the difference between developing good habits and reinforcing bad ones. Red Ball Sports Arena's cricket practice facility in Rohtak has a maintained pitch, bowling crease markings, and ample space for full run-ups. Floodlighting extends practice sessions into the evening, and the facility opens at 5:00 AM — perfect for serious players who train before work or school.
+          A proper practice ground makes the difference between developing good habits and reinforcing bad ones. Alchemy 360 Sports Arena's cricket practice facility in Rohtak has a maintained pitch, bowling crease markings, and ample space for full run-ups. Floodlighting extends practice sessions into the evening, and the facility opens at 5:00 AM — perfect for serious players who train before work or school.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -98,7 +98,7 @@ export default function CricketPracticeGroundRohtak() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Red Ball Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Alchemy 360 Sports Arena</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Cricket Academy', to: '/cricket-academy-rohtak' },
@@ -108,7 +108,7 @@ export default function CricketPracticeGroundRohtak() {
               { label: 'Sports Complex', to: '/sports-complex-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
-                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C8102E] hover:text-[#C8102E] transition-colors"
+                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {item.label}
               </Link>

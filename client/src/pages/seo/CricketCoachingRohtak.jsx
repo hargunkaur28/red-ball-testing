@@ -5,28 +5,28 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 
 const faqs = [
   {
-    q: 'Is cricket coaching available at Red Ball Sports Arena?',
-    a: 'Yes. Red Ball offers structured cricket coaching programs for all age groups — children, teenagers, and adults. Coaching covers batting, bowling, and fielding with experienced coaches.',
+    q: 'Is cricket coaching available at Alchemy 360 Sports Arena?',
+    a: 'Yes. Alchemy 360 offers structured cricket coaching programs for all age groups — children, teenagers, and adults. Coaching covers batting, bowling, and fielding with experienced coaches.',
   },
   {
-    q: 'What is the coaching fee for cricket in Rohtak at Red Ball?',
-    a: 'Coaching fees vary by program type, duration, and batch size. Contact Red Ball at +91 93500 76653 or visit the membership page for current coaching program rates.',
+    q: 'What is the coaching fee for cricket in Rohtak at Alchemy 360?',
+    a: 'Coaching fees vary by program type, duration, and batch size. Contact Alchemy 360 at +91 93500 76653 or visit the membership page for current coaching program rates.',
   },
   {
     q: 'Is there a kids cricket coaching program?',
-    a: 'Yes. Red Ball runs a dedicated kids cricket academy for children aged 6 and above with age-appropriate drills, small-batch coaching, and progressive skill tracking.',
+    a: 'Yes. Alchemy 360 runs a dedicated kids cricket academy for children aged 6 and above with age-appropriate drills, small-batch coaching, and progressive skill tracking.',
   },
   {
-    q: 'Who are the cricket coaches at Red Ball?',
-    a: 'Red Ball employs experienced cricket coaches with professional playing backgrounds. Coaches are trained in youth cricket instruction and sports technique development.',
+    q: 'Who are the cricket coaches at Alchemy 360?',
+    a: 'Alchemy 360 employs experienced cricket coaches with professional playing backgrounds. Coaches are trained in youth cricket instruction and sports technique development.',
   },
   {
     q: 'How often are coaching sessions held?',
     a: 'Coaching sessions are structured on weekly schedules with morning and evening batches. Custom private coaching sessions can also be arranged.',
   },
   {
-    q: 'Can adults join cricket coaching at Red Ball?',
-    a: 'Yes. Cricket coaching at Red Ball is open to adults with no upper age limit. Corporate cricket coaching programs are also available for office teams.',
+    q: 'Can adults join cricket coaching at Alchemy 360?',
+    a: 'Yes. Cricket coaching at Alchemy 360 is open to adults with no upper age limit. Corporate cricket coaching programs are also available for office teams.',
   },
 ];
 
@@ -47,8 +47,8 @@ export default function CricketCoachingRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Cricket Coaching in Rohtak | Professional Training | Red Ball Sports Arena"
-        description="Join professional cricket coaching in Rohtak at Red Ball Sports Arena — expert coaches, structured batting, bowling, and fielding programs for all age groups. Book today."
+        title="Cricket Coaching in Rohtak | Professional Training | Alchemy 360 Sports Arena"
+        description="Join professional cricket coaching in Rohtak at Alchemy 360 Sports Arena — expert coaches, structured batting, bowling, and fielding programs for all age groups. Book today."
         canonical="/cricket-coaching-rohtak"
         schema={schema}
       />
@@ -57,15 +57,15 @@ export default function CricketCoachingRohtak() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Cricket Coaching · Rohtak, Haryana</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Cricket Coaching · Rohtak, Haryana</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Cricket Coaching in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena offers structured cricket coaching in Rohtak for all skill levels. Our experienced coaches run systematic programs covering batting, bowling, and fielding technique, sports fitness, and match strategy — all on our dedicated cricket ground in Rohtak, Haryana.
+            Alchemy 360 Sports Arena offers structured cricket coaching in Rohtak for all skill levels. Our experienced coaches run systematic programs covering batting, bowling, and fielding technique, sports fitness, and match strategy — all on our dedicated cricket ground in Rohtak, Haryana.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/buy-membership" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Enquire About Coaching
             </Link>
             <Link to="/book-slots" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -77,10 +77,10 @@ export default function CricketCoachingRohtak() {
 
       <section className="max-w-4xl mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0D0D0D] mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-          Professional Cricket Training at Red Ball, Rohtak
+          Professional Cricket Training at Alchemy 360, Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Cricket coaching at Red Ball goes beyond just practice time on the ground. Our coaches provide personalised feedback, drills designed for specific skill development, and a structured progression framework. Whether you are a child stepping onto a cricket ground for the first time or an adult looking to sharpen competitive game skills — Red Ball cricket coaching in Rohtak has a program designed for your level and goals.
+          Cricket coaching at Alchemy 360 goes beyond just practice time on the ground. Our coaches provide personalised feedback, drills designed for specific skill development, and a structured progression framework. Whether you are a child stepping onto a cricket ground for the first time or an adult looking to sharpen competitive game skills — Alchemy 360 cricket coaching in Rohtak has a program designed for your level and goals.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -98,7 +98,7 @@ export default function CricketCoachingRohtak() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Red Ball Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Alchemy 360 Sports Arena</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Cricket Academy', to: '/cricket-academy-rohtak' },
@@ -108,7 +108,7 @@ export default function CricketCoachingRohtak() {
               { label: "Kids' Academy", to: '/kids-sports-academy-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
-                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C8102E] hover:text-[#C8102E] transition-colors"
+                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {item.label}
               </Link>

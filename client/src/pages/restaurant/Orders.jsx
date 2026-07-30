@@ -245,7 +245,7 @@ export default function RestaurantOrders() {
         {/* Table / Customer info */}
         <div className="bg-gray-50 rounded-xl p-2.5 border border-gray-100 space-y-1">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-extrabold text-[#C8102E]">
+            <span className="text-sm font-extrabold text-[#C5DB3B]">
               {order.orderType === 'delivery' ? '🛵 Delivery Order' : order.orderType === 'pickup' ? '🏃 Pickup Order' : (order.tableId?.label || `Table #${order.tableId?.tableNumber || 'Dine-in'}`)}
             </span>
             <span className="text-xs text-gray-500 font-semibold">{order.orderType || order.tableId?.section || 'Indoor'}</span>
@@ -269,7 +269,7 @@ export default function RestaurantOrders() {
                     onClick={() => setExpandedAddresses(prev => ({ ...prev, [order._id]: !prev[order._id] }))}
                     className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors py-1 cursor-pointer outline-none w-full text-left"
                   >
-                    <MapPin size={12} className="text-[#C8102E] shrink-0" />
+                    <MapPin size={12} className="text-[#C5DB3B] shrink-0" />
                     <span className="text-xs font-bold text-gray-600">Delivery Address</span>
                     <ChevronDown
                       size={12}
@@ -382,7 +382,7 @@ export default function RestaurantOrders() {
             </div>
             <button
               onClick={() => updateMutation.mutate({ id: order._id, paymentStatus: 'paid' })}
-              className="px-2.5 py-1 bg-[#C8102E] text-white rounded-lg text-[10px] font-black shadow hover:bg-[#A00D24] transition-all cursor-pointer"
+              className="px-2.5 py-1 bg-[#C5DB3B] text-white rounded-lg text-[10px] font-black shadow hover:bg-[#96AC2E] transition-all cursor-pointer"
             >
               Mark Paid
             </button>
@@ -408,7 +408,7 @@ export default function RestaurantOrders() {
             return (
               <div key={item._id || item.name} className={`flex items-start justify-between gap-2 text-xs rounded-lg px-1.5 py-1 ${isCancelled ? 'bg-red-50' : ''}`}>
                 <div className="flex-1 min-w-0">
-                  <span className={`font-extrabold text-[#C8102E]`}>{item.quantity}×</span>
+                  <span className={`font-extrabold text-[#C5DB3B]`}>{item.quantity}×</span>
                   <span className={`ml-1 ${itemStatusStyle[item.status] || 'text-black font-semibold'}`}>
                     {item.name}{item.size && item.size !== 'Regular' ? ` (${item.size})` : ''}
                   </span>
@@ -463,7 +463,7 @@ export default function RestaurantOrders() {
                 </span>
               )}
             </div>
-            <span className="font-mono text-[#C8102E]">{formatCurrency(order.totalAmount)}</span>
+            <span className="font-mono text-[#C5DB3B]">{formatCurrency(order.totalAmount)}</span>
           </div>
 
           {status !== 'delivered' && status !== 'cancelled' && (
@@ -556,7 +556,7 @@ export default function RestaurantOrders() {
                 }}
                 className={`rounded-3xl border-2 shadow-sm overflow-hidden flex flex-col h-[calc(100vh-200px)] min-h-[500px] transition-all duration-150 ${
                   isOver && validDrop
-                    ? 'border-[#C8102E] ring-2 ring-[#C8102E]/40 scale-[1.01]'
+                    ? 'border-[#C5DB3B] ring-2 ring-[#C5DB3B]/40 scale-[1.01]'
                     : config.color
                 }`}
               >
@@ -575,7 +575,7 @@ export default function RestaurantOrders() {
                 </div>
                 <div className="p-4 flex-1 space-y-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
                   {columnOrders.length === 0 && (
-                    <div className={`text-center py-16 font-medium text-xs transition-colors ${isOver && validDrop ? 'text-[#C8102E]' : 'text-gray-400'}`}>
+                    <div className={`text-center py-16 font-medium text-xs transition-colors ${isOver && validDrop ? 'text-[#C5DB3B]' : 'text-gray-400'}`}>
                       {isOver && validDrop ? '↓ Drop to move here' : `No ${config.label.toLowerCase()}`}
                     </div>
                   )}
@@ -662,7 +662,7 @@ export default function RestaurantOrders() {
                             {order.items?.map((item, idx) => (
                               <div key={idx} className={`flex items-center justify-between gap-2 ${item.status === 'cancelled' || item.status === 'refunded' ? 'opacity-60' : ''}`}>
                                 <span className={item.status === 'cancelled' || item.status === 'refunded' ? 'line-through text-red-400' : ''}>
-                                  <span className="font-extrabold text-[#C8102E]">{item.quantity}×</span> {item.name}
+                                  <span className="font-extrabold text-[#C5DB3B]">{item.quantity}×</span> {item.name}
                                 </span>
                                 {item.status === 'cancelled' && item.refundStatus === 'pending' && (
                                   <button
@@ -680,7 +680,7 @@ export default function RestaurantOrders() {
                             onClick={() => setViewingOrderDetails(order)}
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold text-xs transition-all active:scale-95 cursor-pointer border border-gray-200 shadow-sm"
                           >
-                            <Eye size={14} className="text-[#C8102E] shrink-0" />
+                            <Eye size={14} className="text-[#C5DB3B] shrink-0" />
                             <span>View Details</span>
                           </button>
                         </td>
@@ -698,7 +698,7 @@ export default function RestaurantOrders() {
                         <td className="px-6 py-4">
                           <p className="text-sm font-extrabold font-mono">{formatCurrency(order.totalAmount)}</p>
                           {isManualPending ? (
-                            <button onClick={() => updateMutation.mutate({ id: order._id, paymentStatus: 'paid' })} className="text-[10px] font-bold text-white bg-[#C8102E] px-2 py-1 rounded shadow mt-1 cursor-pointer">Mark Paid</button>
+                            <button onClick={() => updateMutation.mutate({ id: order._id, paymentStatus: 'paid' })} className="text-[10px] font-bold text-white bg-[#C5DB3B] px-2 py-1 rounded shadow mt-1 cursor-pointer">Mark Paid</button>
                           ) : (
                             <span className="inline-flex text-[10px] font-bold uppercase tracking-wider text-green-700 bg-green-50 px-2 py-0.5 rounded-full border border-green-200 mt-1">
                               <CheckCircle size={10} className="mr-1" /> {order.paymentMethod}
@@ -845,7 +845,7 @@ export default function RestaurantOrders() {
                     updateMutation.mutate({ id: confirmDrag.orderId, status: confirmDrag.toStatus });
                     setConfirmDrag(null);
                   }}
-                  className="flex-1 py-2.5 bg-[#C8102E] hover:bg-[#A00D24] text-white rounded-xl text-sm font-black transition-all shadow-md"
+                  className="flex-1 py-2.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-xl text-sm font-black transition-all shadow-md"
                 >
                   Yes, move it
                 </button>
@@ -937,7 +937,7 @@ export default function RestaurantOrders() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-400 font-semibold">Order Type:</span>
-                      <span className="font-bold text-[#C8102E] uppercase">
+                      <span className="font-bold text-[#C5DB3B] uppercase">
                         {viewingOrderDetails.orderType === 'delivery' ? '🛵 Delivery' : viewingOrderDetails.orderType === 'pickup' ? '🏃 Pickup' : `🍽️ Dine-In (${viewingOrderDetails.tableId?.label || 'Table'})`}
                       </span>
                     </div>
@@ -953,7 +953,7 @@ export default function RestaurantOrders() {
                       <div className="bg-blue-50/60 border border-blue-100 rounded-2xl p-4 text-xs text-blue-950 leading-relaxed shadow-sm">
                         <div className="flex items-center justify-between mb-1.5">
                           <div className="flex items-center gap-1 font-bold text-blue-800">
-                            <MapPin size={13} className="text-[#C8102E] shrink-0" />
+                            <MapPin size={13} className="text-[#C5DB3B] shrink-0" />
                             <span>Delivery Address:</span>
                           </div>
                           <a
@@ -991,7 +991,7 @@ export default function RestaurantOrders() {
                         <div key={idx} className={`p-3 flex items-start justify-between gap-3 text-xs ${isCancelled ? 'bg-red-50/50' : 'hover:bg-gray-50/40'}`}>
                           <div>
                             <p className="font-bold text-black">
-                              <span className="text-[#C8102E] font-black">{item.quantity}×</span> {item.name}
+                              <span className="text-[#C5DB3B] font-black">{item.quantity}×</span> {item.name}
                               {item.size && item.size !== 'Regular' && <span className="text-gray-500 font-normal text-[11px]"> ({item.size})</span>}
                             </p>
                             {item.kitchenNote && <p className="text-[10px] text-gray-400 italic mt-0.5">Note: {item.kitchenNote}</p>}
@@ -1011,7 +1011,7 @@ export default function RestaurantOrders() {
                     <div className="p-3.5 bg-gray-50 space-y-1.5 text-xs font-semibold border-t border-gray-100">
                       <div className="flex justify-between text-gray-500">
                         <span>Total Amount:</span>
-                        <span className="font-mono font-bold text-[#C8102E] text-sm">
+                        <span className="font-mono font-bold text-[#C5DB3B] text-sm">
                           {formatCurrency(viewingOrderDetails.totalAmount)}
                         </span>
                       </div>

@@ -213,7 +213,7 @@ function OrderCard({ order }) {
               {/* Delivery address */}
               {order.orderType === 'delivery' && order.deliveryAddress && (
                 <div className="flex items-start gap-2 rounded-2xl border border-white/[0.06] bg-white/[0.03] px-4 py-3">
-                  <MapPin size={14} className="text-[#df1526] mt-0.5 shrink-0" />
+                  <MapPin size={14} className="text-[#C5DB3B] mt-0.5 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-[10px] font-black uppercase tracking-widest text-white/30 mb-0.5">Delivery Address</p>
                     <p className="text-xs text-white/60 leading-relaxed">{order.deliveryAddress}</p>
@@ -331,7 +331,7 @@ export default function OrderHistory() {
   return (
     <div className="space-y-8">
       <div>
-        <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#df1526]">Red Ball Academy</p>
+        <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#C5DB3B]">Alchemy 360 Academy</p>
         <h1 className="mt-3 text-3xl font-black sm:text-4xl tracking-tight text-white">Order History</h1>
         <p className="mt-2 text-sm text-white/50">Live tracking for your food orders</p>
       </div>
@@ -353,7 +353,7 @@ export default function OrderHistory() {
             </p>
             <Link 
               to="/table-portal"
-              className="px-8 py-3.5 rounded-full bg-[#C8102E] text-white text-sm font-semibold transition-all hover:bg-[#8B0B1E] hover:scale-105 shadow-xl shadow-red-950/20"
+              className="px-8 py-3.5 rounded-full bg-[#C5DB3B] text-white text-sm font-semibold transition-all hover:bg-[#96AC2E] hover:scale-105 shadow-xl shadow-[#C5DB3B]/20"
             >
               Browse Menu
             </Link>

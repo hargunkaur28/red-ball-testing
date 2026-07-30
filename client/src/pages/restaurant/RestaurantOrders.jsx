@@ -166,7 +166,7 @@ export default function RestaurantOrders() {
           {filterDate && (
             <button 
               onClick={() => setFilterDate('')}
-              className="absolute right-3 text-gray-400 hover:text-[#C8102E] transition-colors"
+              className="absolute right-3 text-gray-400 hover:text-[#C5DB3B] transition-colors"
               title="Clear Date (Show All Time)"
             >
               <XCircle size={16} />
@@ -236,7 +236,7 @@ export default function RestaurantOrders() {
                           <span>{new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                         </div>
                         <div className="flex items-center gap-1.5 text-[10px] text-black font-black uppercase tracking-tighter">
-                          <Utensils size={10} className="text-[#C8102E]" />
+                          <Utensils size={10} className="text-[#C5DB3B]" />
                           <span>
                             {order.orderType === 'delivery'
                               ? '🛵 Delivery'
@@ -358,7 +358,7 @@ export default function RestaurantOrders() {
                   <p className="text-[10px] uppercase font-black text-gray-400 mb-1">
                     {selectedOrder.orderType === 'delivery' ? 'Delivery' : selectedOrder.orderType === 'pickup' ? 'Pickup' : 'Table'}
                   </p>
-                  <p className="text-sm font-bold text-[#C8102E]">
+                  <p className="text-sm font-bold text-[#C5DB3B]">
                     {selectedOrder.orderType === 'delivery'
                       ? '🛵 Delivery Order'
                       : selectedOrder.orderType === 'pickup'
@@ -430,7 +430,7 @@ export default function RestaurantOrders() {
                         <div key={idx} className={`flex justify-between items-start p-3 rounded-xl border transition-all ${isCancelled ? 'bg-red-50/50 border-red-100' : 'bg-gray-50 border-gray-100'}`}>
                           <div>
                             <p className="text-sm font-bold flex items-center gap-1.5">
-                              <span className="text-[#C8102E]">{item.quantity}x</span>
+                              <span className="text-[#C5DB3B]">{item.quantity}x</span>
                               <span className={isCancelled ? 'line-through text-gray-400' : ''}>{item.name}</span>
                               {isCancelled && (
                                 <span className={`inline-flex px-1.5 py-0.5 text-[9px] font-extrabold rounded-md uppercase tracking-wider ${
@@ -475,7 +475,7 @@ export default function RestaurantOrders() {
             {/* Total Footer */}
             <div className="p-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
               <span className="text-sm font-black text-gray-500 uppercase tracking-widest">Grand Total</span>
-              <span className="text-xl font-mono font-black text-[#C8102E]">{formatCurrency(selectedOrder.totalAmount)}</span>
+              <span className="text-xl font-mono font-black text-[#C5DB3B]">{formatCurrency(selectedOrder.totalAmount)}</span>
             </div>
           </div>
         </div>

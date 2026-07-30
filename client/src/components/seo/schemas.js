@@ -3,13 +3,13 @@ export const SITE_URL = 'https://www.redballsportsarena.in';
 export const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': ['SportsActivityLocation', 'LocalBusiness'],
-  name: 'Red Ball Sports Arena',
-  alternateName: 'Red Ball Academy',
+  name: 'Alchemy 360 Sports Arena',
+  alternateName: 'Alchemy 360 Academy',
   url: SITE_URL,
   logo: `${SITE_URL}/icon.png`,
   image: `${SITE_URL}/banner.png`,
   description:
-    'Red Ball Sports Arena is a premier multi-sport complex in Rohtak, Haryana offering box cricket, badminton, pickleball, swimming, gym, and kids sports academy with membership plans and slot booking.',
+    'Alchemy 360 Sports Arena is a premier multi-sport complex in Rohtak, Haryana offering box cricket, badminton, pickleball, swimming, gym, and kids sports academy with membership plans and slot booking.',
   telephone: '+919350076653',
   email: 'redballcricketground@gmail.com',
   address: {
@@ -41,7 +41,7 @@ export const localBusinessSchema = {
 export const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Red Ball Sports Arena',
+  name: 'Alchemy 360 Sports Arena',
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
   contactPoint: {
@@ -56,7 +56,7 @@ export const organizationSchema = {
 export const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Red Ball Sports Arena',
+  name: 'Alchemy 360 Sports Arena',
   url: SITE_URL,
   potentialAction: {
     '@type': 'SearchAction',
@@ -104,12 +104,12 @@ export function faqSchema(faqs) {
 export const stadiumOrArenaSchema = {
   '@context': 'https://schema.org',
   '@type': ['StadiumOrArena', 'SportsActivityLocation', 'LocalBusiness'],
-  name: 'Red Ball Sports Arena',
-  alternateName: ['Red Ball Cricket Ground', 'Red Ball Cricket Stadium', 'Redball Sports Arena'],
+  name: 'Alchemy 360 Sports Arena',
+  alternateName: ['Alchemy 360 Cricket Ground', 'Alchemy 360 Cricket Stadium', 'Alchemy360 Sports Arena'],
   url: SITE_URL,
   logo: `${SITE_URL}/icon.png`,
   image: `${SITE_URL}/banner.png`,
-  description: 'Red Ball Sports Arena is a premier cricket stadium and multi-sport complex in Rohtak, Haryana — home of the Rohtak Cricket League, professional box cricket, and corporate sports events.',
+  description: 'Alchemy 360 Sports Arena is a premier cricket stadium and multi-sport complex in Rohtak, Haryana — home of the Rohtak Cricket League, professional box cricket, and corporate sports events.',
   telephone: '+919350076653',
   email: 'redballcricketground@gmail.com',
   address: {
@@ -146,12 +146,12 @@ export const stadiumOrArenaSchema = {
 export const sportsClubSchema = {
   '@context': 'https://schema.org',
   '@type': ['SportsClub', 'SportsActivityLocation', 'LocalBusiness'],
-  name: 'Red Ball Sports Arena',
-  alternateName: ['Red Ball Sports Club', 'Redball Sports Arena', 'Red Ball Academy'],
+  name: 'Alchemy 360 Sports Arena',
+  alternateName: ['Alchemy 360 Sports Club', 'Alchemy360 Sports Arena', 'Alchemy 360 Academy'],
   url: SITE_URL,
   logo: `${SITE_URL}/icon.png`,
   image: `${SITE_URL}/banner.png`,
-  description: 'Red Ball Sports Arena is Rohtak\'s premier multi-sport club — offering cricket, badminton, pickleball, swimming, gym, and kids academy with flexible membership plans.',
+  description: 'Alchemy 360 Sports Arena is Rohtak\'s premier multi-sport club — offering cricket, badminton, pickleball, swimming, gym, and kids academy with flexible membership plans.',
   telephone: '+919350076653',
   email: 'redballcricketground@gmail.com',
   address: {
@@ -173,7 +173,7 @@ export const sportsClubSchema = {
 export const aggregateRatingSchema = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
-  name: 'Red Ball Sports Arena',
+  name: 'Alchemy 360 Sports Arena',
   url: SITE_URL,
   aggregateRating: {
     '@type': 'AggregateRating',
@@ -194,7 +194,7 @@ export function eventSchema({ name, description, startDate, endDate, location, o
     endDate,
     location: location || {
       '@type': 'SportsActivityLocation',
-      name: 'Red Ball Sports Arena',
+      name: 'Alchemy 360 Sports Arena',
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'Sector 22-D, Jhajjar Road, near Village-Maina',
@@ -206,7 +206,7 @@ export function eventSchema({ name, description, startDate, endDate, location, o
     },
     organizer: organizer || {
       '@type': 'Organization',
-      name: 'Red Ball Sports Arena',
+      name: 'Alchemy 360 Sports Arena',
       url: SITE_URL,
     },
     url: url || SITE_URL,
@@ -227,12 +227,12 @@ export function articleSchema({ title, description, datePublished, dateModified,
     image: `${SITE_URL}/banner.png`,
     author: {
       '@type': 'Organization',
-      name: 'Red Ball Sports Arena',
+      name: 'Alchemy 360 Sports Arena',
       url: SITE_URL,
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Red Ball Sports Arena',
+      name: 'Alchemy 360 Sports Arena',
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon.png` },
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blog/${slug}` },

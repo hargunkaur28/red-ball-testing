@@ -280,9 +280,9 @@ export default function TableOrder() {
           order_id: rzpData.razorpayOrder.id,
           amount: rzpData.razorpayOrder.amount,
           currency: rzpData.razorpayOrder.currency,
-          name: 'Red Ball Sports CAFÉ',
+          name: 'Alchemy 360 Sports CAFÉ',
           description: `Digital Menu Order • Table ${tableData?.table?.label || tableId}`,
-          theme: { color: '#C8102E' },
+          theme: { color: '#C5DB3B' },
           handler: async (response) => {
             try {
               await api.post('/payments/verify', {
@@ -364,7 +364,7 @@ export default function TableOrder() {
           animate={{ scale: 1, opacity: 1 }} 
           className="bg-[#161616] border border-white/10 rounded-3xl p-8 max-w-md w-full shadow-2xl relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#C8102E]/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#C5DB3B]/20 rounded-full blur-3xl pointer-events-none" />
           
           <div className="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
             <CheckCircle2 size={44} />
@@ -401,13 +401,13 @@ export default function TableOrder() {
             </div>
             <div className="border-t border-white/10 pt-2 mt-2 flex justify-between text-sm font-bold text-white">
               <span>Grand Total</span>
-              <span className="text-[#C8102E] font-mono">{formatCurrency(orderPlaced.totalAmount)}</span>
+              <span className="text-[#C5DB3B] font-mono">{formatCurrency(orderPlaced.totalAmount)}</span>
             </div>
           </div>
 
           <button 
             onClick={() => setOrderPlaced(null)} 
-            className="w-full py-4 rounded-full bg-[#C8102E] hover:bg-[#A00D24] text-white font-bold text-xs tracking-wider uppercase transition-all shadow-lg hover:scale-[1.02]"
+            className="w-full py-4 rounded-full bg-[#C5DB3B] hover:bg-[#96AC2E] text-white font-bold text-xs tracking-wider uppercase transition-all shadow-lg hover:scale-[1.02]"
           >
             Order Additional Recovery Items
           </button>
@@ -421,19 +421,19 @@ export default function TableOrder() {
       
       {/* Immersive Cinematic Background Gradients */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#F5A623]/10 rounded-full blur-[160px] pointer-events-none" />
-      <div className="absolute top-1/3 left-0 w-[500px] h-[500px] bg-[#C8102E]/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/3 left-0 w-[500px] h-[500px] bg-[#C5DB3B]/10 rounded-full blur-[150px] pointer-events-none" />
 
       {/* Cinematic Top Navbar */}
       <header className="sticky top-0 z-40 bg-[#0D0D0D]/95 backdrop-blur-lg border-b border-white/10 px-3 py-3 sm:px-6 sm:py-4 shadow-2xl">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#C8102E] flex items-center justify-center font-black tracking-tighter text-white shadow-[0_0_15px_rgba(200,16,46,0.4)] text-xs sm:text-base">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#C5DB3B] flex items-center justify-center font-black tracking-tighter text-white shadow-[0_0_15px_rgba(197, 219, 59,0.4)] text-xs sm:text-base">
               RB
             </div>
             <div className="min-w-0">
               <h1 className="font-bold text-base sm:text-xl leading-tight tracking-wider text-white truncate" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                 <span className="sm:hidden">RB SPORTS CAFÉ</span>
-                <span className="hidden sm:inline">RED BALL SPORTS CAFÉ</span>
+                <span className="hidden sm:inline">ALCHEMY 360 SPORTS CAFÉ</span>
               </h1>
               <p className="text-[9px] sm:text-[11px] text-[#F5A623] font-bold tracking-widest uppercase truncate opacity-90">
                 {tableData?.table?.label || 'Table'} • {tableData?.table?.section || 'Lounge'}
@@ -455,7 +455,7 @@ export default function TableOrder() {
 
             <button 
               onClick={() => setCartOpen(true)} 
-              className="p-2 sm:px-4 sm:py-2 rounded-xl bg-[#C8102E] hover:bg-[#A00D24] text-white text-[10px] sm:text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition-all border border-white/10"
+              className="p-2 sm:px-4 sm:py-2 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-[10px] sm:text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition-all border border-white/10"
             >
               <ShoppingBag size={16} />
               <span className="hidden sm:inline">Cart</span>
@@ -482,7 +482,7 @@ export default function TableOrder() {
             FEATURED RECOVERY ITEMS
           </h2>
           <p className="text-gray-400 text-xs md:text-sm max-w-2xl leading-relaxed">
-            Handcrafted inside the Red Ball Kitchen using premium recovery-focused ingredients mapped for rapid muscle refuel and hydration.
+            Handcrafted inside the Alchemy 360 Kitchen using premium recovery-focused ingredients mapped for rapid muscle refuel and hydration.
           </p>
         </div>
 
@@ -542,7 +542,7 @@ export default function TableOrder() {
                     )}
 
                     {/* Price Tag - Desktop only */}
-                    <div className="absolute bottom-3 right-3 px-3 py-1 bg-[#C8102E] text-white rounded-xl font-bold text-sm shadow-xl font-mono hidden sm:block">
+                    <div className="absolute bottom-3 right-3 px-3 py-1 bg-[#C5DB3B] text-white rounded-xl font-bold text-sm shadow-xl font-mono hidden sm:block">
                       {formatCurrency(price)}
                     </div>
                   </div>
@@ -589,14 +589,14 @@ export default function TableOrder() {
                           <>
                             <button
                               onClick={(e) => { e.stopPropagation(); openFoodModal(item); }}
-                              className="w-10 h-10 rounded-full bg-[#C8102E] text-white flex sm:hidden flex-col items-center justify-center shadow-lg active:scale-90 transition-transform"
+                              className="w-10 h-10 rounded-full bg-[#C5DB3B] text-white flex sm:hidden flex-col items-center justify-center shadow-lg active:scale-90 transition-transform"
                             >
                               <span className="text-[10px] font-black leading-none">ADD</span>
                               <Plus size={14} strokeWidth={3} />
                             </button>
                             <button
                               onClick={(e) => { e.stopPropagation(); openFoodModal(item); }}
-                              className="hidden sm:flex px-5 py-2.5 bg-[#C8102E] hover:bg-[#A00D24] text-white rounded-full text-xs font-bold transition-all shadow-lg hover:scale-105 active:scale-95 items-center gap-1.5 uppercase tracking-wider"
+                              className="hidden sm:flex px-5 py-2.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-full text-xs font-bold transition-all shadow-lg hover:scale-105 active:scale-95 items-center gap-1.5 uppercase tracking-wider"
                             >
                               <span>Add</span>
                               <span className="text-white/70 font-normal">+</span>
@@ -623,7 +623,7 @@ export default function TableOrder() {
                             {/* Mobile Circular Button */}
                             <button
                               onClick={(e) => { e.stopPropagation(); addItem({ menuItemId: item._id, name: item.name, size: item.sizes?.[0]?.label || 'Regular', price }); toast.success('Added!'); }}
-                              className="w-10 h-10 rounded-full bg-[#C8102E] text-white flex sm:hidden flex-col items-center justify-center shadow-lg active:scale-90 transition-transform"
+                              className="w-10 h-10 rounded-full bg-[#C5DB3B] text-white flex sm:hidden flex-col items-center justify-center shadow-lg active:scale-90 transition-transform"
                             >
                               <span className="text-[10px] font-black leading-none">ADD</span>
                               <Plus size={14} strokeWidth={3} />
@@ -631,7 +631,7 @@ export default function TableOrder() {
                             {/* Desktop Pill Button */}
                             <button
                               onClick={(e) => { e.stopPropagation(); addItem({ menuItemId: item._id, name: item.name, size: item.sizes?.[0]?.label || 'Regular', price }); toast.success('Added to order!'); }}
-                              className="hidden sm:flex px-5 py-2.5 bg-[#C8102E] hover:bg-[#A00D24] text-white rounded-full text-xs font-bold transition-all shadow-lg hover:scale-105 active:scale-95 items-center gap-1.5 uppercase tracking-wider"
+                              className="hidden sm:flex px-5 py-2.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-full text-xs font-bold transition-all shadow-lg hover:scale-105 active:scale-95 items-center gap-1.5 uppercase tracking-wider"
                             >
                               <span>Add</span>
                               <span className="text-white/70 font-normal">+</span>
@@ -657,7 +657,7 @@ export default function TableOrder() {
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2.5 rounded-full text-xs font-extrabold transition-all duration-200 tracking-wider shadow-sm uppercase shrink-0 ${
                 activeCategory === cat 
-                  ? 'bg-[#C8102E] text-white scale-105 shadow-[0_0_15px_rgba(200,16,46,0.4)]' 
+                  ? 'bg-[#C5DB3B] text-white scale-105 shadow-[0_0_15px_rgba(197, 219, 59,0.4)]' 
                   : 'bg-[#1A1A1A] text-gray-400 hover:bg-[#222] hover:text-white border border-white/5'
               }`}
             >
@@ -753,7 +753,7 @@ export default function TableOrder() {
                         {item.sizes?.length > 1 ? (
                           <button
                             onClick={(e) => { e.stopPropagation(); openFoodModal(item); }}
-                            className="px-4 py-2 bg-[#C8102E] hover:bg-[#A00D24] text-white rounded-full text-xs font-bold uppercase transition-all shadow-md active:scale-95"
+                            className="px-4 py-2 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-full text-xs font-bold uppercase transition-all shadow-md active:scale-95"
                           >
                             Add +
                           </button>
@@ -776,7 +776,7 @@ export default function TableOrder() {
                         ) : (
                           <button
                             onClick={(e) => { e.stopPropagation(); addItem({ menuItemId: item._id, name: item.name, size: item.sizes?.[0]?.label || 'Regular', price }); toast.success('Added to order!'); }}
-                            className="px-4 py-2 bg-[#C8102E] hover:bg-[#A00D24] text-white rounded-full text-xs font-bold uppercase transition-all shadow-md active:scale-95"
+                            className="px-4 py-2 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-full text-xs font-bold uppercase transition-all shadow-md active:scale-95"
                           >
                             Add +
                           </button>
@@ -847,7 +847,7 @@ export default function TableOrder() {
               <div className="max-w-xl mx-auto p-6 md:p-8 text-white">
                 <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
                   <div className="flex items-center gap-2">
-                    <ShoppingBag className="text-[#C8102E]" size={22} />
+                    <ShoppingBag className="text-[#C5DB3B]" size={22} />
                     <h2 className="text-xl font-extrabold tracking-wide text-white" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                       COMPLETE TABLE ORDER
                     </h2>
@@ -873,7 +873,7 @@ export default function TableOrder() {
                         <div className="flex items-center gap-2 bg-[#1A1A1A] rounded-full p-1 border border-white/10">
                           <button onClick={() => updateQuantity(i.menuItemId, i.size, i.quantity - 1)} className="w-6 h-6 rounded-full bg-[#222] text-white hover:bg-[#333] font-bold text-xs flex items-center justify-center">−</button>
                           <span className="text-xs font-bold text-white w-4 text-center font-mono">{i.quantity}</span>
-                          <button onClick={() => updateQuantity(i.menuItemId, i.size, i.quantity + 1)} className="w-6 h-6 rounded-full bg-[#C8102E] text-white hover:bg-[#A00D24] font-bold text-xs flex items-center justify-center">+</button>
+                          <button onClick={() => updateQuantity(i.menuItemId, i.size, i.quantity + 1)} className="w-6 h-6 rounded-full bg-[#C5DB3B] text-white hover:bg-[#96AC2E] font-bold text-xs flex items-center justify-center">+</button>
                         </div>
                       </div>
                     ))
@@ -884,7 +884,7 @@ export default function TableOrder() {
                 <div className="space-y-2 mb-6 p-4 bg-black/40 rounded-2xl border border-white/5 text-xs font-medium">
                   <div className="flex justify-between text-sm font-black text-white">
                     <span>Grand Total Payable</span>
-                    <span className="text-[#C8102E] font-mono">{formatCurrency(getSubtotal())}</span>
+                    <span className="text-[#C5DB3B] font-mono">{formatCurrency(getSubtotal())}</span>
                   </div>
                 </div>
 
@@ -900,7 +900,7 @@ export default function TableOrder() {
                         placeholder="Your Name (Optional)"
                         value={customerName}
                         onChange={e => setCustomerName(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-black border border-white/10 text-xs font-bold text-white focus:outline-none focus:border-[#C8102E]"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-black border border-white/10 text-xs font-bold text-white focus:outline-none focus:border-[#C5DB3B]"
                       />
                     </div>
                     <div className="relative">
@@ -910,7 +910,7 @@ export default function TableOrder() {
                         placeholder="Phone Number (Optional)"
                         value={customerPhone}
                         onChange={e => setCustomerPhone(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-black border border-white/10 text-xs font-bold text-white focus:outline-none focus:border-[#C8102E]"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-black border border-white/10 text-xs font-bold text-white focus:outline-none focus:border-[#C5DB3B]"
                       />
                     </div>
                   </div>
@@ -922,7 +922,7 @@ export default function TableOrder() {
                       rows="2"
                       value={specialInstructions}
                       onChange={e => setSpecialInstructions(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-[#C8102E] resize-none"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-[#C5DB3B] resize-none"
                     />
                   </div>
                 </div>
@@ -936,7 +936,7 @@ export default function TableOrder() {
                 <button 
                   onClick={placeOrder} 
                   disabled={loading}
-                  className="w-full py-4 px-6 rounded-full bg-[#C8102E] hover:bg-[#A00D24] text-white font-extrabold text-sm uppercase tracking-widest shadow-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-4 px-6 rounded-full bg-[#C5DB3B] hover:bg-[#96AC2E] text-white font-extrabold text-sm uppercase tracking-widest shadow-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -1018,7 +1018,7 @@ export default function TableOrder() {
 
                         <div className="flex items-center justify-between border-t border-white/5 pt-2 text-xs font-bold">
                           <span className="text-gray-400">Payment: <span className="uppercase text-white">{order.paymentMethod} ({order.paymentStatus})</span></span>
-                          <span className="text-[#C8102E] font-mono">{formatCurrency(order.totalAmount)}</span>
+                          <span className="text-[#C5DB3B] font-mono">{formatCurrency(order.totalAmount)}</span>
                         </div>
                       </div>
                     ))
@@ -1081,7 +1081,7 @@ export default function TableOrder() {
                     {selectedFood.showNutrition && (
                       <>
                         <div className="bg-black/40 rounded-2xl p-3 border border-white/5 text-center">
-                          <div className="text-[#C8102E] mb-1 flex justify-center"><Flame size={16} /></div>
+                          <div className="text-[#C5DB3B] mb-1 flex justify-center"><Flame size={16} /></div>
                           <div className="text-lg font-black text-white">{selectedFood.calories || '---'}</div>
                           <div className="text-[9px] font-bold text-gray-500 uppercase tracking-widest">Calories</div>
                         </div>
@@ -1101,7 +1101,7 @@ export default function TableOrder() {
 
                   {/* Description */}
                   <div className="space-y-2">
-                    <h4 className="text-[10px] font-black text-[#888] uppercase tracking-widest border-l-2 border-[#C8102E] pl-2.5">
+                    <h4 className="text-[10px] font-black text-[#888] uppercase tracking-widest border-l-2 border-[#C5DB3B] pl-2.5">
                       The Performance Recipe
                     </h4>
                     <p className="text-gray-400 text-[13px] leading-relaxed font-medium">
@@ -1136,7 +1136,7 @@ export default function TableOrder() {
                             onClick={() => setSelectedSize(s)}
                             className={`py-3 px-4 rounded-xl text-xs font-black transition-all border-2 flex flex-col items-center gap-0.5 ${
                               selectedSize?.label === s.label
-                                ? 'bg-[#C8102E] border-[#C8102E] text-white shadow-lg scale-[1.03]'
+                                ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white shadow-lg scale-[1.03]'
                                 : 'bg-black/40 border-white/10 text-gray-300 hover:border-white/30'
                             }`}
                           >
@@ -1162,7 +1162,7 @@ export default function TableOrder() {
                         toast.success('Added to your cart!');
                         setSelectedFood(null);
                       }}
-                      className="w-full py-4 bg-[#C8102E] hover:bg-[#A00D24] text-white rounded-2xl font-black uppercase tracking-widest text-xs shadow-[0_10px_30px_rgba(200,16,46,0.3)] transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
+                      className="w-full py-4 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-2xl font-black uppercase tracking-widest text-xs shadow-[0_10px_30px_rgba(197, 219, 59,0.3)] transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
                     >
                       <ShoppingBag size={16} />
                       {selectedSize

@@ -1194,7 +1194,7 @@ exports.backfillReferencePrices = async (req, res) => {
 
 // ── POST /api/superadmin/sms/test ─────────────────────────────────────────────
 // Superadmin-only: send a test SMS to a given number via Fast2SMS.
-// Body: { phone: '9876543210', message: 'Test SMS from Red Ball' }
+// Body: { phone: '9876543210', message: 'Test SMS from Alchemy 360' }
 exports.testSms = async (req, res) => {
   try {
     const { sendSms, normalisePhone } = require('../utils/fast2smsService');
@@ -1207,7 +1207,7 @@ exports.testSms = async (req, res) => {
 
     const result = await sendSms({
       numbers: [cleaned],
-      message: message || 'Test SMS from Red Ball Academy. If you received this, Fast2SMS is working correctly.',
+      message: message || 'Test SMS from Alchemy 360 Academy. If you received this, Fast2SMS is working correctly.',
     });
 
     res.json({

@@ -263,7 +263,7 @@ export default function Membership() {
   return (
     <div className="space-y-8">
       <div>
-        <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#df1526]">Red Ball Academy</p>
+        <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#C5DB3B]">Alchemy 360 Academy</p>
         <h1 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">My Membership</h1>
         <p className="mt-2 text-sm text-white/50">View and manage your membership</p>
       </div>
@@ -277,7 +277,7 @@ export default function Membership() {
         <Link
           to="/user/book-slots"
           className="self-start sm:self-auto shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider text-white transition-all hover:opacity-90 active:scale-[0.98]"
-          style={{ background: 'linear-gradient(135deg, #C8102E, #8B0B1E)' }}
+          style={{ background: 'linear-gradient(135deg, #C5DB3B, #96AC2E)' }}
         >
           <Zap size={12} /> Book Another Sport
         </Link>
@@ -482,7 +482,7 @@ export default function Membership() {
                   </p>
                   <Link
                     to={`/sports/${(plan?.sportsIncluded?.[0] || '').toLowerCase().replace(/\s+/g, '-')}`}
-                    className="inline-flex items-center rounded-full bg-white px-7 py-3 text-sm font-black text-black transition hover:bg-[#df1526] hover:text-white"
+                    className="inline-flex items-center rounded-full bg-white px-7 py-3 text-sm font-black text-black transition hover:bg-[#C5DB3B] hover:text-white"
                   >
                     <RefreshCw size={18} className="mr-2" />
                     Renew Membership

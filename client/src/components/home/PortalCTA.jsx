@@ -25,7 +25,7 @@ export default function PortalCTA() {
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
         >
           <h2 className="section-heading text-white mb-6">
-            Welcome to the Red Ball Academy Portal
+            Welcome to the Alchemy 360 Academy Portal
           </h2>
 
           <p className="text-lg text-white/45 leading-relaxed mb-10 max-w-[600px] mx-auto" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -36,7 +36,7 @@ export default function PortalCTA() {
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               to="/login"
-              className="px-8 py-3.5 rounded-full bg-[#C8102E] text-white font-semibold transition-all duration-200 hover:bg-[#8B0B1E] hover:scale-[1.03] hover:shadow-[0_0_16px_rgba(200,16,46,0.4)]"
+              className="px-8 py-3.5 rounded-full bg-[#C5DB3B] text-white font-semibold transition-all duration-200 hover:bg-[#96AC2E] hover:scale-[1.03] hover:shadow-[0_0_16px_rgba(197, 219, 59,0.4)]"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
               Sign Up →

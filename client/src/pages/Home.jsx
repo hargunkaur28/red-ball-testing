@@ -103,7 +103,7 @@ function KidsAcademyBanner() {
     >
       <div
         className="absolute -top-32 -right-32 w-96 h-96 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(200,16,46,0.08) 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(197, 219, 59,0.08) 0%, transparent 70%)' }}
       />
 
       <div className="max-w-[1280px] mx-auto px-5 sm:px-8 lg:px-12 py-10 sm:py-14 lg:py-20">
@@ -126,7 +126,7 @@ function KidsAcademyBanner() {
           <div className="flex-1 text-center lg:text-left">
             <span
               className="inline-block text-[10px] font-black uppercase tracking-[0.25em] mb-4 px-3 py-1 rounded-full"
-              style={{ background: 'rgba(200,16,46,0.13)', color: '#F87171', border: '1px solid rgba(200,16,46,0.28)' }}
+              style={{ background: 'rgba(197, 219, 59,0.13)', color: '#D6E86B', border: '1px solid rgba(197, 219, 59,0.28)' }}
             >
               For Kids &amp; Beginners
             </span>
@@ -162,8 +162,8 @@ function KidsAcademyBanner() {
 
             <Link
               to="/book-slots?program=kids-academy"
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-full font-black text-sm text-white shadow-lg shadow-red-950/30 transition-all hover:scale-[1.02] active:scale-[0.97]"
-              style={{ background: 'linear-gradient(135deg, #C8102E 0%, #8B0B1E 100%)' }}
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-full font-black text-sm text-white shadow-lg shadow-[#C5DB3B]/30 transition-all hover:scale-[1.02] active:scale-[0.97]"
+              style={{ background: 'linear-gradient(135deg, #C5DB3B 0%, #96AC2E 100%)' }}
             >
               Explore Kids Academy
               <ArrowRight size={14} />
@@ -180,13 +180,13 @@ function KidsAcademyStrip() {
     <section className="relative overflow-hidden bg-[#0C0F0F]">
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'linear-gradient(90deg, rgba(200,16,46,0.12) 0%, rgba(200,16,46,0.04) 60%, transparent 100%)' }}
+        style={{ background: 'linear-gradient(90deg, rgba(197, 219, 59,0.12) 0%, rgba(197, 219, 59,0.04) 60%, transparent 100%)' }}
       />
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-7 flex flex-col sm:flex-row items-center justify-between gap-5">
         <div className="flex items-center gap-4">
           <div
             className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 text-xl"
-            style={{ background: 'rgba(200,16,46,0.15)', border: '1px solid rgba(200,16,46,0.3)' }}
+            style={{ background: 'rgba(197, 219, 59,0.15)', border: '1px solid rgba(197, 219, 59,0.3)' }}
           >
             🧒
           </div>
@@ -202,7 +202,7 @@ function KidsAcademyStrip() {
         <Link
           to="/kids-sports-academy-rohtak"
           className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-bold text-sm text-white whitespace-nowrap shrink-0 transition-all hover:scale-[1.03] active:scale-[0.97]"
-          style={{ background: 'linear-gradient(135deg, #C8102E 0%, #8B0B1E 100%)', boxShadow: '0 4px 16px rgba(200,16,46,0.3)' }}
+          style={{ background: 'linear-gradient(135deg, #C5DB3B 0%, #96AC2E 100%)', boxShadow: '0 4px 16px rgba(197, 219, 59,0.3)' }}
         >
           Explore Kids Academy <ArrowRight size={14} />
         </Link>

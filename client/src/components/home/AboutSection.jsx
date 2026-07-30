@@ -68,14 +68,14 @@ export default function AboutSection() {
               <h2
                 className="section-heading text-[#0D0D0D]"
               >
-                About Red Ball Academy
+                About Alchemy 360 Academy
               </h2>
 
               <p
                 className="text-lg text-[#6B7280] leading-relaxed"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >
-                At Red Ball Academy, we believe sport has the power to transform
+                At Alchemy 360 Academy, we believe sport has the power to transform
                 lives. Whether you're a weekend player, a competitive athlete, or a family
                 looking for a great outing — our expert coaches, premium grounds, and
                 world-class facilities are here for you.
@@ -83,7 +83,7 @@ export default function AboutSection() {
 
               {/* Founder */}
               <div className="flex items-center gap-4 pt-2">
-                <div className="w-12 h-12 rounded-full bg-[#C8102E]/10 flex items-center justify-center shrink-0 text-[#C8102E] font-black text-lg" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+                <div className="w-12 h-12 rounded-full bg-[#C5DB3B]/10 flex items-center justify-center shrink-0 text-[#C5DB3B] font-black text-lg" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                   SM
                 </div>
                 <div>
@@ -97,7 +97,7 @@ export default function AboutSection() {
               {/* Full About link */}
               <Link
                 to="/about"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#C8102E] hover:underline underline-offset-4 transition-all"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#C5DB3B] hover:underline underline-offset-4 transition-all"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >
                 Read our full story →
@@ -113,7 +113,7 @@ export default function AboutSection() {
                     )}
 
                     <div className={i > 0 ? 'sm:pl-6' : ''}>
-                      <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(2.5rem, 4vw, 4rem)', color: '#C8102E', lineHeight: 1 }}>
+                      <p style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(2.5rem, 4vw, 4rem)', color: '#C5DB3B', lineHeight: 1 }}>
                         {stat.isText ? (
                           stat.text
                         ) : (
@@ -137,7 +137,7 @@ export default function AboutSection() {
               <div className="relative rounded-xl overflow-hidden shadow-2xl ml-auto w-[90%] md:w-full">
                 <img
                   src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?q=80&w=800&auto=format&fit=crop"
-                  alt="Red Ball Cricket Academy Training"
+                  alt="Alchemy 360 Cricket Academy Training"
                   loading="lazy"
                   className="w-full h-[300px] sm:h-[380px] md:h-[420px] object-cover"
                 />
@@ -152,7 +152,7 @@ export default function AboutSection() {
                 />
               </div>
               {/* Accent shape */}
-              <div className="absolute -top-4 -right-4 w-16 h-16 md:w-24 md:h-24 rounded-xl bg-[#C8102E]/10 -z-10" />
+              <div className="absolute -top-4 -right-4 w-16 h-16 md:w-24 md:h-24 rounded-xl bg-[#C5DB3B]/10 -z-10" />
               <div className="absolute -bottom-4 right-4 md:right-8 w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#F5A623]/15 -z-10" />
             </div>
 

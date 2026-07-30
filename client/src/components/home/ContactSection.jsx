@@ -61,19 +61,19 @@ export default function ContactSection() {
               {/* Contact Details */}
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <MapPin size={20} className="text-[#C8102E] shrink-0 mt-1" />
+                  <MapPin size={20} className="text-[#C5DB3B] shrink-0 mt-1" />
                   <p className="text-[#9CA3AF] text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                     {academy.address}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Phone size={20} className="text-[#C8102E] shrink-0" />
+                  <Phone size={20} className="text-[#C5DB3B] shrink-0" />
                   <div className="flex items-center gap-3 text-sm text-[#9CA3AF]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                     <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="hover:text-white transition-colors">{academy.phone}</a>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Mail size={20} className="text-[#C8102E] shrink-0" />
+                  <Mail size={20} className="text-[#C5DB3B] shrink-0" />
                   <a href={`mailto:${academy.email}`} className="text-sm text-[#9CA3AF] hover:text-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                     {academy.email}
                   </a>
@@ -105,7 +105,7 @@ export default function ContactSection() {
                   placeholder="Your Name"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full px-5 py-3.5 rounded-xl bg-[#1A1A1A] border border-white/[0.08] text-white placeholder-white/30 text-sm focus:border-[#C8102E] focus:outline-none transition-colors"
+                  className="w-full px-5 py-3.5 rounded-xl bg-[#1A1A1A] border border-white/[0.08] text-white placeholder-white/30 text-sm focus:border-[#C5DB3B] focus:outline-none transition-colors"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 />
                 <input
@@ -113,7 +113,7 @@ export default function ContactSection() {
                   placeholder="Your Email"
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="w-full px-5 py-3.5 rounded-xl bg-[#1A1A1A] border border-white/[0.08] text-white placeholder-white/30 text-sm focus:border-[#C8102E] focus:outline-none transition-colors"
+                  className="w-full px-5 py-3.5 rounded-xl bg-[#1A1A1A] border border-white/[0.08] text-white placeholder-white/30 text-sm focus:border-[#C5DB3B] focus:outline-none transition-colors"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 />
                 <textarea
@@ -121,13 +121,13 @@ export default function ContactSection() {
                   rows={4}
                   value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  className="w-full px-5 py-3.5 rounded-xl bg-[#1A1A1A] border border-white/[0.08] text-white placeholder-white/30 text-sm focus:border-[#C8102E] focus:outline-none transition-colors resize-none"
+                  className="w-full px-5 py-3.5 rounded-xl bg-[#1A1A1A] border border-white/[0.08] text-white placeholder-white/30 text-sm focus:border-[#C5DB3B] focus:outline-none transition-colors resize-none"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 />
                 <button
                   type="submit"
                   disabled={loading || success}
-                  className={`w-full py-3.5 rounded-full text-white font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${success ? 'bg-[#22C55E]' : 'bg-[#C8102E] hover:bg-[#8B0B1E]'} disabled:opacity-50`}
+                  className={`w-full py-3.5 rounded-full text-white font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${success ? 'bg-[#22C55E]' : 'bg-[#C5DB3B] hover:bg-[#96AC2E]'} disabled:opacity-50`}
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
                   {loading ? (
@@ -153,7 +153,7 @@ export default function ContactSection() {
                 style={{ border: 0, borderRadius: '12px', minHeight: '500px' }}
                 allowFullScreen
                 loading="lazy"
-                title="Red Ball Academy Location"
+                title="Alchemy 360 Academy Location"
               />
             </div>
 

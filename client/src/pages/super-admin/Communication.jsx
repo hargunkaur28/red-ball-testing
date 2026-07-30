@@ -145,7 +145,7 @@ export default function Communication() {
             placeholder="Search..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-white border border-[#EAEAEA] rounded-xl text-sm focus:outline-none focus:border-[#C8102E] transition-colors"
+            className="w-full pl-9 pr-4 py-2 bg-white border border-[#EAEAEA] rounded-xl text-sm focus:outline-none focus:border-[#C5DB3B] transition-colors"
           />
         </div>
       </div>
@@ -154,13 +154,13 @@ export default function Communication() {
       <div className="flex space-x-2 border-b border-[#EAEAEA]">
         <button 
           onClick={() => setActiveTab('reviews')}
-          className={`pb-3 px-4 text-sm font-medium transition-all ${activeTab === 'reviews' ? 'text-[#C8102E] border-b-2 border-[#C8102E]' : 'text-[#666666] hover:text-[#111111]'}`}
+          className={`pb-3 px-4 text-sm font-medium transition-all ${activeTab === 'reviews' ? 'text-[#C5DB3B] border-b-2 border-[#C5DB3B]' : 'text-[#666666] hover:text-[#111111]'}`}
         >
           Reviews
         </button>
         <button 
           onClick={() => setActiveTab('messages')}
-          className={`pb-3 px-4 text-sm font-medium transition-all ${activeTab === 'messages' ? 'text-[#C8102E] border-b-2 border-[#C8102E]' : 'text-[#666666] hover:text-[#111111]'}`}
+          className={`pb-3 px-4 text-sm font-medium transition-all ${activeTab === 'messages' ? 'text-[#C5DB3B] border-b-2 border-[#C5DB3B]' : 'text-[#666666] hover:text-[#111111]'}`}
         >
           Contact Messages
         </button>
@@ -197,7 +197,7 @@ export default function Communication() {
             </div>
 
             {isLoadingReviews ? (
-              <div className="flex justify-center p-8"><div className="w-8 h-8 border-2 border-[#C8102E] border-t-transparent rounded-full animate-spin"/></div>
+              <div className="flex justify-center p-8"><div className="w-8 h-8 border-2 border-[#C5DB3B] border-t-transparent rounded-full animate-spin"/></div>
             ) : filteredReviews.length === 0 ? (
               <div className="text-center py-16 bg-white border border-[#EAEAEA] rounded-2xl">
                 <Star size={40} className="mx-auto text-[#CCCCCC] mb-3" />
@@ -282,7 +282,7 @@ export default function Communication() {
             </div>
 
             {isLoadingMessages ? (
-              <div className="flex justify-center p-8"><div className="w-8 h-8 border-2 border-[#C8102E] border-t-transparent rounded-full animate-spin"/></div>
+              <div className="flex justify-center p-8"><div className="w-8 h-8 border-2 border-[#C5DB3B] border-t-transparent rounded-full animate-spin"/></div>
             ) : filteredMessages.length === 0 ? (
               <div className="text-center py-16 bg-white border border-[#EAEAEA] rounded-2xl">
                 <MessageSquare size={40} className="mx-auto text-[#CCCCCC] mb-3" />
@@ -406,7 +406,7 @@ export default function Communication() {
                   <input 
                     type="checkbox" 
                     id="featuredToggle"
-                    className="w-4 h-4 text-[#C8102E] rounded focus:ring-[#C8102E] cursor-pointer"
+                    className="w-4 h-4 text-[#C5DB3B] rounded focus:ring-[#C5DB3B] cursor-pointer"
                     checked={editingReview.isFeatured || false}
                     onChange={e => setEditingReview({...editingReview, isFeatured: e.target.checked})}
                   />
@@ -426,7 +426,7 @@ export default function Communication() {
                 <button 
                   onClick={() => editReviewMut.mutate({ id: editingReview._id, data: { status: editingReview.status, rating: editingReview.rating, comment: editingReview.comment, isFeatured: editingReview.isFeatured } })}
                   disabled={editReviewMut.isPending}
-                  className="flex-1 px-4 py-2 bg-[#C8102E] hover:bg-[#A00D25] text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+                  className="flex-1 px-4 py-2 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
                 >
                   {editReviewMut.isPending ? 'Saving...' : 'Save Changes'}
                 </button>

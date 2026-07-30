@@ -5,23 +5,23 @@ import { sportsClubSchema, breadcrumbSchema, faqSchema } from '../../components/
 
 const faqs = [
   {
-    q: "What is Red Ball Sports Arena's sports club membership?",
-    a: "Red Ball's sports club membership gives access to all facilities — cricket, badminton, pickleball, swimming, and gym — with priority booking and discounted slot rates.",
+    q: "What is Alchemy 360 Sports Arena's sports club membership?",
+    a: "Alchemy 360's sports club membership gives access to all facilities — cricket, badminton, pickleball, swimming, and gym — with priority booking and discounted slot rates.",
   },
   {
-    q: 'How much does sports club membership cost at Red Ball?',
+    q: 'How much does sports club membership cost at Alchemy 360?',
     a: 'Membership plans are available monthly, quarterly, and annually. Visit the Buy Membership page or call +91 93500 76653 for current membership rates.',
   },
   {
-    q: 'Can families join Red Ball as a sports club?',
+    q: 'Can families join Alchemy 360 as a sports club?',
     a: 'Yes. Family membership plans are available allowing multiple family members to access all sports club facilities under a single plan.',
   },
   {
-    q: 'Is there a corporate membership option at Red Ball?',
+    q: 'Is there a corporate membership option at Alchemy 360?',
     a: 'Yes. Corporate membership packages are available for companies wanting to provide their employees with sports club access in Rohtak.',
   },
   {
-    q: 'What facilities are included in Red Ball sports club membership?',
+    q: 'What facilities are included in Alchemy 360 sports club membership?',
     a: 'Club membership includes cricket, badminton, pickleball, swimming, and gym access. Food court, sports accessories shop, and coaching programs are available as add-ons.',
   },
   {
@@ -43,8 +43,8 @@ export default function SportsClubRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Club in Rohtak | Multi-Sport Membership | Red Ball Sports Arena"
-        description="Red Ball Sports Arena is Rohtak's premier sports club — cricket, badminton, swimming, gym, pickleball, and football with flexible membership plans. Join today."
+        title="Sports Club in Rohtak | Multi-Sport Membership | Alchemy 360 Sports Arena"
+        description="Alchemy 360 Sports Arena is Rohtak's premier sports club — cricket, badminton, swimming, gym, pickleball, and football with flexible membership plans. Join today."
         canonical="/sports-club-rohtak"
         schema={schema}
       />
@@ -53,15 +53,15 @@ export default function SportsClubRohtak() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Sports Club · Rohtak, Haryana</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Sports Club · Rohtak, Haryana</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Sports Club in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena is Rohtak's most complete sports club — offering membership access across cricket, badminton, pickleball, swimming, gym, and football under one roof. As a club member, you get priority booking, discounted rates, and access to all facilities at Rohtak's most active multi-sport complex.
+            Alchemy 360 Sports Arena is Rohtak's most complete sports club — offering membership access across cricket, badminton, pickleball, swimming, gym, and football under one roof. As a club member, you get priority booking, discounted rates, and access to all facilities at Rohtak's most active multi-sport complex.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/buy-membership" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join the Sports Club
             </Link>
             <Link to="/sports-complex-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -73,16 +73,16 @@ export default function SportsClubRohtak() {
 
       <section className="max-w-4xl mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0D0D0D] mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-          Red Ball — Rohtak's #1 Multi-Sport Club
+          Alchemy 360 — Rohtak's #1 Multi-Sport Club
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          A great sports club does more than provide a playing surface — it builds a community. Red Ball Sports Arena in Rohtak is where serious athletes, weekend warriors, and families come together through sport. The club offers structured memberships, professional coaching, online booking, QR-based entry, and an on-site restaurant, making it the most complete sports club membership in Rohtak, Haryana.
+          A great sports club does more than provide a playing surface — it builds a community. Alchemy 360 Sports Arena in Rohtak is where serious athletes, weekend warriors, and families come together through sport. The club offers structured memberships, professional coaching, online booking, QR-based entry, and an on-site restaurant, making it the most complete sports club membership in Rohtak, Haryana.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: 'Multi-Sport Access', desc: 'One membership gives you access to cricket, badminton, pickleball, swimming, and gym. The most comprehensive sports club value in Rohtak.' },
             { title: 'Priority Booking', desc: 'Club members get priority access to slot bookings, court reservations, and coaching program enrolments before open availability.' },
-            { title: 'Community Events', desc: 'Regular cricket tournaments, badminton leagues, swimming events, and social sports gatherings exclusive to Red Ball club members.' },
+            { title: 'Community Events', desc: 'Regular cricket tournaments, badminton leagues, swimming events, and social sports gatherings exclusive to Alchemy 360 club members.' },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>
@@ -105,7 +105,7 @@ export default function SportsClubRohtak() {
               { label: 'Pickleball', to: '/pickleball-court-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
-                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C8102E] hover:text-[#C8102E] transition-colors"
+                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {item.label}
               </Link>

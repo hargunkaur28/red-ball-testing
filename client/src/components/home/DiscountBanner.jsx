@@ -105,11 +105,11 @@ export default function DiscountBanner() {
       style={{
         height: BANNER_H,
         background: 'linear-gradient(90deg, #1a0a0c 0%, #2d0d12 50%, #1a0a0c 100%)',
-        borderBottom: '1px solid rgba(200,16,46,0.25)',
+        borderBottom: '1px solid rgba(197, 219, 59,0.25)',
       }}
     >
       {/* Left pill */}
-      <div className="shrink-0 flex items-center gap-2 px-4 self-stretch" style={{ background: '#C8102E' }}>
+      <div className="shrink-0 flex items-center gap-2 px-4 self-stretch" style={{ background: '#C5DB3B' }}>
         <Tag size={13} className="text-white" />
         <span className="text-white text-[11px] font-black uppercase tracking-widest whitespace-nowrap">
           Live Offers

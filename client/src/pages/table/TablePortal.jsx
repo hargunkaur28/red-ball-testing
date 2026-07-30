@@ -257,7 +257,7 @@ export default function TablePortal({ embedded = false }) {
           
           fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`, {
             headers: {
-              'User-Agent': 'RedBallCricketAcademy/1.0'
+              'User-Agent': 'Alchemy360CricketAcademy/1.0'
             }
           })
             .then(res => res.json())
@@ -390,7 +390,7 @@ export default function TablePortal({ embedded = false }) {
           key: import.meta.env.VITE_RAZORPAY_KEY_ID,
           amount,
           currency,
-          name: 'Red Ball Sports Club',
+          name: 'Alchemy 360 Sports Club',
           description: 'Food Order Payment',
           order_id: orderId,
           handler: async (response) => {
@@ -423,7 +423,7 @@ export default function TablePortal({ embedded = false }) {
             }
           },
           prefill: { name: customer.name || 'Guest', contact: validPhone(customer.phone) },
-          theme: { color: '#C8102E' },
+          theme: { color: '#C5DB3B' },
         };
 
         const rzp = new window.Razorpay(options);
@@ -466,7 +466,7 @@ export default function TablePortal({ embedded = false }) {
     <div className={`${embedded ? 'min-h-0 sm:min-h-[600px] rounded-xl sm:rounded-3xl mb-0 sm:mb-8 p-0 sm:p-4 md:p-6' : 'min-h-screen p-3 sm:p-6 md:p-12'} bg-[#0D0D0D] text-white flex flex-col justify-between relative`} style={{ fontFamily: "'DM Sans', sans-serif" }}>
       {/* Background Lighting decor — isolated so it never breaks sticky/fixed */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#C8102E]/15 rounded-full blur-[140px]" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#C5DB3B]/15 rounded-full blur-[140px]" />
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#F5A623]/10 rounded-full blur-[150px]" />
       </div>
 
@@ -476,17 +476,17 @@ export default function TablePortal({ embedded = false }) {
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity shrink-0">
-            <img src="/logo.png" alt="Red Ball Academy" className="w-9 h-9 sm:w-11 sm:h-11 object-contain shrink-0" />
+            <img src="/logo.png" alt="Alchemy 360 Academy" className="w-32 h-12 sm:w-36 sm:h-14 object-contain shrink-0" />
             <div className="hidden sm:block">
               <h1 className="font-bold text-xl tracking-wide leading-none" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
-                RED BALL ACADEMY
+                ALCHEMY 360 ACADEMY
               </h1>
               <p className="text-[10px] text-[#F5A623] font-bold tracking-widest uppercase mt-0.5">
                 WHERE GREAT FOOD MEETS GREAT GAMES
               </p>
             </div>
             <span className="sm:hidden font-bold text-sm tracking-wide" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
-              RED BALL
+              ALCHEMY 360
             </span>
           </Link>
 
@@ -502,7 +502,7 @@ export default function TablePortal({ embedded = false }) {
 
             <button
               onClick={() => setCartOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#C8102E] hover:bg-[#A00D24] text-white text-xs font-bold transition-all shadow whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-xs font-bold transition-all shadow whitespace-nowrap"
             >
               <ShoppingBag size={14} />
               <span>Cart ({items.length})</span>
@@ -537,7 +537,7 @@ export default function TablePortal({ embedded = false }) {
             FEATURED RECOVERY ITEMS
           </h2>
           <p className="text-gray-400 text-xs md:text-sm max-w-2xl leading-relaxed">
-            Handcrafted inside the Red Ball Kitchen using premium recovery-focused ingredients mapped for rapid muscle refuel and hydration.
+            Handcrafted inside the Alchemy 360 Kitchen using premium recovery-focused ingredients mapped for rapid muscle refuel and hydration.
           </p>
         </div>
 
@@ -635,7 +635,7 @@ export default function TablePortal({ embedded = false }) {
                           )}
 
                           {/* Price Tag */}
-                          <div className="absolute bottom-3 right-3 px-3 py-1 bg-[#C8102E] text-white rounded-xl font-bold text-sm shadow-xl font-mono">
+                          <div className="absolute bottom-3 right-3 px-3 py-1 bg-[#C5DB3B] text-white rounded-xl font-bold text-sm shadow-xl font-mono">
                             {formatCurrency(price)}
                           </div>
                         </div>
@@ -675,7 +675,7 @@ export default function TablePortal({ embedded = false }) {
                               {item.sizes?.length > 1 ? (
                                 <button
                                   onClick={() => openItemModal(item)}
-                                  className="w-full sm:px-4 px-4 py-1.5 bg-[#C8102E] hover:bg-[#A60D25] text-white text-xs font-black tracking-widest uppercase rounded-full transition-colors"
+                                  className="w-full sm:px-4 px-4 py-1.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-xs font-black tracking-widest uppercase rounded-full transition-colors"
                                 >
                                   ADD +
                                 </button>
@@ -690,7 +690,7 @@ export default function TablePortal({ embedded = false }) {
                                   <span className="text-xs font-bold text-white min-w-[14px] text-center">{qty}</span>
                                   <button
                                     onClick={() => updateQuantity(item._id, sizeLabel, qty + 1)}
-                                    className="w-6 h-6 rounded-full bg-[#C8102E] text-white hover:bg-[#A60D25] flex items-center justify-center font-bold text-xs"
+                                    className="w-6 h-6 rounded-full bg-[#C5DB3B] text-white hover:bg-[#96AC2E] flex items-center justify-center font-bold text-xs"
                                   >
                                     +
                                   </button>
@@ -702,7 +702,7 @@ export default function TablePortal({ embedded = false }) {
                                     setShowCartNotif(true);
                                     setTimeout(() => setShowCartNotif(false), 3000);
                                   }}
-                                  className="w-full sm:px-4 px-4 py-1.5 bg-[#C8102E] hover:bg-[#A60D25] text-white text-xs font-black tracking-widest uppercase rounded-full transition-colors"
+                                  className="w-full sm:px-4 px-4 py-1.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-xs font-black tracking-widest uppercase rounded-full transition-colors"
                                 >
                                   ADD +
                                 </button>
@@ -739,9 +739,9 @@ export default function TablePortal({ embedded = false }) {
                   <p className="text-xs text-white/60">{item.size} · {formatCurrency(item.price)}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="p-1 hover:text-[#C8102E]" onClick={() => updateQuantity(item.menuItemId, item.size, item.quantity - 1)}><Minus size={14} /></button>
+                  <button className="p-1 hover:text-[#C5DB3B]" onClick={() => updateQuantity(item.menuItemId, item.size, item.quantity - 1)}><Minus size={14} /></button>
                   <span className="text-sm font-bold">{item.quantity}</span>
-                  <button className="p-1 hover:text-[#C8102E]" onClick={() => updateQuantity(item.menuItemId, item.size, item.quantity + 1)}><Plus size={14} /></button>
+                  <button className="p-1 hover:text-[#C5DB3B]" onClick={() => updateQuantity(item.menuItemId, item.size, item.quantity + 1)}><Plus size={14} /></button>
                 </div>
               </div>
             ))}
@@ -760,7 +760,7 @@ export default function TablePortal({ embedded = false }) {
                   { value: 'table', label: 'Table' },
                 ].map(type => (
                   <button key={type.value} onClick={() => setOrderType(type.value)}
-                    className={`py-2 rounded-lg text-xs font-medium transition-all ${orderType === type.value ? 'bg-[#C8102E] text-white' : 'bg-white/5 hover:bg-white/10 text-white/70'}`}>
+                    className={`py-2 rounded-lg text-xs font-medium transition-all ${orderType === type.value ? 'bg-[#C5DB3B] text-white' : 'bg-white/5 hover:bg-white/10 text-white/70'}`}>
                     {type.label}
                   </button>
                 ))}
@@ -805,12 +805,12 @@ export default function TablePortal({ embedded = false }) {
                   </div>
                 )}
                 
-                <input className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:border-[#C8102E] outline-none" placeholder="Name" value={customer.name} onChange={e => setCustomer({ ...customer, name: e.target.value })} />
-                <input className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:border-[#C8102E] outline-none" placeholder="Phone" value={customer.phone} onChange={e => setCustomer({ ...customer, phone: e.target.value })} />
+                <input className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:border-[#C5DB3B] outline-none" placeholder="Name" value={customer.name} onChange={e => setCustomer({ ...customer, name: e.target.value })} />
+                <input className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:border-[#C5DB3B] outline-none" placeholder="Phone" value={customer.phone} onChange={e => setCustomer({ ...customer, phone: e.target.value })} />
                 
                 {orderType === 'delivery' && (
                   <div className="space-y-2">
-                    <textarea className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:border-[#C8102E] outline-none min-h-[80px]" placeholder="Delivery address" value={customer.address} onChange={e => setCustomer({ ...customer, address: e.target.value })} />
+                    <textarea className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:border-[#C5DB3B] outline-none min-h-[80px]" placeholder="Delivery address" value={customer.address} onChange={e => setCustomer({ ...customer, address: e.target.value })} />
                     <button
                       type="button"
                       onClick={useLiveLocation}
@@ -823,7 +823,7 @@ export default function TablePortal({ embedded = false }) {
                 )}
 
                 {orderType === 'table' && (
-                  <select className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-[#C8102E]" value={selectedTable} onChange={e => setSelectedTable(e.target.value)}>
+                  <select className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-[#C5DB3B]" value={selectedTable} onChange={e => setSelectedTable(e.target.value)}>
                     <option value="" className="bg-[#161616]">Select Table</option>
                     {tables.map(table => (
                       <option key={table._id} value={table._id} className="bg-[#161616]">
@@ -848,7 +848,7 @@ export default function TablePortal({ embedded = false }) {
                     placeholder="Less spicy, no onion, allergy notes…"
                     value={specialInstructions}
                     onChange={e => setSpecialInstructions(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:border-[#C8102E] outline-none resize-none"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:border-[#C5DB3B] outline-none resize-none"
                   />
                 </div>
               </div>
@@ -895,7 +895,7 @@ export default function TablePortal({ embedded = false }) {
                     <button
                       onClick={handleApplyCoupon}
                       disabled={couponLoading || !couponInput.trim()}
-                      className="px-3 py-2 rounded-xl text-xs font-bold text-white bg-[#C8102E] hover:bg-[#A60D25] disabled:opacity-50 transition-colors"
+                      className="px-3 py-2 rounded-xl text-xs font-bold text-white bg-[#C5DB3B] hover:bg-[#96AC2E] disabled:opacity-50 transition-colors"
                     >
                       {couponLoading ? <Loader2 size={12} className="animate-spin" /> : 'Apply'}
                     </button>
@@ -972,7 +972,7 @@ export default function TablePortal({ embedded = false }) {
               </div>
 
               {/* Submit Button */}
-              <button onClick={handleSubmitOrder} className="w-full bg-[#C8102E] hover:bg-[#A60D25] text-white font-bold py-3 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled={items.length === 0 || !customer.name || !customer.phone || (orderType === 'table' && !selectedTable) || (orderType === 'delivery' && !customer.address)}>
+              <button onClick={handleSubmitOrder} className="w-full bg-[#C5DB3B] hover:bg-[#96AC2E] text-white font-bold py-3 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled={items.length === 0 || !customer.name || !customer.phone || (orderType === 'table' && !selectedTable) || (orderType === 'delivery' && !customer.address)}>
                 {paymentMethod === 'razorpay' ? `Pay ${formatCurrency(cartTotal)}` : 'Send Order'}
               </button>
             </>
@@ -1080,7 +1080,7 @@ export default function TablePortal({ embedded = false }) {
 
                         <div className="flex items-center justify-between border-t border-white/5 pt-2 text-xs font-bold">
                           <span className="text-gray-400">Payment: <span className="uppercase text-white">{order.paymentMethod} ({order.paymentStatus})</span></span>
-                          <span className="text-[#C8102E] font-mono">{formatCurrency(order.totalAmount)}</span>
+                          <span className="text-[#C5DB3B] font-mono">{formatCurrency(order.totalAmount)}</span>
                         </div>
                       </div>
                     ))
@@ -1125,7 +1125,7 @@ export default function TablePortal({ embedded = false }) {
                     <span className={`px-3 py-1 rounded text-xs font-black tracking-wider text-white ${selectedItem.isVeg ? 'bg-green-600' : 'bg-red-600'}`}>
                       {selectedItem.isVeg ? 'Veg' : 'Non-Veg'}
                     </span>
-                    <span className="px-3 py-1 bg-[#C8102E] text-white rounded-full text-sm font-bold font-mono">
+                    <span className="px-3 py-1 bg-[#C5DB3B] text-white rounded-full text-sm font-bold font-mono">
                       {formatCurrency(selectedItemSize?.price ?? selectedItem.sizes?.[0]?.price ?? selectedItem.price)}
                     </span>
                   </div>
@@ -1151,7 +1151,7 @@ export default function TablePortal({ embedded = false }) {
                             onClick={() => setSelectedItemSize(s)}
                             className={`py-3 px-4 rounded-xl text-xs font-black transition-all border-2 flex flex-col items-center gap-0.5 ${
                               selectedItemSize?.label === s.label
-                                ? 'bg-[#C8102E] border-[#C8102E] text-white shadow-lg scale-[1.03]'
+                                ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white shadow-lg scale-[1.03]'
                                 : 'bg-black/40 border-white/10 text-gray-300 hover:border-white/30'
                             }`}
                           >
@@ -1173,7 +1173,7 @@ export default function TablePortal({ embedded = false }) {
                     setSelectedItem(null);
                     toast.success('Added to cart!');
                   }}
-                  className="w-full py-4 bg-[#C8102E] hover:bg-[#A60D25] text-white font-black text-sm uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg"
+                  className="w-full py-4 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white font-black text-sm uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg"
                 >
                   <ShoppingBag size={16} />
                   {selectedItemSize
@@ -1198,10 +1198,10 @@ export default function TablePortal({ embedded = false }) {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: 'spring', damping: 18, stiffness: 300 }}
             onClick={() => setCartOpen(true)}
-            className={`fixed ${embedded ? 'bottom-28 sm:bottom-8' : 'bottom-8'} right-4 z-40 w-14 h-14 bg-[#C8102E] hover:bg-[#A60D25] rounded-full shadow-[0_8px_32px_rgba(200,16,46,0.5)] flex items-center justify-center transition-colors`}
+            className={`fixed ${embedded ? 'bottom-28 sm:bottom-8' : 'bottom-8'} right-4 z-40 w-14 h-14 bg-[#C5DB3B] hover:bg-[#96AC2E] rounded-full shadow-[0_8px_32px_rgba(197, 219, 59,0.5)] flex items-center justify-center transition-colors`}
           >
             <ShoppingBag size={22} className="text-white" />
-            <span className="absolute -top-1.5 -right-1.5 min-w-[22px] h-[22px] px-1 bg-white text-[#C8102E] rounded-full text-[11px] font-black flex items-center justify-center shadow">
+            <span className="absolute -top-1.5 -right-1.5 min-w-[22px] h-[22px] px-1 bg-white text-[#C5DB3B] rounded-full text-[11px] font-black flex items-center justify-center shadow">
               {items.length}
             </span>
           </motion.button>
@@ -1210,7 +1210,7 @@ export default function TablePortal({ embedded = false }) {
 
       {/* Footer info */}
       <footer className="max-w-6xl mx-auto w-full text-center text-[10px] sm:text-xs text-gray-600 border-t border-white/5 pt-4 sm:pt-6 z-10">
-        Red Ball Academy © {new Date().getFullYear()} • Secure Digital Table Ordering System
+        Alchemy 360 Academy © {new Date().getFullYear()} • Secure Digital Table Ordering System
       </footer>
 
       <PhoneCollectModal

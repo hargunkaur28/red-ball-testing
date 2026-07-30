@@ -661,7 +661,7 @@ const HERO_SLUGS = [
   { slug: 'gym',          label: 'Gym & Fitness',  defaultTagline: 'AC Facility',   defaultHref: '/sports/gym' },
 ];
 
-const BLANK_CARD = { name: '', tagline: '', href: '', iconUrl: '', color: '#C8102E', order: 0 };
+const BLANK_CARD = { name: '', tagline: '', href: '', iconUrl: '', color: '#C5DB3B', order: 0 };
 
 function HeroIconsEditor() {
   const qc = useQueryClient();
@@ -815,7 +815,7 @@ function HeroIconsEditor() {
 
   const openEdit = (card) => {
     setEditingCard(card._id);
-    setCardForm({ name: card.name, tagline: card.tagline, href: card.href, iconUrl: card.iconUrl || '', color: card.color || '#C8102E', order: card.order ?? 0 });
+    setCardForm({ name: card.name, tagline: card.tagline, href: card.href, iconUrl: card.iconUrl || '', color: card.color || '#C5DB3B', order: card.order ?? 0 });
     setShowForm(true);
   };
 
@@ -1076,7 +1076,7 @@ function HeroIconsEditor() {
                     value={cardForm.color}
                     onChange={(e) => setCardForm((f) => ({ ...f, color: e.target.value }))}
                     className="input-field text-sm flex-1"
-                    placeholder="#C8102E"
+                    placeholder="#C5DB3B"
                   />
                 </div>
               </div>
@@ -1098,7 +1098,7 @@ function HeroIconsEditor() {
                   {cardForm.iconUrl ? (
                     <img src={cardForm.iconUrl} alt={cardForm.name} className="w-full h-full object-cover" onError={(e) => { e.target.style.display='none'; }} />
                   ) : (
-                    <Trophy size={20} style={{ color: cardForm.color || '#C8102E' }} />
+                    <Trophy size={20} style={{ color: cardForm.color || '#C5DB3B' }} />
                   )}
                 </div>
                 <div>
@@ -1143,7 +1143,7 @@ function HeroIconsEditor() {
                     {card.iconUrl ? (
                       <img src={card.iconUrl} alt={card.name} className="w-full h-full object-cover" onError={(e) => { e.target.style.display='none'; }} />
                     ) : (
-                      <Trophy size={22} style={{ color: card.color || '#C8102E' }} />
+                      <Trophy size={22} style={{ color: card.color || '#C5DB3B' }} />
                     )}
                   </div>
                   <div className="min-w-0">
@@ -1155,7 +1155,7 @@ function HeroIconsEditor() {
                 <div className="flex items-center gap-2">
                   <span
                     className="w-5 h-5 rounded-full border border-gray-200 shrink-0"
-                    style={{ background: card.color || '#C8102E' }}
+                    style={{ background: card.color || '#C5DB3B' }}
                     title={card.color}
                   />
                   <span className="text-[11px] text-gray-400">Order: {card.order ?? 0}</span>
@@ -1875,7 +1875,7 @@ function DiscountsPanel() {
                 const selected = entries.some((e) => e.sportId === s._id);
                 return (
                   <button key={s._id} type="button" onClick={() => toggleSport(s)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${selected ? 'bg-[#C8102E] border-[#C8102E] text-white' : 'border-gray-200 text-gray-600 bg-white hover:border-[#C8102E]/40'}`}>
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${selected ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white' : 'border-gray-200 text-gray-600 bg-white hover:border-[#C5DB3B]/40'}`}>
                     {s.name}
                   </button>
                 );
@@ -1897,7 +1897,7 @@ function DiscountsPanel() {
                     value={e.discountPercent}
                     onChange={(ev) => setPercent(e.sportId, ev.target.value)}
                     placeholder="%"
-                    className="w-20 border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-center focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20"
+                    className="w-20 border border-gray-200 rounded-lg px-2 py-1.5 text-sm text-center focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20"
                   />
                   <span className="text-xs text-gray-400 font-medium">% off</span>
                 </div>
@@ -1923,7 +1923,7 @@ function DiscountsPanel() {
           </div>
           <div className="col-span-2 flex items-center justify-between">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" name="isActive" defaultChecked={initial ? initial.isActive : true} className="w-4 h-4 accent-[#C8102E]" />
+              <input type="checkbox" name="isActive" defaultChecked={initial ? initial.isActive : true} className="w-4 h-4 accent-[#C5DB3B]" />
               <span className="text-sm text-gray-700">Active</span>
             </label>
             <p className="text-[11px] text-gray-400">Banner text is auto-generated and shown on homepage.</p>
@@ -1932,7 +1932,7 @@ function DiscountsPanel() {
 
         <div className="flex gap-2 pt-1">
           <button type="button" onClick={onCancel} className="flex-1 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 hover:bg-gray-100">Cancel</button>
-          <button type="submit" disabled={isPending} className="flex-1 py-2 rounded-xl bg-[#C8102E] text-white text-sm font-semibold hover:bg-[#a50d27] disabled:opacity-60 flex items-center justify-center gap-1">
+          <button type="submit" disabled={isPending} className="flex-1 py-2 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-1">
             {isPending ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
             Save{entries.length > 1 ? ` (${entries.length} discounts)` : ''}
           </button>
@@ -2540,8 +2540,8 @@ function CouponFormModal({ initial, sports, onSave, onCancel, isPending }) {
               onClick={() => setTargetType(t)}
               className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-colors capitalize ${
                 targetType === t
-                  ? 'bg-[#C8102E] border-[#C8102E] text-white'
-                  : 'border-gray-200 text-gray-600 bg-white hover:border-[#C8102E]/40'
+                  ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white'
+                  : 'border-gray-200 text-gray-600 bg-white hover:border-[#C5DB3B]/40'
               }`}
             >
               {t}
@@ -2560,7 +2560,7 @@ function CouponFormModal({ initial, sports, onSave, onCancel, isPending }) {
                 type="checkbox"
                 checked={appliesToAllSports}
                 onChange={(e) => setAppliesToAllSports(e.target.checked)}
-                className="w-3.5 h-3.5 accent-[#C8102E]"
+                className="w-3.5 h-3.5 accent-[#C5DB3B]"
               />
               <span className="text-xs text-gray-500">All Sports</span>
             </label>
@@ -2576,8 +2576,8 @@ function CouponFormModal({ initial, sports, onSave, onCancel, isPending }) {
                     onClick={() => toggleSportId(s._id)}
                     className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
                       selected
-                        ? 'bg-[#C8102E] border-[#C8102E] text-white'
-                        : 'border-gray-200 text-gray-600 bg-white hover:border-[#C8102E]/40'
+                        ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white'
+                        : 'border-gray-200 text-gray-600 bg-white hover:border-[#C5DB3B]/40'
                     }`}
                   >
                     {s.name}
@@ -2639,8 +2639,8 @@ function CouponFormModal({ initial, sports, onSave, onCancel, isPending }) {
               onClick={() => setVisibility(val)}
               className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
                 visibility === val
-                  ? 'bg-[#C8102E] border-[#C8102E] text-white'
-                  : 'border-gray-200 text-gray-600 bg-white hover:border-[#C8102E]/40'
+                  ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white'
+                  : 'border-gray-200 text-gray-600 bg-white hover:border-[#C5DB3B]/40'
               }`}
             >
               {label}
@@ -2678,7 +2678,7 @@ function CouponFormModal({ initial, sports, onSave, onCancel, isPending }) {
               onChange={(e) => setUserQuery(e.target.value)}
               onFocus={() => userResults.length > 0 && setShowUserDropdown(true)}
               placeholder="Search users by name, email or phone..."
-              className="w-full border border-gray-200 rounded-lg pl-8 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20"
+              className="w-full border border-gray-200 rounded-lg pl-8 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20"
             />
             {showUserDropdown && userResults.length > 0 && (
               <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden">
@@ -2709,7 +2709,7 @@ function CouponFormModal({ initial, sports, onSave, onCancel, isPending }) {
 
       {/* Active toggle */}
       <div className="flex items-center gap-2">
-        <input type="checkbox" name="isActive" id="couponIsActive" defaultChecked={initial ? initial.isActive : true} className="w-4 h-4 accent-[#C8102E]" />
+        <input type="checkbox" name="isActive" id="couponIsActive" defaultChecked={initial ? initial.isActive : true} className="w-4 h-4 accent-[#C5DB3B]" />
         <label htmlFor="couponIsActive" className="text-sm text-gray-700 cursor-pointer">Active</label>
       </div>
 
@@ -2718,7 +2718,7 @@ function CouponFormModal({ initial, sports, onSave, onCancel, isPending }) {
         <button type="button" onClick={onCancel} className="flex-1 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 hover:bg-gray-100">
           Cancel
         </button>
-        <button type="submit" disabled={isPending} className="flex-1 py-2 rounded-xl bg-[#C8102E] text-white text-sm font-semibold hover:bg-[#a50d27] disabled:opacity-60 flex items-center justify-center gap-1">
+        <button type="submit" disabled={isPending} className="flex-1 py-2 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-1">
           {isPending ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
           {initial ? 'Save Changes' : 'Create Coupon'}
         </button>

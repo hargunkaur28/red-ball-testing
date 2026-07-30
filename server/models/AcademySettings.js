@@ -4,7 +4,7 @@ const academySettingsSchema = new mongoose.Schema({
   academyName: {
     type: String,
     required: true,
-    default: 'Red Ball Cricket Academy'
+    default: 'Alchemy 360 Cricket Academy'
   },
   address: {
     type: String,

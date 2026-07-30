@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    MongoDB Atlas Backup Script for Red Ball Sports Arena (Windows).
+    MongoDB Atlas Backup Script for Alchemy 360 Sports Arena (Windows).
 .DESCRIPTION
     Dumps all collections from the Atlas cluster using mongodump and compresses the output.
 .PARAMETER DbName

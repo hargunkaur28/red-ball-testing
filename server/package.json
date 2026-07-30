@@ -1,14 +1,14 @@
 {
-  "name": "redball-server",
+  "name": "alchemy360-server",
   "version": "1.0.0",
-  "description": "Red Ball Cricket Academy - Backend Server",
+  "description": "Alchemy 360 Cricket Academy - Backend Server",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js"
   },
   "keywords": [],
-  "author": "Red Ball Academy",
+  "author": "Alchemy 360 Academy",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {

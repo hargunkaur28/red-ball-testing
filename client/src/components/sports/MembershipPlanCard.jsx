@@ -67,8 +67,8 @@ export default function MembershipPlanCard({ plan, index = 0 }) {
         background: isPopular
           ? 'linear-gradient(135deg, #1A0A0D 0%, #2D1215 100%)'
           : '#111515',
-        border: isPopular ? '1px solid rgba(200,16,46,0.4)' : '1px solid rgba(255,255,255,0.06)',
-        boxShadow: isPopular ? '0 8px 32px rgba(200,16,46,0.15)' : '0 4px 16px rgba(0,0,0,0.3)',
+        border: isPopular ? '1px solid rgba(197, 219, 59,0.4)' : '1px solid rgba(255,255,255,0.06)',
+        boxShadow: isPopular ? '0 8px 32px rgba(197, 219, 59,0.15)' : '0 4px 16px rgba(0,0,0,0.3)',
       }}
     >
       {/* Popular badge */}
@@ -76,7 +76,7 @@ export default function MembershipPlanCard({ plan, index = 0 }) {
         <div
           className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1 whitespace-nowrap"
           style={{
-            background: isPopular ? '#C8102E' : '#F5A623',
+            background: isPopular ? '#C5DB3B' : '#F5A623',
             color: '#fff',
           }}
         >
@@ -89,7 +89,7 @@ export default function MembershipPlanCard({ plan, index = 0 }) {
       <div className="flex flex-col gap-3">
         <div>
           <div className="flex items-center gap-1.5 mb-1">
-            <Crown size={13} className={isPopular ? 'text-[#C8102E]' : 'text-[#F5A623]'} />
+            <Crown size={13} className={isPopular ? 'text-[#C5DB3B]' : 'text-[#F5A623]'} />
             <span className="text-white/40 text-[10px] uppercase tracking-[2px] font-bold">
               {plan.duration}
             </span>
@@ -99,7 +99,7 @@ export default function MembershipPlanCard({ plan, index = 0 }) {
         <div className="flex items-end gap-2">
           <p
             className="font-black text-[28px] leading-none"
-            style={{ color: isPopular ? '#df1526' : '#F5A623' }}
+            style={{ color: isPopular ? '#C5DB3B' : '#F5A623' }}
           >
             {formatCurrency(plan.price)}
           </p>
@@ -114,11 +114,11 @@ export default function MembershipPlanCard({ plan, index = 0 }) {
               <div
                 className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{
-                  background: isPopular ? 'rgba(200,16,46,0.15)' : 'rgba(245,166,35,0.15)',
-                  border: isPopular ? '1px solid rgba(200,16,46,0.3)' : '1px solid rgba(245,166,35,0.3)',
+                  background: isPopular ? 'rgba(197, 219, 59,0.15)' : 'rgba(245,166,35,0.15)',
+                  border: isPopular ? '1px solid rgba(197, 219, 59,0.3)' : '1px solid rgba(245,166,35,0.3)',
                 }}
               >
-                <Check size={9} style={{ color: isPopular ? '#C8102E' : '#F5A623' }} />
+                <Check size={9} style={{ color: isPopular ? '#C5DB3B' : '#F5A623' }} />
               </div>
               {f}
             </li>
@@ -128,7 +128,7 @@ export default function MembershipPlanCard({ plan, index = 0 }) {
 
       {/* CTA */}
       {isInUse && !canRenew && daysLeft !== null && (
-        <p className="text-center text-[11px] font-semibold" style={{ color: isPopular ? '#C8102E' : '#F5A623' }}>
+        <p className="text-center text-[11px] font-semibold" style={{ color: isPopular ? '#C5DB3B' : '#F5A623' }}>
           {daysLeft} day{daysLeft !== 1 ? 's' : ''} remaining
         </p>
       )}
@@ -148,7 +148,7 @@ export default function MembershipPlanCard({ plan, index = 0 }) {
             : canRenew
             ? 'linear-gradient(90deg, #d97706, #b45309)'
             : isPopular
-            ? 'linear-gradient(90deg, #df1526, #C8102E)'
+            ? 'linear-gradient(90deg, #C5DB3B, #96AC2E)'
             : 'rgba(255,255,255,0.06)',
           color: isInUse && !canRenew
             ? 'rgba(255,255,255,0.4)'

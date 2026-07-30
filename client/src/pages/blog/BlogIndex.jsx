@@ -55,18 +55,18 @@ export default function BlogIndex() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Blog | Cricket, Badminton, Swimming Tips | Red Ball Sports Arena Rohtak"
-        description="Expert articles on cricket, badminton, swimming, fitness, and sports events in Rohtak and Haryana from Red Ball Sports Arena — Rohtak's premier multi-sport complex."
+        title="Sports Blog | Cricket, Badminton, Swimming Tips | Alchemy 360 Sports Arena Rohtak"
+        description="Expert articles on cricket, badminton, swimming, fitness, and sports events in Rohtak and Haryana from Alchemy 360 Sports Arena — Rohtak's premier multi-sport complex."
         canonical="/blog"
         schema={{
           '@context': 'https://schema.org',
           '@type': 'Blog',
-          name: 'Red Ball Sports Arena Blog',
-          description: 'Expert sports content from Red Ball Sports Arena, Rohtak, Haryana',
+          name: 'Alchemy 360 Sports Arena Blog',
+          description: 'Expert sports content from Alchemy 360 Sports Arena, Rohtak, Haryana',
           url: 'https://www.redballsportsarena.in/blog',
           publisher: {
             '@type': 'Organization',
-            name: 'Red Ball Sports Arena',
+            name: 'Alchemy 360 Sports Arena',
             url: 'https://www.redballsportsarena.in',
           },
         }}
@@ -74,19 +74,19 @@ export default function BlogIndex() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-20">
         <div className="max-w-5xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Rohtak Sports · Haryana</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Rohtak Sports · Haryana</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Sports Blog
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Cricket, badminton, swimming, fitness, and everything sports in Rohtak. Expert guides, tips, and local knowledge from Red Ball Sports Arena.
+            Cricket, badminton, swimming, fitness, and everything sports in Rohtak. Expert guides, tips, and local knowledge from Alchemy 360 Sports Arena.
           </p>
         </div>
       </section>
 
       <nav className="bg-white border-b border-black/10 px-4 py-3">
         <div className="max-w-5xl mx-auto flex flex-wrap gap-2 text-xs" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          <Link to="/" className="text-[#0D0D0D]/50 hover:text-[#C8102E] transition-colors">← Home</Link>
+          <Link to="/" className="text-[#0D0D0D]/50 hover:text-[#C5DB3B] transition-colors">← Home</Link>
           <span className="text-[#0D0D0D]/30">/</span>
           <span className="text-[#0D0D0D]">Blog</span>
         </div>
@@ -113,7 +113,7 @@ export default function BlogIndex() {
                     {post.date ? new Date(post.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
                   </span>
                 </div>
-                <h2 className="font-bold text-[#0D0D0D] text-sm leading-snug mb-2 group-hover:text-[#C8102E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                <h2 className="font-bold text-[#0D0D0D] text-sm leading-snug mb-2 group-hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                   {post.title}
                 </h2>
                 <p className="text-xs text-[#0D0D0D]/60 leading-relaxed line-clamp-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>

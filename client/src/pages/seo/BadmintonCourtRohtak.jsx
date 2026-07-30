@@ -6,10 +6,10 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Where can I play badminton in Rohtak?',
-    a: 'Red Ball Sports Arena has professional badminton courts in Rohtak at Sector 22-D, Jhajjar Road. Courts can be booked online or by walk-in.',
+    a: 'Alchemy 360 Sports Arena has professional badminton courts in Rohtak at Sector 22-D, Jhajjar Road. Courts can be booked online or by walk-in.',
   },
   {
-    q: 'Are badminton coaching sessions available at Red Ball?',
+    q: 'Are badminton coaching sessions available at Alchemy 360?',
     a: 'Yes. Badminton coaches are available for individual and group sessions, suitable for beginners through to advanced players.',
   },
   {
@@ -17,7 +17,7 @@ const faqs = [
     a: 'Court rental rates are listed on our Book Slots page. Membership plans offer more economical per-session pricing for frequent players.',
   },
   {
-    q: 'Can kids learn badminton at Red Ball Academy?',
+    q: 'Can kids learn badminton at Alchemy 360 Academy?',
     a: 'Yes. We have a kids badminton program with age-appropriate coaching for children. Check our Kids\' Sports Academy page for details.',
   },
   {
@@ -25,7 +25,7 @@ const faqs = [
     a: 'Shuttlecocks and rackets may be available for rent. Contact us to confirm current availability.',
   },
   {
-    q: 'What are the badminton court timings at Red Ball?',
+    q: 'What are the badminton court timings at Alchemy 360?',
     a: 'Courts are available from 5:00 AM to 11:00 PM, seven days a week.',
   },
 ];
@@ -46,8 +46,8 @@ export default function BadmintonCourtRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Badminton Court in Rohtak | Book Badminton | Red Ball Sports Arena"
-        description="Play badminton in Rohtak at Red Ball Sports Arena. Professional wooden-floor courts, experienced coaches, kids programs & flexible membership plans. Book online."
+        title="Badminton Court in Rohtak | Book Badminton | Alchemy 360 Sports Arena"
+        description="Play badminton in Rohtak at Alchemy 360 Sports Arena. Professional wooden-floor courts, experienced coaches, kids programs & flexible membership plans. Book online."
         canonical="/badminton-court-rohtak"
         schema={schema}
       />
@@ -56,15 +56,15 @@ export default function BadmintonCourtRohtak() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Badminton · Rohtak, Haryana</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Badminton · Rohtak, Haryana</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Badminton Court in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena offers professional-grade badminton courts in Rohtak — wooden-floored, well-lit, and maintained to high standards. Play casually, compete seriously, or learn with an experienced coach.
+            Alchemy 360 Sports Arena offers professional-grade badminton courts in Rohtak — wooden-floored, well-lit, and maintained to high standards. Play casually, compete seriously, or learn with an experienced coach.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/buy-membership" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -76,7 +76,7 @@ export default function BadmintonCourtRohtak() {
 
       <section className="max-w-4xl mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0D0D0D] mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-          Badminton at Red Ball — Rohtak's Best Courts
+          Badminton at Alchemy 360 — Rohtak's Best Courts
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
           Our badminton courts in Rohtak feature proper wooden flooring, professional-grade nets, and even lighting that eliminates shadows. Whether you're playing singles, doubles, or mixed, our courts deliver the right playing experience.
@@ -97,7 +97,7 @@ export default function BadmintonCourtRohtak() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More Sports at Red Ball Arena, Rohtak</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More Sports at Alchemy 360 Arena, Rohtak</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Cricket Academy', to: '/cricket-academy-rohtak' },
@@ -107,7 +107,7 @@ export default function BadmintonCourtRohtak() {
               { label: "Kids' Academy", to: '/kids-sports-academy-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
-                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C8102E] hover:text-[#C8102E] transition-colors"
+                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {item.label}
               </Link>

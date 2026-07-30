@@ -71,7 +71,7 @@ function StatCard({ icon: Icon, title, description, stat, statLabel, gradient, t
       whileHover={{ scale: 1.02, y: -4 }}
       whileTap={{ scale: 0.98 }}
       onClick={() => navigate(to)}
-      className="card overflow-hidden text-left w-full cursor-pointer group transition-shadow duration-300 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8102E]/40"
+      className="card overflow-hidden text-left w-full cursor-pointer group transition-shadow duration-300 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C5DB3B]/40"
     >
       {/* Gradient accent bar */}
       <div className={`h-1.5 ${gradient}`} />
@@ -100,7 +100,7 @@ function StatCard({ icon: Icon, title, description, stat, statLabel, gradient, t
               {statLabel}
             </p>
           </div>
-          <span className="flex items-center gap-1 text-xs font-medium text-[#C8102E] opacity-0 translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+          <span className="flex items-center gap-1 text-xs font-medium text-[#C5DB3B] opacity-0 translate-x-[-4px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
             Open <ArrowRight size={14} />
           </span>
         </div>
@@ -280,7 +280,7 @@ export default function Dashboard() {
       description: 'Manage sports, pricing & categories',
       stat: activeSportsCount,
       statLabel: 'Active Sports',
-      gradient: 'bg-gradient-to-r from-[#C8102E] to-[#E8334A]',
+      gradient: 'bg-gradient-to-r from-[#C5DB3B] to-[#96AC2E]',
       to: '/super-admin/sports',
     },
     {
@@ -428,7 +428,7 @@ export default function Dashboard() {
         className="mt-6 mb-6"
       >
         <div className="flex items-center gap-2 mb-3">
-          <Activity size={16} className="text-[#C8102E]" />
+          <Activity size={16} className="text-[#C5DB3B]" />
           <h2 className="text-sm font-bold tracking-wider text-[#9CA3AF] uppercase font-['Inter']">
             Live Academy Occupancy
           </h2>
@@ -524,7 +524,7 @@ export default function Dashboard() {
           </div>
           <button
             onClick={() => navigate('/super-admin/live-sports')}
-            className="text-xs font-semibold text-[#C8102E] hover:underline flex items-center gap-1"
+            className="text-xs font-semibold text-[#C5DB3B] hover:underline flex items-center gap-1"
           >
             Live Sports <ArrowRight size={12} />
           </button>
@@ -600,7 +600,7 @@ export default function Dashboard() {
           </div>
           <button
             onClick={() => navigate('/super-admin/live-sports')}
-            className="text-xs font-semibold text-[#C8102E] hover:underline flex items-center gap-1"
+            className="text-xs font-semibold text-[#C5DB3B] hover:underline flex items-center gap-1"
           >
             Live Sports <ArrowRight size={12} />
           </button>
@@ -714,7 +714,7 @@ export default function Dashboard() {
         transition={{ delay: 0.7, duration: 0.5 }}
         className="text-center text-xs text-[#9CA3AF] mt-6"
       >
-        Red Ball Academy — Super Admin Panel
+        Alchemy 360 Academy — Super Admin Panel
       </motion.p>
     </div>
   );
@@ -779,7 +779,7 @@ function ReportsSection() {
     }
   };
 
-  const inputCls = 'w-full px-3 py-2 rounded-xl border border-gray-200 text-sm text-[#0D0D0D] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8102E]/20 focus:border-[#C8102E]/40';
+  const inputCls = 'w-full px-3 py-2 rounded-xl border border-gray-200 text-sm text-[#0D0D0D] bg-white focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20 focus:border-[#C5DB3B]/40';
   const labelCls = 'block text-xs font-semibold text-[#9CA3AF] uppercase tracking-wide mb-1.5';
 
   return (
@@ -854,7 +854,7 @@ function ReportsSection() {
             <button
               onClick={handleDownload}
               disabled={downloading || (range === 'custom' && (!startDate || !endDate))}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#C8102E] hover:bg-[#a80e27] text-white text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {downloading ? (
                 <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">

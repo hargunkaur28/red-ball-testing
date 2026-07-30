@@ -6,23 +6,23 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a badminton court near Gurgaon worth visiting in Rohtak?',
-    a: 'Yes. Red Ball Sports Arena in Rohtak is a professional badminton facility about 90 km and 90 minutes from Gurgaon (Gurugram). Players from Gurgaon looking for a day trip with great sports infrastructure make this journey regularly.',
+    a: 'Yes. Alchemy 360 Sports Arena in Rohtak is a professional badminton facility about 90 km and 90 minutes from Gurgaon (Gurugram). Players from Gurgaon looking for a day trip with great sports infrastructure make this journey regularly.',
   },
   {
-    q: 'How do I get from Gurgaon to Red Ball Sports Arena in Rohtak?',
-    a: 'From Gurgaon, take NH-48 towards Delhi then NH-148B or NH-352 towards Rohtak. Red Ball is at Sector 22-D, Jhajjar Road (near Omaxe), Rohtak — about a 90-minute drive.',
+    q: 'How do I get from Gurgaon to Alchemy 360 Sports Arena in Rohtak?',
+    a: 'From Gurgaon, take NH-48 towards Delhi then NH-148B or NH-352 towards Rohtak. Alchemy 360 is at Sector 22-D, Jhajjar Road (near Omaxe), Rohtak — about a 90-minute drive.',
   },
   {
     q: 'Why would a Gurgaon badminton player travel to Rohtak?',
-    a: 'Red Ball offers a full sports complex experience — professional courts, cricket, swimming, gym, pickleball, and a restaurant — in a quieter, less congested setting than Gurgaon. Many players come for the atmosphere and value.',
+    a: 'Alchemy 360 offers a full sports complex experience — professional courts, cricket, swimming, gym, pickleball, and a restaurant — in a quieter, less congested setting than Gurgaon. Many players come for the atmosphere and value.',
   },
   {
-    q: 'Can I book a badminton court at Red Ball from Gurgaon online?',
+    q: 'Can I book a badminton court at Alchemy 360 from Gurgaon online?',
     a: 'Yes. Booking is fully online and available in advance. Gurgaon players can lock in a specific time slot before making the trip, ensuring no wasted journey.',
   },
   {
     q: 'Are there membership options that suit Gurgaon-based players who visit occasionally?',
-    a: 'Red Ball offers both one-time slot bookings and memberships. For Gurgaon players who visit once or twice a month, the one-time booking option is the most flexible.',
+    a: 'Alchemy 360 offers both one-time slot bookings and memberships. For Gurgaon players who visit once or twice a month, the one-time booking option is the most flexible.',
   },
 ];
 
@@ -47,8 +47,8 @@ export default function BadmintonCourtGurgaon() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Badminton Court Near Gurgaon | Red Ball Sports Arena Rohtak"
-        description="Professional badminton court near Gurgaon (Gurugram) — Red Ball Sports Arena, Rohtak, 90 km / 90 min away. Great courts, full sports complex, online booking."
+        title="Badminton Court Near Gurgaon | Alchemy 360 Sports Arena Rohtak"
+        description="Professional badminton court near Gurgaon (Gurugram) — Alchemy 360 Sports Arena, Rohtak, 90 km / 90 min away. Great courts, full sports complex, online booking."
         canonical="/badminton-court-gurgaon"
         schema={schema}
       />
@@ -56,15 +56,15 @@ export default function BadmintonCourtGurgaon() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Badminton · Near Gurgaon</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Badminton · Near Gurgaon</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Badminton Court Near Gurgaon
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena in Rohtak is a full-scale sports destination — 90 km and approximately 90 minutes from Gurgaon (Gurugram). Gurgaon players who want a change of scene and a proper professional badminton setup without the city crowd find Red Ball a compelling day trip. Book your court online before you leave and step onto the court the moment you arrive.
+            Alchemy 360 Sports Arena in Rohtak is a full-scale sports destination — 90 km and approximately 90 minutes from Gurgaon (Gurugram). Gurgaon players who want a change of scene and a proper professional badminton setup without the city crowd find Alchemy 360 a compelling day trip. Book your court online before you leave and step onto the court the moment you arrive.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/badminton-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -76,16 +76,16 @@ export default function BadmintonCourtGurgaon() {
 
       <section className="max-w-4xl mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0D0D0D] mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-          Escape the City, Play at Red Ball
+          Escape the City, Play at Alchemy 360
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Gurgaon has plenty of sports options, but Red Ball Sports Arena offers something different — a purpose-built multi-sport complex in Haryana's sports capital of Rohtak, where you can play badminton, try Box 360 cricket, swim in an open-air pool, and eat at the on-site restaurant all in one day. The 90-minute drive is best treated as part of the experience, especially on weekends when Rohtak's roads are clear and the facility is buzzing.
+          Gurgaon has plenty of sports options, but Alchemy 360 Sports Arena offers something different — a purpose-built multi-sport complex in Haryana's sports capital of Rohtak, where you can play badminton, try Box 360 cricket, swim in an open-air pool, and eat at the on-site restaurant all in one day. The 90-minute drive is best treated as part of the experience, especially on weekends when Rohtak's roads are clear and the facility is buzzing.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: '90 Min Haryana Drive', desc: 'Clear highway run from Gurgaon on NH-48 then NH-148B. Less traffic than a city commute — and you arrive at a top-tier sports complex.' },
-            { title: 'Professional Badminton', desc: 'Red Ball\'s courts are maintained to a competitive standard — ideal for Gurgaon club teams or serious recreational players wanting quality.' },
-            { title: 'Full Day Out', desc: "Combine badminton with other Red Ball facilities and round it off with a proper meal at the on-site restaurant before heading back to Gurgaon." },
+            { title: 'Professional Badminton', desc: 'Alchemy 360\'s courts are maintained to a competitive standard — ideal for Gurgaon club teams or serious recreational players wanting quality.' },
+            { title: 'Full Day Out', desc: "Combine badminton with other Alchemy 360 facilities and round it off with a proper meal at the on-site restaurant before heading back to Gurgaon." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>
@@ -97,7 +97,7 @@ export default function BadmintonCourtGurgaon() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Red Ball Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },
@@ -106,7 +106,7 @@ export default function BadmintonCourtGurgaon() {
               { label: 'Swimming Pool Rohtak', to: '/swimming-pool-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
-                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C8102E] hover:text-[#C8102E] transition-colors"
+                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {item.label}
               </Link>

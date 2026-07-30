@@ -391,7 +391,7 @@ export default function OneTime() {
       <div className="flex items-center justify-between mb-8 mt-2">
         <div>
           <p className="text-[10px] font-semibold tracking-[0.2em] text-[#666666] uppercase mb-2">
-            [RED BALL ACADEMY]
+            [ALCHEMY 360 ACADEMY]
           </p>
           <h1 className="text-5xl serif-heading text-[#111111] uppercase tracking-tight">
             One-Time Entries.

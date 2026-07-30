@@ -91,7 +91,7 @@ export default function UserReviews() {
   return (
     <div className="space-y-8">
       <div>
-        <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#df1526]">Red Ball Academy</p>
+        <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#C5DB3B]">Alchemy 360 Academy</p>
         <h1 className="mt-3 text-3xl font-black sm:text-4xl tracking-tight text-white">Reviews</h1>
         <p className="mt-2 text-sm text-white/50">Share your experience with our food and services</p>
       </div>
@@ -112,7 +112,7 @@ export default function UserReviews() {
                     onClick={() => handleGroupChange('services')}
                     className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl border p-3 transition ${
                       group === 'services'
-                        ? 'border-[#df1526] bg-[#df1526] text-white'
+                        ? 'border-[#C5DB3B] bg-[#C5DB3B] text-white'
                         : 'border-white/10 bg-white/4 text-white/58 hover:bg-white/[0.07]'
                     }`}
                   >
@@ -124,7 +124,7 @@ export default function UserReviews() {
                     onClick={() => handleGroupChange('food')}
                     className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl border p-3 transition ${
                       group === 'food'
-                        ? 'border-[#df1526] bg-[#df1526] text-white'
+                        ? 'border-[#C5DB3B] bg-[#C5DB3B] text-white'
                         : 'border-white/10 bg-white/4 text-white/58 hover:bg-white/[0.07]'
                     }`}
                   >
@@ -147,7 +147,7 @@ export default function UserReviews() {
                       onClick={() => setSubCategory(opt.value)}
                       className={`flex flex-col items-center justify-center gap-1 rounded-xl border px-1 py-2.5 transition ${
                         subCategory === opt.value
-                          ? 'border-[#df1526] bg-[#df1526]/15 text-white'
+                          ? 'border-[#C5DB3B] bg-[#C5DB3B]/15 text-white'
                           : 'border-white/8 bg-white/3 text-white/50 hover:bg-white/[0.07] hover:text-white/80'
                       }`}
                     >
@@ -179,7 +179,7 @@ export default function UserReviews() {
               <div>
                 <label className="mb-2 block text-xs font-black uppercase tracking-[0.18em] text-white/38">Comment</label>
                 <textarea
-                  className="min-h-27.5 w-full rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/28 focus:border-[#df1526] focus:bg-white/6"
+                  className="min-h-27.5 w-full rounded-2xl border border-white/10 bg-white/4 px-4 py-3 text-sm text-white outline-none transition placeholder:text-white/28 focus:border-[#C5DB3B] focus:bg-white/6"
                   placeholder="Tell us what you liked or how we can improve..."
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
@@ -189,7 +189,7 @@ export default function UserReviews() {
               <button
                 type="submit"
                 disabled={mutation.isPending}
-                className="flex w-full items-center justify-center rounded-full bg-[#df1526] py-3 font-black text-white transition hover:brightness-110 disabled:opacity-50"
+                className="flex w-full items-center justify-center rounded-full bg-[#C5DB3B] py-3 font-black text-white transition hover:brightness-110 disabled:opacity-50"
               >
                 {mutation.isPending ? 'Submitting...' : 'Submit Review'}
               </button>

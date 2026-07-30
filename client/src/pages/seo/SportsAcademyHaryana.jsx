@@ -6,23 +6,23 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'What is the best private sports academy in Haryana?',
-    a: 'Red Ball Sports Arena in Rohtak is widely regarded as one of Haryana\'s best private multi-sport academies, offering cricket (including the Box 360 circular format), badminton, pickleball, swimming, and gymnasium in a single complex.',
+    a: 'Alchemy 360 Sports Arena in Rohtak is widely regarded as one of Haryana\'s best private multi-sport academies, offering cricket (including the Box 360 circular format), badminton, pickleball, swimming, and gymnasium in a single complex.',
   },
   {
-    q: 'Which cities in Haryana can access Red Ball Sports Arena?',
-    a: 'Athletes from Jhajjar (25 km), Bahadurgarh (45 km), Sonipat (55 km), Gurgaon (90 km), Panipat (95 km), and many more Haryana cities regularly train at Red Ball in Rohtak.',
+    q: 'Which cities in Haryana can access Alchemy 360 Sports Arena?',
+    a: 'Athletes from Jhajjar (25 km), Bahadurgarh (45 km), Sonipat (55 km), Gurgaon (90 km), Panipat (95 km), and many more Haryana cities regularly train at Alchemy 360 in Rohtak.',
   },
   {
-    q: 'Does Red Ball Sports Arena offer coaching for all age groups?',
-    a: 'Yes. Red Ball has structured programmes for kids, teenagers, and adults across cricket, badminton, pickleball, and swimming. Separate batches ensure age-appropriate training.',
+    q: 'Does Alchemy 360 Sports Arena offer coaching for all age groups?',
+    a: 'Yes. Alchemy 360 has structured programmes for kids, teenagers, and adults across cricket, badminton, pickleball, and swimming. Separate batches ensure age-appropriate training.',
   },
   {
-    q: 'Is Red Ball Sports Arena the only facility with Box 360 cricket in Haryana?',
-    a: 'Box 360 at Red Ball is Rohtak\'s first 24/7 circular box cricket ground. This unique format — available round the clock — sets Red Ball apart from any other sports facility in the region.',
+    q: 'Is Alchemy 360 Sports Arena the only facility with Box 360 cricket in Haryana?',
+    a: 'Box 360 at Alchemy 360 is Rohtak\'s first 24/7 circular box cricket ground. This unique format — available round the clock — sets Alchemy 360 apart from any other sports facility in the region.',
   },
   {
-    q: 'How do I enrol in a sports academy programme at Red Ball from anywhere in Haryana?',
-    a: 'Call +91 93500 76653 or book online. Red Ball\'s team will help you choose the right programme and batch timing to fit your commute from anywhere in Haryana.',
+    q: 'How do I enrol in a sports academy programme at Alchemy 360 from anywhere in Haryana?',
+    a: 'Call +91 93500 76653 or book online. Alchemy 360\'s team will help you choose the right programme and batch timing to fit your commute from anywhere in Haryana.',
   },
 ];
 
@@ -47,8 +47,8 @@ export default function SportsAcademyHaryana() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Academy in Haryana | Red Ball Sports Arena Rohtak"
-        description="Best sports academy in Haryana — Red Ball Sports Arena, Rohtak. Serving Jhajjar, Sonipat, Bahadurgarh, Panipat, Gurgaon and beyond. Cricket, badminton, swimming, pickleball."
+        title="Sports Academy in Haryana | Alchemy 360 Sports Arena Rohtak"
+        description="Best sports academy in Haryana — Alchemy 360 Sports Arena, Rohtak. Serving Jhajjar, Sonipat, Bahadurgarh, Panipat, Gurgaon and beyond. Cricket, badminton, swimming, pickleball."
         canonical="/sports-academy-haryana"
         schema={schema}
       />
@@ -57,15 +57,15 @@ export default function SportsAcademyHaryana() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Sports Academy · Haryana</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Sports Academy · Haryana</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Sports Academy in Haryana
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena in Rohtak serves athletes from across Haryana — Jhajjar, Bahadurgarh, Sonipat, Panipat, Gurgaon, and every district in between. One campus, multiple professional sports, expert coaching, and the state's only Box 360 24/7 circular cricket ground. This is Haryana's go-to private sports academy.
+            Alchemy 360 Sports Arena in Rohtak serves athletes from across Haryana — Jhajjar, Bahadurgarh, Sonipat, Panipat, Gurgaon, and every district in between. One campus, multiple professional sports, expert coaching, and the state's only Box 360 24/7 circular cricket ground. This is Haryana's go-to private sports academy.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join the Academy
             </Link>
             <Link to="/sports-academy-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -80,13 +80,13 @@ export default function SportsAcademyHaryana() {
           Haryana's Premier Private Multi-Sport Academy
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Haryana breeds champions — and Red Ball Sports Arena in Rohtak is where many of them train. Athletes from Jhajjar drive 25 minutes, those from Bahadurgarh take 40 minutes, and families from Sonipat and Panipat travel over an hour, all because the quality at Red Ball is simply not available closer to home. The Box 360 circular cricket ground is open 24 hours, 7 days a week — the first of its kind in Rohtak and unique across Haryana. The open-air swimming pool, professional badminton and pickleball courts, and a full gymnasium make Red Ball a complete sporting destination. Add professional coaching staff and structured academy programmes for kids, teens, and adults, and the drive from anywhere in Haryana becomes an easy decision.
+          Haryana breeds champions — and Alchemy 360 Sports Arena in Rohtak is where many of them train. Athletes from Jhajjar drive 25 minutes, those from Bahadurgarh take 40 minutes, and families from Sonipat and Panipat travel over an hour, all because the quality at Alchemy 360 is simply not available closer to home. The Box 360 circular cricket ground is open 24 hours, 7 days a week — the first of its kind in Rohtak and unique across Haryana. The open-air swimming pool, professional badminton and pickleball courts, and a full gymnasium make Alchemy 360 a complete sporting destination. Add professional coaching staff and structured academy programmes for kids, teens, and adults, and the drive from anywhere in Haryana becomes an easy decision.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { title: 'Haryana-Wide Catchment', desc: 'Athletes travel from Jhajjar, Bahadurgarh, Sonipat, Panipat, Gurgaon, and beyond. Rohtak\'s central location in Haryana makes Red Ball accessible from all directions.' },
-            { title: 'Best Sports Academy Rohtak', desc: 'Red Ball has earned its reputation as Rohtak\'s top sports academy through results — competitive cricketers, strong swimmers, and skilled badminton players trained here.' },
-            { title: 'Compete, Train + Restaurant', desc: 'From academy enrolment to tournament play in the Rohtak Cricket League, Red Ball is a full sports ecosystem. Stay for a meal at the on-site restaurant after your session.' },
+            { title: 'Haryana-Wide Catchment', desc: 'Athletes travel from Jhajjar, Bahadurgarh, Sonipat, Panipat, Gurgaon, and beyond. Rohtak\'s central location in Haryana makes Alchemy 360 accessible from all directions.' },
+            { title: 'Best Sports Academy Rohtak', desc: 'Alchemy 360 has earned its reputation as Rohtak\'s top sports academy through results — competitive cricketers, strong swimmers, and skilled badminton players trained here.' },
+            { title: 'Compete, Train + Restaurant', desc: 'From academy enrolment to tournament play in the Rohtak Cricket League, Alchemy 360 is a full sports ecosystem. Stay for a meal at the on-site restaurant after your session.' },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>
@@ -98,7 +98,7 @@ export default function SportsAcademyHaryana() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Red Ball Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Sports Academy Rohtak', to: '/sports-academy-rohtak' },
@@ -107,7 +107,7 @@ export default function SportsAcademyHaryana() {
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
-                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C8102E] hover:text-[#C8102E] transition-colors"
+                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {item.label}
               </Link>

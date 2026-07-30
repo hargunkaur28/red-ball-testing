@@ -10,7 +10,7 @@ export default function SportCard({ sport, linkPrefix = '/sports' }) {
   const icon = sport.icon || fallback.icon;
   const tagline = sport.tagline || fallback.tagline;
   const rentalText = sport.rentalEquipment || fallback.rentalEquipment || '';
-  const accentColor = fallback.color || '#C8102E';
+  const accentColor = fallback.color || '#C5DB3B';
 
   const isHourly = sport.hourlyPrice > 0;
   const monthlyEquiv = sport.oneMonthPrice || (sport.threeMonthPrice ? Math.round(sport.threeMonthPrice / 3) : 0);

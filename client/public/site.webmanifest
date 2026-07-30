@@ -1,7 +1,7 @@
 {
-  "name": "Red Ball Academy",
-  "short_name": "RBA",
-  "description": "Play. Train. Dominate. Book sports courts, buy memberships, and train at Red Ball Sports Arena, Rohtak.",
+  "name": "Alchemy 360 Academy",
+  "short_name": "A360",
+  "description": "Play. Train. Dominate. Book sports courts, buy memberships, and train at Alchemy 360 Sports Arena, Rohtak.",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#080808",

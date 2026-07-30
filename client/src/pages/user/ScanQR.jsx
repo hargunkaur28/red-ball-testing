@@ -63,7 +63,7 @@ const css = `
   position: absolute;
   width: 28px;
   height: 28px;
-  border-color: #C8102E;
+  border-color: #C5DB3B;
   border-style: solid;
 }
 
@@ -77,9 +77,9 @@ const css = `
   left: 10%;
   width: 80%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #C8102E, transparent);
+  background: linear-gradient(90deg, transparent, #C5DB3B, transparent);
   animation: scanMove 2s ease-in-out infinite;
-  box-shadow: 0 0 12px rgba(200,16,46,0.5);
+  box-shadow: 0 0 12px rgba(197, 219, 59,0.5);
 }
 
 @keyframes scanMove {
@@ -131,9 +131,9 @@ const css = `
 }
 
 .btn-start {
-  background: linear-gradient(135deg, #df1526, #b40724);
+  background: linear-gradient(135deg, #C5DB3B, #96AC2E);
   color: #fff;
-  box-shadow: 0 18px 32px rgba(200, 16, 46, 0.22);
+  box-shadow: 0 18px 32px rgba(197, 219, 59, 0.22);
 }
 .btn-start:hover { transform: translateY(-1px); filter: brightness(1.04); }
 
@@ -167,20 +167,20 @@ const css = `
   color: #fff;
   transition: border-color 0.2s;
 }
-.manual-input:focus { border-color: #C8102E; }
+.manual-input:focus { border-color: #C5DB3B; }
 
 .manual-go {
   padding: 12px 20px;
   border-radius: 10px;
   border: none;
-  background: #C8102E;
+  background: #C5DB3B;
   color: #fff;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.2s;
 }
-.manual-go:hover { background: #a80e27; }
+.manual-go:hover { background: #96AC2E; }
 
 .scan-instructions {
   padding: 20px;
@@ -275,7 +275,7 @@ export default function ScanQR() {
       navigate(`/entry/${slug}`);
     } else {
       setStatus('error');
-      setErrorMsg('Invalid QR code. Please scan a Red Ball sport QR code.');
+      setErrorMsg('Invalid QR code. Please scan a Alchemy 360 sport QR code.');
     }
   };
 

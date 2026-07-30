@@ -141,10 +141,10 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: orderRes.rzpOrder.amount,
         currency: orderRes.rzpOrder.currency,
-        name: 'Red Ball Academy',
+        name: 'Alchemy 360 Academy',
         description: `Membership: ${plan.name}${withTraining ? ' + Training' : ''}`,
         order_id: orderRes.rzpOrder.id,
-        theme: { color: '#df1526' },
+        theme: { color: '#C5DB3B' },
         prefill: {
           name: isAuthenticated ? user.name : details.name,
           email: isAuthenticated ? user.email : details.email,
@@ -258,16 +258,16 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
                 }
               `}</style>
               {/* Top accent bar */}
-              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ background: `linear-gradient(90deg, #df1526, #df152688)` }} />
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ background: `linear-gradient(90deg, #C5DB3B, #C5DB3B88)` }} />
 
               {/* Header */}
               <div className="flex items-center justify-between p-6 pb-4">
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
-                    style={{ background: `#df152620`, border: `1px solid #df152640` }}
+                    style={{ background: `#C5DB3B20`, border: `1px solid #C5DB3B40` }}
                   >
-                    <Crown size={20} className="text-[#df1526]" />
+                    <Crown size={20} className="text-[#C5DB3B]" />
                   </div>
                   <div>
                     <p className="text-white font-black text-base leading-tight">{plan?.name}</p>
@@ -333,13 +333,13 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
                       )}
                       {withTraining && trainingAvailable && (
                         <div className="flex justify-between items-center text-sm">
-                          <span className="text-white/50 flex items-center gap-1.5"><Dumbbell size={12} className="text-[#df1526]" /> Training Add-on</span>
+                          <span className="text-white/50 flex items-center gap-1.5"><Dumbbell size={12} className="text-[#C5DB3B]" /> Training Add-on</span>
                           <span className="text-white font-semibold">+{formatCurrency(trainingPrice)}</span>
                         </div>
                       )}
                       <div className="flex justify-between items-center text-sm pt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
                         <span className="text-white font-black">Total</span>
-                        <span className="font-black text-lg" style={{ color: '#df1526' }}>{formatCurrency(totalPrice)}</span>
+                        <span className="font-black text-lg" style={{ color: '#C5DB3B' }}>{formatCurrency(totalPrice)}</span>
                       </div>
                     </div>
 
@@ -349,20 +349,20 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
                         onClick={() => setWithTraining((v) => !v)}
                         className="w-full rounded-2xl p-4 flex items-center justify-between text-left transition-all"
                         style={{
-                          background: withTraining ? 'rgba(223,21,38,0.08)' : 'rgba(255,255,255,0.03)',
-                          border: `1px solid ${withTraining ? 'rgba(223,21,38,0.35)' : 'rgba(255,255,255,0.08)'}`,
+                          background: withTraining ? 'rgba(197, 219, 59,0.08)' : 'rgba(255,255,255,0.03)',
+                          border: `1px solid ${withTraining ? 'rgba(197, 219, 59,0.35)' : 'rgba(255,255,255,0.08)'}`,
                         }}
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: withTraining ? 'rgba(223,21,38,0.15)' : 'rgba(255,255,255,0.05)' }}>
-                            <Dumbbell size={16} className={withTraining ? 'text-[#df1526]' : 'text-white/40'} />
+                          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: withTraining ? 'rgba(197, 219, 59,0.15)' : 'rgba(255,255,255,0.05)' }}>
+                            <Dumbbell size={16} className={withTraining ? 'text-[#C5DB3B]' : 'text-white/40'} />
                           </div>
                           <div>
                             <p className="text-white text-sm font-semibold">Add Training Sessions</p>
                             <p className="text-white/40 text-xs">+{formatCurrency(trainingPrice)} · Personal coaching included</p>
                           </div>
                         </div>
-                        <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0" style={{ background: withTraining ? '#df1526' : 'rgba(255,255,255,0.1)' }}>
+                        <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0" style={{ background: withTraining ? '#C5DB3B' : 'rgba(255,255,255,0.1)' }}>
                           {withTraining ? <Check size={12} className="text-white" /> : <Plus size={12} className="text-white/40" />}
                         </div>
                       </button>
@@ -410,7 +410,7 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
                                 background: 'rgba(255,255,255,0.04)',
                                 border: '1px solid rgba(255,255,255,0.08)',
                               }}
-                              onFocus={(e) => { e.currentTarget.style.borderColor = `#df152660`; e.currentTarget.style.background = `#df152608`; }}
+                              onFocus={(e) => { e.currentTarget.style.borderColor = `#C5DB3B60`; e.currentTarget.style.background = `#C5DB3B08`; }}
                               onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
                             />
                           </div>
@@ -462,8 +462,8 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
                       disabled={submitting || !plan?._id || !!pendingVerify}
                       className="w-full py-4 rounded-2xl font-black text-sm uppercase tracking-wider flex flex-col items-center justify-center gap-1 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                       style={{
-                        background: `linear-gradient(135deg, #df1526, #C8102E)`,
-                        boxShadow: `0 8px 24px rgba(200,16,46,0.3)`,
+                        background: `linear-gradient(135deg, #C5DB3B, #96AC2E)`,
+                        boxShadow: `0 8px 24px rgba(197, 219, 59,0.3)`,
                       }}
                     >
                       {submitting ? (

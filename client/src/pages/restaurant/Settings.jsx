@@ -65,7 +65,7 @@ export default function RestaurantSettings() {
         {/* Delivery Charge */}
         <div className="card">
           <h3 className="text-sm font-medium text-[#111] mb-1 flex items-center gap-2">
-            <Truck size={16} className="text-[#C8102E]" /> Delivery Charge
+            <Truck size={16} className="text-[#C5DB3B]" /> Delivery Charge
           </h3>
           <p className="text-xs text-[#999] mb-4">
             Applies only to delivery orders. Table and pickup orders are never charged.
@@ -78,7 +78,7 @@ export default function RestaurantSettings() {
                 <button
                   type="button"
                   onClick={() => setDelivery(d => ({ ...d, deliveryChargeEnabled: !d.deliveryChargeEnabled }))}
-                  className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors ${delivery.deliveryChargeEnabled ? 'bg-[#C8102E]' : 'bg-gray-200'}`}
+                  className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors ${delivery.deliveryChargeEnabled ? 'bg-[#C5DB3B]' : 'bg-gray-200'}`}
                 >
                   <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${delivery.deliveryChargeEnabled ? 'translate-x-6' : 'translate-x-1'}`} />
                 </button>

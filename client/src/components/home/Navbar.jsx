@@ -12,7 +12,7 @@ const navLinks = [
 ];
 
 const dropdownSports = [
-  { label: 'Box Cricket', href: '/sports/box-cricket', color: '#C8102E' },
+  { label: 'Box Cricket', href: '/sports/box-cricket', color: '#C5DB3B' },
   { label: 'Swimming', href: '/sports/swimming', color: '#0EA5E9' },
   { label: 'Badminton', href: '/sports/badminton', color: '#8B5CF6' },
   { label: 'Gym', href: '/sports/gym', color: '#F59E0B' },
@@ -141,14 +141,14 @@ export default function Navbar() {
           <Link to="/" className="flex items-center gap-3 group">
             <img
               src="/logo.png"
-              alt="Red Ball Academy"
-              className="w-10 h-10 object-contain group-hover:scale-105 transition-transform duration-200"
+              alt="Alchemy 360 Academy"
+              className="w-36 h-16 object-contain group-hover:scale-105 transition-transform duration-200"
             />
             <span
               className={`${logoColor} text-lg tracking-[2px] uppercase hidden sm:block transition-colors duration-300`}
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
-              Red Ball Academy
+              Alchemy 360 Academy
             </span>
           </Link>
 
@@ -164,7 +164,7 @@ export default function Navbar() {
                 {link.href.startsWith('/') ? (
                   <Link
                     to={link.href}
-                    className={`nav-link px-4 py-2 ${textColor} text-[15px] font-medium flex items-center gap-1 transition-colors hover:text-[#C8102E]`}
+                    className={`nav-link px-4 py-2 ${textColor} text-[15px] font-medium flex items-center gap-1 transition-colors hover:text-[#C5DB3B]`}
                     style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}
                   >
                     {link.label}
@@ -172,7 +172,7 @@ export default function Navbar() {
                 ) : (
                   <a
                     href={link.href}
-                    className={`nav-link px-4 py-2 ${textColor} text-[15px] font-medium flex items-center gap-1 transition-colors hover:text-[#C8102E]`}
+                    className={`nav-link px-4 py-2 ${textColor} text-[15px] font-medium flex items-center gap-1 transition-colors hover:text-[#C5DB3B]`}
                     style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}
                   >
                     {link.label}
@@ -203,7 +203,7 @@ export default function Navbar() {
                           <Link
                             key={item.label}
                             to={item.href}
-                            className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 hover:bg-[#C8102E]/10 hover:border-l-2 hover:border-l-[#C8102E] group"
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 hover:bg-[#C5DB3B]/10 hover:border-l-2 hover:border-l-[#C5DB3B] group"
                           >
                             <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
                             <span className="text-sm text-white/80 group-hover:text-white transition-colors font-medium" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -226,7 +226,7 @@ export default function Navbar() {
                 onClick={() => logout()}
                 className={`hidden md:inline-flex px-5 py-2 rounded-full border-2 text-sm font-medium transition-all duration-200 ${
                   isLightSection 
-                    ? 'border-[#C8102E] text-[#C8102E] hover:bg-[#C8102E] hover:text-white' 
+                    ? 'border-[#C5DB3B] text-[#C5DB3B] hover:bg-[#C5DB3B] hover:text-white' 
                     : 'border-[#F5A623] text-[#F5A623] hover:bg-[#F5A623] hover:text-black'
                 }`}
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -238,7 +238,7 @@ export default function Navbar() {
                 to="/login"
                 className={`hidden md:inline-flex px-5 py-2 rounded-full border-2 text-sm font-medium transition-all duration-200 ${
                   isLightSection 
-                    ? 'border-[#C8102E] text-[#C8102E] hover:bg-[#C8102E] hover:text-white' 
+                    ? 'border-[#C5DB3B] text-[#C5DB3B] hover:bg-[#C5DB3B] hover:text-white' 
                     : 'border-[#F5A623] text-[#F5A623] hover:bg-[#F5A623] hover:text-black'
                 }`}
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
@@ -248,7 +248,7 @@ export default function Navbar() {
             )}
             <Link
               to={isAuthenticated ? '/user/book-slots' : '/book-slots'}
-              className="hidden md:inline-flex px-6 py-2.5 rounded-full bg-[#C8102E] text-white text-sm font-semibold transition-all duration-200 hover:bg-[#8B0B1E] hover:shadow-[0_0_16px_rgba(200,16,46,0.5)] hover:scale-[1.03]"
+              className="hidden md:inline-flex px-6 py-2.5 rounded-full bg-[#C5DB3B] text-white text-sm font-semibold transition-all duration-200 hover:bg-[#96AC2E] hover:shadow-[0_0_16px_rgba(197, 219, 59,0.5)] hover:scale-[1.03]"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
               Book Now
@@ -332,7 +332,7 @@ export default function Navbar() {
             style={{
               fontFamily: "'Bebas Neue', sans-serif",
               letterSpacing: '2px',
-              color: '#F87171',
+              color: '#D6E86B',
               animationDelay: drawerOpen ? `${navLinks.length * 60}ms` : '0ms',
               opacity: drawerOpen ? 1 : 0,
               transform: drawerOpen ? 'translateX(0)' : 'translateX(24px)',
@@ -367,7 +367,7 @@ export default function Navbar() {
           <Link
             to={isAuthenticated ? '/user/book-slots' : '/book-slots'}
             onClick={() => setDrawerOpen(false)}
-            className="block text-center py-3 rounded-full bg-[#C8102E] text-white font-semibold transition-all hover:bg-[#8B0B1E]"
+            className="block text-center py-3 rounded-full bg-[#C5DB3B] text-white font-semibold transition-all hover:bg-[#96AC2E]"
           >
             Book Now
           </Link>

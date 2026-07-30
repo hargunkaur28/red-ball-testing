@@ -19,7 +19,7 @@ export default function MobileNavbar() {
           end={tab.end}
           className={({ isActive }) => 
             `flex flex-col items-center gap-1 transition-all ${
-              isActive ? 'text-[#C8102E] scale-110' : 'text-gray-400'
+              isActive ? 'text-[#C5DB3B] scale-110' : 'text-gray-400'
             }`
           }
         >

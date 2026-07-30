@@ -19,7 +19,7 @@ export default function ValuesMarquee() {
   return (
     <section className="bg-[#0D0D0D]">
       {/* Part A — Infinite Horizontal Ticker */}
-      <div className="bg-[#C8102E] py-4 overflow-hidden">
+      <div className="bg-[#C5DB3B] py-4 overflow-hidden">
         <div className="ticker-track">
           {/* Render content twice for seamless loop */}
           {[0, 1].map((copy) => (

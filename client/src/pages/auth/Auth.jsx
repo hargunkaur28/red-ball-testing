@@ -96,13 +96,13 @@ const css = `
 .brand-red-glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 70% at 35% 45%, rgba(200,16,46,0.28) 0%, transparent 65%);
+  background: radial-gradient(ellipse 80% 70% at 35% 45%, rgba(197, 219, 59,0.28) 0%, transparent 65%);
 }
 
 .brand-edge-glow {
   position: absolute;
   inset: 0;
-  box-shadow: inset 3px 0 80px rgba(200,16,46,0.2), inset 0 3px 40px rgba(200,16,46,0.08);
+  box-shadow: inset 3px 0 80px rgba(197, 219, 59,0.2), inset 0 3px 40px rgba(197, 219, 59,0.08);
   pointer-events: none;
 }
 
@@ -113,7 +113,7 @@ const css = `
   top: 0;
   bottom: 0;
   width: 1px;
-  background: linear-gradient(to bottom, transparent 0%, rgba(200,16,46,0.5) 30%, rgba(200,16,46,0.7) 55%, rgba(200,16,46,0.4) 80%, transparent 100%);
+  background: linear-gradient(to bottom, transparent 0%, rgba(197, 219, 59,0.5) 30%, rgba(197, 219, 59,0.7) 55%, rgba(197, 219, 59,0.4) 80%, transparent 100%);
   z-index: 20;
 }
 
@@ -129,8 +129,8 @@ const css = `
   top: 32px;
   left: 36px;
   z-index: 30;
-  width: 64px;
-  height: 64px;
+  width: 140px;
+  height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -161,7 +161,7 @@ const css = `
   text-shadow: 2px 4px 24px rgba(0,0,0,0.7);
 }
 
-.brand-title .red { color: #C8102E; }
+.brand-title .red { color: #C5DB3B; }
 
 .brand-desc {
   font-size: 10.5px;
@@ -186,17 +186,17 @@ const css = `
   transition: border-color 0.2s, background 0.2s;
 }
 .feat-card:hover {
-  border-color: rgba(200,16,46,0.45);
+  border-color: rgba(197, 219, 59,0.45);
   background: rgba(30,8,12,0.8);
 }
 
 .feat-icon {
   width: 34px; height: 34px;
   border-radius: 9px;
-  background: rgba(200,16,46,0.12);
-  border: 1px solid rgba(200,16,46,0.3);
+  background: rgba(197, 219, 59,0.12);
+  border: 1px solid rgba(197, 219, 59,0.3);
   display: flex; align-items: center; justify-content: center;
-  color: #C8102E;
+  color: #C5DB3B;
   margin-bottom: 9px;
 }
 
@@ -284,7 +284,7 @@ const css = `
   z-index: 1;
 }
 
-.field-wrap:focus-within .field-icon { color: #C8102E; }
+.field-wrap:focus-within .field-icon { color: #C5DB3B; }
 
 .field-input {
   width: 100%;
@@ -311,10 +311,10 @@ const css = `
   transition: background-color 5000s ease-in-out 0s !important;
 }
 .field-input:focus {
-  border-color: rgba(200,16,46,0.55);
+  border-color: rgba(197, 219, 59,0.55);
   background: rgba(255,255,255,0.065);
 }
-.field-input.has-error { border-color: rgba(200,16,46,0.45); }
+.field-input.has-error { border-color: rgba(197, 219, 59,0.45); }
 
 .eye-btn {
   position: absolute; right: 11px;
@@ -346,7 +346,7 @@ const css = `
 
 .submit-btn {
   width: 100%;
-  background: #C8102E;
+  background: #C5DB3B;
   border: none; border-radius: 9px;
   padding: 15px;
   color: #fff;
@@ -358,10 +358,10 @@ const css = `
   cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 10px;
   transition: background 0.18s, transform 0.1s;
-  box-shadow: 0 6px 28px rgba(200,16,46,0.38);
+  box-shadow: 0 6px 28px rgba(197, 219, 59,0.38);
   margin-top: 2px;
 }
-.submit-btn:hover { background: #a80e27; }
+.submit-btn:hover { background: #96AC2E; }
 .submit-btn:active { transform: scale(0.99); }
 .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
 
@@ -385,7 +385,7 @@ const css = `
   margin-top: 22px !important;
   transition: border-color 0.2s, background 0.2s;
 }
-.google-btn:hover { border-color: rgba(200,16,46,0.35); background: rgba(255,255,255,0.08); }
+.google-btn:hover { border-color: rgba(197, 219, 59,0.35); background: rgba(255,255,255,0.08); }
 .google-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 .google-mark {
   width: 18px;
@@ -425,7 +425,7 @@ const css = `
   text-underline-offset: 3px;
   transition: color 0.2s; margin-left: 4px;
 }
-.toggle-btn:hover { color: #C8102E; }
+.toggle-btn:hover { color: #C5DB3B; }
 
 
 
@@ -454,7 +454,7 @@ const css = `
   .brand-title { font-size: 44px; }
   .brand-desc { display: none; }
   .feature-cards { display: none; }
-  .rb-logo { top: 16px; left: 20px; width: 52px; height: 52px; }
+  .rb-logo { top: 16px; left: 20px; width: 112px; height: 112px; }
   .form-inner { max-width: 100%; }
   .brand-divider { display: none; }
   .back-btn { position: relative; bottom: auto; left: auto; transform: none; margin: 0 auto 40px auto; width: fit-content; z-index: 100; }
@@ -575,7 +575,7 @@ export default function Auth() {
         navigate(redirectTo || getRedirectPath());
       } else {
         await register({ name: formData.name, email: formData.email, phone: formData.phone, password: formData.password });
-        toast.success('Account created! Welcome to Red Ball Academy.');
+        toast.success('Account created! Welcome to Alchemy 360 Academy.');
         navigate(redirectTo || getRedirectPath());
       }
     } catch (err) {
@@ -660,7 +660,7 @@ export default function Auth() {
                 transition={{ duration: l.dur, repeat: Infinity, delay: i * 0.55, ease: 'easeInOut' }}
                 style={{
                   top: l.top, left: l.left, width: l.width,
-                  background: `linear-gradient(90deg, transparent 0%, rgba(200,16,46,0.7) 35%, rgba(255,50,70,1) 55%, rgba(200,16,46,0.5) 75%, transparent 100%)`,
+                  background: `linear-gradient(90deg, transparent 0%, rgba(197, 219, 59,0.7) 35%, rgba(220,240,90,1) 55%, rgba(197, 219, 59,0.5) 75%, transparent 100%)`,
                   filter: 'blur(0.6px)',
                   transform: `rotate(${l.angle}deg)`,
                   transformOrigin: 'left center',
@@ -669,7 +669,7 @@ export default function Auth() {
             ))}
 
             <Link to="/" className="rb-logo hover:scale-105 transition-transform duration-200" title="Back to Home">
-              <img src="/logo.png" alt="Red Ball Academy" />
+              <img src="/logo.png" alt="Alchemy 360 Academy" />
             </Link>
 
             <div className="brand-content">
@@ -729,7 +729,7 @@ export default function Auth() {
               >
                 <div className="form-heading">{isLogin ? 'Welcome Back' : 'Join the Elite'}</div>
                 <div className="form-subheading">
-                  {isLogin ? 'Enter your credentials to continue' : 'Start your journey at Red Ball Academy'}
+                  {isLogin ? 'Enter your credentials to continue' : 'Start your journey at Alchemy 360 Academy'}
                 </div>
 
                 <form onSubmit={handleSubmit}>
@@ -769,8 +769,8 @@ export default function Auth() {
                         <div
                           className="remember-box"
                           style={{
-                            background: rememberMe ? '#C8102E' : 'rgba(255,255,255,0.04)',
-                            borderColor: rememberMe ? '#C8102E' : 'rgba(255,255,255,0.14)',
+                            background: rememberMe ? '#C5DB3B' : 'rgba(255,255,255,0.04)',
+                            borderColor: rememberMe ? '#C5DB3B' : 'rgba(255,255,255,0.14)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             transition: 'background 0.18s, border-color 0.18s',
                           }}

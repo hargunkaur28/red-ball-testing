@@ -46,7 +46,7 @@ const useCartStore = create(
       clearCart: () => set({ items: [] }),
     }),
     {
-      name: 'redball-cart-storage',
+      name: 'alchemy360-cart-storage',
     }
   )
 );

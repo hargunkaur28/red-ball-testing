@@ -45,10 +45,10 @@ export default function SuperAdminLayout() {
       {/* Logo Header */}
       <div className="flex items-center justify-between px-5 h-16 border-b border-[#EAEAEA] shrink-0">
         <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <img src="/logo.png" alt="Red Ball Academy" className="w-9 h-9 object-contain shrink-0" />
+          <img src="/logo.png" alt="Alchemy 360 Academy" className="w-32 h-12 object-contain shrink-0" />
           <div className="flex flex-col">
-            <span className="text-sm font-semibold text-[#111111] leading-tight">Red Ball</span>
-            <span className="text-[10px] font-medium text-[#C8102E] tracking-wider uppercase">Super Admin</span>
+            <span className="text-sm font-semibold text-[#111111] leading-tight">Alchemy 360</span>
+            <span className="text-[10px] font-medium text-[#C5DB3B] tracking-wider uppercase">Super Admin</span>
           </div>
         </Link>
         <button onClick={() => setMobileOpen(false)} className="lg:hidden w-8 h-8 rounded-lg flex items-center justify-center text-[#666666] hover:text-[#111111]">
@@ -67,7 +67,7 @@ export default function SuperAdminLayout() {
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 transition-all duration-200 text-sm font-medium group
               ${isActive
-                ? 'bg-gradient-to-r from-[#C8102E] to-[#8B0B1E] text-white shadow-lg shadow-red-900/20'
+                ? 'bg-gradient-to-r from-[#C5DB3B] to-[#96AC2E] text-white shadow-lg shadow-[#96AC2E]/20'
                 : 'text-[#555555] hover:text-[#111111] hover:bg-[#F5F5F5]'
               }`
             }
@@ -84,7 +84,7 @@ export default function SuperAdminLayout() {
           {user?.photo ? (
             <img src={user.photo} alt={user.name} className="w-10 h-10 rounded-full object-cover border border-[#EAEAEA] shrink-0 shadow-md" />
           ) : (
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#C8102E] to-[#8B0B1E] flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-md">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#C5DB3B] to-[#96AC2E] flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-md">
               {getInitials(user?.name)}
             </div>
           )}
@@ -95,7 +95,7 @@ export default function SuperAdminLayout() {
         </div>
         <button
           onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-[#666666] hover:text-[#C8102E] hover:bg-red-50 transition-all duration-200 border border-[#EAEAEA] hover:border-[#C8102E]/20"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-[#666666] hover:text-[#C5DB3B] hover:bg-[#C5DB3B]/10 transition-all duration-200 border border-[#EAEAEA] hover:border-[#C5DB3B]/20"
         >
           <LogOut size={14} /> Sign Out
         </button>
@@ -154,7 +154,7 @@ export default function SuperAdminLayout() {
             {user?.photo ? (
               <img src={user.photo} alt={user.name} className="w-9 h-9 rounded-full object-cover border border-[#EAEAEA]" />
             ) : (
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#C8102E] to-[#8B0B1E] flex items-center justify-center text-white text-xs font-bold">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#C5DB3B] to-[#96AC2E] flex items-center justify-center text-white text-xs font-bold">
                 {getInitials(user?.name)}
               </div>
             )}

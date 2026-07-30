@@ -109,7 +109,7 @@ export default function Profile() {
     try {
       await changePassword({ currentPassword, newPassword });
       toast.success('Password updated successfully.', {
-        style: { background: '#0D0D0D', color: '#FFF', border: '1px solid rgba(223,21,38,0.3)' }
+        style: { background: '#0D0D0D', color: '#FFF', border: '1px solid rgba(197, 219, 59,0.3)' }
       });
       setCurrentPassword('');
       setNewPassword('');
@@ -124,7 +124,7 @@ export default function Profile() {
   return (
     <div className="space-y-8 max-w-5xl">
       <div>
-        <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#df1526]">Red Ball Academy</p>
+        <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#C5DB3B]">Alchemy 360 Academy</p>
         <h1 className="mt-3 text-3xl font-black sm:text-4xl tracking-tight text-white">Profile</h1>
         <p className="mt-2 text-sm text-white/50">Manage your account details and security settings</p>
       </div>
@@ -135,7 +135,7 @@ export default function Profile() {
         <div className="rounded-[28px] border border-[#222A2A] bg-[#111515] p-5 sm:p-8 shadow-2xl shadow-black/25 flex flex-col justify-between">
           <form onSubmit={handleProfileSubmit} className="space-y-6">
             <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#df1526]"></span>
+              <span className="h-2 w-2 rounded-full bg-[#C5DB3B]"></span>
               Personal Information
             </h3>
 
@@ -143,7 +143,7 @@ export default function Profile() {
             <div className="flex items-center gap-6">
               <div 
                 onClick={handleAvatarClick}
-                className="relative group h-24 w-24 rounded-full bg-gradient-to-br from-[#df1526] to-[#8f061c] border-2 border-white/10 flex items-center justify-center text-3xl font-black text-white cursor-pointer overflow-hidden shadow-lg hover:shadow-red-900/35 transition-all duration-300 shrink-0"
+                className="relative group h-24 w-24 rounded-full bg-gradient-to-br from-[#C5DB3B] to-[#7C8F26] border-2 border-white/10 flex items-center justify-center text-3xl font-black text-white cursor-pointer overflow-hidden shadow-lg hover:shadow-[#C5DB3B]/35 transition-all duration-300 shrink-0"
               >
                 {photoPreview ? (
                   <img src={photoPreview} alt="Preview" className="h-full w-full object-cover" />
@@ -188,7 +188,7 @@ export default function Profile() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Shine"
-                  className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-white outline-none transition focus:border-[#df1526] focus:bg-white/[0.06] placeholder-white/20"
+                  className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-white outline-none transition focus:border-[#C5DB3B] focus:bg-white/[0.06] placeholder-white/20"
                 />
               </label>
 
@@ -199,7 +199,7 @@ export default function Profile() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="7410258963"
-                  className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-white outline-none transition focus:border-[#df1526] focus:bg-white/[0.06] placeholder-white/20"
+                  className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-white outline-none transition focus:border-[#C5DB3B] focus:bg-white/[0.06] placeholder-white/20"
                 />
               </label>
 
@@ -222,7 +222,7 @@ export default function Profile() {
             <button 
               type="submit"
               disabled={profileLoading}
-              className="w-full flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black text-black transition hover:bg-[#df1526] hover:text-white disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black text-black transition hover:bg-[#C5DB3B] hover:text-white disabled:opacity-50"
             >
               {profileLoading ? (
                 <div className="w-5 h-5 border-2 border-black/35 border-t-black rounded-full animate-spin" />
@@ -240,7 +240,7 @@ export default function Profile() {
         <div className="rounded-[28px] border border-[#222A2A] bg-[#111515] p-5 sm:p-8 shadow-2xl shadow-black/25 flex flex-col justify-between">
           <form onSubmit={handlePasswordSubmit} className="space-y-6">
             <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#df1526]"></span>
+              <span className="h-2 w-2 rounded-full bg-[#C5DB3B]"></span>
               Security & Credentials
             </h3>
 
@@ -253,7 +253,7 @@ export default function Profile() {
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 pr-12 text-white outline-none transition focus:border-[#df1526] focus:bg-white/[0.06] placeholder-white/20"
+                    className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 pr-12 text-white outline-none transition focus:border-[#C5DB3B] focus:bg-white/[0.06] placeholder-white/20"
                   />
                   <button
                     type="button"
@@ -273,7 +273,7 @@ export default function Profile() {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 pr-12 text-white outline-none transition focus:border-[#df1526] focus:bg-white/[0.06] placeholder-white/20"
+                    className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 pr-12 text-white outline-none transition focus:border-[#C5DB3B] focus:bg-white/[0.06] placeholder-white/20"
                   />
                   <button
                     type="button"
@@ -293,7 +293,7 @@ export default function Profile() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 pr-12 text-white outline-none transition focus:border-[#df1526] focus:bg-white/[0.06] placeholder-white/20"
+                    className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3.5 pr-12 text-white outline-none transition focus:border-[#C5DB3B] focus:bg-white/[0.06] placeholder-white/20"
                   />
                   <button
                     type="button"
@@ -309,7 +309,7 @@ export default function Profile() {
             <button 
               type="submit"
               disabled={passwordLoading}
-              className="w-full flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black text-black transition hover:bg-[#df1526] hover:text-white disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black text-black transition hover:bg-[#C5DB3B] hover:text-white disabled:opacity-50"
             >
               {passwordLoading ? (
                 <div className="w-5 h-5 border-2 border-black/35 border-t-black rounded-full animate-spin" />

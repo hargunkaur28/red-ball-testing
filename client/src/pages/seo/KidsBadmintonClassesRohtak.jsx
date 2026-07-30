@@ -5,7 +5,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 
 const faqs = [
   {
-    q: 'At what age can children start badminton classes at Red Ball?',
+    q: 'At what age can children start badminton classes at Alchemy 360?',
     a: 'Kids badminton classes are available from age 6. The program is structured in two age groups: 6–10 and 10–14, with age-appropriate coaching methods for each.',
   },
   {
@@ -22,11 +22,11 @@ const faqs = [
   },
   {
     q: 'Are the kids badminton coaches trained to work with children?',
-    a: 'Yes. Red Ball\'s kids coaches are trained in child-appropriate sports instruction, patience-driven coaching, and positive reinforcement techniques.',
+    a: 'Yes. Alchemy 360\'s kids coaches are trained in child-appropriate sports instruction, patience-driven coaching, and positive reinforcement techniques.',
   },
   {
     q: 'Is there a summer camp for kids badminton?',
-    a: 'Yes. Red Ball organises intensive summer badminton camps for children during school holidays with additional hours, mini-tournaments, and sports fitness sessions.',
+    a: 'Yes. Alchemy 360 organises intensive summer badminton camps for children during school holidays with additional hours, mini-tournaments, and sports fitness sessions.',
   },
 ];
 
@@ -47,8 +47,8 @@ export default function KidsBadmintonClassesRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Kids Badminton Classes in Rohtak | Children's Training | Red Ball Sports Arena"
-        description="Fun and structured kids badminton classes in Rohtak at Red Ball Sports Arena — experienced coaches, small batches, ages 6 and above. Enrol your child today."
+        title="Kids Badminton Classes in Rohtak | Children's Training | Alchemy 360 Sports Arena"
+        description="Fun and structured kids badminton classes in Rohtak at Alchemy 360 Sports Arena — experienced coaches, small batches, ages 6 and above. Enrol your child today."
         canonical="/kids-badminton-classes-rohtak"
         schema={schema}
       />
@@ -57,15 +57,15 @@ export default function KidsBadmintonClassesRohtak() {
 
       <section className="bg-[#0D0D0D] text-white px-4 py-16 md:py-24">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[#C8102E] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Kids Badminton · Rohtak, Haryana</p>
+          <p className="text-[#C5DB3B] text-sm font-semibold uppercase tracking-widest mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>Kids Badminton · Rohtak, Haryana</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>
             Kids Badminton Classes in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena offers specialised kids badminton classes in Rohtak for children aged 6 and above. Our coaches use play-based, encouraging methods that build proper technique, coordination, and a genuine love for badminton in a fun, structured environment.
+            Alchemy 360 Sports Arena offers specialised kids badminton classes in Rohtak for children aged 6 and above. Our coaches use play-based, encouraging methods that build proper technique, coordination, and a genuine love for badminton in a fun, structured environment.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/buy-membership" className="bg-[#C8102E] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#a50d26] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Enrol Your Child
             </Link>
             <Link to="/one-time-booking" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -77,10 +77,10 @@ export default function KidsBadmintonClassesRohtak() {
 
       <section className="max-w-4xl mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0D0D0D] mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-          Build Champions Early — Kids Badminton at Red Ball, Rohtak
+          Build Champions Early — Kids Badminton at Alchemy 360, Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Children who learn proper sports technique early develop better athleticism and game intelligence. Red Ball's kids badminton program in Rohtak focuses on building movement coordination, hand-eye coordination, basic stroke mechanics, and court awareness from a young age — creating the foundation for lifelong sport participation and potential competitive excellence.
+          Children who learn proper sports technique early develop better athleticism and game intelligence. Alchemy 360's kids badminton program in Rohtak focuses on building movement coordination, hand-eye coordination, basic stroke mechanics, and court awareness from a young age — creating the foundation for lifelong sport participation and potential competitive excellence.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -98,7 +98,7 @@ export default function KidsBadmintonClassesRohtak() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Red Ball Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Alchemy 360 Sports Arena</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: "Kids' Academy", to: '/kids-sports-academy-rohtak' },
@@ -107,7 +107,7 @@ export default function KidsBadmintonClassesRohtak() {
               { label: 'Kids Swimming', to: '/kids-swimming-classes-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
-                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C8102E] hover:text-[#C8102E] transition-colors"
+                className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 {item.label}
               </Link>

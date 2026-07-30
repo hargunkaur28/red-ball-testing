@@ -20,8 +20,8 @@ export default function PrivacyPolicy() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Privacy Policy | Red Ball Sports Arena Rohtak"
-        description="Privacy Policy for Red Ball Sports Arena and Red Ball Academy, Rohtak, Haryana. Learn how we collect, use, and protect your personal data."
+        title="Privacy Policy | Alchemy 360 Sports Arena Rohtak"
+        description="Privacy Policy for Alchemy 360 Sports Arena and Alchemy 360 Academy, Rohtak, Haryana. Learn how we collect, use, and protect your personal data."
         canonical="/privacy-policy"
         schema={schema}
       />
@@ -32,7 +32,7 @@ export default function PrivacyPolicy() {
           <Link to="/" className="text-white/50 text-xs hover:text-white mb-4 inline-block" style={{ fontFamily: "'DM Sans', sans-serif" }}>← Back to Home</Link>
           <h1 className="text-4xl md:text-5xl font-black" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>Privacy Policy</h1>
           <p className="text-white/50 text-sm mt-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Red Ball Sports Arena / Red Ball Academy · Last updated: June 2026
+            Alchemy 360 Sports Arena / Alchemy 360 Academy · Last updated: June 2026
           </p>
         </div>
       </div>
@@ -42,7 +42,7 @@ export default function PrivacyPolicy() {
 
         <Section title="Introduction">
           <p>
-            Red Ball Sports Arena ("we", "our", "us") operates the website at <strong>redballsportsarena.in</strong> and the Red Ball Academy sports facility at Sector 22-D, Jhajjar Road, Rohtak, Haryana 124001.
+            Alchemy 360 Sports Arena ("we", "our", "us") operates the website at <strong>redballsportsarena.in</strong> and the Alchemy 360 Academy sports facility at Sector 22-D, Jhajjar Road, Rohtak, Haryana 124001.
           </p>
           <p>
             This Privacy Policy explains what information we collect when you use our website, book sports sessions, purchase memberships, or use our services — and how we use, store, and protect that information. By using our website or services, you agree to the terms described here.
@@ -88,7 +88,7 @@ export default function PrivacyPolicy() {
             By creating an account, you agree to receive transactional messages (booking confirmations, payment receipts, membership reminders) via SMS and/or email. These are service messages, not marketing, and are required for the normal operation of the platform.
           </p>
           <p>
-            If we send promotional communications, you can opt out by contacting us at <a href={`mailto:${academy.email}`} className="text-[#C8102E] hover:underline">{academy.email}</a>.
+            If we send promotional communications, you can opt out by contacting us at <a href={`mailto:${academy.email}`} className="text-[#C5DB3B] hover:underline">{academy.email}</a>.
           </p>
         </Section>
 
@@ -127,7 +127,7 @@ export default function PrivacyPolicy() {
             <li>Request deletion of your account and data</li>
             <li>Withdraw consent for non-essential communications</li>
           </ul>
-          <p>To exercise these rights, contact us at <a href={`mailto:${academy.email}`} className="text-[#C8102E] hover:underline">{academy.email}</a>.</p>
+          <p>To exercise these rights, contact us at <a href={`mailto:${academy.email}`} className="text-[#C5DB3B] hover:underline">{academy.email}</a>.</p>
         </Section>
 
         <Section title="Children's Privacy">
@@ -160,13 +160,13 @@ export default function PrivacyPolicy() {
           <p>
             <strong>{academy.academyName}</strong><br />
             {academy.address}<br />
-            Email: <a href={`mailto:${academy.email}`} className="text-[#C8102E] hover:underline">{academy.email}</a><br />
-            Phone: <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="text-[#C8102E] hover:underline">{academy.phone}</a>
+            Email: <a href={`mailto:${academy.email}`} className="text-[#C5DB3B] hover:underline">{academy.email}</a><br />
+            Phone: <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="text-[#C5DB3B] hover:underline">{academy.phone}</a>
           </p>
         </Section>
 
         <div className="pt-6 border-t border-black/10">
-          <Link to="/terms-and-conditions" className="text-[#C8102E] text-sm font-semibold hover:underline" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <Link to="/terms-and-conditions" className="text-[#C5DB3B] text-sm font-semibold hover:underline" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             View Terms and Conditions →
           </Link>
         </div>

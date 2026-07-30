@@ -26,7 +26,7 @@ const landingItems = [
         <path d="M12 8V5a1 1 0 0 1 1-1h1M3 17h18M5 20h14" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    color: '#df1526',
+    color: '#C5DB3B',
     tagline: 'Fresh & Hot',
     fullWidth: true,
     image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop',
@@ -35,8 +35,8 @@ const landingItems = [
     name: 'Box Cricket',
     href: '/sports/box-cricket',
     slug: 'box-cricket',
-    icon: <SportIllustration slug="cricket" color="#C8102E" className="w-[80%] h-[80%] drop-shadow-md" />,
-    color: '#C8102E',
+    icon: <SportIllustration slug="cricket" color="#C5DB3B" className="w-[80%] h-[80%] drop-shadow-md" />,
+    color: '#C5DB3B',
     tagline: 'Play & Train',
   },
   {
@@ -99,7 +99,7 @@ export default function HeroSection() {
     const n = name.toLowerCase();
     if (n.includes('gym') || n.includes('fitness')) return <Dumbbell size={22} className="text-[#F5A623]" />;
     if (n.includes('badminton')) return <Feather size={22} className="text-[#0EA5E9]" />;
-    if (n.includes('cricket')) return <Target size={22} className="text-[#C8102E]" />;
+    if (n.includes('cricket')) return <Target size={22} className="text-[#C5DB3B]" />;
     if (n.includes('pickleball')) return <Trophy size={22} className="text-[#10B981]" />;
     if (n.includes('all')) return <Layers size={22} className="text-[#8B5CF6]" />;
     return <Trophy size={22} className="text-[#F5A623]" />;
@@ -165,7 +165,7 @@ export default function HeroSection() {
         >
           <img
             src={img}
-            alt="Red Ball Academy"
+            alt="Alchemy 360 Academy"
             className="w-full h-full object-cover"
             loading={i === 0 ? 'eager' : 'lazy'}
           />
@@ -176,7 +176,7 @@ export default function HeroSection() {
       <div
         className="absolute inset-0 z-10"
         style={{
-          background: 'linear-gradient(135deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.45) 60%, rgba(200,16,46,0.15) 100%)',
+          background: 'linear-gradient(135deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.45) 60%, rgba(197, 219, 59,0.15) 100%)',
         }}
       />
 
@@ -193,7 +193,7 @@ export default function HeroSection() {
               className="uppercase tracking-[6px] text-[13px] text-[#F5A623] mb-6"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
-              Welcome to Red Ball Academy
+              Welcome to Alchemy 360 Academy
             </motion.p>
 
             {/* Main Headline — Line 1 */}
@@ -222,7 +222,7 @@ export default function HeroSection() {
                     initial={{ opacity: 0, y: 32 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.55, delay: (line1Words.length + i) * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                    className="hero-heading text-[#C8102E]"
+                    className="hero-heading text-[#C5DB3B]"
                   >
                     {word}
                   </motion.span>
@@ -262,7 +262,7 @@ export default function HeroSection() {
               <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 w-full pr-4 sm:pr-0">
                 <Link
                   to={isAuthenticated ? "/user/book-slots" : "/book-slots"}
-                  className="w-full sm:w-auto px-6 py-3.5 sm:px-8 rounded-full bg-[#C8102E] text-white text-sm sm:text-base font-semibold transition-all duration-200 hover:bg-[#8B0B1E] hover:scale-[1.04] hover:shadow-[0_0_20px_rgba(200,16,46,0.45)] flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-6 py-3.5 sm:px-8 rounded-full bg-[#C5DB3B] text-white text-sm sm:text-base font-semibold transition-all duration-200 hover:bg-[#96AC2E] hover:scale-[1.04] hover:shadow-[0_0_20px_rgba(197, 219, 59,0.45)] flex items-center justify-center gap-2"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
                   🏏 Book a Sport
@@ -338,7 +338,7 @@ export default function HeroSection() {
                     className={`relative overflow-hidden p-3 sm:p-4 flex items-center hover:scale-[1.04] transition-all duration-300 shadow-2xl group cursor-pointer ${
                       item.fullWidth
                         ? 'rounded-[20px] flex-row justify-between h-[76px] sm:h-[95px] bg-cover bg-center bg-no-repeat'
-                        : 'rounded-2xl flex-row gap-2.5 sm:gap-3.5 h-[68px] sm:h-[84px] bg-black/30 backdrop-blur-md hover:bg-black/50 border border-white/10 hover:border-white/20 hover:shadow-[0_10px_25px_rgba(200,16,46,0.25)]'
+                        : 'rounded-2xl flex-row gap-2.5 sm:gap-3.5 h-[68px] sm:h-[84px] bg-black/30 backdrop-blur-md hover:bg-black/50 border border-white/10 hover:border-white/20 hover:shadow-[0_10px_25px_rgba(197, 219, 59,0.25)]'
                     }`}
                     style={item.image ? { backgroundImage: `url(${item.image})` } : {}}
                   >
@@ -355,7 +355,7 @@ export default function HeroSection() {
                               <p className="text-[#F5A623] text-[10px] sm:text-[11px] uppercase tracking-widest font-extrabold mt-0.5">{displayTagline}</p>
                             </div>
                           </div>
-                          <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-[#df1526] hover:bg-[#8B0B1E] text-white text-[10px] sm:text-xs font-black uppercase tracking-wider rounded-full transition-colors flex items-center gap-1 shrink-0 shadow-lg">
+                          <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-[10px] sm:text-xs font-black uppercase tracking-wider rounded-full transition-colors flex items-center gap-1 shrink-0 shadow-lg">
                             Order Now
                           </span>
                         </div>
@@ -389,13 +389,13 @@ export default function HeroSection() {
                 >
                   <Link
                     to={card.href}
-                    className="relative overflow-hidden p-3 sm:p-4 flex items-center hover:scale-[1.04] transition-all duration-300 shadow-2xl group cursor-pointer rounded-2xl flex-row gap-2.5 sm:gap-3.5 h-[68px] sm:h-[84px] bg-black/30 backdrop-blur-md hover:bg-black/50 border border-white/10 hover:border-white/20 hover:shadow-[0_10px_25px_rgba(200,16,46,0.25)]"
+                    className="relative overflow-hidden p-3 sm:p-4 flex items-center hover:scale-[1.04] transition-all duration-300 shadow-2xl group cursor-pointer rounded-2xl flex-row gap-2.5 sm:gap-3.5 h-[68px] sm:h-[84px] bg-black/30 backdrop-blur-md hover:bg-black/50 border border-white/10 hover:border-white/20 hover:shadow-[0_10px_25px_rgba(197, 219, 59,0.25)]"
                   >
                     <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-[14px] sm:rounded-2xl border border-white/10 bg-black/40 flex items-center justify-center shrink-0 overflow-hidden">
                       {card.iconUrl ? (
                         <img src={card.iconUrl} alt={card.name} className="w-full h-full object-cover" />
                       ) : (
-                        <Trophy size={22} style={{ color: card.color || '#C8102E' }} />
+                        <Trophy size={22} style={{ color: card.color || '#C5DB3B' }} />
                       )}
                     </div>
                     <div className="text-left">
@@ -431,7 +431,7 @@ export default function HeroSection() {
           <Link
             to="/login?redirectTo=/user/scan"
             onClick={() => setShowCheckInMenu(false)}
-            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-primary hover:bg-[#a60d25] text-white text-sm font-bold transition-all mb-2"
+            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-primary hover:bg-[#96AC2E] text-white text-sm font-bold transition-all mb-2"
           >
             <LogIn size={16} /> Login / Sign Up
           </Link>

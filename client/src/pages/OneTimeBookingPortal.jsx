@@ -165,10 +165,10 @@ export default function OneTimeBookingPortal({ embedded = false }) {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: orderRes.rzpOrder.amount,
         currency: orderRes.rzpOrder.currency,
-        name: 'Red Ball Academy',
+        name: 'Alchemy 360 Academy',
         description: `1 Hour Prepaid ${selectedSport.name} Access Pass`,
         order_id: orderRes.rzpOrder.id,
-        theme: { color: '#C8102E' },
+        theme: { color: '#C5DB3B' },
         prefill: {
           name: details.name,
           email: details.email,
@@ -252,7 +252,7 @@ export default function OneTimeBookingPortal({ embedded = false }) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           className="ota-success-root w-full max-w-md rounded-3xl bg-[#111515] border border-[#222A2A] p-8 text-center shadow-2xl relative overflow-hidden"
         >
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#C8102E] to-[#df1526]" />
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#C5DB3B] to-[#96AC2E]" />
           <div className="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center mx-auto mb-5">
             <Check className="text-green-500" size={32} />
           </div>
@@ -275,7 +275,7 @@ export default function OneTimeBookingPortal({ embedded = false }) {
           </div>
 
           <div className="flex items-center gap-3 justify-center text-xs text-white/50 bg-white/5 rounded-xl py-3 px-4">
-            <Loader2 size={14} className="animate-spin text-[#df1526]" />
+            <Loader2 size={14} className="animate-spin text-[#C5DB3B]" />
             <span>Redirecting to your dashboard to view your pass...</span>
           </div>
         </motion.div>
@@ -292,7 +292,7 @@ export default function OneTimeBookingPortal({ embedded = false }) {
       `}</style>
       <div className="ota-portal-root w-full max-w-4xl">
         <div className="flex items-center gap-4 mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#df1526] to-[#C8102E] flex items-center justify-center shadow-lg shadow-red-950/40">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#C5DB3B] to-[#96AC2E] flex items-center justify-center shadow-lg shadow-[#C5DB3B]/40">
             <CreditCard className="text-white" size={28} />
           </div>
           <div>
@@ -323,12 +323,12 @@ export default function OneTimeBookingPortal({ embedded = false }) {
                         onClick={() => setSelectedSportId(sport._id)}
                         className={`p-4 rounded-2xl border text-left transition-all relative overflow-hidden group ${
                           isSelected
-                            ? 'border-[#df1526] bg-[#df1526]/5 text-white'
+                            ? 'border-[#C5DB3B] bg-[#C5DB3B]/5 text-white'
                             : 'border-[#222A2A] bg-white/5 text-white/70 hover:border-white/20'
                         }`}
                       >
                         {isSelected && (
-                          <div className="absolute top-0 right-0 w-3 h-3 bg-[#df1526] rounded-bl-lg" />
+                          <div className="absolute top-0 right-0 w-3 h-3 bg-[#C5DB3B] rounded-bl-lg" />
                         )}
                         <p className="font-extrabold text-[13px] sm:text-base uppercase tracking-tight group-hover:text-white transition-colors truncate">{sport.name}</p>
                         <p className="text-xs text-white/40 mt-1">{formatCurrency(sport.hourlyPrice)}/hr</p>
@@ -365,7 +365,7 @@ export default function OneTimeBookingPortal({ embedded = false }) {
                   <div className="relative">
                     <User className="absolute left-4 top-3.5 text-white/40" size={18} />
                     <input
-                      className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#df1526] focus:bg-[#df1526]/5 transition-all text-sm outline-none"
+                      className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#C5DB3B] focus:bg-[#C5DB3B]/5 transition-all text-sm outline-none"
                       placeholder="Full Name"
                       value={details.name}
                       onChange={(e) => setDetails({ ...details, name: e.target.value })}
@@ -375,7 +375,7 @@ export default function OneTimeBookingPortal({ embedded = false }) {
                   <div className="relative">
                     <Mail className="absolute left-4 top-3.5 text-white/40" size={18} />
                     <input
-                      className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#df1526] focus:bg-[#df1526]/5 transition-all text-sm outline-none"
+                      className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#C5DB3B] focus:bg-[#C5DB3B]/5 transition-all text-sm outline-none"
                       type="email"
                       placeholder="Email Address"
                       value={details.email}
@@ -386,7 +386,7 @@ export default function OneTimeBookingPortal({ embedded = false }) {
                   <div className="relative">
                     <Phone className="absolute left-4 top-3.5 text-white/40" size={18} />
                     <input
-                      className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#df1526] focus:bg-[#df1526]/5 transition-all text-sm outline-none"
+                      className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#C5DB3B] focus:bg-[#C5DB3B]/5 transition-all text-sm outline-none"
                       placeholder="Mobile Phone Number"
                       value={details.phone}
                       onChange={(e) => setDetails({ ...details, phone: e.target.value })}
@@ -407,7 +407,7 @@ export default function OneTimeBookingPortal({ embedded = false }) {
 
                 <div className="flex justify-between font-extrabold text-base pt-2 border-t border-white/5">
                   <span className="text-white">Total Amount</span>
-                  <span className="text-[#df1526]">{formatCurrency(totalAmount)}</span>
+                  <span className="text-[#C5DB3B]">{formatCurrency(totalAmount)}</span>
                 </div>
               </div>
             )}
@@ -416,7 +416,7 @@ export default function OneTimeBookingPortal({ embedded = false }) {
             <button
               type="submit"
               disabled={submitting || !selectedSportId}
-              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#df1526] to-[#C8102E] hover:from-[#df1526]/90 hover:to-[#C8102E]/90 active:scale-[0.99] text-white shadow-xl shadow-red-950/20 flex flex-col items-center justify-center transition-all disabled:opacity-50"
+              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#C5DB3B] to-[#96AC2E] hover:from-[#C5DB3B]/90 hover:to-[#96AC2E]/90 active:scale-[0.99] text-white shadow-xl shadow-[#C5DB3B]/20 flex flex-col items-center justify-center transition-all disabled:opacity-50"
             >
               {submitting ? (
                 <Loader2 size={24} className="animate-spin" />
@@ -458,36 +458,36 @@ export default function OneTimeBookingPortal({ embedded = false }) {
           {/* Flexible Entitlement Description Column */}
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-[#111515] border border-[#222A2A] rounded-3xl p-6 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-[#df1526]/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-[#C5DB3B]/5 rounded-full blur-2xl pointer-events-none" />
               <h3 className="text-lg font-extrabold text-white mb-4 flex items-center gap-2">
-                <Info className="text-[#df1526]" size={20} />
+                <Info className="text-[#C5DB3B]" size={20} />
                 <span>How Flexible Access Works</span>
               </h3>
 
               <ul className="space-y-4 text-sm text-white/70">
                 <li className="flex gap-3 items-start">
-                  <div className="w-5 h-5 rounded bg-[#df1526]/10 border border-[#df1526]/20 flex items-center justify-center text-xs font-bold text-[#df1526] mt-0.5 shrink-0">1</div>
+                  <div className="w-5 h-5 rounded bg-[#C5DB3B]/10 border border-[#C5DB3B]/20 flex items-center justify-center text-xs font-bold text-[#C5DB3B] mt-0.5 shrink-0">1</div>
                   <div>
                     <strong className="text-white">Arrive Anytime</strong>
                     <p className="text-xs text-white/50 mt-0.5">No fixed slots. Your prepaid hour starts when you arrive and scan the QR code.</p>
                   </div>
                 </li>
                 <li className="flex gap-3 items-start">
-                  <div className="w-5 h-5 rounded bg-[#df1526]/10 border border-[#df1526]/20 flex items-center justify-center text-xs font-bold text-[#df1526] mt-0.5 shrink-0">2</div>
+                  <div className="w-5 h-5 rounded bg-[#C5DB3B]/10 border border-[#C5DB3B]/20 flex items-center justify-center text-xs font-bold text-[#C5DB3B] mt-0.5 shrink-0">2</div>
                   <div>
                     <strong className="text-white">24-Hour Validity</strong>
                     <p className="text-xs text-white/50 mt-0.5">Your purchased pass is valid for entry for 24 hours. Plan your day freely.</p>
                   </div>
                 </li>
                 <li className="flex gap-3 items-start">
-                  <div className="w-5 h-5 rounded bg-[#df1526]/10 border border-[#df1526]/20 flex items-center justify-center text-xs font-bold text-[#df1526] mt-0.5 shrink-0">3</div>
+                  <div className="w-5 h-5 rounded bg-[#C5DB3B]/10 border border-[#C5DB3B]/20 flex items-center justify-center text-xs font-bold text-[#C5DB3B] mt-0.5 shrink-0">3</div>
                   <div>
                     <strong className="text-white">Instant QR Entry</strong>
                     <p className="text-xs text-white/50 mt-0.5">Show up, point your phone at the facility QR code, tap Check-in, and start playing.</p>
                   </div>
                 </li>
                 <li className="flex gap-3 items-start">
-                  <div className="w-5 h-5 rounded bg-[#df1526]/10 border border-[#df1526]/20 flex items-center justify-center text-xs font-bold text-[#df1526] mt-0.5 shrink-0">4</div>
+                  <div className="w-5 h-5 rounded bg-[#C5DB3B]/10 border border-[#C5DB3B]/20 flex items-center justify-center text-xs font-bold text-[#C5DB3B] mt-0.5 shrink-0">4</div>
                   <div>
                     <strong className="text-white">Overtime Safe-guard</strong>
                     <p className="text-xs text-white/50 mt-0.5">Play beyond 1 hour easily. Extra minutes will be computed automatically and charged at checkout.</p>

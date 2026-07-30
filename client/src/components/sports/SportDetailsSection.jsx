@@ -7,7 +7,7 @@ export default function SportDetailsSection({ sport }) {
   const description = sport?.description || fallback.description;
   const features = sport?.features?.length ? sport.features : fallback.features;
   const rentalText = sport?.rentalEquipment || fallback.rentalEquipment || '';
-  const accentColor = fallback.color || '#C8102E';
+  const accentColor = fallback.color || '#C5DB3B';
 
   return (
     <motion.div
@@ -22,7 +22,7 @@ export default function SportDetailsSection({ sport }) {
           className="uppercase text-xs tracking-[4px] font-semibold"
           style={{ color: accentColor }}
         >
-          Red Ball Academy
+          Alchemy 360 Academy
         </p>
         <div className="flex items-center gap-3 flex-wrap">
           <h2
@@ -59,12 +59,12 @@ export default function SportDetailsSection({ sport }) {
         <div
           className="rounded-2xl p-4 flex items-start gap-3.5 relative overflow-hidden"
           style={{
-            background: 'linear-gradient(135deg, rgba(200,16,46,0.12) 0%, rgba(255,255,255,0.01) 100%)',
-            border: '1px solid rgba(200,16,46,0.25)',
-            boxShadow: '0 8px 24px rgba(200,16,46,0.05)'
+            background: 'linear-gradient(135deg, rgba(197, 219, 59,0.12) 0%, rgba(255,255,255,0.01) 100%)',
+            border: '1px solid rgba(197, 219, 59,0.25)',
+            boxShadow: '0 8px 24px rgba(197, 219, 59,0.05)'
           }}
         >
-          <div className="absolute top-0 bottom-0 left-0 w-1 bg-[#C8102E]" />
+          <div className="absolute top-0 bottom-0 left-0 w-1 bg-[#C5DB3B]" />
           <span className="text-2xl mt-0.5 shrink-0 pl-1">🎓</span>
           <div className="flex-1 pr-16 sm:pr-20">
             <p className="text-white font-bold text-sm uppercase tracking-wide" style={{ fontFamily: "'DM Sans', sans-serif" }}>

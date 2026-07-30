@@ -12,7 +12,7 @@ exports.getPublicAcademySettings = async (req, res) => {
     const payload = {
       success: true,
       data: {
-        academyName: settings?.academyName || 'Red Ball Sports Arena',
+        academyName: settings?.academyName || 'Alchemy 360 Sports Arena',
         address: settings?.address || '',
         phone: settings?.phone || '',
         email: settings?.email || '',
@@ -31,7 +31,7 @@ exports.getAcademySettings = async (req, res) => {
     let settings = await AcademySettings.findOne();
     if (!settings) {
       settings = await AcademySettings.create({
-        academyName: 'Red Ball Cricket Academy',
+        academyName: 'Alchemy 360 Cricket Academy',
         address: '123 Sports Complex',
         phone: '',
         email: ''

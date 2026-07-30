@@ -46,7 +46,7 @@ export default function RestaurantTeaser() {
       
       {/* Premium Warm Restaurant Lighting Ambient Overlay */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#F5A623]/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[700px] h-[700px] bg-[#C8102E]/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[700px] h-[700px] bg-[#C5DB3B]/10 rounded-full blur-[150px] pointer-events-none" />
 
       {/* Cinematic Background overlay texture */}
       <div 
@@ -69,7 +69,7 @@ export default function RestaurantTeaser() {
           </p>
 
           <h2 className="section-heading text-white mb-3">
-            The Red Ball Kitchen
+            The Alchemy 360 Kitchen
           </h2>
 
           <p className="text-[#F5A623] text-lg md:text-xl font-heading tracking-wider mb-4 opacity-90">
@@ -146,7 +146,7 @@ export default function RestaurantTeaser() {
           <div className="lg:col-span-6 flex justify-center relative">
             
             {/* Background absolute lighting decor */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#F5A623]/5 to-[#C8102E]/5 rounded-3xl blur-xl" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#F5A623]/5 to-[#C5DB3B]/5 rounded-3xl blur-xl" />
 
             {/* Mockup smartphone wrapper */}
             <div className="relative w-[280px] md:w-[320px] bg-black rounded-[40px] p-3 border-4 border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.8)]">
@@ -160,15 +160,15 @@ export default function RestaurantTeaser() {
                 <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
                   <div>
                     <p className="text-[10px] text-[#F5A623] font-bold">TABLE 04</p>
-                    <p className="text-xs font-bold">Red Ball Café Menu</p>
+                    <p className="text-xs font-bold">Alchemy 360 Café Menu</p>
                   </div>
-                  <span className="w-7 h-7 rounded-full bg-[#C8102E]/20 text-[#C8102E] flex items-center justify-center text-xs font-bold">
+                  <span className="w-7 h-7 rounded-full bg-[#C5DB3B]/20 text-[#C5DB3B] flex items-center justify-center text-xs font-bold">
                     RB
                   </span>
                 </div>
 
                 {/* Simulated QR Notification banner */}
-                <div className="bg-gradient-to-r from-[#F5A623]/20 to-[#C8102E]/20 p-2.5 rounded-xl border border-[#F5A623]/30 mb-4 flex items-center gap-2">
+                <div className="bg-gradient-to-r from-[#F5A623]/20 to-[#C5DB3B]/20 p-2.5 rounded-xl border border-[#F5A623]/30 mb-4 flex items-center gap-2">
                   <Sparkles size={14} className="text-[#F5A623] shrink-0" />
                   <p className="text-[10px] text-white/90 leading-tight">
                     Athlete account linked. High-protein customisations enabled.
@@ -205,7 +205,7 @@ export default function RestaurantTeaser() {
                 </div>
 
                 {/* Live Mockup Track button */}
-                <div className="bg-[#C8102E] text-white text-center py-2.5 rounded-xl font-bold text-xs shadow-lg flex items-center justify-center gap-2 animate-pulse">
+                <div className="bg-[#C5DB3B] text-white text-center py-2.5 rounded-xl font-bold text-xs shadow-lg flex items-center justify-center gap-2 animate-pulse">
                   <span>Status: {selectedStatus.toUpperCase()}</span>
                   <div className="w-2 h-2 rounded-full bg-white animate-ping" />
                 </div>
@@ -233,7 +233,7 @@ export default function RestaurantTeaser() {
         <div className="text-center mt-12">
           <Link
             to="/table-portal"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#C8102E] text-white font-body font-bold text-sm hover:bg-[#F5A623] hover:text-black transition-all duration-300 shadow-xl hover:scale-105"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#C5DB3B] text-white font-body font-bold text-sm hover:bg-[#F5A623] hover:text-black transition-all duration-300 shadow-xl hover:scale-105"
           >
             Access Digital Table Menu Portal <ArrowRight size={16} />
           </Link>

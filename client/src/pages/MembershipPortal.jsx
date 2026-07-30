@@ -205,7 +205,7 @@ export default function MembershipPortal({ embedded = false }) {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: orderRes.rzpOrder.amount,
         currency: orderRes.rzpOrder.currency,
-        name: 'Red Ball',
+        name: 'Alchemy 360',
         description: `Membership: ${selectedPlan.name}`,
         order_id: orderRes.rzpOrder.id,
         prefill: {
@@ -213,7 +213,7 @@ export default function MembershipPortal({ embedded = false }) {
           email: isAuthenticated ? user.email : details.email,
           contact: validPhone(isAuthenticated ? user.phone : details.phone),
         },
-        theme: { color: '#df1526' },
+        theme: { color: '#C5DB3B' },
         handler: async (response) => {
           try {
             const { data: verifyRes } = await api.post('/memberships/public-verify', {
@@ -260,7 +260,7 @@ export default function MembershipPortal({ embedded = false }) {
   };
 
   return (
-    <div className={`${embedded ? 'min-h-[500px] rounded-2xl overflow-hidden' : 'min-h-screen'} bg-[#0D0D0D] text-[#EAEAEA] font-sans selection:bg-[#df1526]/30 relative pb-20`}>
+    <div className={`${embedded ? 'min-h-[500px] rounded-2xl overflow-hidden' : 'min-h-screen'} bg-[#0D0D0D] text-[#EAEAEA] font-sans selection:bg-[#C5DB3B]/30 relative pb-20`}>
       <PhoneCollectModal
         open={showPhoneModal}
         onClose={() => setShowPhoneModal(false)}
@@ -269,17 +269,17 @@ export default function MembershipPortal({ embedded = false }) {
           setShowPhoneModal(false);
         }}
       />
-      <div className="fixed top-0 left-0 w-full h-[500px] bg-gradient-to-b from-[#df1526]/5 to-transparent pointer-events-none" />
+      <div className="fixed top-0 left-0 w-full h-[500px] bg-gradient-to-b from-[#C5DB3B]/5 to-transparent pointer-events-none" />
 
       {/* Header */}
       {!embedded && (
         <header className="sticky top-0 z-40 bg-[#0D0D0D]/80 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-full bg-[#df1526] flex items-center justify-center shadow-lg shadow-red-900/50 group-hover:scale-105 transition-transform">
+            <div className="w-8 h-8 rounded-full bg-[#C5DB3B] flex items-center justify-center shadow-lg shadow-[#C5DB3B]/50 group-hover:scale-105 transition-transform">
               <span className="text-white font-extrabold text-sm tracking-tighter">RB</span>
             </div>
-            <span className="font-black text-lg tracking-tight uppercase text-white hidden sm:block">Red Ball</span>
+            <span className="font-black text-lg tracking-tight uppercase text-white hidden sm:block">Alchemy 360</span>
           </Link>
           <Link to="/book-slots" className="text-sm font-bold uppercase tracking-widest text-white/60 hover:text-white transition-colors border border-white/10 hover:border-white/20 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10">
             One-Time Play →
@@ -292,7 +292,7 @@ export default function MembershipPortal({ embedded = false }) {
         
         <div className="mb-10 max-w-2xl">
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#df1526]/10 border border-[#df1526]/20 text-[#df1526] text-xs font-bold tracking-widest uppercase">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C5DB3B]/10 border border-[#C5DB3B]/20 text-[#C5DB3B] text-xs font-bold tracking-widest uppercase">
               <Crown size={14} />
               <span>Memberships</span>
             </div>
@@ -312,7 +312,7 @@ export default function MembershipPortal({ embedded = false }) {
 
         {plansLoading ? (
           <div className="flex justify-center items-center h-40">
-            <Loader2 className="animate-spin text-[#df1526]" size={32} />
+            <Loader2 className="animate-spin text-[#C5DB3B]" size={32} />
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
@@ -330,7 +330,7 @@ export default function MembershipPortal({ embedded = false }) {
                       onClick={() => setSelectedSport(sportName)}
                       className={`px-5 py-3 rounded-xl border text-sm font-bold uppercase tracking-tight transition-all ${
                         selectedSport === sportName
-                          ? 'bg-[#df1526] border-[#df1526] text-white shadow-lg shadow-red-950/30'
+                          ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white shadow-lg shadow-[#C5DB3B]/30'
                           : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:border-white/20 hover:text-white'
                       }`}
                     >
@@ -354,16 +354,16 @@ export default function MembershipPortal({ embedded = false }) {
                           onClick={() => setSelectedPlanId(plan._id)}
                           className={`p-5 rounded-2xl border text-left transition-all relative overflow-hidden group ${
                             isSelected
-                              ? 'border-[#df1526] bg-[#df1526]/5 text-white'
+                              ? 'border-[#C5DB3B] bg-[#C5DB3B]/5 text-white'
                               : 'border-[#222A2A] bg-white/5 text-white/70 hover:border-white/20'
                           }`}
                         >
                           {isSelected && (
-                            <div className="absolute top-0 right-0 w-3 h-3 bg-[#df1526] rounded-bl-lg" />
+                            <div className="absolute top-0 right-0 w-3 h-3 bg-[#C5DB3B] rounded-bl-lg" />
                           )}
                           <p className="font-extrabold text-lg tracking-tight group-hover:text-white transition-colors">{plan.duration}</p>
                           <p className="text-sm text-white/50 mb-3">{plan.name}</p>
-                          <p className="text-xl font-bold text-[#df1526]">{formatCurrency(plan.price)}</p>
+                          <p className="text-xl font-bold text-[#C5DB3B]">{formatCurrency(plan.price)}</p>
                         </button>
                       );
                     })}
@@ -395,7 +395,7 @@ export default function MembershipPortal({ embedded = false }) {
                     <div className="relative">
                       <User className="absolute left-4 top-3.5 text-white/40" size={18} />
                       <input
-                        className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#df1526] focus:bg-[#df1526]/5 transition-all text-sm outline-none"
+                        className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#C5DB3B] focus:bg-[#C5DB3B]/5 transition-all text-sm outline-none"
                         placeholder="Full Name"
                         value={details.name}
                         onChange={(e) => setDetails({ ...details, name: e.target.value })}
@@ -405,7 +405,7 @@ export default function MembershipPortal({ embedded = false }) {
                     <div className="relative">
                       <Mail className="absolute left-4 top-3.5 text-white/40" size={18} />
                       <input
-                        className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#df1526] focus:bg-[#df1526]/5 transition-all text-sm outline-none"
+                        className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#C5DB3B] focus:bg-[#C5DB3B]/5 transition-all text-sm outline-none"
                         type="email"
                         placeholder="Email Address"
                         value={details.email}
@@ -416,7 +416,7 @@ export default function MembershipPortal({ embedded = false }) {
                     <div className="relative">
                       <Phone className="absolute left-4 top-3.5 text-white/40" size={18} />
                       <input
-                        className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#df1526] focus:bg-[#df1526]/5 transition-all text-sm outline-none"
+                        className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#C5DB3B] focus:bg-[#C5DB3B]/5 transition-all text-sm outline-none"
                         placeholder="Mobile Phone Number"
                         value={details.phone}
                         onChange={(e) => setDetails({ ...details, phone: e.target.value })}
@@ -435,7 +435,7 @@ export default function MembershipPortal({ embedded = false }) {
                     </div>
                     <div className="flex justify-between items-center font-extrabold text-lg pt-3 border-t border-white/5">
                       <span className="text-white">Total Amount</span>
-                      <span className="text-[#df1526]">{formatCurrency(selectedPlan.price)}</span>
+                      <span className="text-[#C5DB3B]">{formatCurrency(selectedPlan.price)}</span>
                     </div>
                   </div>
                 )}
@@ -444,7 +444,7 @@ export default function MembershipPortal({ embedded = false }) {
                 <button
                   type="submit"
                   disabled={submitting || !selectedPlanId}
-                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#df1526] to-[#C8102E] hover:from-[#df1526]/90 hover:to-[#C8102E]/90 active:scale-[0.99] text-white shadow-xl shadow-red-950/20 flex flex-col items-center justify-center transition-all disabled:opacity-50"
+                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#C5DB3B] to-[#96AC2E] hover:from-[#C5DB3B]/90 hover:to-[#96AC2E]/90 active:scale-[0.99] text-white shadow-xl shadow-[#C5DB3B]/20 flex flex-col items-center justify-center transition-all disabled:opacity-50"
                 >
                   {submitting ? (
                     <Loader2 size={24} className="animate-spin" />
@@ -464,7 +464,7 @@ export default function MembershipPortal({ embedded = false }) {
             {/* Right Column: Perks */}
             <div className="lg:col-span-5 space-y-6 lg:mt-10">
               <div className="bg-[#111515] border border-[#222A2A] rounded-3xl p-6 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#df1526]/5 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#C5DB3B]/5 rounded-full blur-3xl pointer-events-none" />
                 <h3 className="text-lg font-extrabold text-white mb-6 flex items-center gap-2">
                   <Crown className="text-[#F5A623]" size={20} />
                   <span>Membership Perks</span>
@@ -478,8 +478,8 @@ export default function MembershipPortal({ embedded = false }) {
                     { title: "Restaurant Discounts", desc: "Enjoy 15% off at the academy café & restaurant." },
                   ].map((perk, i) => (
                     <li key={i} className="flex gap-3">
-                      <div className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-[#df1526]/10 flex items-center justify-center">
-                        <Check size={12} className="text-[#df1526]" />
+                      <div className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-[#C5DB3B]/10 flex items-center justify-center">
+                        <Check size={12} className="text-[#C5DB3B]" />
                       </div>
                       <div>
                         <strong className="text-white block mb-0.5">{perk.title}</strong>

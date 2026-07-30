@@ -87,7 +87,7 @@ export default function Footer() {
           {/* Col 1 — Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-[#C8102E] flex items-center justify-center shadow-lg">
+              <div className="w-10 h-10 rounded-full bg-[#C5DB3B] flex items-center justify-center shadow-lg">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                   <circle cx="12" cy="12" r="10" fill="#FFFFFF" opacity="0.2"/>
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="none" stroke="#FFF" strokeWidth="1.5"/>
@@ -95,7 +95,7 @@ export default function Footer() {
                 </svg>
               </div>
               <span className="text-[#0D0D0D] text-lg" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-                Red Ball
+                Alchemy 360
               </span>
             </div>
             <p className="text-[#0D0D0D]/60 text-sm italic mb-5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -103,15 +103,15 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-3">
               <a href="https://www.instagram.com/red_ball_cricket_ground/" target="_blank" rel="noopener noreferrer"
-                 className="social-icon text-[#0D0D0D]/50 hover:text-[#C8102E] hover:scale-[1.2] transition-all duration-200">
+                 className="social-icon text-[#0D0D0D]/50 hover:text-[#C5DB3B] hover:scale-[1.2] transition-all duration-200">
                 <InstagramIcon />
               </a>
               <a href="https://www.facebook.com/RBCGRohtak/" target="_blank" rel="noopener noreferrer"
-                 className="social-icon text-[#0D0D0D]/50 hover:text-[#C8102E] hover:scale-[1.2] transition-all duration-200">
+                 className="social-icon text-[#0D0D0D]/50 hover:text-[#C5DB3B] hover:scale-[1.2] transition-all duration-200">
                 <FacebookIcon />
               </a>
               <a href={`https://wa.me/${waPhone}`} target="_blank" rel="noopener noreferrer"
-                 className="social-icon text-[#0D0D0D]/50 hover:text-[#C8102E] hover:scale-[1.2] transition-all duration-200">
+                 className="social-icon text-[#0D0D0D]/50 hover:text-[#C5DB3B] hover:scale-[1.2] transition-all duration-200">
                 <WhatsAppIcon />
               </a>
             </div>
@@ -126,11 +126,11 @@ export default function Footer() {
               {programs.map((item) => (
                 <li key={item.label}>
                   {item.to ? (
-                    <Link to={item.to} className="text-[#0D0D0D]/70 text-sm hover:text-[#C8102E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                    <Link to={item.to} className="text-[#0D0D0D]/70 text-sm hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                       {item.label}
                     </Link>
                   ) : (
-                    <a href={item.href} className="text-[#0D0D0D]/70 text-sm hover:text-[#C8102E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                    <a href={item.href} className="text-[#0D0D0D]/70 text-sm hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                       {item.label}
                     </a>
                   )}
@@ -148,11 +148,11 @@ export default function Footer() {
               {quickLinks.map((item) => (
                 <li key={item.label}>
                   {item.to ? (
-                    <Link to={item.to} className="text-[#0D0D0D]/70 text-sm hover:text-[#C8102E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                    <Link to={item.to} className="text-[#0D0D0D]/70 text-sm hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                       {item.label}
                     </Link>
                   ) : (
-                    <a href={item.href} className="text-[#0D0D0D]/70 text-sm hover:text-[#C8102E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                    <a href={item.href} className="text-[#0D0D0D]/70 text-sm hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                       {item.label}
                     </a>
                   )}
@@ -169,7 +169,7 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {seoLinks.map((item) => (
                 <li key={item.label}>
-                  <Link to={item.to} className="text-[#0D0D0D]/70 text-sm hover:text-[#C8102E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                  <Link to={item.to} className="text-[#0D0D0D]/70 text-sm hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                     {item.label}
                   </Link>
                 </li>
@@ -184,10 +184,10 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5 text-sm text-[#0D0D0D]/70" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               <li>
-                <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="hover:text-[#C8102E] transition-colors">{academy.phone}</a>
+                <a href={`tel:${academy.phone.replace(/\s/g, '')}`} className="hover:text-[#C5DB3B] transition-colors">{academy.phone}</a>
               </li>
               <li>
-                <a href={`mailto:${academy.email}`} className="hover:text-[#C8102E] transition-colors">{academy.email}</a>
+                <a href={`mailto:${academy.email}`} className="hover:text-[#C5DB3B] transition-colors">{academy.email}</a>
               </li>
               {academy.operatingHours && (
                 <li className="pt-1 leading-relaxed">{academy.operatingHours}</li>
@@ -206,12 +206,12 @@ export default function Footer() {
       <div className="border-t border-black/5">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-[#0D0D0D]/50 text-xs text-center" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            © 2025 Red Ball Academy. All Rights Reserved.
+            © 2025 Alchemy 360 Academy. All Rights Reserved.
           </p>
           <div className="flex items-center gap-4 text-xs text-[#0D0D0D]/50" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            <Link to="/privacy-policy" className="hover:text-[#C8102E] transition-colors">Privacy Policy</Link>
+            <Link to="/privacy-policy" className="hover:text-[#C5DB3B] transition-colors">Privacy Policy</Link>
             <span>·</span>
-            <Link to="/terms-and-conditions" className="hover:text-[#C8102E] transition-colors">Terms & Conditions</Link>
+            <Link to="/terms-and-conditions" className="hover:text-[#C5DB3B] transition-colors">Terms & Conditions</Link>
           </div>
         </div>
       </div>
