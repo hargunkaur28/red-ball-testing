@@ -181,7 +181,7 @@ export default function HeroSection() {
       />
 
       {/* Hero Content */}
-      <div className="relative z-20 flex-1 flex items-center pt-16 sm:pt-20 md:pt-24 lg:pt-28 pb-6 md:pb-12 w-full">
+      <div className="relative z-20 flex-1 flex items-center pt-28 lg:pt-28 pb-6 md:pb-12 w-full">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 w-full flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 md:gap-12 w-full pt-0">
           <div className="max-w-[700px] flex-shrink-0 mt-0">
 

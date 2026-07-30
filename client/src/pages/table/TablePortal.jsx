@@ -497,7 +497,7 @@ export default function TablePortal({ embedded = false }) {
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#1A1A1A] hover:bg-[#252525] text-[#F5A623] text-xs font-bold transition-all border border-white/5 shadow whitespace-nowrap"
             >
               <Clock size={14} />
-              <span>My Orders</span>
+              <span className="hidden sm:inline">My Orders</span>
             </button>
 
             <button
@@ -505,7 +505,7 @@ export default function TablePortal({ embedded = false }) {
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-xs font-bold transition-all shadow whitespace-nowrap"
             >
               <ShoppingBag size={14} />
-              <span>Cart ({items.length})</span>
+              <span><span className="hidden sm:inline">Cart </span>({items.length})</span>
             </button>
 
             <button
