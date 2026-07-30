@@ -143,6 +143,7 @@ export default function Navbar() {
               src="/logo.png"
               alt="Alchemy 360 Academy"
               className="w-36 h-16 object-contain group-hover:scale-105 transition-transform duration-200"
+              style={{ filter: isLightSection ? 'brightness(0)' : 'none', transition: 'filter 300ms' }}
             />
             <span
               className={`${logoColor} text-lg tracking-[2px] uppercase hidden sm:block transition-colors duration-300`}
