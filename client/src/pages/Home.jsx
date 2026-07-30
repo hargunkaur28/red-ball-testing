@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { Users, CreditCard, CalendarDays, ArrowRight, Star } from 'lucide-react';
@@ -215,11 +215,24 @@ let hasPlayedIntroThisSession = false;
 
 export default function Home() {
   const [showIntro, setShowIntro] = useState(!hasPlayedIntroThisSession);
+  const location = useLocation();
 
   const handleIntroComplete = () => {
     hasPlayedIntroThisSession = true;
     setShowIntro(false);
   };
+
+  useEffect(() => {
+    if (showIntro || !location.hash) return;
+    const id = location.hash.slice(1);
+    const timer = setTimeout(() => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY - 96;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [location.hash, showIntro]);
 
   return (
     <div className="min-h-screen overflow-x-hidden" style={{ fontFamily: "'DM Sans', sans-serif" }}>

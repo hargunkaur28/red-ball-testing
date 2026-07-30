@@ -324,9 +324,9 @@ export default function Navbar({ hideLogo = false }) {
                 {link.label}
               </Link>
             ) : (
-              <a key={link.label} href={mobileDest} onClick={() => setDrawerOpen(false)} className={cls} style={linkStyle}>
+              <Link key={link.label} to={`/${mobileDest}`} onClick={() => setDrawerOpen(false)} className={cls} style={linkStyle}>
                 {link.label}
-              </a>
+              </Link>
             );
           })}
           {/* Kids Academy — mobile only */}
