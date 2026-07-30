@@ -103,7 +103,7 @@ export function SportsNav({ activePath }) {
     { label: 'Blog', to: '/blog' },
   ];
   return (
-    <nav className="bg-white border-b border-black/10 sticky top-[72px] z-30" aria-label="Sports pages navigation">
+    <nav className="bg-white border-b border-black/10 sticky z-30" style={{ top: 'calc(var(--discount-banner-h, 0px) + 96px)' }} aria-label="Sports pages navigation">
       <div className="max-w-[1280px] mx-auto px-4 overflow-x-auto">
         <ul className="flex gap-1 py-2 min-w-max">
           <li>
@@ -130,9 +130,9 @@ export function SportsNav({ activePath }) {
 
 export default function SEOLandingLayout({ children }) {
   return (
-    <div className="min-h-screen bg-white" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="min-h-screen bg-white" data-theme="light" style={{ fontFamily: "'DM Sans', sans-serif" }}>
       <Navbar />
-      <div className="pt-[72px]">
+      <div style={{ paddingTop: 'calc(var(--discount-banner-h, 0px) + 96px)' }}>
         {children}
       </div>
       <Footer />

@@ -31,7 +31,7 @@ const parseBgColor = (colorStr) => {
   return { r, g, b, a };
 };
 
-export default function Navbar() {
+export default function Navbar({ hideLogo = false }) {
   const [scrolled, setScrolled] = useState(false);
   const [isLightSection, setIsLightSection] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -139,18 +139,22 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <img
-              src="/logo.png"
-              alt="Alchemy 360 Academy"
-              className="w-36 h-16 object-contain group-hover:scale-105 transition-transform duration-200"
-              style={{ filter: isLightSection ? 'brightness(0)' : 'none', transition: 'filter 300ms' }}
-            />
-            <span
-              className={`${logoColor} text-lg tracking-[2px] uppercase hidden sm:block transition-colors duration-300`}
-              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-            >
-              Alchemy 360 Academy
-            </span>
+            {!hideLogo && (
+              <>
+                <img
+                  src="/logo.png"
+                  alt="Alchemy 360 Academy"
+                  className="w-36 h-16 object-contain group-hover:scale-105 transition-transform duration-200"
+                  style={{ filter: isLightSection ? 'brightness(0)' : 'none', transition: 'filter 300ms' }}
+                />
+                <span
+                  className={`${logoColor} text-lg tracking-[2px] uppercase hidden sm:block transition-colors duration-300`}
+                  style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+                >
+                  Alchemy 360 Academy
+                </span>
+              </>
+            )}
           </Link>
 
           {/* Center Nav Links — Desktop */}

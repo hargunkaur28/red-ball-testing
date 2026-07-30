@@ -60,7 +60,6 @@ export default function UserLayout() {
       <div className="flex items-center justify-between px-4 h-16 border-b border-white/10 shrink-0">
         <div className="flex items-center gap-3">
           <img src="/logo.png" alt="Alchemy 360 Academy" className="w-32 h-12 object-contain" />
-          <span className="text-sm font-semibold text-white">Alchemy 360 Academy</span>
         </div>
         <button onClick={() => setMobileOpen(false)} className="lg:hidden w-8 h-8 rounded-lg flex items-center justify-center text-white/60"><X size={18} /></button>
       </div>
@@ -110,7 +109,6 @@ export default function UserLayout() {
           </button>
           <Link to="/" className="flex items-center gap-2">
             <img src="/logo.png" alt="Alchemy 360 Academy" className="w-32 h-12 object-contain" />
-            <span className="text-sm font-black text-white tracking-wide" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>Alchemy 360 Academy</span>
           </Link>
           <Link to="/user/scan" className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#C5DB3B] text-white shadow-lg shadow-[#C5DB3B]/30">
             <ScanLine size={20} />

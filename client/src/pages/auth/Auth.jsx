@@ -668,10 +668,6 @@ export default function Auth() {
               />
             ))}
 
-            <Link to="/" className="rb-logo hover:scale-105 transition-transform duration-200" title="Back to Home">
-              <img src="/logo.png" alt="Alchemy 360 Academy" />
-            </Link>
-
             <div className="brand-content">
               <AnimatePresence mode="wait">
                 <motion.div
