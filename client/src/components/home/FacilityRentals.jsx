@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ArrowRight } from 'lucide-react';
 import api from '../../lib/axios';
 import SportsCarousel from '../sports/SportsCarousel';
-import ComboPlanCard from '../sports/ComboPlanCard';
+import ComboCarousel from '../sports/ComboCarousel';
 import { groupComboFamilies } from '../../lib/comboPlans';
 import useAuthStore from '../../store/authStore';
 
@@ -150,20 +150,13 @@ export default function FacilityRentals() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {comboFamilies.map((family) => (
-                <ComboPlanCard
-                  key={family.baseName}
-                  family={family}
-                  sportsBySlug={sportsBySlug}
-                  linkTo={
-                    family.entryPlan
-                      ? `${membershipPath}?plan=${family.entryPlan._id}`
-                      : membershipPath
-                  }
-                />
-              ))}
-            </div>
+            <ComboCarousel
+              comboFamilies={comboFamilies}
+              sportsBySlug={sportsBySlug}
+              membershipPath={membershipPath}
+              showArrows
+              isMarquee={true}
+            />
           </motion.div>
         )}
 
