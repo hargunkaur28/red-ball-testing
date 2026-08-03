@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Layers } from 'lucide-react';
+import { ArrowRight, Layers, GraduationCap, Sparkles } from 'lucide-react';
 import { formatCurrency } from '../../lib/utils';
 import { getSportFallback } from './sportFallbacks';
 
@@ -17,7 +17,7 @@ export default function ComboPlanCard({ family, sportsBySlug = {}, linkTo }) {
   // the sport cards, preferring a real uploaded thumbnail over the fallback.
   const leadSlug = slugs[0];
   const fallback = getSportFallback(leadSlug || baseName);
-  const thumbnail = sportsBySlug[leadSlug]?.thumbnail || fallback.thumbnail;
+  const thumbnail = family.image || sportsBySlug[leadSlug]?.thumbnail || fallback.thumbnail;
   const accentColor = fallback.color || '#C5DB3B';
 
   const sportName = (slug) => sportsBySlug[slug]?.name || slug;
@@ -26,6 +26,9 @@ export default function ComboPlanCard({ family, sportsBySlug = {}, linkTo }) {
     : fromPrice
     ? formatCurrency(fromPrice)
     : 'View Plans';
+
+  const isCoaching = baseName.toLowerCase().includes('coaching');
+  const isMultiSportCombo = slugs.length > 1;
 
   return (
     <motion.div
@@ -58,13 +61,25 @@ export default function ComboPlanCard({ family, sportsBySlug = {}, linkTo }) {
           style={{ background: `linear-gradient(to top, ${accentColor} 0%, transparent 60%)` }}
         />
 
-        {/* Top row: combo badge + price */}
+        {/* Top row: badge + price */}
         <div className="absolute top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 flex items-start justify-between gap-2 z-10">
           <div
             className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-[0.15em] backdrop-blur-sm"
             style={{ background: 'rgba(255,255,255,0.14)', color: '#fff' }}
           >
-            <Layers size={10} /> Combo
+            {isMultiSportCombo ? (
+              <>
+                <Layers size={10} /> Combo
+              </>
+            ) : isCoaching ? (
+              <>
+                <GraduationCap size={10} /> Coaching
+              </>
+            ) : (
+              <>
+                <Sparkles size={10} /> Specialty
+              </>
+            )}
           </div>
           <div
             className="px-2 py-1 sm:px-2.5 sm:py-1 rounded-xl sm:rounded-full text-[10px] sm:text-[11px] font-bold shadow-lg backdrop-blur-sm flex flex-col sm:block text-center sm:text-left whitespace-nowrap"

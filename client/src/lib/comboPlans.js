@@ -38,9 +38,12 @@ export function groupComboFamilies(plans = []) {
   const families = plans.filter(isComboPlan).reduce((acc, plan) => {
     const baseName = stripTierSuffix(plan.name);
     if (!acc[baseName]) {
-      acc[baseName] = { baseName, slugs: plan.sportsIncluded || [], plans: [] };
+      acc[baseName] = { baseName, slugs: plan.sportsIncluded || [], plans: [], image: plan.image || '' };
     }
     acc[baseName].plans.push(plan);
+    if (plan.image && !acc[baseName].image) {
+      acc[baseName].image = plan.image;
+    }
     return acc;
   }, {});
 
@@ -48,9 +51,11 @@ export function groupComboFamilies(plans = []) {
     .map((family) => {
       const sorted = [...family.plans].sort((a, b) => tierIndex(a) - tierIndex(b));
       const monthlyPlan = sorted.find((p) => p.duration === '1 Month') || null;
+      const customImage = family.image || sorted.find((p) => p.image)?.image || '';
       return {
         ...family,
         plans: sorted,
+        image: customImage,
         // Cheapest tier — what the public card advertises
         fromPrice: sorted.length ? Math.min(...sorted.map((p) => p.price)) : 0,
         monthlyPlan,

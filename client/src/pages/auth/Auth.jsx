@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import useAuthStore from '../../store/authStore';
@@ -492,8 +492,16 @@ export default function Auth() {
 
   const redirectTo = searchParams.get('redirectTo');
 
+  const { login, register, googleAuth, getRedirectPath, isAuthenticated, user, isLoading } = useAuthStore();
 
-  const { login, register, googleAuth, getRedirectPath } = useAuthStore();
+  useEffect(() => {
+    if (!isLoading && isAuthenticated && user) {
+      const target = (redirectTo && !redirectTo.startsWith('/login'))
+        ? decodeURIComponent(redirectTo)
+        : getRedirectPath();
+      navigate(target, { replace: true });
+    }
+  }, [isLoading, isAuthenticated, user, redirectTo, getRedirectPath, navigate]);
 
   const googleButtonRef = useCallback((node) => {
     if (!node) return;

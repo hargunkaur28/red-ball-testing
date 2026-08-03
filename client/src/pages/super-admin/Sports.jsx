@@ -26,6 +26,7 @@ import {
   GraduationCap,
   Layers,
   Sparkles,
+  Upload,
 } from 'lucide-react';
 import api from '../../lib/axios';
 import { formatCurrency } from '../../lib/utils';
@@ -3097,7 +3098,7 @@ function ComboPlansPanel({ sports }) {
   const sportLabel = (slug) => sportsBySlug[slug]?.name || slug;
 
   // Persist one plan family: create/update a plan per priced tier, archive the rest
-  async function savePlanFamily({ baseName, slugs, prices, existingPlans = [] }) {
+  async function savePlanFamily({ baseName, slugs, prices, image, imageFile, existingPlans = [] }) {
     for (let i = 0; i < PLAN_TIERS.length; i++) {
       const tier = PLAN_TIERS[i];
       const raw = prices[i];
@@ -3109,21 +3110,29 @@ function ComboPlansPanel({ sports }) {
         continue;
       }
 
-      const body = {
-        name: `${baseName} ${tier.suffix}`,
-        duration: tier.duration,
-        durationValue: tier.durationValue,
-        durationUnit: tier.durationUnit,
-        sportsIncluded: slugs,
-        price: Number(raw),
-        isActive: true,
-        autoSync: false,
-        isStandalone: true,
-        features: [`Access to ${slugs.map(sportLabel).join(' + ')}`],
-      };
+      const fd = new FormData();
+      fd.append('name', `${baseName} ${tier.suffix}`);
+      fd.append('duration', tier.duration);
+      fd.append('durationValue', tier.durationValue);
+      fd.append('durationUnit', tier.durationUnit);
+      slugs.forEach((s) => fd.append('sportsIncluded[]', s));
+      fd.append('price', Number(raw));
+      fd.append('isActive', 'true');
+      fd.append('autoSync', 'false');
+      fd.append('isStandalone', 'true');
+      fd.append('features[]', `Access to ${slugs.map(sportLabel).join(' + ')}`);
+      if (imageFile) {
+        fd.append('imageFile', imageFile);
+      } else if (image !== undefined) {
+        fd.append('image', image);
+      }
 
-      if (existing) await api.put(`/plans/${existing._id}`, body);
-      else await api.post('/plans', body);
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+      if (existing) {
+        await api.put(`/plans/${existing._id}`, fd, config);
+      } else {
+        await api.post('/plans', fd, config);
+      }
     }
   }
 
@@ -3295,14 +3304,19 @@ function ComboPlanAdminCard({ family, sportLabel, onEdit, onDelete }) {
     <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       {/* Header */}
       <div className="px-5 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #0A1628 0%, #0F2942 100%)' }}>
-        <div className="min-w-0">
-          <p className="font-bold text-white text-sm truncate">{family.baseName}</p>
-          <div className="flex flex-wrap gap-1 mt-1.5">
-            {family.slugs.map((slug) => (
-              <span key={slug} className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300">
-                {sportLabel(slug)}
-              </span>
-            ))}
+        <div className="flex items-center gap-3 min-w-0">
+          {family.image && (
+            <img src={family.image} alt={family.baseName} className="w-10 h-10 rounded-lg object-cover shrink-0 border border-white/20" />
+          )}
+          <div className="min-w-0">
+            <p className="font-bold text-white text-sm truncate">{family.baseName}</p>
+            <div className="flex flex-wrap gap-1 mt-1.5">
+              {family.slugs.map((slug) => (
+                <span key={slug} className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300">
+                  {sportLabel(slug)}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -3346,6 +3360,9 @@ function ComboPlanFormModal({ sports, family, onSave, onClose }) {
       return existing?.price ?? '';
     }),
   );
+  const [imageUrl, setImageUrl] = useState(family?.image || '');
+  const [imageFile, setImageFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(family?.image || '');
   const [isSaving, setIsSaving] = useState(false);
 
   const selectableSports = sports.filter((s) => !s.deletedAt && s.slug !== 'all-services');
@@ -3370,7 +3387,14 @@ function ComboPlanFormModal({ sports, family, onSave, onClose }) {
 
     setIsSaving(true);
     try {
-      await onSave({ baseName: finalName, slugs, prices, existingPlans: family?.plans || [] });
+      await onSave({
+        baseName: finalName,
+        slugs,
+        prices,
+        image: imageUrl,
+        imageFile,
+        existingPlans: family?.plans || []
+      });
       qc.invalidateQueries({ queryKey: ['membership-plans'] });
       toast.success(family ? 'Combo plan updated' : 'Combo plan created');
       onClose();
@@ -3446,6 +3470,66 @@ function ComboPlanFormModal({ sports, family, onSave, onClose }) {
             />
             <p className="text-[11px] text-gray-400 mt-1">
               Duration is appended automatically — "{(baseName || suggestedName || 'Plan Name')} Monthly".
+            </p>
+          </div>
+
+          {/* Card Image (Optional) */}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-semibold text-gray-600">
+                Card Image <span className="text-gray-400 font-normal">(Optional)</span>
+              </label>
+              {(previewUrl || imageUrl) && (
+                <button
+                  type="button"
+                  onClick={() => { setImageUrl(''); setImageFile(null); setPreviewUrl(''); }}
+                  className="text-[11px] text-red-500 hover:underline font-normal"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+            <div className="flex gap-2 items-center">
+              <input
+                type="url"
+                value={imageUrl}
+                onChange={(e) => {
+                  setImageUrl(e.target.value);
+                  setPreviewUrl(e.target.value);
+                  setImageFile(null);
+                }}
+                className="input-field text-sm flex-1"
+                placeholder="Paste image URL (https://...)"
+              />
+              <label className="cursor-pointer px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-xl text-xs font-semibold text-gray-700 flex items-center gap-1.5 shrink-0 transition-colors">
+                <Upload size={14} />
+                Upload
+                <input
+                  type="file"
+                  name="imageFile"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setImageFile(file);
+                      setPreviewUrl(URL.createObjectURL(file));
+                    }
+                  }}
+                />
+              </label>
+            </div>
+            {previewUrl && (
+              <div className="mt-2.5 flex items-center gap-3 p-2.5 rounded-xl bg-gray-50 border border-gray-200">
+                <img src={previewUrl} alt="Preview" className="w-12 h-12 rounded-lg object-cover border border-gray-200 shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-semibold text-gray-700 truncate">Card Artwork Preview</p>
+                  <p className="text-[10px] text-gray-400">Will be shown on public combo cards</p>
+                </div>
+              </div>
+            )}
+            <p className="text-[11px] text-gray-400 mt-1">
+              Leave blank to automatically use the primary sport's cover image.
             </p>
           </div>
 

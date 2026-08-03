@@ -1,5 +1,5 @@
 import { useEffect, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useSearchParams } from 'react-router-dom';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -197,6 +197,30 @@ function ProtectedRoute({ children, roles }) {
   return children;
 }
 
+// ── Guest Guard (Redirects logged-in users away from /login) ────────
+function GuestRoute({ children }) {
+  const { isAuthenticated, user, isLoading, getRedirectPath } = useAuthStore();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get('redirectTo');
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#080808] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-white/20 border-t-[#C5DB3B] rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (isAuthenticated && user) {
+    const target = (redirectTo && !redirectTo.startsWith('/login'))
+      ? decodeURIComponent(redirectTo)
+      : getRedirectPath();
+    return <Navigate to={target} replace />;
+  }
+
+  return children;
+}
+
 import { connectSocket } from './lib/socket';
 
 // ── App ────────────────────────────────────────────────────────────
@@ -232,7 +256,7 @@ export default function App() {
           <Suspense fallback={<RouteLoader />}>
             <Routes>
               {/* Public Routes */}
-              <Route path="/login" element={<Auth />} />
+              <Route path="/login" element={<GuestRoute><Auth /></GuestRoute>} />
               <Route path="/table-portal" element={<TablePortal />} />
               <Route path="/table/:tableId" element={<TableOrder />} />
               <Route path="/one-time-booking" element={<OneTimeBookingPortal />} />

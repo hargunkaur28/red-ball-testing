@@ -61,6 +61,10 @@ const membershipPlanSchema = new mongoose.Schema({
   features: [{
     type: String,
   }],
+  image: {
+    type: String,
+    default: '',
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
@@ -7,6 +8,8 @@ import SportHeroGallery from '../components/sports/SportHeroGallery';
 import SportDetailsSection from '../components/sports/SportDetailsSection';
 import SportBookingOptions from '../components/sports/SportBookingOptions';
 import SportsCarousel from '../components/sports/SportsCarousel';
+import ComboCarousel from '../components/sports/ComboCarousel';
+import { groupComboFamilies } from '../lib/comboPlans';
 import { getSportFallback } from '../components/sports/sportFallbacks';
 
 export default function SportDetailPage({ embedded = false }) {
@@ -127,36 +130,95 @@ export default function SportDetailPage({ embedded = false }) {
         </div>
       </div>
 
-      {/* Similar sports carousel */}
-      <SimilarSports currentSlug={slug} />
+      {/* Bottom explore section: Combo Memberships + Other Facilities */}
+      <BottomExploreSection currentSlug={slug} embedded={embedded} />
     </div>
   );
 }
 
-function SimilarSports({ currentSlug }) {
-  const { data } = useQuery({
+function BottomExploreSection({ currentSlug, embedded }) {
+  const { data: sportsData } = useQuery({
     queryKey: ['public-sports'],
     queryFn: () => api.get('/sports/public').then((r) => r.data),
     staleTime: 10 * 60 * 1000,
   });
 
-  const others = (data?.sports || []).filter(
-    (s) => s.slug !== currentSlug && s.name?.toLowerCase() !== 'coaching'
+  const { data: plansData } = useQuery({
+    queryKey: ['public-membership-plans'],
+    queryFn: () => api.get('/plans').then((r) => r.data),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const sports = sportsData?.sports || [];
+  const sportsBySlug = useMemo(
+    () => Object.fromEntries(sports.map((s) => [s.slug, s])),
+    [sports]
   );
-  if (!others.length) return null;
+
+  const others = useMemo(
+    () => sports.filter((s) => s.slug !== currentSlug && s.name?.toLowerCase() !== 'coaching'),
+    [sports, currentSlug]
+  );
+
+  const comboFamilies = useMemo(() => {
+    const all = groupComboFamilies(plansData?.plans || []);
+    if (!currentSlug) return all;
+    return [...all].sort((a, b) => {
+      const aIncludes = (a.slugs || []).includes(currentSlug);
+      const bIncludes = (b.slugs || []).includes(currentSlug);
+      if (aIncludes && !bIncludes) return -1;
+      if (!aIncludes && bIncludes) return 1;
+      return 0;
+    });
+  }, [plansData, currentSlug]);
+
+  const membershipPath = embedded ? '/user/buy-memberships' : '/buy-membership';
+  const sportLinkPrefix = embedded ? '/user/sports' : '/sports';
+
+  if (!others.length && !comboFamilies.length) return null;
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-      <div className="mb-6">
-        <p className="text-white/30 text-xs uppercase tracking-[4px] font-bold mb-1">Explore More</p>
-        <h3
-          className="text-white font-black text-2xl"
-          style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '1px' }}
-        >
-          Other Facilities
-        </h3>
-      </div>
-      <SportsCarousel sports={others} showArrows />
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
+      {/* Combo Memberships */}
+      {comboFamilies.length > 0 && (
+        <div>
+          <div className="mb-6">
+            <p className="text-[#F5A623] text-xs uppercase tracking-[4px] font-bold mb-1">Save More</p>
+            <h3
+              className="text-white font-black text-2xl"
+              style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '1px' }}
+            >
+              Combo Memberships
+            </h3>
+            <p className="text-white/45 text-sm mt-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              Multi-facility packages featuring bundled savings across sports.
+            </p>
+          </div>
+          <ComboCarousel
+            comboFamilies={comboFamilies}
+            sportsBySlug={sportsBySlug}
+            membershipPath={membershipPath}
+            showArrows
+            isMarquee={false}
+          />
+        </div>
+      )}
+
+      {/* Other Facilities */}
+      {others.length > 0 && (
+        <div>
+          <div className="mb-6">
+            <p className="text-white/30 text-xs uppercase tracking-[4px] font-bold mb-1">Explore More</p>
+            <h3
+              className="text-white font-black text-2xl"
+              style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '1px' }}
+            >
+              Other Facilities
+            </h3>
+          </div>
+          <SportsCarousel sports={others} linkPrefix={sportLinkPrefix} showArrows />
+        </div>
+      )}
     </section>
   );
 }

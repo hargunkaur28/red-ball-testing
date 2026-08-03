@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Clock, QrCode, Zap, ChevronRight, Loader2, Sun, Moon, GraduationCap } from 'lucide-react';
 import { formatCurrency } from '../../lib/utils';
 import { getSportFallback } from './sportFallbacks';
+import { isComboPlan } from '../../lib/comboPlans';
 import MembershipPlanCard from './MembershipPlanCard';
 import KidsAcademyPlanCard from './KidsAcademyPlanCard';
 import OneTimeBookingModal from './OneTimeBookingModal';
@@ -110,7 +111,7 @@ export default function SportBookingOptions({ sport, plans = [], plansLoading = 
 
       {/* ── Membership Plans ──────────────────────────── */}
       {(() => {
-        const regularPlans = plans.filter(p => !p.isKidsAcademy && ['1 Month', '3 Months', '6 Months', '1 Year'].includes(p.duration));
+        const regularPlans = plans.filter(p => !p.isKidsAcademy && !isComboPlan(p) && ['1 Month', '3 Months', '6 Months', '1 Year'].includes(p.duration));
         const kidsPlans = plans.filter(p => p.isKidsAcademy);
         return (
           <>

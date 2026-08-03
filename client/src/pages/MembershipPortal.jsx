@@ -277,7 +277,7 @@ export default function MembershipPortal({ embedded = false }) {
   };
 
   return (
-    <div className={`${embedded ? 'min-h-[500px] rounded-2xl overflow-hidden' : 'min-h-screen'} bg-[#0D0D0D] text-[#EAEAEA] font-sans selection:bg-[#C5DB3B]/30 relative pb-20`}>
+    <div className={`${embedded ? 'min-h-[500px] rounded-2xl overflow-hidden' : 'min-h-screen'} bg-[#0D0D0D] text-[#EAEAEA] font-sans selection:bg-[#C5DB3B] selection:text-[#0D0D0D] relative pb-20`}>
       <PhoneCollectModal
         open={showPhoneModal}
         onClose={() => setShowPhoneModal(false)}

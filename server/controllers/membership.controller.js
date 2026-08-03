@@ -40,8 +40,12 @@ exports.createPlan = async (req, res) => {
       }
     }
 
+    let image = req.body.image || '';
+    if (req.file) image = req.file.path;
+
     const plan = await MembershipPlan.create({
       ...req.body,
+      image,
       isAllServices: isAll,
       requiresSlotBooking,
       createdBy: req.user.userId
@@ -71,6 +75,7 @@ exports.updatePlan = async (req, res) => {
       isAllServices: isAll,
       requiresSlotBooking
     };
+    if (req.file) planData.image = req.file.path;
 
     const plan = await MembershipPlan.findByIdAndUpdate(req.params.id, planData, { new: true });
     if (!plan) return res.status(404).json({ message: 'Plan not found.' });

@@ -5,10 +5,12 @@ const optAuth = require('../middleware/optAuth.middleware');
 const authorize = require('../middleware/role.middleware');
 const mc = require('../controllers/membership.controller');
 
+const upload = require('../middleware/upload.middleware');
+
 // Plans
 router.get('/plans', mc.getPlans);
-router.post('/plans', auth, authorize('superadmin'), mc.createPlan);
-router.put('/plans/:id', auth, authorize('superadmin'), mc.updatePlan);
+router.post('/plans', auth, authorize('superadmin'), upload.single('imageFile'), mc.createPlan);
+router.put('/plans/:id', auth, authorize('superadmin'), upload.single('imageFile'), mc.updatePlan);
 router.delete('/plans/:id', auth, authorize('superadmin'), mc.deletePlan);
 
 // Public Membership Booking (optAuth so logged-in users get req.user set)
