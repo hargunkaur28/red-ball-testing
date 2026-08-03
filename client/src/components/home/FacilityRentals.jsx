@@ -5,14 +5,22 @@ import { useQuery } from '@tanstack/react-query';
 import { ArrowRight } from 'lucide-react';
 import api from '../../lib/axios';
 import SportsCarousel from '../sports/SportsCarousel';
+import ComboPlanCard from '../sports/ComboPlanCard';
+import { groupComboFamilies } from '../../lib/comboPlans';
 import useAuthStore from '../../store/authStore';
 
 export default function FacilityRentals() {
   const { isAuthenticated } = useAuthStore();
-  
+
   const { data: sportsData } = useQuery({
     queryKey: ['public-sports'],
     queryFn: () => api.get('/sports/public').then((r) => r.data),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: plansData } = useQuery({
+    queryKey: ['public-membership-plans'],
+    queryFn: () => api.get('/plans').then((r) => r.data),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -20,6 +28,18 @@ export default function FacilityRentals() {
     () => (sportsData?.sports || []).filter((s) => s.name?.toLowerCase() !== 'coaching'),
     [sportsData]
   );
+
+  const comboFamilies = useMemo(
+    () => groupComboFamilies(plansData?.plans || []),
+    [plansData]
+  );
+
+  const sportsBySlug = useMemo(
+    () => Object.fromEntries((sportsData?.sports || []).map((s) => [s.slug, s])),
+    [sportsData]
+  );
+
+  const membershipPath = isAuthenticated ? '/user/buy-memberships' : '/buy-membership';
 
   return (
     <section id="sports" className="bg-[#0D0D0D] pt-20 md:pt-28 pb-4 md:pb-6 overflow-hidden">
@@ -95,6 +115,56 @@ export default function FacilityRentals() {
               />
             ))}
           </div>
+        )}
+
+        {/* Combo memberships */}
+        {comboFamilies.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mt-16"
+          >
+            <div className="mb-6">
+              <p
+                className="uppercase tracking-[5px] text-[12px] text-[#F5A623] mb-2"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                Save More
+              </p>
+              <h3
+                className="text-white leading-none"
+                style={{
+                  fontFamily: "'Bebas Neue', sans-serif",
+                  fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
+                }}
+              >
+                Combo Memberships
+              </h3>
+              <p
+                className="text-white/45 text-sm mt-2 max-w-lg"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                Bundle multiple facilities into a single membership — cheaper than paying for each one separately.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {comboFamilies.map((family) => (
+                <ComboPlanCard
+                  key={family.baseName}
+                  family={family}
+                  sportsBySlug={sportsBySlug}
+                  linkTo={
+                    family.entryPlan
+                      ? `${membershipPath}?plan=${family.entryPlan._id}`
+                      : membershipPath
+                  }
+                />
+              ))}
+            </div>
+          </motion.div>
         )}
 
         {/* Bottom CTA strip */}

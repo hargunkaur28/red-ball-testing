@@ -190,16 +190,19 @@ const syncMembershipPlans = async (sport, session) => {
     if (def.optional && (price === undefined || price === null || price === 0)) {
       // If optional and price not provided, archive existing auto-sync yearly plan if any
       await MembershipPlan.findOneAndUpdate(
-        { sportsIncluded: sport.slug, duration: def.duration, autoSync: { $ne: false } },
+        { sportsIncluded: [sport.slug], duration: def.duration, autoSync: { $ne: false }, isStandalone: { $ne: true } },
         { isActive: false },
         opts
       );
       continue;
     }
 
-    // Find if plan already exists for this sport & duration
+    // Find if plan already exists for this sport & duration.
+    // Exact-array match excludes multi-sport combo plans (e.g. ['gym','badminton']),
+    // and isStandalone excludes single-sport specialty plans like "Badminton
+    // Coaching" — neither should be mistaken for this sport's own tier.
     const existingPlan = await MembershipPlan.findOne(
-      { sportsIncluded: sport.slug, duration: def.duration },
+      { sportsIncluded: [sport.slug], duration: def.duration, isStandalone: { $ne: true } },
       null,
       opts
     );

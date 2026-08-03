@@ -6,11 +6,22 @@ import { CheckCircle2, Loader2, Sparkles, User, Mail, Phone, Crown, Check } from
 import { toast } from 'sonner';
 import api from '../lib/axios';
 import { formatCurrency } from '../lib/utils';
+import { isComboPlan, stripTierSuffix } from '../lib/comboPlans';
 import useAuthStore from '../store/authStore';
 import { queryClient } from '../lib/queryClient';
 import PhoneCollectModal from '../components/shared/PhoneCollectModal';
 
 const validPhone = (p) => /^[6-9]\d{9}$/.test(String(p || '').replace(/\D/g, '')) ? String(p).replace(/\D/g, '') : '';
+
+// Which selector tab a plan belongs to. Combo packages get their own group —
+// grouping them under sportsIncluded[0] would bury "Gym + Badminton" inside the
+// plain "Gym" tab alongside unrelated durations.
+function planGroupName(plan) {
+  if (isComboPlan(plan)) return stripTierSuffix(plan.name);
+  if (plan.isAllServices || !plan.sportsIncluded?.length) return 'All Services';
+  const first = plan.sportsIncluded[0] || 'Other';
+  return first.charAt(0).toUpperCase() + first.slice(1);
+}
 
 export default function MembershipPortal({ embedded = false }) {
   const [searchParams] = useSearchParams();
@@ -112,14 +123,7 @@ export default function MembershipPortal({ embedded = false }) {
   const groupedPlans = useMemo(() => {
     const groups = {};
     activePlans.forEach(plan => {
-      let groupName = 'All Services';
-      if (!plan.isAllServices && plan.sportsIncluded && plan.sportsIncluded.length > 0) {
-        // Just take the first sport for grouping in V1
-        groupName = plan.sportsIncluded[0] || 'Other'; 
-        // Title case it
-        groupName = groupName.charAt(0).toUpperCase() + groupName.slice(1);
-      }
-      
+      const groupName = planGroupName(plan);
       if (!groups[groupName]) groups[groupName] = [];
       groups[groupName].push(plan);
     });
@@ -138,30 +142,43 @@ export default function MembershipPortal({ embedded = false }) {
     return a.localeCompare(b);
   });
 
-  // Pre-select first sport if none selected
+  // Resolve the initial selection: a ?plan=<id> deep link (used by the combo
+  // cards on the home page and /book-slots) wins, otherwise the first group.
+  const planParam = searchParams.get('plan');
   useEffect(() => {
-    if (!selectedSport && availableSports.length > 0) {
-      setSelectedSport(availableSports[0]);
+    if (selectedSport || availableSports.length === 0) return;
+
+    const target = planParam && activePlans.find((p) => p._id === planParam);
+    if (target) {
+      setSelectedSport(planGroupName(target));
+      setSelectedPlanId(target._id);
+      return;
     }
-  }, [availableSports, selectedSport]);
+
+    setSelectedSport(availableSports[0]);
+  }, [availableSports, selectedSport, planParam, activePlans]);
 
   const currentSportPlans = useMemo(() => {
     if (!selectedSport || !groupedPlans[selectedSport]) return [];
     return groupedPlans[selectedSport];
   }, [groupedPlans, selectedSport]);
 
-  // Pre-select first plan of sport if none selected
+  // Pre-select first plan of sport if none selected.
+  // Bails out until a group is chosen so it can't clobber a ?plan= deep link,
+  // which sets the group and the plan in the same commit.
   useEffect(() => {
-    if (currentSportPlans.length > 0) {
-      // check if selectedPlanId is in currentSportPlans
-      const exists = currentSportPlans.find(p => p._id === selectedPlanId);
-      if (!exists) {
-        setSelectedPlanId(currentSportPlans[0]._id);
-      }
-    } else {
+    if (!selectedSport) return;
+
+    if (currentSportPlans.length === 0) {
       setSelectedPlanId('');
+      return;
     }
-  }, [currentSportPlans, selectedPlanId]);
+
+    const exists = currentSportPlans.some(p => p._id === selectedPlanId);
+    if (!exists) {
+      setSelectedPlanId(currentSportPlans[0]._id);
+    }
+  }, [currentSportPlans, selectedPlanId, selectedSport]);
 
   const selectedPlan = useMemo(() => {
     return activePlans.find((p) => p._id === selectedPlanId);

@@ -24,9 +24,12 @@ import {
   ToggleLeft,
   ToggleRight,
   GraduationCap,
+  Layers,
+  Sparkles,
 } from 'lucide-react';
 import api from '../../lib/axios';
 import { formatCurrency } from '../../lib/utils';
+import { PLAN_TIERS, groupComboFamilies } from '../../lib/comboPlans';
 import { toast } from 'sonner';
 import PageHeader from '../../components/shared/PageHeader';
 
@@ -40,8 +43,12 @@ const FILTER_TABS = [
   { key: 'hero', label: 'Hero Icons' },
   { key: 'discounts', label: 'Discounts' },
   { key: 'coupons', label: 'Coupons' },
+  { key: 'combo-plans', label: 'Combo Plans' },
   { key: 'kids-academy', label: 'Kids Academy' },
 ];
+
+// Tabs that render their own panel instead of the sport card grid
+const PANEL_TABS = ['hero', 'discounts', 'coupons', 'combo-plans', 'kids-academy'];
 
 // ---------------------------------------------------------------------------
 // Skeleton card for loading state
@@ -319,19 +326,22 @@ export default function Sports() {
       {/* Coupons */}
       {filter === 'coupons' && <CouponsPanel />}
 
+      {/* Combo Plans */}
+      {filter === 'combo-plans' && <ComboPlansPanel sports={sports} />}
+
       {/* Kids Academy */}
       {filter === 'kids-academy' && <KidsAcademyPanel sports={sports} />}
 
       {/* Content */}
-      {filter !== 'hero' && filter !== 'discounts' && filter !== 'coupons' && filter !== 'kids-academy' && isLoading ? (
+      {!PANEL_TABS.includes(filter) && isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
             <SkeletonCard key={i} />
           ))}
         </div>
-      ) : filter !== 'hero' && filter !== 'discounts' && filter !== 'coupons' && filter !== 'kids-academy' && sports.length === 0 ? (
+      ) : !PANEL_TABS.includes(filter) && sports.length === 0 ? (
         <EmptyState filter={filter} onCreateClick={openCreate} />
-      ) : filter !== 'hero' && filter !== 'discounts' && filter !== 'coupons' && filter !== 'kids-academy' ? (
+      ) : !PANEL_TABS.includes(filter) ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence mode="popLayout">
             {sports.map((sport) => (
@@ -3034,6 +3044,450 @@ function KidsAcademyFormModal({ sports, editingSport, existingPlans, onClose }) 
             >
               {isPending ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
               {editingSport ? 'Save Changes' : 'Create Programme'}
+            </button>
+          </div>
+        </form>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ===========================================================================
+// Combo Plans Panel
+// ===========================================================================
+// Multi-sport and specialty membership plans. Unlike the per-sport plans that
+// are auto-generated from a sport's own pricing fields, these are created
+// manually here and carry isStandalone so the sport sync never touches them.
+// Tier definitions and family grouping are shared with the public-facing
+// combo cards — see lib/comboPlans.
+
+// Official fee chart — single sports feed the Sport record's own pricing
+// fields, combos/coaching become standalone multi-sport plans.
+const FEE_CHART_SPORTS = [
+  { slug: 'gym', prices: [4000, 10000, 15000, 25000] },
+  { slug: 'badminton', prices: [2000, 5400, 8000, 12000] },
+  { slug: 'pickleball', prices: [2500, 7000, 10000, 15000] },
+];
+
+const FEE_CHART_PLANS = [
+  { name: 'Badminton + Pickleball', slugs: ['badminton', 'pickleball'], prices: [4000, 10000, 15000, 20000] },
+  { name: 'Gym + Badminton', slugs: ['gym', 'badminton'], prices: [6000, 15000, 20000, 30000] },
+  { name: 'Gym + Pickleball', slugs: ['gym', 'pickleball'], prices: [7000, 17000, 22000, 32000] },
+  { name: 'Gym + Badminton + Pickleball', slugs: ['gym', 'badminton', 'pickleball'], prices: [8000, 20000, 25000, 35000] },
+  { name: 'Badminton Coaching', slugs: ['badminton'], prices: [3500, 9000, 15000, 25000] },
+];
+
+function ComboPlansPanel({ sports }) {
+  const qc = useQueryClient();
+  const [showForm, setShowForm] = useState(false);
+  const [editingFamily, setEditingFamily] = useState(null); // { baseName, slugs, plans }
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+  const [importing, setImporting] = useState(false);
+
+  const { data: allPlans = [], isLoading } = useQuery({
+    queryKey: ['membership-plans'],
+    queryFn: () => api.get('/plans').then((r) => r.data.plans || []),
+    staleTime: 30_000,
+  });
+
+  // Group tiers back into their plan family (ignores auto-synced sport plans)
+  const families = groupComboFamilies(allPlans);
+
+  const sportsBySlug = Object.fromEntries(sports.map((s) => [s.slug, s]));
+  const sportLabel = (slug) => sportsBySlug[slug]?.name || slug;
+
+  // Persist one plan family: create/update a plan per priced tier, archive the rest
+  async function savePlanFamily({ baseName, slugs, prices, existingPlans = [] }) {
+    for (let i = 0; i < PLAN_TIERS.length; i++) {
+      const tier = PLAN_TIERS[i];
+      const raw = prices[i];
+      const existing = existingPlans.find((p) => p.duration === tier.duration);
+      const hasPrice = raw !== '' && raw !== null && raw !== undefined && Number(raw) > 0;
+
+      if (!hasPrice) {
+        if (existing) await api.delete(`/plans/${existing._id}`);
+        continue;
+      }
+
+      const body = {
+        name: `${baseName} ${tier.suffix}`,
+        duration: tier.duration,
+        durationValue: tier.durationValue,
+        durationUnit: tier.durationUnit,
+        sportsIncluded: slugs,
+        price: Number(raw),
+        isActive: true,
+        autoSync: false,
+        isStandalone: true,
+        features: [`Access to ${slugs.map(sportLabel).join(' + ')}`],
+      };
+
+      if (existing) await api.put(`/plans/${existing._id}`, body);
+      else await api.post('/plans', body);
+    }
+  }
+
+  const handleImportFeeChart = async () => {
+    setImporting(true);
+    const missing = new Set();
+    try {
+      // 1. Single-sport rows -> the sport's own pricing (auto-syncs its plans)
+      for (const row of FEE_CHART_SPORTS) {
+        const sport = sportsBySlug[row.slug];
+        if (!sport) { missing.add(row.slug); continue; }
+        await api.put(`/sports/${sport._id}`, {
+          oneMonthPrice: row.prices[0],
+          threeMonthPrice: row.prices[1],
+          sixMonthPrice: row.prices[2],
+          twelveMonthPrice: row.prices[3],
+        });
+      }
+
+      // 2. Combo + coaching rows -> standalone multi-sport plans
+      for (const row of FEE_CHART_PLANS) {
+        const unknown = row.slugs.filter((s) => !sportsBySlug[s]);
+        if (unknown.length) { unknown.forEach((s) => missing.add(s)); continue; }
+        const existing = families.find((f) => f.baseName === row.name)?.plans || [];
+        await savePlanFamily({
+          baseName: row.name,
+          slugs: row.slugs,
+          prices: row.prices,
+          existingPlans: existing,
+        });
+      }
+
+      qc.invalidateQueries({ queryKey: ['membership-plans'] });
+      qc.invalidateQueries({ queryKey: ['sports'] });
+
+      if (missing.size > 0) {
+        toast.warning(
+          `Imported, but these sports don't exist yet: ${[...missing].join(', ')}. Create them first, then re-import.`,
+        );
+      } else {
+        toast.success('Fee chart imported — all plans are live.');
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Fee chart import failed');
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const handleDelete = async (family) => {
+    try {
+      for (const plan of family.plans) await api.delete(`/plans/${plan._id}`);
+      qc.invalidateQueries({ queryKey: ['membership-plans'] });
+      toast.success(`"${family.baseName}" archived`);
+      setDeleteConfirm(null);
+    } catch {
+      toast.error('Failed to archive plan');
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0ea5e9, #2563eb)' }}>
+            <Layers size={20} className="text-white" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">Combo Plans</h2>
+            <p className="text-sm text-gray-500">
+              Multi-sport & specialty memberships. They appear on every included sport's page.
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleImportFeeChart}
+            disabled={importing}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold border border-gray-200 text-gray-700 hover:bg-gray-50 disabled:opacity-60 transition-colors"
+            title="Apply the official fee chart pricing"
+          >
+            {importing ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
+            Import Fee Chart
+          </button>
+          <button
+            onClick={() => { setEditingFamily(null); setShowForm(true); }}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all"
+            style={{ background: 'linear-gradient(135deg, #0ea5e9, #2563eb)' }}
+          >
+            <Plus size={16} />
+            Add Combo Plan
+          </button>
+        </div>
+      </div>
+
+      {/* Form modal */}
+      <AnimatePresence>
+        {showForm && (
+          <ComboPlanFormModal
+            sports={sports}
+            family={editingFamily}
+            onSave={savePlanFamily}
+            onClose={() => { setShowForm(false); setEditingFamily(null); }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Cards */}
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {[1, 2].map((i) => <div key={i} className="h-48 rounded-2xl skeleton" />)}
+        </div>
+      ) : families.length === 0 ? (
+        <div className="text-center py-16">
+          <Layers size={48} className="mx-auto text-gray-300 mb-3" />
+          <p className="text-gray-500 font-medium">No combo plans yet</p>
+          <p className="text-gray-400 text-sm mt-1">
+            Click "Import Fee Chart" to load the official pricing, or add one manually.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {families.map((family) => (
+            <ComboPlanAdminCard
+              key={family.baseName}
+              family={family}
+              sportLabel={sportLabel}
+              onEdit={() => { setEditingFamily(family); setShowForm(true); }}
+              onDelete={() => setDeleteConfirm(family)}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Delete confirm */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-6 shadow-2xl max-w-sm w-full mx-4">
+            <h3 className="text-base font-bold text-gray-900 mb-1">Archive "{deleteConfirm.baseName}"?</h3>
+            <p className="text-sm text-gray-500 mb-5">
+              All {deleteConfirm.plans.length} duration tiers stop being sold. Existing memberships are unaffected.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => handleDelete(deleteConfirm)}
+                className="flex-1 py-2.5 rounded-xl bg-red-600 text-white text-sm font-bold hover:bg-red-700 transition-colors"
+              >
+                Yes, Archive
+              </button>
+              <button
+                onClick={() => setDeleteConfirm(null)}
+                className="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-600 text-sm font-semibold hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ComboPlanAdminCard({ family, sportLabel, onEdit, onDelete }) {
+  const byDuration = Object.fromEntries(family.plans.map((p) => [p.duration, p]));
+
+  return (
+    <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      {/* Header */}
+      <div className="px-5 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #0A1628 0%, #0F2942 100%)' }}>
+        <div className="min-w-0">
+          <p className="font-bold text-white text-sm truncate">{family.baseName}</p>
+          <div className="flex flex-wrap gap-1 mt-1.5">
+            {family.slugs.map((slug) => (
+              <span key={slug} className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300">
+                {sportLabel(slug)}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <button onClick={onEdit} className="p-1.5 rounded-lg text-sky-300 hover:text-white hover:bg-sky-600/20 transition-colors">
+            <Pencil size={14} />
+          </button>
+          <button onClick={onDelete} className="p-1.5 rounded-lg text-red-400 hover:text-white hover:bg-red-600/20 transition-colors">
+            <Trash2 size={14} />
+          </button>
+        </div>
+      </div>
+
+      {/* Duration tiers */}
+      <div className="p-4 grid grid-cols-4 gap-2">
+        {PLAN_TIERS.map((tier) => {
+          const plan = byDuration[tier.duration];
+          return (
+            <div
+              key={tier.duration}
+              className={`rounded-xl p-2.5 border text-center ${plan ? 'border-sky-100 bg-sky-50' : 'border-gray-100 bg-gray-50'}`}
+            >
+              <p className="text-[9px] font-bold uppercase tracking-wider text-sky-500 leading-none">{tier.label}</p>
+              <p className="text-sm font-black text-gray-900 mt-1">
+                {plan ? formatCurrency(plan.price) : '—'}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ComboPlanFormModal({ sports, family, onSave, onClose }) {
+  const qc = useQueryClient();
+  const [baseName, setBaseName] = useState(family?.baseName || '');
+  const [slugs, setSlugs] = useState(family?.slugs || []);
+  const [prices, setPrices] = useState(() =>
+    PLAN_TIERS.map((tier) => {
+      const existing = family?.plans.find((p) => p.duration === tier.duration);
+      return existing?.price ?? '';
+    }),
+  );
+  const [isSaving, setIsSaving] = useState(false);
+
+  const selectableSports = sports.filter((s) => !s.deletedAt && s.slug !== 'all-services');
+
+  const toggleSlug = (slug) =>
+    setSlugs((prev) => (prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]));
+
+  const updatePrice = (idx, value) =>
+    setPrices((prev) => prev.map((p, i) => (i === idx ? value : p)));
+
+  // Suggest a name from the picked sports until the admin types their own
+  const suggestedName = slugs
+    .map((slug) => selectableSports.find((s) => s.slug === slug)?.name || slug)
+    .join(' + ');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const finalName = (baseName || suggestedName).trim();
+    if (!finalName) return toast.error('Give the plan a name');
+    if (slugs.length === 0) return toast.error('Pick at least one sport');
+    if (!prices.some((p) => p !== '' && Number(p) > 0)) return toast.error('Enter at least one tier price');
+
+    setIsSaving(true);
+    try {
+      await onSave({ baseName: finalName, slugs, prices, existingPlans: family?.plans || [] });
+      qc.invalidateQueries({ queryKey: ['membership-plans'] });
+      toast.success(family ? 'Combo plan updated' : 'Combo plan created');
+      onClose();
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Failed to save plan');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.5)' }}
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden max-h-[90vh] flex flex-col"
+      >
+        {/* Header */}
+        <div className="px-6 py-4 flex items-center justify-between shrink-0" style={{ background: 'linear-gradient(135deg, #0ea5e9, #2563eb)' }}>
+          <div className="flex items-center gap-2">
+            <Layers size={20} className="text-white" />
+            <h3 className="text-white font-bold text-lg">{family ? 'Edit Combo Plan' : 'Add Combo Plan'}</h3>
+          </div>
+          <button onClick={onClose} className="text-white/70 hover:text-white"><X size={20} /></button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto">
+          {/* Sports */}
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-2">Sports Included</label>
+            <div className="flex flex-wrap gap-2">
+              {selectableSports.map((s) => {
+                const picked = slugs.includes(s.slug);
+                return (
+                  <button
+                    key={s._id}
+                    type="button"
+                    onClick={() => toggleSlug(s.slug)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                      picked
+                        ? 'bg-sky-50 border-sky-300 text-sky-700'
+                        : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50'
+                    }`}
+                  >
+                    {picked && <Check size={11} className="inline mr-1 -mt-0.5" />}
+                    {s.name}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="text-[11px] text-gray-400 mt-1.5">
+              A member on this plan gets access to every sport selected here.
+            </p>
+          </div>
+
+          {/* Name */}
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-1.5">Plan Name</label>
+            <input
+              type="text"
+              value={baseName}
+              onChange={(e) => setBaseName(e.target.value)}
+              className="input-field text-sm"
+              placeholder={suggestedName || 'e.g. Gym + Badminton'}
+            />
+            <p className="text-[11px] text-gray-400 mt-1">
+              Duration is appended automatically — "{(baseName || suggestedName || 'Plan Name')} Monthly".
+            </p>
+          </div>
+
+          {/* Tier prices */}
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-2">Pricing Tiers</label>
+            <div className="space-y-2">
+              {PLAN_TIERS.map((tier, idx) => (
+                <div key={tier.duration} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
+                  <div className="w-20 shrink-0">
+                    <p className="text-xs font-bold text-gray-700">{tier.label}</p>
+                  </div>
+                  <div className="flex-1 relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">₹</span>
+                    <input
+                      type="number"
+                      min="0"
+                      value={prices[idx]}
+                      onChange={(e) => updatePrice(idx, e.target.value)}
+                      className="w-full pl-7 pr-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-sky-300"
+                      placeholder="Price"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="text-[11px] text-gray-400 mt-1">Leave a tier blank to not offer it.</p>
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-2 pt-1">
+            <button type="button" onClick={onClose} className="flex-1 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 hover:bg-gray-100">
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSaving}
+              className="flex-1 py-2 rounded-xl text-white text-sm font-semibold disabled:opacity-60 flex items-center justify-center gap-1"
+              style={{ background: 'linear-gradient(135deg, #0ea5e9, #2563eb)' }}
+            >
+              {isSaving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
+              {family ? 'Save Changes' : 'Create Plan'}
             </button>
           </div>
         </form>

@@ -5,6 +5,8 @@ import { Loader2, Search, GraduationCap, ArrowLeft, ArrowRight } from 'lucide-re
 import { Link, useSearchParams } from 'react-router-dom';
 import api from '../lib/axios';
 import SportCard from '../components/sports/SportCard';
+import ComboPlanCard from '../components/sports/ComboPlanCard';
+import { groupComboFamilies } from '../lib/comboPlans';
 import useAuthStore from '../store/authStore';
 import Navbar from '../components/home/Navbar';
 
@@ -39,7 +41,26 @@ export default function BookSlotsMarketplace({ embedded = false }) {
     return allSports.filter((s) => slugs.has(s.slug));
   }, [allSports, isKidsMode, kidsData]);
 
+  // Combo packages — not shown in Kids Academy mode, which is its own programme
+  const { data: plansData } = useQuery({
+    queryKey: ['public-membership-plans'],
+    queryFn: () => api.get('/plans').then((r) => r.data),
+    staleTime: 5 * 60 * 1000,
+    enabled: !isKidsMode,
+  });
+
+  const comboFamilies = useMemo(
+    () => (isKidsMode ? [] : groupComboFamilies(plansData?.plans || [])),
+    [plansData, isKidsMode]
+  );
+
+  const sportsBySlug = useMemo(
+    () => Object.fromEntries(allSports.map((s) => [s.slug, s])),
+    [allSports]
+  );
+
   const sportLinkPrefix = embedded ? '/user/sports' : '/sports';
+  const membershipPath = embedded ? '/user/buy-memberships' : '/buy-membership';
   const loading = isLoading || (isKidsMode && kidsLoading);
 
   const wrapClass = embedded
@@ -174,6 +195,53 @@ export default function BookSlotsMarketplace({ embedded = false }) {
                   transition={{ duration: 0.4, delay: i * 0.05 }}
                 >
                   <SportCard sport={sport} linkPrefix={sportLinkPrefix} />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Combo packages */}
+        {!loading && comboFamilies.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            className="mt-12"
+          >
+            <div className="mb-6">
+              <p className="text-white/30 text-xs uppercase tracking-[4px] font-bold mb-1">
+                Bundles
+              </p>
+              <h2
+                className="text-white font-black text-xl"
+                style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '1px' }}
+              >
+                Combo Memberships
+              </h2>
+              <p className="text-white/40 text-sm mt-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                One membership, multiple facilities — for less than booking each separately.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {comboFamilies.map((family, i) => (
+                <motion.div
+                  key={family.baseName}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                >
+                  <ComboPlanCard
+                    family={family}
+                    sportsBySlug={sportsBySlug}
+                    linkTo={
+                      family.entryPlan
+                        ? `${membershipPath}?plan=${family.entryPlan._id}`
+                        : membershipPath
+                    }
+                  />
                 </motion.div>
               ))}
             </div>

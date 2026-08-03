@@ -51,6 +51,13 @@ const membershipPlanSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  // Combo / specialty plans created by hand in Super Admin → Sports → Combo Plans.
+  // They are never derived from a single sport's pricing fields, so the sport
+  // sync must not treat them as that sport's plan for a given duration.
+  isStandalone: {
+    type: Boolean,
+    default: false,
+  },
   features: [{
     type: String,
   }],
