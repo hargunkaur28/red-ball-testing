@@ -39,3 +39,9 @@ Includes dedicated portals for coaches, restaurant managers, and super-administr
 *   **On-Site Restaurant Orders:** Seamless ordering system for the complex's food and beverage services.
 *   **QR Code Entry & Check-In:** Digital member passes for instant, contactless check-ins at the physical gates.
 *   **Interactive Dashboards:** Tailored user interfaces for customers, managers, and super-admins.
+
+---
+
+## 📚 Developer Docs
+
+*   [Transactional Email](docs/EMAIL.md) — Brevo setup, the env vars to fill in, what gets sent and when, and the scrapped Hostinger SMTP config kept for reference.

@@ -828,7 +828,7 @@ exports.entryCheck = async (req, res) => {
             validationAllowed = false;
             const earlyMins = await findEarlySlotBookingMinutes(req.user.userId, sport._id);
             if (earlyMins !== null) {
-              validationReason = `u can check in ${earlyMins} mins`;
+              validationReason = `You can check in ${earlyMins} min${earlyMins === 1 ? '' : 's'}`;
               hasUpcomingSlot = true;
             } else {
               validationReason = 'No active slot booking found for this sport. Please book a slot before checking in.';
@@ -921,7 +921,7 @@ exports.entryCheckIn = async (req, res) => {
         checkInLocks.delete(lockKey);
         const earlyMins = await findEarlySlotBookingMinutes(req.user.userId, sport._id);
         if (earlyMins !== null) {
-          return res.status(403).json({ success: false, message: `u can check in ${earlyMins} mins` });
+          return res.status(403).json({ success: false, message: `You can check in ${earlyMins} min${earlyMins === 1 ? '' : 's'}` });
         }
         return res.status(403).json({ success: false, message: 'No active slot booking found for this sport. Please book a slot before checking in.' });
       }

@@ -3,12 +3,21 @@ require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 const { sendMembershipWelcomeEmail, sendAdminPaymentAlert } = require('../utils/emailService');
 const { buildInvoiceHTML } = require('../utils/invoiceBuilder');
 
+// node scripts/testEmail.js [recipient] — defaults to the configured Brevo sender,
+// which is always an address you control.
+const TEST_RECIPIENT = process.argv[2] || process.env.BREVO_SENDER_EMAIL;
+
+if (!TEST_RECIPIENT) {
+  console.error('No recipient. Set BREVO_SENDER_EMAIL in server/.env or pass an address as an argument.');
+  process.exit(1);
+}
+
 const invoiceHtml = buildInvoiceHTML({
   invoiceNumber: 'INV-TEST-00001',
   date: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
   studentName: 'Test User',
   studentPhone: '+91 9999999999',
-  studentEmail: process.env.EMAIL_USER,
+  studentEmail: TEST_RECIPIENT,
   items: [{ description: 'Gym — Quarterly', quantity: 1, rate: 6000, amount: 6000 }],
   subtotal: 6000,
   gstPercent: 0,
@@ -20,9 +29,9 @@ const invoiceHtml = buildInvoiceHTML({
 });
 
 async function run() {
-  console.log('Sending welcome email to', process.env.EMAIL_USER, '...');
+  console.log('Sending welcome email to', TEST_RECIPIENT, '...');
   await sendMembershipWelcomeEmail({
-    toEmail: process.env.EMAIL_USER,
+    toEmail: TEST_RECIPIENT,
     toName: 'Test User',
     planName: 'Gym — Quarterly',
     startDate: '24 May 2026',

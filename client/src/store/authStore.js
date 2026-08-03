@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import api from '../lib/axios';
-import { queryClient } from '../lib/queryClient';
+import { queryClient, clearUserScopedQueries } from '../lib/queryClient';
 
 const useAuthStore = create((set, get) => ({
   user: null,
@@ -13,6 +13,7 @@ const useAuthStore = create((set, get) => ({
     const { data } = await api.post('/auth/login', payload);
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('cachedUser', JSON.stringify(data.user));
+    clearUserScopedQueries();
     set({ user: data.user, isAuthenticated: true, isLoading: false });
     return data;
   },
@@ -21,6 +22,7 @@ const useAuthStore = create((set, get) => ({
     const { data } = await api.post('/auth/register', userData);
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('cachedUser', JSON.stringify(data.user));
+    clearUserScopedQueries();
     set({ user: data.user, isAuthenticated: true, isLoading: false });
     return data;
   },
@@ -29,6 +31,7 @@ const useAuthStore = create((set, get) => ({
     const { data } = await api.post('/auth/google', { credential });
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('cachedUser', JSON.stringify(data.user));
+    clearUserScopedQueries();
     set({ user: data.user, isAuthenticated: true, isLoading: false });
     return data;
   },
@@ -162,6 +165,8 @@ const useAuthStore = create((set, get) => ({
   deleteAccount: async (password) => {
     const { data } = await api.delete('/auth/account', { data: { password } });
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('cachedUser');
+    queryClient.clear();
     set({ user: null, isAuthenticated: false, isLoading: false });
     return data;
   },

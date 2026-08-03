@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, Loader2, Sparkles, User, Mail, Phone, Crown, Check } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, CheckCircle2, Loader2, Sparkles, User, Mail, Phone, Crown, Check, Star, CalendarCheck, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import api from '../lib/axios';
 import { formatCurrency } from '../lib/utils';
@@ -10,8 +10,34 @@ import { isComboPlan, stripTierSuffix } from '../lib/comboPlans';
 import useAuthStore from '../store/authStore';
 import { queryClient } from '../lib/queryClient';
 import PhoneCollectModal from '../components/shared/PhoneCollectModal';
+import SportsCarousel from '../components/sports/SportsCarousel';
+import MembershipSlotBookingModal from '../components/sports/MembershipSlotBookingModal';
+import { getSportFallback } from '../components/sports/sportFallbacks';
 
 const validPhone = (p) => /^[6-9]\d{9}$/.test(String(p || '').replace(/\D/g, '')) ? String(p).replace(/\D/g, '') : '';
+
+// Same duration badges the sport-detail plan cards use, so a plan reads the
+// same whether it's picked here or on /sports/:slug.
+const DURATION_LABEL = {
+  '1 Month': { short: '1 Month', badge: null },
+  '3 Months': { short: '3 Month', badge: 'Popular' },
+  '6 Months': { short: '6 Month', badge: 'Best Value' },
+  '1 Year': { short: '1 Year', badge: 'Max Savings' },
+};
+
+// The page shows one plan family at a time — whichever the visitor arrived for.
+// This is the family shown when the URL names none. Set to '' to fall through to
+// the whole catalogue instead.
+const DEFAULT_GROUP = 'badminton-coaching';
+
+const slugify = (s = '') => String(s).trim().toLowerCase().replace(/\s+/g, '-');
+
+const MEMBERSHIP_PERKS = [
+  { title: 'Unlimited Access', desc: 'Play as much as you want without hourly fees.' },
+  { title: 'Priority Bookings', desc: 'Reserve courts and turf slots before non-members.' },
+  { title: 'Member Events', desc: 'Exclusive invites to tournaments and social events.' },
+  { title: 'Restaurant Discounts', desc: 'Enjoy 15% off at the academy café & restaurant.' },
+];
 
 // Which selector tab a plan belongs to. Combo packages get their own group —
 // grouping them under sportsIncluded[0] would bury "Gym + Badminton" inside the
@@ -26,7 +52,7 @@ function planGroupName(plan) {
 export default function MembershipPortal({ embedded = false }) {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  
+
   const { user, isAuthenticated, checkAuth, googleAuth } = useAuthStore();
 
   const [details, setDetails] = useState({
@@ -35,11 +61,11 @@ export default function MembershipPortal({ embedded = false }) {
     phone: '',
   });
 
-  const [selectedSport, setSelectedSport] = useState('');
   const [selectedPlanId, setSelectedPlanId] = useState('');
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [bookingMembership, setBookingMembership] = useState(null);
 
   const googleButtonRef = useCallback((node) => {
     if (!node) return;
@@ -115,6 +141,22 @@ export default function MembershipPortal({ embedded = false }) {
     queryFn: () => api.get('/plans').then((r) => r.data),
   });
 
+  // Memberships this visitor already holds — they get a "Book Now" entry point
+  // instead of having to go via /user/membership to use what they've paid for.
+  const { data: myMembershipsData } = useQuery({
+    queryKey: ['my-memberships', user?.id],
+    queryFn: () => api.get(`/memberships/${user.id}`).then((r) => r.data),
+    enabled: !!user?.id,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const activeMemberships = useMemo(() => {
+    const now = new Date();
+    return (myMembershipsData?.memberships || []).filter(
+      (m) => m.status === 'active' && (!m.endDate || new Date(m.endDate) >= now)
+    );
+  }, [myMembershipsData]);
+
   const activePlans = useMemo(() => {
     return (plansData?.plans || []).filter(p => ['1 Month', '3 Months', '6 Months', '1 Year'].includes(p.duration));
   }, [plansData]);
@@ -136,53 +178,63 @@ export default function MembershipPortal({ embedded = false }) {
     return groups;
   }, [activePlans]);
 
-  const availableSports = Object.keys(groupedPlans).sort((a, b) => {
-    if (a === 'All Services') return -1;
-    if (b === 'All Services') return 1;
-    return a.localeCompare(b);
-  });
-
-  // Resolve the initial selection: a ?plan=<id> deep link (used by the combo
-  // cards on the home page and /book-slots) wins, otherwise the first group.
+  // Only the family the visitor arrived for is shown: the combo cards on the home
+  // page and /sports/:slug deep-link ?plan=<id>, the dashboard tiles link ?sport=.
   const planParam = searchParams.get('plan');
+  const sportParam = searchParams.get('sport');
+
+  const planGroups = useMemo(() => {
+    const all = Object.keys(groupedPlans)
+      .sort((a, b) => {
+        if (a === 'All Services') return -1;
+        if (b === 'All Services') return 1;
+        return a.localeCompare(b);
+      })
+      .map((name) => ({ name, plans: groupedPlans[name] }));
+
+    const byPlan = planParam && all.find((g) => g.plans.some((p) => p._id === planParam));
+    if (byPlan) return [byPlan];
+
+    const bySport = sportParam && all.find((g) => slugify(g.name) === slugify(sportParam));
+    if (bySport) return [bySport];
+
+    const byDefault = all.filter((g) => slugify(g.name) === DEFAULT_GROUP);
+    // Fall through to the full catalogue if the URL names nothing we recognise and
+    // the default family has been renamed, so this page can't end up empty.
+    return byDefault.length ? byDefault : all;
+  }, [groupedPlans, planParam, sportParam]);
+
+  const visiblePlans = useMemo(() => planGroups.flatMap((g) => g.plans), [planGroups]);
+
+  // Within the shown family, ?plan= picks the exact tier; otherwise the cheapest.
   useEffect(() => {
-    if (selectedSport || availableSports.length === 0) return;
+    if (visiblePlans.length === 0) return;
+    if (selectedPlanId && visiblePlans.some((p) => p._id === selectedPlanId)) return;
 
-    const target = planParam && activePlans.find((p) => p._id === planParam);
-    if (target) {
-      setSelectedSport(planGroupName(target));
-      setSelectedPlanId(target._id);
-      return;
-    }
-
-    setSelectedSport(availableSports[0]);
-  }, [availableSports, selectedSport, planParam, activePlans]);
-
-  const currentSportPlans = useMemo(() => {
-    if (!selectedSport || !groupedPlans[selectedSport]) return [];
-    return groupedPlans[selectedSport];
-  }, [groupedPlans, selectedSport]);
-
-  // Pre-select first plan of sport if none selected.
-  // Bails out until a group is chosen so it can't clobber a ?plan= deep link,
-  // which sets the group and the plan in the same commit.
-  useEffect(() => {
-    if (!selectedSport) return;
-
-    if (currentSportPlans.length === 0) {
-      setSelectedPlanId('');
-      return;
-    }
-
-    const exists = currentSportPlans.some(p => p._id === selectedPlanId);
-    if (!exists) {
-      setSelectedPlanId(currentSportPlans[0]._id);
-    }
-  }, [currentSportPlans, selectedPlanId, selectedSport]);
+    const target = planParam && visiblePlans.find((p) => p._id === planParam);
+    setSelectedPlanId(target ? target._id : visiblePlans[0]._id);
+  }, [visiblePlans, selectedPlanId, planParam]);
 
   const selectedPlan = useMemo(() => {
-    return activePlans.find((p) => p._id === selectedPlanId);
-  }, [activePlans, selectedPlanId]);
+    return visiblePlans.find((p) => p._id === selectedPlanId);
+  }, [visiblePlans, selectedPlanId]);
+
+  // The selected plan's group drives the hero art and accent colour, the same way
+  // the sport slug does on /sports/:slug. Combo groups fall through to the default.
+  const activeGroup = selectedPlan ? planGroupName(selectedPlan) : planGroups[0]?.name || '';
+  // A single-sport package ("Badminton Coaching") has no fallback entry of its own,
+  // so borrow its sport's art rather than dropping to the generic default. Multi-sport
+  // packages have no one sport to represent them and keep the default.
+  const heroKey = (selectedPlan?.sportsIncluded?.length === 1
+    ? selectedPlan.sportsIncluded[0]
+    : activeGroup) || 'all-services';
+  const fallback = getSportFallback(heroKey);
+  const accentColor = fallback.color || '#C5DB3B';
+  const heroImage = fallback.heroImage;
+  const heroChips = fallback.chips?.length
+    ? fallback.chips
+    : ['Unlimited Access', 'Priority Booking', 'Member Perks'];
+  const backHref = embedded ? '/user/book-slots' : '/book-slots';
 
   const handlePurchase = async (e) => {
     e.preventDefault();
@@ -248,6 +300,8 @@ export default function MembershipPortal({ embedded = false }) {
                 await checkAuth();
               }
               queryClient.invalidateQueries({ queryKey: ['my-membership'] });
+              // Surfaces the "Book Now" card for the plan just bought
+              queryClient.invalidateQueries({ queryKey: ['my-memberships'] });
               toast.success('Membership purchased successfully!');
               navigate('/user');
             } else {
@@ -276,8 +330,29 @@ export default function MembershipPortal({ embedded = false }) {
     }
   };
 
+  if (plansLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#0A0D0D' }}>
+        <div className="flex flex-col items-center gap-4 text-white/30">
+          <Loader2 size={32} className="animate-spin" />
+          <p className="text-sm">Loading membership plans...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={`${embedded ? 'min-h-[500px] rounded-2xl overflow-hidden' : 'min-h-screen'} bg-[#0D0D0D] text-[#EAEAEA] font-sans selection:bg-[#C5DB3B] selection:text-[#0D0D0D] relative pb-20`}>
+    <div className="min-h-screen relative" style={{ background: '#0A0D0D' }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700;800&display=swap');
+      `}</style>
+
+      <MembershipSlotBookingModal
+        membership={bookingMembership}
+        isOpen={!!bookingMembership}
+        onClose={() => setBookingMembership(null)}
+      />
+
       <PhoneCollectModal
         open={showPhoneModal}
         onClose={() => setShowPhoneModal(false)}
@@ -286,231 +361,480 @@ export default function MembershipPortal({ embedded = false }) {
           setShowPhoneModal(false);
         }}
       />
-      <div className="fixed top-0 left-0 w-full h-[500px] bg-gradient-to-b from-[#C5DB3B]/5 to-transparent pointer-events-none" />
 
-      {/* Header */}
-      {!embedded && (
-        <header className="sticky top-0 z-40 bg-[#0D0D0D]/80 backdrop-blur-xl border-b border-white/5">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-full bg-[#C5DB3B] flex items-center justify-center shadow-lg shadow-[#C5DB3B]/50 group-hover:scale-105 transition-transform">
-              <span className="text-white font-extrabold text-sm tracking-tighter">RB</span>
-            </div>
-            <span className="font-black text-lg tracking-tight uppercase text-white hidden sm:block">Alchemy 360</span>
-          </Link>
-          <Link to="/book-slots" className="text-sm font-bold uppercase tracking-widest text-white/60 hover:text-white transition-colors border border-white/10 hover:border-white/20 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10">
-            One-Time Play →
-          </Link>
-        </div>
-      </header>
-      )}
+      {/* Back button */}
+      <div className="absolute left-4 top-4 sm:top-6 z-40">
+        <Link
+          to={backHref}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-white/70 hover:text-white transition-all backdrop-blur-sm"
+          style={{ background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)' }}
+        >
+          <ArrowLeft size={15} />
+          All Sports
+        </Link>
+      </div>
 
-      <main className={`${embedded ? 'p-6 md:p-8' : 'max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 pt-10 pb-20'} relative z-10`}>
-        
-        <div className="mb-10 max-w-2xl">
-          <div className="flex flex-wrap items-center gap-3 mb-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#C5DB3B]/10 border border-[#C5DB3B]/20 text-[#C5DB3B] text-xs font-bold tracking-widest uppercase">
-              <Crown size={14} />
-              <span>Memberships</span>
-            </div>
-            {embedded && (
-              <Link to="/user/book-slots" className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-white/60 hover:text-white transition-colors border border-white/10 hover:border-white/20 px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 whitespace-nowrap">
-                <span>← One-Time Play</span>
-              </Link>
-            )}
+      {/* Hero */}
+      <div className="relative w-full overflow-hidden" style={{ height: 'clamp(360px, 60vh, 580px)' }}>
+        <img
+          src={heroImage}
+          alt={activeGroup || 'Memberships'}
+          loading="eager"
+          onError={(e) => { e.currentTarget.style.opacity = '0'; }}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0D0D] via-[#0A0D0D]/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0D0D]/60 via-transparent to-transparent" />
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="absolute bottom-0 left-0 right-0 px-4 sm:px-6 pb-5 sm:pb-8 pt-20 z-10"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold tracking-[2px] uppercase mb-3"
+            style={{ background: `${accentColor}1F`, border: `1px solid ${accentColor}45`, color: accentColor }}
+          >
+            <Crown size={12} />
+            <span>Memberships</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter leading-[1.1] mb-4">
-            Join the Club.
-          </h1>
-          <p className="text-[#A1A1AA] text-lg leading-relaxed">
-            Get unlimited access to your favorite sports without paying hourly rates. Select a sport and pick your plan.
-          </p>
-        </div>
 
-        {plansLoading ? (
-          <div className="flex justify-center items-center h-40">
-            <Loader2 className="animate-spin text-[#C5DB3B]" size={32} />
+          <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+            <h1
+              className="text-white font-black leading-none truncate pr-4"
+              style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                fontSize: 'clamp(2.5rem, 8vw, 5.5rem)',
+                letterSpacing: '1px',
+                textShadow: '0 2px 20px rgba(0,0,0,0.5)',
+              }}
+            >
+              {activeGroup || 'Join the Club'}
+            </h1>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-            
-            {/* Left Column: Selection */}
-            <div className="lg:col-span-7 space-y-10">
-              
-              {/* Step 1: Select Sport Group */}
-              <div>
-                <h3 className="text-sm font-extrabold uppercase tracking-wider text-white/40 mb-4">1. Select Sport</h3>
-                <div className="flex flex-wrap gap-2">
-                  {availableSports.map((sportName) => (
-                    <button
-                      key={sportName}
-                      onClick={() => setSelectedSport(sportName)}
-                      className={`px-5 py-3 rounded-xl border text-sm font-bold uppercase tracking-tight transition-all ${
-                        selectedSport === sportName
-                          ? 'bg-[#C5DB3B] border-[#C5DB3B] text-white shadow-lg shadow-[#C5DB3B]/30'
-                          : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10 hover:border-white/20 hover:text-white'
-                      }`}
+
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 pr-14 sm:pr-24">
+            {heroChips.map((chip) => (
+              <span
+                key={chip}
+                className="px-2.5 py-1 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold backdrop-blur-sm border"
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  borderColor: 'rgba(255,255,255,0.15)',
+                  color: 'rgba(255,255,255,0.85)',
+                }}
+              >
+                {chip}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+
+          {/* Left — what a membership gets you: below the picker on mobile */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="order-2 lg:order-1 space-y-8"
+          >
+            <div className="space-y-2">
+              <p className="uppercase text-xs tracking-[4px] font-semibold" style={{ color: accentColor }}>
+                Alchemy 360 Academy
+              </p>
+              <div className="flex items-center gap-3 flex-wrap">
+                <h2
+                  className="text-white text-3xl font-black leading-tight"
+                  style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '1px', fontSize: 'clamp(1.8rem, 3vw, 2.5rem)' }}
+                >
+                  {activeGroup ? `${activeGroup} Membership` : 'Membership Plans'}
+                </h2>
+                <a
+                  href="#booking"
+                  className="lg:hidden inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-white text-xs font-bold tracking-wide transition-all hover:opacity-90 hover:scale-105 shrink-0"
+                  style={{ background: accentColor }}
+                >
+                  Choose Plan ↑
+                </a>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <Star key={s} size={16} fill={s <= 4 ? '#F5A623' : 'none'} color={s <= 4 ? '#F5A623' : 'rgba(255,255,255,0.2)'} />
+              ))}
+              <span className="text-sm text-white/50 ml-1">4.8 · Loved by our members</span>
+            </div>
+
+            <p className="text-white/65 leading-relaxed text-base" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              {fallback.description}
+            </p>
+
+            {/* Perks */}
+            <div>
+              <h3 className="text-white/40 text-xs uppercase tracking-[3px] font-bold mb-4">Membership Perks</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {MEMBERSHIP_PERKS.map((perk) => (
+                  <div key={perk.title} className="flex items-start gap-3">
+                    <div
+                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                      style={{ background: `${accentColor}20`, border: `1px solid ${accentColor}40` }}
                     >
-                      {sportName}
-                    </button>
+                      <Check size={12} style={{ color: accentColor }} />
+                    </div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                      <p className="text-white/85 text-sm font-bold">{perk.title}</p>
+                      <p className="text-white/45 text-xs mt-0.5 leading-relaxed">{perk.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Facility highlights for the selected group */}
+            {fallback.features?.length > 0 && (
+              <div>
+                <h3 className="text-white/40 text-xs uppercase tracking-[3px] font-bold mb-4">What's Included</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {fallback.features.map((feature) => (
+                    <div key={feature} className="flex items-center gap-3">
+                      <div
+                        className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+                        style={{ background: `${accentColor}20`, border: `1px solid ${accentColor}40` }}
+                      >
+                        <CheckCircle2 size={13} style={{ color: accentColor }} />
+                      </div>
+                      <span className="text-white/75 text-sm font-medium" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                        {feature}
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>
+            )}
 
-              {/* Step 2: Select Plan */}
-              {currentSportPlans.length > 0 && (
-                <div>
-                  <h3 className="text-sm font-extrabold uppercase tracking-wider text-white/40 mb-4">2. Select Duration</h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {currentSportPlans.map((plan) => {
+            <div className="h-px bg-white/[0.06]" />
+
+            <div
+              className="rounded-2xl p-4 flex items-start gap-3"
+              style={{ background: 'rgba(245,166,35,0.06)', border: '1px solid rgba(245,166,35,0.15)' }}
+            >
+              <span className="text-2xl mt-0.5">🏅</span>
+              <div>
+                <p className="text-[#F5A623] font-bold text-sm">Members Get More</p>
+                <p className="text-white/55 text-xs mt-0.5 leading-relaxed">
+                  Unlimited access, priority entry, and attendance tracking — all included with any membership plan.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right — the picker: first on mobile, sticky on desktop */}
+          <motion.div
+            id="booking"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="order-1 lg:order-2 rounded-3xl p-6 sm:p-8 space-y-8"
+            style={{
+              background: 'rgba(255,255,255,0.02)',
+              border: '1px solid rgba(255,255,255,0.05)',
+            }}
+          >
+            <p
+              className="text-white/40 text-xs uppercase tracking-[3px] font-bold"
+              style={{ fontFamily: "'DM Sans', sans-serif" }}
+            >
+              Build Your Membership
+            </p>
+
+            {/* Already a member — book an included slot instead of buying again */}
+            {activeMemberships.length > 0 && (
+              <div
+                className="rounded-2xl p-5 space-y-4"
+                style={{ background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.2)' }}
+              >
+                <div className="flex items-center gap-2">
+                  <CalendarCheck size={15} className="text-green-500" />
+                  <h3 className="text-white/40 text-xs uppercase tracking-[3px] font-bold">
+                    Your Membership{activeMemberships.length > 1 ? 's' : ''}
+                  </h3>
+                </div>
+
+                {activeMemberships.map((m) => (
+                  <div key={m._id} className="flex items-center justify-between gap-3 flex-wrap">
+                    <div className="min-w-0">
+                      <p className="text-white font-black text-sm truncate">{m.planId?.name || 'Active membership'}</p>
+                      <p className="text-white/45 text-xs mt-0.5">
+                        Slots are included — no payment needed
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setBookingMembership(m)}
+                      className="shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider text-white transition-all duration-200 hover:opacity-90 active:scale-[0.98] hover:gap-3"
+                      style={{
+                        background: `linear-gradient(135deg, ${accentColor}, ${accentColor}BB)`,
+                        boxShadow: `0 6px 20px ${accentColor}25`,
+                      }}
+                    >
+                      Book Now
+                      <ChevronRight size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Every plan, grouped by sport — no picker step */}
+            <div className="space-y-10">
+              <div className="flex items-center gap-2">
+                <span className="text-base">🏅</span>
+                <h3 className="text-white/40 text-xs uppercase tracking-[3px] font-bold">Choose Your Plan</h3>
+              </div>
+
+              {planGroups.map((group) => (
+                <div key={group.name} className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <h4
+                      className="text-white font-black text-xl leading-none shrink-0"
+                      style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '1px' }}
+                    >
+                      {group.name}
+                    </h4>
+                    <div className="h-px flex-1 bg-white/[0.06]" />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {group.plans.map((plan) => {
+                      const meta = DURATION_LABEL[plan.duration] || { short: plan.duration, badge: null };
                       const isSelected = plan._id === selectedPlanId;
+                      // Unselected cards keep the neutral gold accent so the page
+                      // doesn't turn into a wall of the selected sport's colour.
+                      const cardAccent = isSelected ? accentColor : '#F5A623';
                       return (
                         <button
                           key={plan._id}
                           type="button"
                           onClick={() => setSelectedPlanId(plan._id)}
-                          className={`p-5 rounded-2xl border text-left transition-all relative overflow-hidden group ${
-                            isSelected
-                              ? 'border-[#C5DB3B] bg-[#C5DB3B]/5 text-white'
-                              : 'border-[#222A2A] bg-white/5 text-white/70 hover:border-white/20'
-                          }`}
+                          className="relative rounded-2xl p-5 text-left flex flex-col gap-3 transition-all duration-300 h-full active:scale-[0.99]"
+                          style={{
+                            background: isSelected
+                              ? `linear-gradient(135deg, ${accentColor}1A 0%, #111515 100%)`
+                              : '#111515',
+                            border: isSelected ? `1px solid ${accentColor}` : '1px solid rgba(255,255,255,0.06)',
+                            boxShadow: isSelected ? `0 8px 32px ${accentColor}20` : '0 4px 16px rgba(0,0,0,0.3)',
+                          }}
                         >
-                          {isSelected && (
-                            <div className="absolute top-0 right-0 w-3 h-3 bg-[#C5DB3B] rounded-bl-lg" />
+                          {meta.badge && (
+                            <div
+                              className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1 whitespace-nowrap text-white"
+                              style={{ background: meta.badge === 'Popular' ? accentColor : '#F5A623' }}
+                            >
+                              {meta.badge === 'Popular' && <Sparkles size={9} />}
+                              {meta.badge}
+                            </div>
                           )}
-                          <p className="font-extrabold text-lg tracking-tight group-hover:text-white transition-colors">{plan.duration}</p>
-                          <p className="text-sm text-white/50 mb-3">{plan.name}</p>
-                          <p className="text-xl font-bold text-[#C5DB3B]">{formatCurrency(plan.price)}</p>
+
+                          <div>
+                            <div className="flex items-center gap-1.5 mb-1">
+                              <Crown size={13} style={{ color: cardAccent }} />
+                              <span className="text-white/40 text-[10px] uppercase tracking-[2px] font-bold">
+                                {plan.duration}
+                              </span>
+                            </div>
+                            <p className="text-white font-black text-lg leading-tight pr-6">{plan.name}</p>
+                          </div>
+
+                          <p className="font-black text-[26px] leading-none" style={{ color: cardAccent }}>
+                            {formatCurrency(plan.price)}
+                          </p>
+
+                          {plan.features?.length > 0 && (
+                            <ul className="space-y-1.5 mt-auto">
+                              {plan.features.slice(0, 3).map((f) => (
+                                <li key={f} className="flex items-center gap-2 text-xs text-white/55">
+                                  <div
+                                    className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
+                                    style={{
+                                      background: `${cardAccent}26`,
+                                      border: `1px solid ${cardAccent}4D`,
+                                    }}
+                                  >
+                                    <Check size={9} style={{ color: cardAccent }} />
+                                  </div>
+                                  {f}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+
+                          {isSelected && (
+                            <div
+                              className="absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center"
+                              style={{ background: accentColor }}
+                            >
+                              <Check size={12} className="text-white" />
+                            </div>
+                          )}
                         </button>
                       );
                     })}
                   </div>
                 </div>
+              ))}
+            </div>
+
+            {/* Details + checkout */}
+            <form onSubmit={handlePurchase} className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <User size={15} style={{ color: accentColor }} />
+                <h3 className="text-white/40 text-xs uppercase tracking-[3px] font-bold">Your Details</h3>
+              </div>
+
+              {isAuthenticated ? (
+                <div
+                  className="rounded-2xl p-4 flex items-center gap-3 mb-6"
+                  style={{ background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.2)' }}
+                >
+                  <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="text-green-500" size={20} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold text-white truncate">Logged in: {user?.name}</p>
+                    <p className="text-xs text-white/50 truncate">{user?.email}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3 mb-6">
+                  <div
+                    className="rounded-2xl p-4"
+                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+                  >
+                    <p className="text-xs text-white/60 leading-relaxed mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                      💡 <strong className="text-white/80">No account? No problem!</strong> We will automatically create a secure account for you.
+                    </p>
+                    <div ref={googleButtonRef} className="w-full flex justify-center mt-2" />
+                  </div>
+                  <div className="relative">
+                    <User className="absolute left-4 top-3.5 text-white/40" size={18} />
+                    <input
+                      className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-white/[0.08] text-white placeholder-white/30 focus:border-[#C5DB3B] transition-all text-sm outline-none"
+                      placeholder="Full Name"
+                      value={details.name}
+                      onChange={(e) => setDetails({ ...details, name: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-3.5 text-white/40" size={18} />
+                    <input
+                      className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-white/[0.08] text-white placeholder-white/30 focus:border-[#C5DB3B] transition-all text-sm outline-none"
+                      type="email"
+                      placeholder="Email Address"
+                      value={details.email}
+                      onChange={(e) => setDetails({ ...details, email: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div className="relative">
+                    <Phone className="absolute left-4 top-3.5 text-white/40" size={18} />
+                    <input
+                      className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-white/[0.08] text-white placeholder-white/30 focus:border-[#C5DB3B] transition-all text-sm outline-none"
+                      placeholder="Mobile Phone Number"
+                      value={details.phone}
+                      onChange={(e) => setDetails({ ...details, phone: e.target.value })}
+                      required
+                    />
+                  </div>
+                </div>
               )}
 
-              {/* Step 3: Customer Details */}
-              <form onSubmit={handlePurchase}>
-                <h3 className="text-sm font-extrabold uppercase tracking-wider text-white/40 mb-4">3. Your Account Details</h3>
-                {isAuthenticated ? (
-                  <div className="bg-green-500/5 border border-green-500/20 rounded-2xl p-4 flex items-center gap-3 mb-8">
-                    <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
-                      <CheckCircle2 className="text-green-500" size={20} />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-white">Logged in: {user?.name}</p>
-                      <p className="text-xs text-white/50">{user?.email}</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-3 mb-8">
-                    <div className="bg-white/5 border border-white/5 rounded-2xl p-4 mb-2">
-                      <p className="text-xs text-white/60 leading-relaxed mb-3">
-                        💡 <strong>No account? No problem!</strong> We will automatically create a secure account for you.
-                      </p>
-                      <div ref={googleButtonRef} className="w-full flex justify-center mt-2" />
-                    </div>
-                    <div className="relative">
-                      <User className="absolute left-4 top-3.5 text-white/40" size={18} />
-                      <input
-                        className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#C5DB3B] focus:bg-[#C5DB3B]/5 transition-all text-sm outline-none"
-                        placeholder="Full Name"
-                        value={details.name}
-                        onChange={(e) => setDetails({ ...details, name: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div className="relative">
-                      <Mail className="absolute left-4 top-3.5 text-white/40" size={18} />
-                      <input
-                        className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#C5DB3B] focus:bg-[#C5DB3B]/5 transition-all text-sm outline-none"
-                        type="email"
-                        placeholder="Email Address"
-                        value={details.email}
-                        onChange={(e) => setDetails({ ...details, email: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div className="relative">
-                      <Phone className="absolute left-4 top-3.5 text-white/40" size={18} />
-                      <input
-                        className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-[#222A2A] text-white placeholder-white/30 focus:border-[#C5DB3B] focus:bg-[#C5DB3B]/5 transition-all text-sm outline-none"
-                        placeholder="Mobile Phone Number"
-                        value={details.phone}
-                        onChange={(e) => setDetails({ ...details, phone: e.target.value })}
-                        required
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* Pricing Summary */}
-                {selectedPlan && (
-                  <div className="bg-black/30 border border-white/5 rounded-2xl p-5 space-y-3 text-sm mb-6">
-                    <div className="flex justify-between items-center">
-                      <span className="text-white/55 font-bold">Plan</span>
-                      <span className="text-white">{selectedPlan.name} ({selectedPlan.duration})</span>
-                    </div>
-                    <div className="flex justify-between items-center font-extrabold text-lg pt-3 border-t border-white/5">
-                      <span className="text-white">Total Amount</span>
-                      <span className="text-[#C5DB3B]">{formatCurrency(selectedPlan.price)}</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Pay Button */}
-                <button
-                  type="submit"
-                  disabled={submitting || !selectedPlanId}
-                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#C5DB3B] to-[#96AC2E] hover:from-[#C5DB3B]/90 hover:to-[#96AC2E]/90 active:scale-[0.99] text-white shadow-xl shadow-[#C5DB3B]/20 flex flex-col items-center justify-center transition-all disabled:opacity-50"
+              {selectedPlan && (
+                <div
+                  className="rounded-2xl p-5 space-y-3 text-sm mb-4"
+                  style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.05)' }}
                 >
-                  {submitting ? (
-                    <Loader2 size={24} className="animate-spin" />
-                  ) : (
-                    <>
-                      <div className="flex items-center gap-3 font-extrabold text-base uppercase tracking-wider">
-                        <Sparkles size={18} />
-                        <span>Pay & Subscribe</span>
-                      </div>
-                      <span className="text-[10px] text-white/70 mt-1 uppercase tracking-[0.2em] font-bold">Secured by Razorpay</span>
-                    </>
-                  )}
-                </button>
-              </form>
-            </div>
+                  <div className="flex justify-between items-center gap-4">
+                    <span className="text-white/50 font-bold">Plan</span>
+                    <span className="text-white text-right">{selectedPlan.name} ({selectedPlan.duration})</span>
+                  </div>
+                  <div className="flex justify-between items-center font-black text-lg pt-3 border-t border-white/5">
+                    <span className="text-white">Total</span>
+                    <span style={{ color: accentColor }}>{formatCurrency(selectedPlan.price)}</span>
+                  </div>
+                </div>
+              )}
 
-            {/* Right Column: Perks */}
-            <div className="lg:col-span-5 space-y-6 lg:mt-10">
-              <div className="bg-[#111515] border border-[#222A2A] rounded-3xl p-6 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#C5DB3B]/5 rounded-full blur-3xl pointer-events-none" />
-                <h3 className="text-lg font-extrabold text-white mb-6 flex items-center gap-2">
-                  <Crown className="text-[#F5A623]" size={20} />
-                  <span>Membership Perks</span>
-                </h3>
+              <button
+                type="submit"
+                disabled={submitting || !selectedPlanId}
+                className="w-full py-4 rounded-xl flex flex-col items-center justify-center text-white transition-all duration-200 hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  background: `linear-gradient(135deg, ${accentColor}, ${accentColor}BB)`,
+                  boxShadow: `0 6px 20px ${accentColor}25`,
+                }}
+              >
+                {submitting ? (
+                  <Loader2 size={24} className="animate-spin" />
+                ) : (
+                  <>
+                    <div className="flex items-center gap-3 font-black text-sm uppercase tracking-wider">
+                      <Sparkles size={16} />
+                      <span>Pay &amp; Subscribe</span>
+                    </div>
+                    <span className="text-[10px] text-white/70 mt-1 uppercase tracking-[0.2em] font-bold">
+                      Secured by Razorpay
+                    </span>
+                  </>
+                )}
+              </button>
+            </form>
+          </motion.div>
+        </div>
+      </div>
 
-                <ul className="space-y-5 text-sm text-white/70">
-                  {[
-                    { title: "Unlimited Access", desc: "Play as much as you want without hourly fees." },
-                    { title: "Priority Bookings", desc: "Reserve your courts and turf slots before non-members." },
-                    { title: "Member Events", desc: "Exclusive invites to tournaments and social events." },
-                    { title: "Restaurant Discounts", desc: "Enjoy 15% off at the academy café & restaurant." },
-                  ].map((perk, i) => (
-                    <li key={i} className="flex gap-3">
-                      <div className="mt-0.5 shrink-0 w-5 h-5 rounded-full bg-[#C5DB3B]/10 flex items-center justify-center">
-                        <Check size={12} className="text-[#C5DB3B]" />
-                      </div>
-                      <div>
-                        <strong className="text-white block mb-0.5">{perk.title}</strong>
-                        <span className="text-white/50">{perk.desc}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-          </div>
-        )}
-      </main>
+      {/* Bottom explore section */}
+      <ExploreFacilitiesSection embedded={embedded} />
     </div>
+  );
+}
+
+function ExploreFacilitiesSection({ embedded }) {
+  const { data: sportsData } = useQuery({
+    queryKey: ['public-sports'],
+    queryFn: () => api.get('/sports/public').then((r) => r.data),
+    staleTime: 10 * 60 * 1000,
+  });
+
+  const sports = useMemo(
+    () => (sportsData?.sports || []).filter((s) => s.name?.toLowerCase() !== 'coaching'),
+    [sportsData]
+  );
+
+  if (!sports.length) return null;
+
+  const sportLinkPrefix = embedded ? '/user/sports' : '/sports';
+
+  return (
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <div className="mb-6">
+        <p className="text-white/30 text-xs uppercase tracking-[4px] font-bold mb-1">Explore More</p>
+        <h3
+          className="text-white font-black text-2xl"
+          style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '1px' }}
+        >
+          Our Facilities
+        </h3>
+        <p className="text-white/45 text-sm mt-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          Every facility your membership can unlock.
+        </p>
+      </div>
+      <SportsCarousel sports={sports} linkPrefix={sportLinkPrefix} showArrows />
+    </section>
   );
 }

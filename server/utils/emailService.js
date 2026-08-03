@@ -1,34 +1,62 @@
-const nodemailer = require('nodemailer');
+// Transactional email via the Brevo HTTP API. The previous Hostinger SMTP transport
+// and how to restore it are documented in docs/EMAIL.md.
+const axios = require('axios');
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.hostinger.com',
-  port: 587,
-  secure: false,
-  pool: true,
-  maxConnections: 3,
-  maxMessages: 100,
-  connectionTimeout: 60000,
-  greetingTimeout: 60000,
-  socketTimeout: 60000,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
+const BREVO_ENDPOINT = 'https://api.brevo.com/v3/smtp/email';
 
-const getSender = () =>
-  `"${process.env.EMAIL_SENDER_NAME || 'Alchemy 360 Academy'}" <${process.env.EMAIL_USER}>`;
+// Brevo wants recipients as objects. Callers pass a single address, but the admin and
+// kitchen addresses come from env and may hold a comma-separated list.
+const toRecipients = (to) =>
+  String(to || '')
+    .split(',')
+    .map((addr) => addr.trim())
+    .filter(Boolean)
+    .map((email) => ({ email }));
 
-const send = ({ to, subject, htmlContent }) =>
-  transporter.sendMail({
-    from: getSender(),
-    to,
+const send = async ({ to, subject, htmlContent }) => {
+  const apiKey = process.env.BREVO_API_KEY;
+  const senderEmail = process.env.BREVO_SENDER_EMAIL;
+
+  if (!apiKey || !senderEmail) {
+    throw new Error('Brevo is not configured — set BREVO_API_KEY and BREVO_SENDER_EMAIL in server/.env');
+  }
+
+  const recipients = toRecipients(to);
+  if (!recipients.length) {
+    throw new Error(`No recipient address for email "${subject}"`);
+  }
+
+  const payload = {
+    sender: {
+      email: senderEmail,
+      name: process.env.BREVO_SENDER_NAME || 'Alchemy 360 Academy',
+    },
+    to: recipients,
     subject,
-    html: htmlContent,
-  });
+    htmlContent,
+  };
+
+  if (process.env.BREVO_REPLY_TO) {
+    payload.replyTo = { email: process.env.BREVO_REPLY_TO };
+  }
+
+  try {
+    const { data } = await axios.post(BREVO_ENDPOINT, payload, {
+      headers: {
+        'api-key': apiKey,
+        'content-type': 'application/json',
+        accept: 'application/json',
+      },
+      timeout: 20000,
+    });
+    return data; // { messageId }
+  } catch (err) {
+    // Brevo explains rejections in the body ({ code, message }) — an unverified sender
+    // or a bad key otherwise surfaces as a bare "Request failed with status code 401".
+    const detail = err.response?.data?.message || err.message;
+    throw new Error(`Brevo send failed for "${subject}": ${detail}`);
+  }
+};
 
 async function sendPasswordResetOTP({ toEmail, toName, otp }) {
   return send({
@@ -108,7 +136,7 @@ async function sendMembershipWelcomeEmail({ toEmail, toName, planName, startDate
 async function sendAdminPaymentAlert({ adminEmail, payerName, payerEmail, payerPhone, paymentType, amount, paymentMode, invoiceNumber, timestamp }) {
   return send({
     to: adminEmail,
-    subject: `New Payment Received — &#8377;${amount} (${paymentType})`,
+    subject: `New Payment Received — ₹${amount} (${paymentType})`,
     htmlContent: `
       <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;border:1px solid #e0e0e0;border-radius:8px;padding:24px;">
         <h2 style="color:#16a34a;margin-top:0;">Payment Received</h2>

@@ -82,7 +82,7 @@ function SportSelectorStep({ plan, onSelect }) {
                     className="absolute inset-0 flex items-center justify-center text-3xl"
                     style={{ background: `linear-gradient(135deg, ${fallback.color}40, ${fallback.color}18)` }}
                   >
-                    {fallback.emoji}
+                    {fallback.icon}
                   </div>
                 )}
                 {/* Gradient overlay for text legibility */}
@@ -169,7 +169,7 @@ function SlotPickerStep({ sport, membership, onBack, onBooked }) {
           <img src={sport.imageUrl} alt={sport.name} className="w-8 h-8 rounded-lg object-cover" />
         ) : (
           <div className="w-8 h-8 rounded-lg flex items-center justify-center text-lg"
-            style={{ background: `${fallback.color}20` }}>{fallback.emoji}</div>
+            style={{ background: `${fallback.color}20` }}>{fallback.icon}</div>
         )}
         <div>
           <p className="text-white font-bold text-sm">{sport.name}</p>
@@ -293,13 +293,18 @@ export default function MembershipSlotBookingModal({ membership, isOpen, onClose
     (plan.sportsIncluded || []).some((k) => isAllServicesKey(k))
   );
 
-  // For sport-specific memberships, skip sport selection
+  // Combo packages ("Gym + Badminton") cover several sports without being All
+  // Services, so they need the picker too — otherwise the member silently gets
+  // sportsIncluded[0] and can never book the other half of what they paid for.
+  const needsSportChoice = isAllServices || (plan?.sportsIncluded?.length || 0) > 1;
+
+  // Single-sport memberships have nothing to choose — go straight to the slots.
   useEffect(() => {
     if (!isOpen) { setStep('sport'); setSelectedSport(null); }
-    else if (!isAllServices && plan?.sportsIncluded?.length === 1) {
+    else if (!needsSportChoice) {
       setStep('slots');
     }
-  }, [isOpen, isAllServices]);
+  }, [isOpen, needsSportChoice]);
 
   if (!membership || !plan) return null;
 
@@ -378,7 +383,7 @@ export default function MembershipSlotBookingModal({ membership, isOpen, onClose
                         Done
                       </button>
                     </motion.div>
-                  ) : step === 'sport' && isAllServices ? (
+                  ) : step === 'sport' && needsSportChoice ? (
                     <motion.div key="sport" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }}>
                       <SportSelectorStep
                         plan={plan}
@@ -390,7 +395,7 @@ export default function MembershipSlotBookingModal({ membership, isOpen, onClose
                       <SlotPickerStep
                         sport={selectedSport || { slug: plan.sportsIncluded?.[0], name: plan.sportsIncluded?.[0], _id: null }}
                         membership={membership}
-                        onBack={isAllServices ? () => { setStep('sport'); setSelectedSport(null); } : null}
+                        onBack={needsSportChoice ? () => { setStep('sport'); setSelectedSport(null); } : null}
                         onBooked={() => setStep('success')}
                       />
                     </motion.div>

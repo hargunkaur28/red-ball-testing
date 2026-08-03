@@ -266,8 +266,12 @@ exports.cancelOrder = async (req, res) => {
 // ── GET /api/orders/my-orders ──────────────────────────────────────────────────
 exports.getCustomerOrders = async (req, res) => {
   try {
+    // Phone is a fallback for guest/table orders placed without logging in, so it
+    // is scoped to orders that were never claimed by an account. Phone numbers are
+    // not unique on User, so an unscoped match leaks a second account's orders to
+    // anyone who signed up with the same number.
     const filter = { $or: [{ customerId: req.user.userId }] };
-    if (req.user.phone) filter.$or.push({ customerPhone: req.user.phone });
+    if (req.user.phone) filter.$or.push({ customerPhone: req.user.phone, customerId: null });
     const orders = await Order.find(filter).populate('tableId', 'label').sort({ createdAt: -1 });
     res.json({ orders });
   } catch (error) {
