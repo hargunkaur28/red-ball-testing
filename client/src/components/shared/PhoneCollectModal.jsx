@@ -102,7 +102,7 @@ export default function PhoneCollectModal({ open, onClose, onSuccess, theme = 'd
               <button
                 type="submit"
                 disabled={loading || phone.replace(/\D/g, '').length < 10}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition-all"
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] disabled:opacity-50 disabled:cursor-not-allowed text-[#0A1628] text-sm font-bold transition-all"
               >
                 {loading ? <Loader2 size={15} className="animate-spin" /> : <ArrowRight size={15} />}
                 {loading ? 'Saving…' : 'Save & Continue'}

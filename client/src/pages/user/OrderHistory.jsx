@@ -353,7 +353,7 @@ export default function OrderHistory() {
             </p>
             <Link 
               to="/table-portal"
-              className="px-8 py-3.5 rounded-full bg-[#C5DB3B] text-white text-sm font-semibold transition-all hover:bg-[#96AC2E] hover:scale-105 shadow-xl shadow-[#C5DB3B]/20"
+              className="px-8 py-3.5 rounded-full bg-[#C5DB3B] text-[#0A1628] text-sm font-bold transition-all hover:bg-[#96AC2E] hover:scale-105 shadow-xl shadow-[#C5DB3B]/20"
             >
               Browse Menu
             </Link>

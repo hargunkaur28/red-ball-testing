@@ -679,7 +679,7 @@ export default function UserDashboard() {
                     <div className="mt-5 flex items-center gap-2">
                       <Link
                         to="/user/scan"
-                        className="flex-1 px-4 py-2.5 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-xs font-extrabold text-center transition-colors flex items-center justify-center gap-1.5"
+                        className="flex-1 px-4 py-2.5 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] text-xs font-extrabold text-center transition-colors flex items-center justify-center gap-1.5"
                       >
                         <QrCode size={14} /> Scan QR to Start Session
                       </Link>
@@ -749,7 +749,7 @@ export default function UserDashboard() {
                     <div className="mt-5">
                       <Link
                         to="/user/scan"
-                        className="w-full px-4 py-2.5 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-xs font-extrabold text-center transition-colors flex items-center justify-center gap-1.5"
+                        className="w-full px-4 py-2.5 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] text-xs font-extrabold text-center transition-colors flex items-center justify-center gap-1.5"
                       >
                         <QrCode size={14} /> Scan QR to Check Out
                       </Link>

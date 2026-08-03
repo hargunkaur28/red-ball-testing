@@ -502,7 +502,7 @@ export default function TablePortal({ embedded = false }) {
 
             <button
               onClick={() => setCartOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-xs font-bold transition-all shadow whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] text-xs font-bold transition-all shadow whitespace-nowrap"
             >
               <ShoppingBag size={14} />
               <span><span className="hidden sm:inline">Cart </span>({items.length})</span>
@@ -635,7 +635,7 @@ export default function TablePortal({ embedded = false }) {
                           )}
 
                           {/* Price Tag */}
-                          <div className="absolute bottom-3 right-3 px-3 py-1 bg-[#C5DB3B] text-white rounded-xl font-bold text-sm shadow-xl font-mono">
+                          <div className="absolute bottom-3 right-3 px-3 py-1 bg-[#C5DB3B] text-[#0A1628] rounded-xl font-bold text-sm shadow-xl font-mono">
                             {formatCurrency(price)}
                           </div>
                         </div>
@@ -675,7 +675,7 @@ export default function TablePortal({ embedded = false }) {
                               {item.sizes?.length > 1 ? (
                                 <button
                                   onClick={() => openItemModal(item)}
-                                  className="w-full sm:px-4 px-4 py-1.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-xs font-black tracking-widest uppercase rounded-full transition-colors"
+                                  className="w-full sm:px-4 px-4 py-1.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] text-xs font-black tracking-widest uppercase rounded-full transition-colors"
                                 >
                                   ADD +
                                 </button>
@@ -690,7 +690,7 @@ export default function TablePortal({ embedded = false }) {
                                   <span className="text-xs font-bold text-white min-w-[14px] text-center">{qty}</span>
                                   <button
                                     onClick={() => updateQuantity(item._id, sizeLabel, qty + 1)}
-                                    className="w-6 h-6 rounded-full bg-[#C5DB3B] text-white hover:bg-[#96AC2E] flex items-center justify-center font-bold text-xs"
+                                    className="w-6 h-6 rounded-full bg-[#C5DB3B] text-[#0A1628] hover:bg-[#96AC2E] flex items-center justify-center font-bold text-xs"
                                   >
                                     +
                                   </button>
@@ -702,7 +702,7 @@ export default function TablePortal({ embedded = false }) {
                                     setShowCartNotif(true);
                                     setTimeout(() => setShowCartNotif(false), 3000);
                                   }}
-                                  className="w-full sm:px-4 px-4 py-1.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-xs font-black tracking-widest uppercase rounded-full transition-colors"
+                                  className="w-full sm:px-4 px-4 py-1.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] text-xs font-black tracking-widest uppercase rounded-full transition-colors"
                                 >
                                   ADD +
                                 </button>
@@ -1200,7 +1200,7 @@ export default function TablePortal({ embedded = false }) {
             onClick={() => setCartOpen(true)}
             className={`fixed ${embedded ? 'bottom-28 sm:bottom-8' : 'bottom-8'} right-4 z-40 w-14 h-14 bg-[#C5DB3B] hover:bg-[#96AC2E] rounded-full shadow-[0_8px_32px_rgba(197, 219, 59,0.5)] flex items-center justify-center transition-colors`}
           >
-            <ShoppingBag size={22} className="text-white" />
+            <ShoppingBag size={22} className="text-[#0A1628]" />
             <span className="absolute -top-1.5 -right-1.5 min-w-[22px] h-[22px] px-1 bg-white text-[#C5DB3B] rounded-full text-[11px] font-black flex items-center justify-center shadow">
               {items.length}
             </span>

@@ -455,7 +455,7 @@ export default function TableOrder() {
 
             <button 
               onClick={() => setCartOpen(true)} 
-              className="p-2 sm:px-4 sm:py-2 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-[10px] sm:text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition-all border border-white/10"
+              className="p-2 sm:px-4 sm:py-2 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] text-[10px] sm:text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition-all border border-white/10"
             >
               <ShoppingBag size={16} />
               <span className="hidden sm:inline">Cart</span>
@@ -631,10 +631,10 @@ export default function TableOrder() {
                             {/* Desktop Pill Button */}
                             <button
                               onClick={(e) => { e.stopPropagation(); addItem({ menuItemId: item._id, name: item.name, size: item.sizes?.[0]?.label || 'Regular', price }); toast.success('Added to order!'); }}
-                              className="hidden sm:flex px-5 py-2.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-full text-xs font-bold transition-all shadow-lg hover:scale-105 active:scale-95 items-center gap-1.5 uppercase tracking-wider"
+                              className="hidden sm:flex px-5 py-2.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] rounded-full text-xs font-bold transition-all shadow-lg hover:scale-105 active:scale-95 items-center gap-1.5 uppercase tracking-wider"
                             >
                               <span>Add</span>
-                              <span className="text-white/70 font-normal">+</span>
+                              <span className="text-[#0A1628]/70 font-bold">+</span>
                             </button>
                           </>
                         )}
@@ -657,7 +657,7 @@ export default function TableOrder() {
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2.5 rounded-full text-xs font-extrabold transition-all duration-200 tracking-wider shadow-sm uppercase shrink-0 ${
                 activeCategory === cat 
-                  ? 'bg-[#C5DB3B] text-white scale-105 shadow-[0_0_15px_rgba(197, 219, 59,0.4)]' 
+                  ? 'bg-[#C5DB3B] text-[#0A1628] scale-105 shadow-[0_0_15px_rgba(197, 219, 59,0.4)]' 
                   : 'bg-[#1A1A1A] text-gray-400 hover:bg-[#222] hover:text-white border border-white/5'
               }`}
             >
@@ -753,7 +753,7 @@ export default function TableOrder() {
                         {item.sizes?.length > 1 ? (
                           <button
                             onClick={(e) => { e.stopPropagation(); openFoodModal(item); }}
-                            className="px-4 py-2 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-full text-xs font-bold uppercase transition-all shadow-md active:scale-95"
+                            className="px-4 py-2 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] rounded-full text-xs font-bold uppercase transition-all shadow-md active:scale-95"
                           >
                             Add +
                           </button>
@@ -776,7 +776,7 @@ export default function TableOrder() {
                         ) : (
                           <button
                             onClick={(e) => { e.stopPropagation(); addItem({ menuItemId: item._id, name: item.name, size: item.sizes?.[0]?.label || 'Regular', price }); toast.success('Added to order!'); }}
-                            className="px-4 py-2 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-full text-xs font-bold uppercase transition-all shadow-md active:scale-95"
+                            className="px-4 py-2 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] rounded-full text-xs font-bold uppercase transition-all shadow-md active:scale-95"
                           >
                             Add +
                           </button>

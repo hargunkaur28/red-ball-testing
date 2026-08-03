@@ -40,7 +40,7 @@ export default function MotivationalBanner() {
           <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4 mt-8">
             <Link
               to="/login?mode=register"
-              className="inline-flex w-full sm:w-auto justify-center px-10 py-4 rounded-full bg-[#C5DB3B] text-white text-lg font-semibold transition-all duration-200 hover:bg-[#96AC2E] hover:scale-[1.04] hover:shadow-[0_0_24px_rgba(197, 219, 59,0.5)]"
+              className="inline-flex w-full sm:w-auto justify-center px-10 py-4 rounded-full bg-[#C5DB3B] text-[#0A1628] text-lg font-bold transition-all duration-200 hover:bg-[#96AC2E] hover:scale-[1.04] hover:shadow-[0_0_24px_rgba(197, 219, 59,0.5)]"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
               Join the Academy →

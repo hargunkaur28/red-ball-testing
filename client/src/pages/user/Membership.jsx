@@ -276,7 +276,7 @@ export default function Membership() {
         </div>
         <Link
           to="/user/book-slots"
-          className="self-start sm:self-auto shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider text-white transition-all hover:opacity-90 active:scale-[0.98]"
+          className="self-start sm:self-auto shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider text-[#0A1628] transition-all hover:opacity-90 active:scale-[0.98]"
           style={{ background: 'linear-gradient(135deg, #C5DB3B, #96AC2E)' }}
         >
           <Zap size={12} /> Book Another Sport

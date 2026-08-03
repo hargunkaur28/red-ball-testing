@@ -67,8 +67,8 @@ export default function UserLayout() {
         {menuItems.map((item) => (
           <NavLink key={item.path} to={item.path} end={item.end}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 text-sm font-semibold transition-all
-              ${isActive ? 'bg-[#C5DB3B] text-white shadow-lg shadow-[#C5DB3B]/20' : 'text-white/58 hover:text-white hover:bg-white/7'}`
+              `flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 text-sm font-bold transition-all
+              ${isActive ? 'bg-[#C5DB3B] text-[#0A1628] shadow-lg shadow-[#C5DB3B]/20' : 'text-white/58 hover:text-white hover:bg-white/7'}`
             }
           >
             <span className="shrink-0 text-current">{item.icon}</span>
@@ -110,7 +110,7 @@ export default function UserLayout() {
           <Link to="/" className="flex items-center gap-2">
             <img src="/logo.png" alt="Alchemy 360 Academy" className="w-32 h-12 object-contain" />
           </Link>
-          <Link to="/user/scan" className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#C5DB3B] text-white shadow-lg shadow-[#C5DB3B]/30">
+          <Link to="/user/scan" className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#C5DB3B] text-[#0A1628] shadow-lg shadow-[#C5DB3B]/30">
             <ScanLine size={20} />
           </Link>
         </header>

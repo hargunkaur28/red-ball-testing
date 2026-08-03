@@ -262,7 +262,7 @@ export default function HeroSection() {
               <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 w-full pr-4 sm:pr-0">
                 <Link
                   to={isAuthenticated ? "/user/book-slots" : "/book-slots"}
-                  className="w-full sm:w-auto px-6 py-3.5 sm:px-8 rounded-full bg-[#C5DB3B] text-white text-sm sm:text-base font-semibold transition-all duration-200 hover:bg-[#96AC2E] hover:scale-[1.04] hover:shadow-[0_0_20px_rgba(197, 219, 59,0.45)] flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-6 py-3.5 sm:px-8 rounded-full bg-[#C5DB3B] text-[#0A1628] text-sm sm:text-base font-bold transition-all duration-200 hover:bg-[#96AC2E] hover:scale-[1.04] hover:shadow-[0_0_20px_rgba(197, 219, 59,0.45)] flex items-center justify-center gap-2"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
                   🏏 Book a Sport
@@ -355,7 +355,7 @@ export default function HeroSection() {
                               <p className="text-[#F5A623] text-[10px] sm:text-[11px] uppercase tracking-widest font-extrabold mt-0.5">{displayTagline}</p>
                             </div>
                           </div>
-                          <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-[10px] sm:text-xs font-black uppercase tracking-wider rounded-full transition-colors flex items-center gap-1 shrink-0 shadow-lg">
+                          <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] text-[10px] sm:text-xs font-black uppercase tracking-wider rounded-full transition-colors flex items-center gap-1 shrink-0 shadow-lg">
                             Order Now
                           </span>
                         </div>

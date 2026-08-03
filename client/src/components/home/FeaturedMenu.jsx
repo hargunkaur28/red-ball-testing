@@ -114,7 +114,7 @@ export default function FeaturedMenu() {
                     toast.success(`${item.name} added to cart`);
                     navigate('/table-portal');
                   }}
-                  className="mt-auto w-full flex items-center justify-center gap-1.5 py-2 md:py-2.5 rounded-lg bg-[#C5DB3B] text-white text-[10px] md:text-xs font-bold hover:bg-[#96AC2E] transition-colors"
+                  className="mt-auto w-full flex items-center justify-center gap-1.5 py-2 md:py-2.5 rounded-lg bg-[#C5DB3B] text-[#0A1628] text-[10px] md:text-xs font-extrabold hover:bg-[#96AC2E] transition-colors"
                 >
                   <ShoppingCart size={12} />
                   <span className="hidden sm:inline">Add to Cart</span>

@@ -205,9 +205,9 @@ export default function RestaurantTeaser() {
                 </div>
 
                 {/* Live Mockup Track button */}
-                <div className="bg-[#C5DB3B] text-white text-center py-2.5 rounded-xl font-bold text-xs shadow-lg flex items-center justify-center gap-2 animate-pulse">
+                <div className="bg-[#C5DB3B] text-[#0A1628] text-center py-2.5 rounded-xl font-bold text-xs shadow-lg flex items-center justify-center gap-2 animate-pulse">
                   <span>Status: {selectedStatus.toUpperCase()}</span>
-                  <div className="w-2 h-2 rounded-full bg-white animate-ping" />
+                  <div className="w-2 h-2 rounded-full bg-[#0A1628] animate-ping" />
                 </div>
 
                 {/* Navigation pill simulation */}
@@ -233,7 +233,7 @@ export default function RestaurantTeaser() {
         <div className="text-center mt-12">
           <Link
             to="/table-portal"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#C5DB3B] text-white font-body font-bold text-sm hover:bg-[#F5A623] hover:text-black transition-all duration-300 shadow-xl hover:scale-105"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#C5DB3B] text-[#0A1628] font-body font-bold text-sm hover:bg-[#F5A623] hover:text-black transition-all duration-300 shadow-xl hover:scale-105"
           >
             Access Digital Table Menu Portal <ArrowRight size={16} />
           </Link>

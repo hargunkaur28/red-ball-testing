@@ -112,7 +112,7 @@ export default function UserReviews() {
                     onClick={() => handleGroupChange('services')}
                     className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl border p-3 transition ${
                       group === 'services'
-                        ? 'border-[#C5DB3B] bg-[#C5DB3B] text-white'
+                        ? 'border-[#C5DB3B] bg-[#C5DB3B] text-[#0A1628] font-bold'
                         : 'border-white/10 bg-white/4 text-white/58 hover:bg-white/[0.07]'
                     }`}
                   >
@@ -124,7 +124,7 @@ export default function UserReviews() {
                     onClick={() => handleGroupChange('food')}
                     className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl border p-3 transition ${
                       group === 'food'
-                        ? 'border-[#C5DB3B] bg-[#C5DB3B] text-white'
+                        ? 'border-[#C5DB3B] bg-[#C5DB3B] text-[#0A1628] font-bold'
                         : 'border-white/10 bg-white/4 text-white/58 hover:bg-white/[0.07]'
                     }`}
                   >
@@ -189,7 +189,7 @@ export default function UserReviews() {
               <button
                 type="submit"
                 disabled={mutation.isPending}
-                className="flex w-full items-center justify-center rounded-full bg-[#C5DB3B] py-3 font-black text-white transition hover:brightness-110 disabled:opacity-50"
+                className="flex w-full items-center justify-center rounded-full bg-[#C5DB3B] py-3 font-black text-[#0A1628] transition hover:brightness-110 disabled:opacity-50"
               >
                 {mutation.isPending ? 'Submitting...' : 'Submit Review'}
               </button>

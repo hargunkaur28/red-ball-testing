@@ -127,7 +127,7 @@ export default function ContactSection() {
                 <button
                   type="submit"
                   disabled={loading || success}
-                  className={`w-full py-3.5 rounded-full text-white font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${success ? 'bg-[#22C55E]' : 'bg-[#C5DB3B] hover:bg-[#96AC2E]'} disabled:opacity-50`}
+                  className={`w-full py-3.5 rounded-full text-[#0A1628] font-bold transition-all duration-200 flex items-center justify-center gap-2 ${success ? 'bg-[#22C55E] text-white' : 'bg-[#C5DB3B] hover:bg-[#96AC2E]'} disabled:opacity-50`}
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
                   {loading ? (

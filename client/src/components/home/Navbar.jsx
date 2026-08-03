@@ -253,7 +253,7 @@ export default function Navbar({ hideLogo = false }) {
             )}
             <Link
               to={isAuthenticated ? '/user/book-slots' : '/book-slots'}
-              className="hidden md:inline-flex px-6 py-2.5 rounded-full bg-[#C5DB3B] text-white text-sm font-semibold transition-all duration-200 hover:bg-[#96AC2E] hover:shadow-[0_0_16px_rgba(197, 219, 59,0.5)] hover:scale-[1.03]"
+              className="hidden md:inline-flex px-6 py-2.5 rounded-full bg-[#C5DB3B] text-[#0A1628] text-sm font-bold transition-all duration-200 hover:bg-[#96AC2E] hover:shadow-[0_0_16px_rgba(197, 219, 59,0.5)] hover:scale-[1.03]"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
               Book Now
@@ -372,7 +372,7 @@ export default function Navbar({ hideLogo = false }) {
           <Link
             to={isAuthenticated ? '/user/book-slots' : '/book-slots'}
             onClick={() => setDrawerOpen(false)}
-            className="block text-center py-3 rounded-full bg-[#C5DB3B] text-white font-semibold transition-all hover:bg-[#96AC2E]"
+            className="block text-center py-3 rounded-full bg-[#C5DB3B] text-[#0A1628] font-bold transition-all hover:bg-[#96AC2E]"
           >
             Book Now
           </Link>

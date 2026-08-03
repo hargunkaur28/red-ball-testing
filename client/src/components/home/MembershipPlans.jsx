@@ -171,7 +171,7 @@ export default function MembershipPlans() {
                   className={`block w-full text-center py-3.5 rounded-full font-semibold transition-all duration-200 hover:scale-[1.03] ${
                     isActive
                       ? 'bg-[#F5A623] text-[#0D0D0D] hover:bg-[#E09410]'
-                      : 'bg-[#C5DB3B] text-white hover:bg-[#96AC2E]'
+                      : 'bg-[#C5DB3B] text-[#0A1628] font-bold hover:bg-[#96AC2E]'
                   }`}
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
