@@ -61,21 +61,36 @@ const server = http.createServer(app);
 
 const isProd = process.env.NODE_ENV === 'production';
 
+// An Origin header never has a trailing slash, so normalise anything supplied via
+// env — 'https://site.com/' would silently never match.
+const normaliseOrigin = (o) => String(o || '').trim().replace(/\/+$/, '');
+
 const allowedOrigins = [
   ...(!isProd ? ['http://localhost:5173'] : []),
-  'https://alchemy 360-delta.vercel.app',
-  // Production domains
-  'https://redballsportsarena.in',
-  'https://www.redballsportsarena.in',
-  'https://redballsportsarena.com',
-  'https://www.redballsportsarena.com',
-  process.env.CLIENT_URL,
-].filter(Boolean);
+  // Vercel front-end
+  'https://alchemy-360.vercel.app',
+  // Production domain
+  'https://www.alchemy360.in',
+  'https://alchemy360.in',
+  // CLIENT_URL may list several origins, comma-separated, so new domains can be
+  // added from the host's dashboard without a redeploy.
+  ...String(process.env.CLIENT_URL || '').split(','),
+].map(normaliseOrigin).filter(Boolean);
+
+// Reject with a log line — a silent CORS failure is near-impossible to debug from
+// the browser side, which only reports a missing header.
+const corsOrigin = (origin, callback) => {
+  // No Origin header: same-origin, curl, or server-to-server (Razorpay webhooks)
+  if (!origin) return callback(null, true);
+  if (allowedOrigins.includes(normaliseOrigin(origin))) return callback(null, true);
+  console.warn(`[CORS] Blocked origin: ${origin}. Allowed: ${allowedOrigins.join(', ')}`);
+  return callback(new Error(`Origin ${origin} is not allowed by CORS`));
+};
 
 // Socket.io setup
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: corsOrigin,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
   },
@@ -187,7 +202,7 @@ app.use(helmet({
 app.set('trust proxy', 1);
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: corsOrigin,
   credentials: true,
 }));
 
