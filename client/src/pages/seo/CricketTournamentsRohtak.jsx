@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     q: 'How do I book Alchemy 360 for a cricket tournament in Rohtak?',
-    a: 'Contact Alchemy 360 at +91 93500 76653 or email redballcricketground@gmail.com. Provide your tournament dates, number of teams, and format for a tournament package quote.',
+    a: 'Contact Alchemy 360 at +91 93500 76653 or email info.alchemy360@gmail.com. Provide your tournament dates, number of teams, and format for a tournament package quote.',
   },
   {
     q: 'What formats are supported for cricket tournaments at Alchemy 360?',

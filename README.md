@@ -77,6 +77,21 @@ from a browser **and** from a direct API call.
 | Super Admin settings | `client/src/pages/admin/Settings.jsx` | the "Delivery Charge" card (it called `/api/kitchen`); its query is left in place but `enabled: false` |
 | Routes | `client/src/App.jsx` | `/table-portal`, `/table/:tableId`, `/user/table-portal`, `/user/orders`, the Super Admin `orders`/`menu`/`tables` routes, and the entire `/restaurant` manager panel |
 | Login redirect | `client/src/store/authStore.js` | `manager` role now lands on `/user` instead of the removed `/restaurant` |
+| AI crawler file | `client/public/llms.txt` | the "Restaurant / Food Court" service block, the on-site-restaurant clause in the About paragraph, the RCL spectator-facilities line, "food" in the tournament-management list, and the `/restaurant/*` private-route entry |
+
+#### Note on `llms.txt`
+
+The restaurant text there is wrapped in HTML comments (`<!-- ... -->`) to match the
+rest of this module, **but that is a weaker guarantee than elsewhere**. A browser
+never renders an HTML comment; an LLM reading `llms.txt` as raw text may still ingest
+what is inside one. The commented copy is therefore best treated as a restore note,
+not as content that is reliably hidden from AI crawlers. If it matters that models
+never see the restaurant claims, delete those blocks outright — the git history keeps
+them recoverable. Verify nothing leaks with:
+
+```bash
+node -e "const s=require('fs').readFileSync('client/public/llms.txt','utf8').replace(/<!--[\s\S]*?-->/g,''); console.log(/restaurant|dining|cuisine|catering/i.test(s) ? 'LEAK' : 'clean')"
+```
 
 ### API mounts commented out — `server/index.js`
 

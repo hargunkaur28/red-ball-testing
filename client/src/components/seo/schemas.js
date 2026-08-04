@@ -11,7 +11,7 @@ export const localBusinessSchema = {
   description:
     'Alchemy 360 Sports Arena is a premier multi-sport complex in Rohtak, Haryana offering box cricket, badminton, pickleball, swimming, gym, and kids sports academy with membership plans and slot booking.',
   telephone: '+919350076653',
-  email: 'redballcricketground@gmail.com',
+  email: 'info.alchemy360@gmail.com',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Sector 22-D, Jhajjar Road, near Village-Maina',
@@ -111,7 +111,7 @@ export const stadiumOrArenaSchema = {
   image: `${SITE_URL}/banner.png`,
   description: 'Alchemy 360 Sports Arena is a premier cricket stadium and multi-sport complex in Rohtak, Haryana — home of the Rohtak Cricket League, professional box cricket, and corporate sports events.',
   telephone: '+919350076653',
-  email: 'redballcricketground@gmail.com',
+  email: 'info.alchemy360@gmail.com',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Sector 22-D, Jhajjar Road, near Village-Maina',
@@ -153,7 +153,7 @@ export const sportsClubSchema = {
   image: `${SITE_URL}/banner.png`,
   description: 'Alchemy 360 Sports Arena is Rohtak\'s premier multi-sport club — offering cricket, badminton, pickleball, swimming, gym, and kids academy with flexible membership plans.',
   telephone: '+919350076653',
-  email: 'redballcricketground@gmail.com',
+  email: 'info.alchemy360@gmail.com',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Sector 22-D, Jhajjar Road, near Village-Maina',

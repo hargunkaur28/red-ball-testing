@@ -45,6 +45,7 @@ export default function UserLayout() {
     { path: bookingsPath, label: 'Bookings', Icon: Calendar, match: (path) => path === '/user/book-slots' || path === '/user/membership' || path === '/user/one-time-booking' },
     // RESTAURANT DISABLED — see README "Restaurant module (disabled)"
     // { path: '/user/table-portal', label: 'Order Food', Icon: Utensils, match: (path) => path === '/user/table-portal' },
+    { path: '/user/profile', label: 'Profile', Icon: User, match: (path) => path === '/user/profile' },
     { isAction: true, action: 'openMenu', label: 'Menu', Icon: Menu, match: () => false },
   ];
 

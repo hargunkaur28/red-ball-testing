@@ -29,7 +29,7 @@ export const blogPosts = [
       },
       {
         heading: 'Booking for Tournaments and Group Events',
-        body: 'For corporate cricket tournaments, inter-college matches, and multi-team events, Alchemy 360 has a dedicated tournament booking process. Contact the team at +91 93500 76653 or redballcricketground@gmail.com with your tournament details — number of teams, match format, preferred dates, and any specific requirements.\n\nTournament packages include ground booking for multiple sessions, umpire arrangements, team bracket management, and optional catering packages. Many companies and colleges from Rohtak, Bahadurgarh, Jhajjar, and Delhi NCR use Alchemy 360 as their annual cricket tournament venue. Early booking (4–6 weeks in advance) is essential for large events.',
+        body: 'For corporate cricket tournaments, inter-college matches, and multi-team events, Alchemy 360 has a dedicated tournament booking process. Contact the team at +91 93500 76653 or info.alchemy360@gmail.com with your tournament details — number of teams, match format, preferred dates, and any specific requirements.\n\nTournament packages include ground booking for multiple sessions, umpire arrangements, team bracket management, and optional catering packages. Many companies and colleges from Rohtak, Bahadurgarh, Jhajjar, and Delhi NCR use Alchemy 360 as their annual cricket tournament venue. Early booking (4–6 weeks in advance) is essential for large events.',
       },
       {
         heading: 'Tips for Getting the Best Cricket Ground Experience',
@@ -329,7 +329,7 @@ export const blogPosts = [
       },
       {
         heading: 'How to Register Your Team',
-        body: 'Team registration for the Rohtak Cricket League opens approximately 4–6 weeks before the start of each season. To register, contact Alchemy 360 Sports Arena at +91 93500 76653 or email redballcricketground@gmail.com with your team name, captain\'s details, and the number of players. A registration form will be provided.\n\nRegistration fees vary by season and format. Payment is due at registration to secure your team\'s place. Teams are advised not to delay — RCL seasons have consistently sold out in recent editions as the league\'s reputation has grown. Corporate teams, college teams, and neighbourhood/club teams are all eligible to register.',
+        body: 'Team registration for the Rohtak Cricket League opens approximately 4–6 weeks before the start of each season. To register, contact Alchemy 360 Sports Arena at +91 93500 76653 or email info.alchemy360@gmail.com with your team name, captain\'s details, and the number of players. A registration form will be provided.\n\nRegistration fees vary by season and format. Payment is due at registration to secure your team\'s place. Teams are advised not to delay — RCL seasons have consistently sold out in recent editions as the league\'s reputation has grown. Corporate teams, college teams, and neighbourhood/club teams are all eligible to register.',
       },
       {
         heading: 'Live Broadcast: RCL on YouTube, Siti Cable & DEN Networks',
@@ -642,7 +642,7 @@ export const blogPosts = [
       },
       {
         heading: 'How to Register Your College Team at Alchemy 360',
-        body: 'Registering a college cricket team at Alchemy 360 Sports Arena is straightforward. Contact Alchemy 360 at +91 93500 76653 or email redballcricketground@gmail.com with your college name, team captain\'s details, number of players, and your preferred tournament format. Alchemy 360 will share upcoming tournament dates and registration requirements.\n\nFor colleges wanting to organise their own inter-college tournament at Alchemy 360 — hosting a competition that invites other colleges — Alchemy 360 provides the venue booking, ground infrastructure, umpiring, and optional event management support. Organising colleges handle their own team invitations and registrations. This makes Alchemy 360 a venue partner rather than a tournament organiser, giving colleges creative control over their event while leveraging Alchemy 360\'s infrastructure.',
+        body: 'Registering a college cricket team at Alchemy 360 Sports Arena is straightforward. Contact Alchemy 360 at +91 93500 76653 or email info.alchemy360@gmail.com with your college name, team captain\'s details, number of players, and your preferred tournament format. Alchemy 360 will share upcoming tournament dates and registration requirements.\n\nFor colleges wanting to organise their own inter-college tournament at Alchemy 360 — hosting a competition that invites other colleges — Alchemy 360 provides the venue booking, ground infrastructure, umpiring, and optional event management support. Organising colleges handle their own team invitations and registrations. This makes Alchemy 360 a venue partner rather than a tournament organiser, giving colleges creative control over their event while leveraging Alchemy 360\'s infrastructure.',
       },
       {
         heading: 'Match Preparation for Competitive College Cricket',

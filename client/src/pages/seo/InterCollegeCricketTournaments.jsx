@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     q: 'How can a college team register for cricket tournaments at Alchemy 360?',
-    a: 'College teams can contact Alchemy 360 at +91 93500 76653 or email redballcricketground@gmail.com to register for upcoming inter-college cricket tournaments.',
+    a: 'College teams can contact Alchemy 360 at +91 93500 76653 or email info.alchemy360@gmail.com to register for upcoming inter-college cricket tournaments.',
   },
   {
     q: 'Is Alchemy 360 affiliated with any university cricket body?',

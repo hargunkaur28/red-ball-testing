@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'How can my team register for the Rohtak Cricket League?',
-    a: 'Contact Alchemy 360 Sports Arena at +91 93500 76653 or email redballcricketground@gmail.com to register your team. Both corporate and franchise teams are welcome.',
+    a: 'Contact Alchemy 360 Sports Arena at +91 93500 76653 or email info.alchemy360@gmail.com to register your team. Both corporate and franchise teams are welcome.',
   },
   {
     q: 'Where are RCL matches played?',
