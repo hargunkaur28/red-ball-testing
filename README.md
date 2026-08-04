@@ -92,9 +92,60 @@ All five now return **404**. Everything else (`/api/sports`, `/api/slots`,
 `/api/memberships`, …) is unaffected. The `require(...)` lines for these routers are
 deliberately left in place so uncommenting a single `app.use` line restores each one.
 
-**Not disabled:** the scheduled low-stock alert job still runs (`jobs/` is untouched),
-and the `Order`/`MenuItem`/`Table` models are still read by analytics aggregations.
-Neither is reachable over HTTP, but remove the cron if you want it fully silent.
+Also disabled alongside it:
+
+*   **Low-stock alert cron** (`startLowStockAlert`) — restaurant inventory only.
+*   **Manager seeding** (`server/index.js`) — now wrapped in `if (process.env.MANAGER_EMAIL)`,
+    so with the var unset no manager is seeded and any existing one is left untouched.
+*   **`MANAGER_EMAIL` / `MANAGER_CODE` removed from `validateEnv`'s required list** —
+    they used to block boot. See "Manager credentials" below.
+
+**Still active:** the `Order`/`MenuItem`/`Table` models are read by analytics
+aggregations, so historical food revenue may still appear in Super Admin totals.
+Not reachable over HTTP.
+
+### Manager credentials
+
+`manager` only ever existed for the restaurant panel. The related vars —
+`MANAGER_EMAIL`, `MANAGER_CODE`, `MANAGER_PASSWORD`, `MANAGER_NAME` — are now
+**fully optional**; the server boots without them (verified).
+
+Leaving them blank was *not* safe before this change: `MANAGER_EMAIL` and
+`MANAGER_CODE` were in `validateEnv`'s required list (hard boot failure), and the
+seeder would have tried to overwrite an existing manager's email with `undefined`.
+
+With them unset: no manager is seeded, and any existing manager account can no
+longer log in — `MANAGER_CODE` is the security code checked at
+`auth.controller.js`, and an undefined code never matches. That's intended while the
+restaurant is off. To re-enable, set the vars again; no code change needed.
+
+---
+
+## 📵 SMS (disabled)
+
+Fast2SMS is switched off. It already had a built-in kill switch, so **no code change
+was needed to stop sends** — `sendSms()` returns early unless `FAST2SMS_ENABLED` is
+exactly the string `"true"`:
+
+```js
+if (!enabled) return { sent: false, skipped: true, reason: 'disabled' };
+```
+
+So leaving the `FAST2SMS_*` vars blank (or omitting them) is enough and is the
+intended mechanism — nothing is commented out in `utils/fast2smsService.js`.
+
+What *was* commented out is the polling that called it, since it ran regardless:
+
+| Job | File | Why |
+| --- | --- | --- |
+| `startCricketSlotReminderSms()` | `server/index.js` | polled every 5 min for cricket bookings — cricket is archived |
+| `startCricketReminderCron()` | `server/index.js` | same, second cricket reminder cron |
+
+`RESTAURANT_MANAGER_SMS_PHONE` is unused now — kitchen order SMS only fired from the
+disabled restaurant flow.
+
+To re-enable SMS: set `FAST2SMS_ENABLED=true` plus the API key/template vars, and
+uncomment the two cron calls.
 
 ### Note on the `manager` role
 

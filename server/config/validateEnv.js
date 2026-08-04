@@ -9,8 +9,10 @@ const REQUIRED_VARS = [
   'BREVO_SENDER_EMAIL',
   'SUPER_ADMIN_EMAIL',
   'SUPER_ADMIN_CODE',
-  'MANAGER_EMAIL',
-  'MANAGER_CODE',
+  // RESTAURANT DISABLED — the manager role only ever served the restaurant panel,
+  // so these are no longer required to boot. See README "Restaurant module (disabled)"
+  // 'MANAGER_EMAIL',
+  // 'MANAGER_CODE',
   'ADMIN_NOTIFICATION_EMAIL',
 ];
 

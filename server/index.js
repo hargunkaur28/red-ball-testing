@@ -361,7 +361,8 @@ const { startCricketReminderCron } = require('./utils/cricketReminderCron');
 
 const startServer = async () => {
   await connectDB();
-  startCricketReminderCron();
+  // SMS DISABLED — see README "SMS (disabled)"
+  // startCricketReminderCron();
 
   const User = require('./models/User');
 
@@ -407,45 +408,51 @@ const startServer = async () => {
     }
   }
 
-  const existingManager = await User.findOne({ role: 'manager' }).select('+password');
-  if (!existingManager) {
-    try {
-      await User.create({
-        name: process.env.MANAGER_NAME || 'Restaurant Manager',
-        email: process.env.MANAGER_EMAIL,
-        phone: '8888888888',
-        password: process.env.MANAGER_PASSWORD,
-        role: 'manager',
-      });
-      console.log(`👨‍🍳 Manager seeded: ${process.env.MANAGER_EMAIL}`);
-    } catch (err) {
-      console.error(`⚠️ Failed to seed Manager:`, err.message);
-    }
-  } else {
-    try {
-      let modified = false;
-      if (existingManager.email !== process.env.MANAGER_EMAIL) {
-        const emailConflict = await User.findOne({ email: process.env.MANAGER_EMAIL });
-        if (emailConflict) {
-          console.warn(`⚠️ Cannot update Manager email to ${process.env.MANAGER_EMAIL} - Email already taken by user ID: ${emailConflict._id}`);
-        } else {
-          existingManager.email = process.env.MANAGER_EMAIL;
-          modified = true;
+  // RESTAURANT DISABLED — the manager role only ever served the restaurant panel.
+  // Skipped entirely unless MANAGER_EMAIL is set, so no manager is seeded and an
+  // existing one is left alone. (Without this guard the block below would try to
+  // overwrite a real manager's email with undefined.) See README.
+  if (process.env.MANAGER_EMAIL) {
+    const existingManager = await User.findOne({ role: 'manager' }).select('+password');
+    if (!existingManager) {
+      try {
+        await User.create({
+          name: process.env.MANAGER_NAME || 'Restaurant Manager',
+          email: process.env.MANAGER_EMAIL,
+          phone: '8888888888',
+          password: process.env.MANAGER_PASSWORD,
+          role: 'manager',
+        });
+        console.log(`👨‍🍳 Manager seeded: ${process.env.MANAGER_EMAIL}`);
+      } catch (err) {
+        console.error(`⚠️ Failed to seed Manager:`, err.message);
+      }
+    } else {
+      try {
+        let modified = false;
+        if (existingManager.email !== process.env.MANAGER_EMAIL) {
+          const emailConflict = await User.findOne({ email: process.env.MANAGER_EMAIL });
+          if (emailConflict) {
+            console.warn(`⚠️ Cannot update Manager email to ${process.env.MANAGER_EMAIL} - Email already taken by user ID: ${emailConflict._id}`);
+          } else {
+            existingManager.email = process.env.MANAGER_EMAIL;
+            modified = true;
+          }
         }
-      }
-      if (process.env.MANAGER_PASSWORD) {
-        const isSamePassword = await existingManager.comparePassword(process.env.MANAGER_PASSWORD);
-        if (!isSamePassword) {
-          existingManager.password = process.env.MANAGER_PASSWORD;
-          modified = true;
+        if (process.env.MANAGER_PASSWORD) {
+          const isSamePassword = await existingManager.comparePassword(process.env.MANAGER_PASSWORD);
+          if (!isSamePassword) {
+            existingManager.password = process.env.MANAGER_PASSWORD;
+            modified = true;
+          }
         }
+        if (modified) {
+          await existingManager.save();
+          console.log(`👨‍🍳 Manager credentials updated to match environment variables.`);
+        }
+      } catch (err) {
+        console.error(`⚠️ Failed to update Manager credentials:`, err.message);
       }
-      if (modified) {
-        await existingManager.save();
-        console.log(`👨‍🍳 Manager credentials updated to match environment variables.`);
-      }
-    } catch (err) {
-      console.error(`⚠️ Failed to update Manager credentials:`, err.message);
     }
   }
 
@@ -460,10 +467,12 @@ const startServer = async () => {
 
   // Start cron jobs
   startExpiryReminder();
-  startLowStockAlert();
+  // RESTAURANT DISABLED — low-stock alerts are restaurant inventory only
+  // startLowStockAlert();
   startAutoCheckout(io);
   startExpireOneTimeAccess(io);
-  startCricketSlotReminderSms();
+  // SMS DISABLED — cricket is archived and Fast2SMS is off. See README "SMS (disabled)"
+  // startCricketSlotReminderSms();
   startTestExpiryChecker(io);
 
   server.listen(PORT, () => {
