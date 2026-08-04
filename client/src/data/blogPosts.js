@@ -17,11 +17,11 @@ export const blogPosts = [
       },
       {
         heading: 'How to Book the Cricket Ground Online',
-        body: 'Booking Alchemy 360\'s cricket ground takes under five minutes. Visit redballsportsarena.in and navigate to Book Slots. Select cricket from the sport options, choose your preferred date and time slot, and complete the payment online via UPI, credit card, or debit card. The system generates a QR code that serves as your entry pass on match day.\n\nSlots are available from 5:00 AM to 11:00 PM daily. Morning slots (5 AM–9 AM) and evening slots (6 PM–11 PM) are the most popular and fill up fastest, especially on weekends. If you\'re planning a group match or tournament, booking at least a week in advance is strongly recommended. Weekday afternoon slots typically have more availability for those with flexible schedules.',
+        body: 'Booking Alchemy 360\'s cricket ground takes under five minutes. Visit alchemy360.in and navigate to Book Slots. Select cricket from the sport options, choose your preferred date and time slot, and complete the payment online via UPI, credit card, or debit card. The system generates a QR code that serves as your entry pass on match day.\n\nSlots are available from 5:00 AM to 11:00 PM daily. Morning slots (5 AM–9 AM) and evening slots (6 PM–11 PM) are the most popular and fill up fastest, especially on weekends. If you\'re planning a group match or tournament, booking at least a week in advance is strongly recommended. Weekday afternoon slots typically have more availability for those with flexible schedules.',
       },
       {
         heading: 'Slot Durations and Pricing',
-        body: 'Alchemy 360 offers cricket ground slots in one-hour and two-hour increments. Pricing varies by time of day and day of the week, with peak pricing for evening and weekend slots. Membership holders receive a significant discount on per-slot rates — typically 20–30% off the standard rate depending on the membership tier.\n\nFor serious cricket players who use the ground regularly, a monthly or quarterly membership is significantly more economical than individual bookings. The membership also comes with priority booking access — meaning you can secure your preferred slot before it opens to the general public. Check current rates at redballsportsarena.in/buy-membership.',
+        body: 'Alchemy 360 offers cricket ground slots in one-hour and two-hour increments. Pricing varies by time of day and day of the week, with peak pricing for evening and weekend slots. Membership holders receive a significant discount on per-slot rates — typically 20–30% off the standard rate depending on the membership tier.\n\nFor serious cricket players who use the ground regularly, a monthly or quarterly membership is significantly more economical than individual bookings. The membership also comes with priority booking access — meaning you can secure your preferred slot before it opens to the general public. Check current rates at alchemy360.in/buy-membership.',
       },
       {
         heading: 'What to Expect on Match Day',
@@ -37,7 +37,7 @@ export const blogPosts = [
       },
     ],
     faqs: [
-      { q: 'Can I cancel my cricket ground booking at Alchemy 360?', a: 'Yes. Cancellation policies apply and vary by notice period. Check the booking terms on redballsportsarena.in or contact the facility at +91 93500 76653.' },
+      { q: 'Can I cancel my cricket ground booking at Alchemy 360?', a: 'Yes. Cancellation policies apply and vary by notice period. Check the booking terms on alchemy360.in or contact the facility at +91 93500 76653.' },
       { q: 'Is the cricket ground available on public holidays?', a: 'Yes. Alchemy 360 Sports Arena operates on all days including public holidays, subject to any special event bookings. Check availability online.' },
       { q: 'What happens if it rains during my cricket slot?', a: 'Alchemy 360\'s box cricket ground has a covered or enclosed structure that provides protection from light rain. Policies for heavy rain or weather disruption are outlined in the booking terms.' },
       { q: 'Can I book the cricket ground for a birthday party cricket tournament?', a: 'Yes. Birthday cricket tournaments are a popular event type at Alchemy 360. Contact the team for customised birthday event packages including ground, food, and optional entertainment.' },
@@ -73,7 +73,7 @@ export const blogPosts = [
       },
       {
         heading: 'Booking Box Cricket at Alchemy 360 Sports Arena, Rohtak',
-        body: 'Alchemy 360\'s box cricket ground is the primary court in the facility. Booking is done online at redballsportsarena.in/book-slots. Select Box Cricket as your sport, choose a slot (1-hour or 2-hour options available), and complete the payment. Your QR code is generated instantly.\n\nThe minimum group size for a box cricket booking is 8 players (4 per side) for a casual game. For a proper 6-a-side match, 12 players is ideal. Alchemy 360 can also provide a fill-in player or connect you with other groups booking the same time if your numbers are short. This is particularly useful for solo players wanting to join an existing match.',
+        body: 'Alchemy 360\'s box cricket ground is the primary court in the facility. Booking is done online at alchemy360.in/book-slots. Select Box Cricket as your sport, choose a slot (1-hour or 2-hour options available), and complete the payment. Your QR code is generated instantly.\n\nThe minimum group size for a box cricket booking is 8 players (4 per side) for a casual game. For a proper 6-a-side match, 12 players is ideal. Alchemy 360 can also provide a fill-in player or connect you with other groups booking the same time if your numbers are short. This is particularly useful for solo players wanting to join an existing match.',
       },
       {
         heading: 'Box Cricket Tournaments and Leagues at Alchemy 360',
@@ -193,7 +193,7 @@ export const blogPosts = [
       },
       {
         heading: 'How to Book a Badminton Court at Alchemy 360',
-        body: 'Booking a badminton court at Alchemy 360 Sports Arena is done online at redballsportsarena.in/book-slots. Select badminton, choose the number of courts you need (solo practice, singles match, or doubles), pick your preferred time slot, and complete the payment. Your QR code serves as entry.\n\nCourts are available from 5:00 AM to 11:00 PM daily. One-hour and two-hour slots are standard. For regular players, membership bookings allow for recurring slot reservations at discounted rates. Weekday mornings and early afternoons generally have the best availability. Weekend evenings are the busiest — book 5–7 days ahead if you want a specific evening court time.',
+        body: 'Booking a badminton court at Alchemy 360 Sports Arena is done online at alchemy360.in/book-slots. Select badminton, choose the number of courts you need (solo practice, singles match, or doubles), pick your preferred time slot, and complete the payment. Your QR code serves as entry.\n\nCourts are available from 5:00 AM to 11:00 PM daily. One-hour and two-hour slots are standard. For regular players, membership bookings allow for recurring slot reservations at discounted rates. Weekday mornings and early afternoons generally have the best availability. Weekend evenings are the busiest — book 5–7 days ahead if you want a specific evening court time.',
       },
       {
         heading: 'Badminton Coaching Programs at Alchemy 360',
@@ -434,7 +434,7 @@ export const blogPosts = [
       },
       {
         heading: 'How to Enroll Your Child at Alchemy 360\'s Sports Academy',
-        body: 'Enrollment at Alchemy 360 Sports Arena\'s kids academy is straightforward. Visit the facility at Sector 22-D, Jhajjar Road, Rohtak, or visit redballsportsarena.in to check current enrollment status for specific programs. Contact Alchemy 360 at +91 93500 76653 to discuss which program is right for your child\'s age and current skill level.\n\nNew students are assessed in a trial session before being placed in the appropriate level batch. This ensures your child starts in a group that challenges without overwhelming them. Membership plans for kids academy include access to the specific sport program(s) enrolled and are available monthly, quarterly, and annually. Summer intensives and school holiday camps are also offered seasonally.',
+        body: 'Enrollment at Alchemy 360 Sports Arena\'s kids academy is straightforward. Visit the facility at Sector 22-D, Jhajjar Road, Rohtak, or visit alchemy360.in to check current enrollment status for specific programs. Contact Alchemy 360 at +91 93500 76653 to discuss which program is right for your child\'s age and current skill level.\n\nNew students are assessed in a trial session before being placed in the appropriate level batch. This ensures your child starts in a group that challenges without overwhelming them. Membership plans for kids academy include access to the specific sport program(s) enrolled and are available monthly, quarterly, and annually. Summer intensives and school holiday camps are also offered seasonally.',
       },
     ],
     faqs: [
@@ -562,7 +562,7 @@ export const blogPosts = [
       },
       {
         heading: 'Booking Football at Alchemy 360 Sports Arena',
-        body: 'The football ground at Alchemy 360 is bookable through the standard slot booking system at redballsportsarena.in/book-slots. Select football as your sport, choose your preferred date and time slot, and complete the booking. Standard slot durations of 1 hour and 2 hours are available.\n\nFor tournament and event bookings involving multiple teams, contact Alchemy 360 directly at +91 93500 76653. The football ground can be reserved for full-day events with scheduling, umpiring (referee), and catering arrangements similar to cricket tournament packages.',
+        body: 'The football ground at Alchemy 360 is bookable through the standard slot booking system at alchemy360.in/book-slots. Select football as your sport, choose your preferred date and time slot, and complete the booking. Standard slot durations of 1 hour and 2 hours are available.\n\nFor tournament and event bookings involving multiple teams, contact Alchemy 360 directly at +91 93500 76653. The football ground can be reserved for full-day events with scheduling, umpiring (referee), and catering arrangements similar to cricket tournament packages.',
       },
       {
         heading: 'The Future of Football at Alchemy 360',
@@ -615,7 +615,7 @@ export const blogPosts = [
     ],
     faqs: [
       { q: 'What time does Alchemy 360 Sports Arena open?', a: 'Alchemy 360 Sports Arena opens at 5:00 AM daily and closes at 11:00 PM, seven days a week.' },
-      { q: 'Are morning slots cheaper than evening slots at Alchemy 360?', a: 'Pricing typically varies by time of day with peak pricing for evening and weekend slots. Check current rates at redballsportsarena.in.' },
+      { q: 'Are morning slots cheaper than evening slots at Alchemy 360?', a: 'Pricing typically varies by time of day with peak pricing for evening and weekend slots. Check current rates at alchemy360.in.' },
       { q: 'Is there good lighting for morning cricket at Alchemy 360?', a: 'Alchemy 360\'s cricket ground has floodlighting that is fully operational from the first slot of the day, ensuring adequate visibility for all session times.' },
       { q: 'What is the least busy time to visit Alchemy 360 Sports Arena?', a: 'Weekday afternoon slots (12–4 PM) typically have the lowest demand, making them ideal for those wanting a quieter facility experience.' },
     ],
@@ -698,12 +698,12 @@ export const blogPosts = [
       },
       {
         heading: 'How to Get the Most from Alchemy 360 Sports Arena',
-        body: 'New members who get the most from Alchemy 360 are those who explore beyond their primary sport within the first month. If you joined for cricket, book a badminton slot. If you joined for swimming, try the gym. The multi-sport membership is designed for this cross-training use, and the physical benefits of cross-training across sports are well-documented — cricketers who swim build cardiovascular capacity; badminton players who do gym work gain explosive power for jumping smashes.\n\nBook your slots at the start of each week for the entire week. The mobile-friendly booking system at redballsportsarena.in takes under 5 minutes to secure 5–7 sessions. Members who book in advance use the facility 3× more consistently than those who book same-day. Consistency is the single biggest determinant of sports progress — and Alchemy 360\'s booking system makes consistency easy.',
+        body: 'New members who get the most from Alchemy 360 are those who explore beyond their primary sport within the first month. If you joined for cricket, book a badminton slot. If you joined for swimming, try the gym. The multi-sport membership is designed for this cross-training use, and the physical benefits of cross-training across sports are well-documented — cricketers who swim build cardiovascular capacity; badminton players who do gym work gain explosive power for jumping smashes.\n\nBook your slots at the start of each week for the entire week. The mobile-friendly booking system at alchemy360.in takes under 5 minutes to secure 5–7 sessions. Members who book in advance use the facility 3× more consistently than those who book same-day. Consistency is the single biggest determinant of sports progress — and Alchemy 360\'s booking system makes consistency easy.',
       },
     ],
     faqs: [
       { q: 'Is Alchemy 360 Sports Arena the only multi-sport complex in Rohtak?', a: 'Alchemy 360 is the most comprehensive private multi-sport complex in Rohtak, offering cricket, badminton, pickleball, swimming, gym, and football under one facility.' },
-      { q: 'Can I visit Alchemy 360 Sports Arena without a membership?', a: 'Yes. One-time access bookings are available for all sports at Alchemy 360. Visit redballsportsarena.in/one-time-booking or redballsportsarena.in/book-slots.' },
+      { q: 'Can I visit Alchemy 360 Sports Arena without a membership?', a: 'Yes. One-time access bookings are available for all sports at Alchemy 360. Visit alchemy360.in/one-time-booking or alchemy360.in/book-slots.' },
       { q: 'Is Alchemy 360 Sports Arena suitable for school trips and group visits?', a: 'Yes. Group visits, school excursions, and college sports days are accommodated at Alchemy 360. Contact +91 93500 76653 to arrange group booking and activity scheduling.' },
       { q: 'How far is Alchemy 360 Sports Arena from Rohtak city centre?', a: 'Alchemy 360 Sports Arena is located at Sector 22-D, Jhajjar Road, approximately 3–5 km from Rohtak city centre, easily accessible by auto or private vehicle.' },
     ],

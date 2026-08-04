@@ -688,7 +688,7 @@ export default function EntryPortal() {
 
   useEffect(() => {
     if (!loading && !isAuthenticated && data?.sport?.slug) {
-      window.location.replace(`https://www.redballsportsarena.in/sports/${data.sport.slug}`);
+      window.location.replace(`https://www.alchemy360.in/sports/${data.sport.slug}`);
     }
   }, [loading, isAuthenticated, data?.sport?.slug]);
 
@@ -703,7 +703,7 @@ export default function EntryPortal() {
           }, 1500);
         } else {
           setTimeout(() => {
-            window.location.replace(`https://www.redballsportsarena.in/sports/${data.sport.slug}`);
+            window.location.replace(`https://www.alchemy360.in/sports/${data.sport.slug}`);
           }, 1500);
         }
       }

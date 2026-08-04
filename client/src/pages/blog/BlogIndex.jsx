@@ -63,11 +63,11 @@ export default function BlogIndex() {
           '@type': 'Blog',
           name: 'Alchemy 360 Sports Arena Blog',
           description: 'Expert sports content from Alchemy 360 Sports Arena, Rohtak, Haryana',
-          url: 'https://www.redballsportsarena.in/blog',
+          url: 'https://www.alchemy360.in/blog',
           publisher: {
             '@type': 'Organization',
             name: 'Alchemy 360 Sports Arena',
-            url: 'https://www.redballsportsarena.in',
+            url: 'https://www.alchemy360.in',
           },
         }}
       />

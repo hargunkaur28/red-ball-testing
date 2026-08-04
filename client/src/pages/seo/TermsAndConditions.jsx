@@ -42,7 +42,7 @@ export default function TermsAndConditions() {
 
         <Section title="About These Terms">
           <p>
-            These Terms and Conditions govern your use of the Alchemy 360 Sports Arena website (<strong>redballsportsarena.in</strong>) and your access to all facilities and services operated by Alchemy 360 Sports Arena / Alchemy 360 Academy at Sector 22-D, Jhajjar Road, Rohtak, Haryana 124001.
+            These Terms and Conditions govern your use of the Alchemy 360 Sports Arena website (<strong>alchemy360.in</strong>) and your access to all facilities and services operated by Alchemy 360 Sports Arena / Alchemy 360 Academy at Sector 22-D, Jhajjar Road, Rohtak, Haryana 124001.
           </p>
           <p>
             By creating an account, booking a slot, purchasing a membership, or visiting the facility, you agree to these terms. Please read them carefully.

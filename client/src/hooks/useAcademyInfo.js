@@ -5,7 +5,7 @@ const FALLBACK = {
   academyName: 'Alchemy 360 Sports Arena',
   address: 'Sector 22-D, Jhajjar Road, near Village-Maina, Rohtak, Haryana 124001',
   phone: '+91 99921 01885',
-  email: 'info@redballsportsarena.in',
+  email: 'info@alchemy360.in',
   operatingHours: '5:00 AM – 11:00 PM, 7 days a week',
 };
 

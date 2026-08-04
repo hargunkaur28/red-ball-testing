@@ -42,7 +42,7 @@ export default function PrivacyPolicy() {
 
         <Section title="Introduction">
           <p>
-            Alchemy 360 Sports Arena ("we", "our", "us") operates the website at <strong>redballsportsarena.in</strong> and the Alchemy 360 Academy sports facility at Sector 22-D, Jhajjar Road, Rohtak, Haryana 124001.
+            Alchemy 360 Sports Arena ("we", "our", "us") operates the website at <strong>alchemy360.in</strong> and the Alchemy 360 Academy sports facility at Sector 22-D, Jhajjar Road, Rohtak, Haryana 124001.
           </p>
           <p>
             This Privacy Policy explains what information we collect when you use our website, book sports sessions, purchase memberships, or use our services — and how we use, store, and protect that information. By using our website or services, you agree to the terms described here.

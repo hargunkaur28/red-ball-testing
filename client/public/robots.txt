@@ -37,4 +37,4 @@ Disallow: /entry
 Disallow: /entry/
 
 # Sitemap
-Sitemap: https://redballsportsarena.in/sitemap.xml
+Sitemap: https://www.alchemy360.in/sitemap.xml
