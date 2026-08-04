@@ -11,11 +11,6 @@ import api from '../../lib/axios';
 import { getSportFallback } from './sportFallbacks';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
-const isAllServicesKey = (k) => {
-  const n = (k || '').trim().toLowerCase();
-  return n === 'all' || n === 'all-services';
-};
-
 const localDateStr = () => {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -29,6 +24,12 @@ const next7Days = () => {
     days.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
   }
   return days;
+};
+
+const fmtBandTime = (hhmm) => {
+  if (!hhmm) return '';
+  const [h, m] = hhmm.split(':').map(Number);
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
 };
 
 const fmtDate = (str) => {
@@ -46,10 +47,18 @@ function SportSelectorStep({ plan, onSelect }) {
 
   const allSports = sportsData?.sports || [];
   const availableSports = allSports.filter((s) => {
-    // "All Services" is a membership category, not a bookable sport
-    if (s.slug === 'all-services' || (s.name || '').toLowerCase() === 'all services') return false;
+    // Gym has no court slot booking
+    if (s.slug === 'gym' || (s.name || '').toLowerCase() === 'gym') return false;
     const keys = (plan?.sportsIncluded || []).map((k) => (k || '').toLowerCase());
-    return keys.some((k) => isAllServicesKey(k) || k === s.slug || k === s.name?.toLowerCase());
+    const planName = (plan?.name || '').toLowerCase();
+    const sName = (s.name || '').toLowerCase();
+    const sSlug = (s.slug || '').toLowerCase();
+
+    return (
+      keys.some((k) => k === sSlug || k === sName) ||
+      planName.includes(sSlug) ||
+      planName.includes(sName)
+    );
   });
 
   return (
@@ -122,6 +131,7 @@ function SlotPickerStep({ sport, membership, onBack, onBooked }) {
   const fallback = getSportFallback(sport.slug || sport.name);
   const slots = data?.slots || [];
   const courts = data?.courts || [];
+  const courtBand = data?.courtBand || null;
 
   // Group by court
   const byCourt = slots.reduce((acc, s) => {
@@ -177,6 +187,20 @@ function SlotPickerStep({ sport, membership, onBack, onBooked }) {
         </div>
       </div>
 
+      {/* Court membership: say up front which hours are bookable */}
+      {courtBand && (
+        <div
+          className="rounded-xl px-3 py-2.5 flex items-center gap-2"
+          style={{ background: 'rgba(197,219,59,0.07)', border: '1px solid rgba(197,219,59,0.2)' }}
+        >
+          <Clock size={13} className="text-[#C5DB3B] shrink-0" />
+          <p className="text-[11px] text-white/70">
+            <span className="font-bold text-white">{courtBand.label} court membership</span>
+            {' · '}book any one hour between {fmtBandTime(courtBand.startTime)} and {fmtBandTime(courtBand.endTime)}
+          </p>
+        </div>
+      )}
+
       {/* Date picker */}
       <div>
         <p className="text-white/40 text-[10px] uppercase tracking-widest font-bold mb-2">Select Date</p>
@@ -222,6 +246,7 @@ function SlotPickerStep({ sport, membership, onBack, onBooked }) {
                       'past-time': 'Time passed',
                       'overlap': 'Clash with booking',
                       'already-booked': 'Already booked',
+                      'outside-band': 'Outside your hours',
                       'full': 'Full',
                     };
                     const label = reason ? labelMap[reason] : `${slot.capacity - slot.currentBookings} left`;
@@ -288,15 +313,11 @@ export default function MembershipSlotBookingModal({ membership, isOpen, onClose
   const [selectedSport, setSelectedSport] = useState(null);
 
   const plan = membership?.planId;
-  const isAllServices = plan && (
-    plan.isAllServices ||
-    (plan.sportsIncluded || []).some((k) => isAllServicesKey(k))
-  );
 
-  // Combo packages ("Gym + Badminton") cover several sports without being All
-  // Services, so they need the picker too — otherwise the member silently gets
-  // sportsIncluded[0] and can never book the other half of what they paid for.
-  const needsSportChoice = isAllServices || (plan?.sportsIncluded?.length || 0) > 1;
+  // Combo packages ("Gym + Badminton") cover several sports and need the picker —
+  // otherwise the member silently gets sportsIncluded[0] and can never book the
+  // other half of what they paid for.
+  const needsSportChoice = (plan?.sportsIncluded?.length || 0) > 1;
 
   // Single-sport memberships have nothing to choose — go straight to the slots.
   useEffect(() => {

@@ -11,19 +11,13 @@ const SPORTS = [
     name: 'Box Cricket / Cricket',
     icon: '🏏',
     desc: 'Professional floodlit cricket ground for day-night matches. Supports hard-ball and tennis-ball cricket. Home of the Rohtak Cricket League (RCL). Box 360 — Rohtak\'s first 24/7 circular box cricket facility.',
-    link: '/sports/box-cricket',
+    link: '/rohtak-cricket-league',
   },
   {
     name: 'Badminton',
     icon: '🏸',
     desc: 'Wooden-floored courts to BWF dimension standards. Match-standard lighting with no shadows. Singles and doubles play. Coaching from beginner to advanced; kids program from age 6+.',
     link: '/sports/badminton',
-  },
-  {
-    name: 'Swimming',
-    icon: '🏊',
-    desc: 'Open-air pool with daily water quality monitoring. Certified instructors. Four-level program from Beginner to Advanced. Kids Aqua Tots program from age 4. Lifeguard supervision at all times.',
-    link: '/sports/swimming',
   },
   {
     name: 'Pickleball',
@@ -37,25 +31,19 @@ const SPORTS = [
     desc: 'Modern cardio equipment, free weights, fixed weight machines, and functional training area. Personal training available. Open 5:00 AM to 11:00 PM daily.',
     link: '/sports/gym',
   },
-  {
-    name: 'Kids Sports Academy',
-    icon: '🧒',
-    desc: 'Multi-sport youth program covering cricket, badminton, and swimming. Age 4–14. Milestone-based progression. Morning and evening batches around school schedules.',
-    link: '/kids-sports-academy-rohtak',
-  },
 ];
 
 const STATS = [
   { value: '4.7★', label: '312+ Google Reviews' },
   { value: '500+', label: 'Active Members' },
-  { value: '6', label: 'Sports & Facilities' },
+  { value: '4', label: 'Sports & Facilities' },
   { value: '5AM–11PM', label: 'Open Every Day' },
 ];
 
 const TIMELINE = [
   { year: 'Founded', text: 'Alchemy 360 Sports Arena was established by Sonu Malik with a vision to bring world-class multi-sport facilities to Rohtak, Haryana.' },
   { year: 'Cricket', text: 'The cricket ground quickly became the home of the Rohtak Cricket League (RCL) — Rohtak\'s premier T20 competition, broadcast live on YouTube, Siti Cable, and DEN Networks.' },
-  { year: 'Expansion', text: 'Added badminton courts, swimming pool, gym, pickleball courts, and Box 360 — making Alchemy 360 one of the most comprehensive private sports complexes in Haryana.' },
+  { year: 'Expansion', text: 'Added badminton courts, gym, pickleball courts, and Box 360 — making Alchemy 360 one of the most comprehensive private sports complexes in Haryana.' },
   { year: 'Today', text: 'Serving 500+ active members across Rohtak and surrounding districts. Registered with the Haryana Cricket Association (HCA).' },
 ];
 
@@ -79,7 +67,7 @@ export default function About() {
     <>
       <SEOHead
         title="About Alchemy 360 Sports Arena — Rohtak's Premier Multi-Sport Complex"
-        description="Learn about Alchemy 360 Sports Arena in Rohtak, Haryana — founded by Sonu Malik. Home of the Rohtak Cricket League. Cricket, badminton, swimming, pickleball, gym & kids academy."
+        description="Learn about Alchemy 360 Sports Arena in Rohtak, Haryana — founded by Sonu Malik. Home of the Rohtak Cricket League. Cricket, badminton, pickleball, gym, and court memberships."
         canonical="/about"
       />
       <Navbar />
@@ -100,7 +88,7 @@ export default function About() {
               About Alchemy 360<br />Sports Arena
             </h1>
             <p className="text-white/55 text-lg max-w-2xl leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-              Rohtak's most comprehensive private multi-sport complex — cricket, badminton, swimming, pickleball, gym, and a kids academy under one roof. Home of the Rohtak Cricket League.
+              Rohtak's most comprehensive private multi-sport complex — cricket, badminton, pickleball, and gym under one roof. Home of the Rohtak Cricket League.
             </p>
           </FadeIn>
 
@@ -131,7 +119,7 @@ export default function About() {
                 Alchemy 360 Sports Arena was founded by <strong className="text-[#0D0D0D]">Sonu Malik</strong> with a single goal: to give the people of Rohtak access to world-class sports infrastructure — no compromises.
               </p>
               <p className="text-[#6B7280] leading-relaxed mb-5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                What started as a cricket ground has grown into Rohtak's most complete sports destination — six sports, a kids academy, an on-site restaurant, digital QR-based entry, and the home of the Rohtak Cricket League (RCL), broadcast live across Haryana.
+                What started as a cricket ground has grown into Rohtak's most complete sports destination — multiple sports, an on-site restaurant, digital QR-based entry, and the home of the Rohtak Cricket League (RCL), broadcast live across Haryana.
               </p>
               <p className="text-[#6B7280] leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 Located at Sector 22-D, Jhajjar Road, the facility serves members from Rohtak, Jhajjar, Bahadurgarh, Sonipat, and across the Delhi NCR.

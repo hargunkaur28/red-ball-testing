@@ -2,11 +2,12 @@ import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, CheckCircle2, Loader2, Sparkles, User, Mail, Phone, Crown, Check, Star, CalendarCheck, ChevronRight } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Loader2, Sparkles, User, Mail, Phone, Crown, Check, Star, CalendarCheck, ChevronRight, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 import api from '../lib/axios';
 import { formatCurrency } from '../lib/utils';
 import { isComboPlan, stripTierSuffix } from '../lib/comboPlans';
+import { planHasNoSlots } from '../lib/planSlots';
 import useAuthStore from '../store/authStore';
 import { queryClient } from '../lib/queryClient';
 import PhoneCollectModal from '../components/shared/PhoneCollectModal';
@@ -26,11 +27,18 @@ const DURATION_LABEL = {
 };
 
 // The page shows one plan family at a time — whichever the visitor arrived for.
-// This is the family shown when the URL names none. Set to '' to fall through to
-// the whole catalogue instead.
-const DEFAULT_GROUP = 'badminton-coaching';
+// This is the family shown when the URL names none. '' falls through to the whole
+// catalogue, which is what a bare "View Plans" link should show; naming a family
+// here silently hides every other plan from anyone who arrives without ?sport=.
+const DEFAULT_GROUP = '';
 
 const slugify = (s = '') => String(s).trim().toLowerCase().replace(/\s+/g, '-');
+
+const fmtBandTime = (hhmm) => {
+  if (!hhmm) return '';
+  const [h, m] = hhmm.split(':').map(Number);
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
+};
 
 const MEMBERSHIP_PERKS = [
   { title: 'Unlimited Access', desc: 'Play as much as you want without hourly fees.' },
@@ -44,10 +52,17 @@ const MEMBERSHIP_PERKS = [
 // plain "Gym" tab alongside unrelated durations.
 function planGroupName(plan) {
   if (isComboPlan(plan)) return stripTierSuffix(plan.name);
-  if (plan.isAllServices || !plan.sportsIncluded?.length) return 'All Services';
+  if (!plan.sportsIncluded?.length) return 'Other';
   const first = plan.sportsIncluded[0] || 'Other';
-  return first.charAt(0).toUpperCase() + first.slice(1);
+  const sportLabel = first.charAt(0).toUpperCase() + first.slice(1);
+  // Court plans are their own product, and each sport gets its own group — one
+  // combined "Court Memberships" list put badminton and pickleball prices in the
+  // same column, which reads as though they'd been mixed up.
+  if (plan.isCourtMembership) return `${sportLabel} Court Memberships`;
+  return sportLabel;
 }
+
+const isCourtGroup = (group) => group.plans?.some((p) => p.isCourtMembership);
 
 export default function MembershipPortal({ embedded = false }) {
   const [searchParams] = useSearchParams();
@@ -185,15 +200,18 @@ export default function MembershipPortal({ embedded = false }) {
 
   const planGroups = useMemo(() => {
     const all = Object.keys(groupedPlans)
-      .sort((a, b) => {
-        if (a === 'All Services') return -1;
-        if (b === 'All Services') return 1;
-        return a.localeCompare(b);
-      })
+      .sort((a, b) => a.localeCompare(b))
       .map((name) => ({ name, plans: groupedPlans[name] }));
 
     const byPlan = planParam && all.find((g) => g.plans.some((p) => p._id === planParam));
     if (byPlan) return [byPlan];
+
+    // ?sport=court-memberships is the catch-all the homepage strip links to —
+    // it shows every sport's court groups rather than one specific sport's.
+    if (sportParam && slugify(sportParam) === 'court-memberships') {
+      const courtGroups = all.filter(isCourtGroup);
+      if (courtGroups.length) return courtGroups;
+    }
 
     const bySport = sportParam && all.find((g) => slugify(g.name) === slugify(sportParam));
     if (bySport) return [bySport];
@@ -227,7 +245,7 @@ export default function MembershipPortal({ embedded = false }) {
   // packages have no one sport to represent them and keep the default.
   const heroKey = (selectedPlan?.sportsIncluded?.length === 1
     ? selectedPlan.sportsIncluded[0]
-    : activeGroup) || 'all-services';
+    : activeGroup) || '';
   const fallback = getSportFallback(heroKey);
   const accentColor = fallback.color || '#C5DB3B';
   const heroImage = fallback.heroImage;
@@ -235,6 +253,52 @@ export default function MembershipPortal({ embedded = false }) {
     ? fallback.chips
     : ['Unlimited Access', 'Priority Booking', 'Member Perks'];
   const backHref = embedded ? '/user/book-slots' : '/book-slots';
+
+  const relevantActiveMemberships = useMemo(() => {
+    if (!activeMemberships.length) return [];
+
+    return activeMemberships.filter((m) => {
+      const p = m.planId;
+      if (!p) return false;
+
+      // Gym-only plans are walk-in — a "Book Now" button would dead-end on an
+      // empty slot list. Combos containing gym still qualify via their other sport.
+      if (planHasNoSlots(p)) return false;
+
+      // 1. If explicit ?plan= parameter exists in URL
+      if (planParam && (String(p._id) === String(planParam) || String(p.id) === String(planParam))) {
+        return true;
+      }
+
+      // 2. If explicit ?sport= parameter exists in URL (e.g. ?sport=pickleball)
+      if (sportParam) {
+        const sSlug = slugify(sportParam);
+        const pGroup = slugify(planGroupName(p));
+        const pSports = (p.sportsIncluded || []).map((s) => slugify(s));
+        if (pGroup === sSlug || pSports.includes(sSlug) || (p.name || '').toLowerCase().includes(sSlug)) {
+          return true;
+        }
+      }
+
+      // 3. Match against the currently selected plan or plan group
+      if (selectedPlanId && (String(p._id) === String(selectedPlanId) || String(p.id) === String(selectedPlanId))) {
+        return true;
+      }
+
+      const pGroup = planGroupName(p).toLowerCase().trim();
+      const currentGroup = (activeGroup || '').toLowerCase().trim();
+
+      if (pGroup && currentGroup && pGroup === currentGroup) {
+        return true;
+      }
+
+      if (selectedPlan?.name && p.name && p.name.toLowerCase().trim() === selectedPlan.name.toLowerCase().trim()) {
+        return true;
+      }
+
+      return false;
+    });
+  }, [activeMemberships, planParam, sportParam, selectedPlanId, selectedPlan, activeGroup]);
 
   const handlePurchase = async (e) => {
     e.preventDefault();
@@ -400,11 +464,14 @@ export default function MembershipPortal({ embedded = false }) {
           </div>
 
           <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+            {/* Wraps rather than truncates — group names like "Badminton Court
+                Memberships" lose their last word to an ellipsis on a phone. */}
             <h1
-              className="text-white font-black leading-none truncate pr-4"
+              className="text-white font-black pr-4"
               style={{
                 fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: 'clamp(2.5rem, 8vw, 5.5rem)',
+                fontSize: 'clamp(2.1rem, 7vw, 5.5rem)',
+                lineHeight: 1.02,
                 letterSpacing: '1px',
                 textShadow: '0 2px 20px rgba(0,0,0,0.5)',
               }}
@@ -553,7 +620,7 @@ export default function MembershipPortal({ embedded = false }) {
             </p>
 
             {/* Already a member — book an included slot instead of buying again */}
-            {activeMemberships.length > 0 && (
+            {relevantActiveMemberships.length > 0 && (
               <div
                 className="rounded-2xl p-5 space-y-4"
                 style={{ background: 'rgba(34,197,94,0.05)', border: '1px solid rgba(34,197,94,0.2)' }}
@@ -561,11 +628,11 @@ export default function MembershipPortal({ embedded = false }) {
                 <div className="flex items-center gap-2">
                   <CalendarCheck size={15} className="text-green-500" />
                   <h3 className="text-white/40 text-xs uppercase tracking-[3px] font-bold">
-                    Your Membership{activeMemberships.length > 1 ? 's' : ''}
+                    Your Membership{relevantActiveMemberships.length > 1 ? 's' : ''}
                   </h3>
                 </div>
 
-                {activeMemberships.map((m) => (
+                {relevantActiveMemberships.map((m) => (
                   <div key={m._id} className="flex items-center justify-between gap-3 flex-wrap">
                     <div className="min-w-0">
                       <p className="text-white font-black text-sm truncate">{m.planId?.name || 'Active membership'}</p>
@@ -647,7 +714,25 @@ export default function MembershipPortal({ embedded = false }) {
                                 {plan.duration}
                               </span>
                             </div>
-                            <p className="text-white font-black text-lg leading-tight pr-6">{plan.name}</p>
+                            <p className="text-white font-black text-lg leading-tight pr-6">
+                              {/* The group heading already names the sport, so a court
+                                  card only needs its band ("Happy Hours") */}
+                              {plan.isCourtMembership && plan.courtBand?.label
+                                ? plan.courtBand.label
+                                : plan.name}
+                            </p>
+                            {/* Court plans all read "1 Month" — the band is what tells them apart */}
+                            {plan.isCourtMembership && plan.courtBand?.startTime && (
+                              <div
+                                className="inline-flex items-center gap-1.5 mt-2 px-2 py-1 rounded-lg"
+                                style={{ background: `${cardAccent}1A`, border: `1px solid ${cardAccent}38` }}
+                              >
+                                <Clock size={10} style={{ color: cardAccent }} />
+                                <span className="text-[10px] font-bold" style={{ color: cardAccent }}>
+                                  {fmtBandTime(plan.courtBand.startTime)} – {fmtBandTime(plan.courtBand.endTime)}
+                                </span>
+                              </div>
+                            )}
                           </div>
 
                           <p className="font-black text-[26px] leading-none" style={{ color: cardAccent }}>

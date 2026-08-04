@@ -62,11 +62,6 @@ const STATUS_OPTIONS = [
   { value: 'bought_renewed', label: 'Both (Bought & Renewed)' },
 ];
 
-const PLAN_TYPE_OPTIONS = [
-  { value: '', label: 'All Plan Types' },
-  { value: 'all-services', label: 'All-Services Tier' },
-  { value: 'sport-specific', label: 'Sport-Specific' },
-];
 
 // ═══════════════════════════════════════════════════════════
 export default function Memberships() {
@@ -171,7 +166,6 @@ export default function Memberships() {
   // ── filter state ──────────────────────────────────────
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
-  const [planType, setPlanType] = useState('');
   const [sport, setSport] = useState('');
   const [page, setPage] = useState(1);
   const [selectedMembership, setSelectedMembership] = useState(null);
@@ -182,7 +176,6 @@ export default function Memberships() {
   const [userPage, setUserPage] = useState(1);
   const [userMembershipFilter, setUserMembershipFilter] = useState('');
   const [userSport, setUserSport] = useState('');
-  const [userPlanType, setUserPlanType] = useState('');
   const [userPaymentStatus, setUserPaymentStatus] = useState('');
   const [paymentEditModal, setPaymentEditModal] = useState(null); // { paymentId, currentStatus, currentNote }
   const [expandedUser, setExpandedUser] = useState(null);
@@ -214,12 +207,11 @@ export default function Memberships() {
 
   // ── memberships query ─────────────────────────────────
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['super-admin-memberships', debouncedSearch, status, planType, sport, page],
+    queryKey: ['super-admin-memberships', debouncedSearch, status, sport, page],
     queryFn: async () => {
       const params = new URLSearchParams();
       if (debouncedSearch) params.set('search', debouncedSearch);
       if (status) params.set('status', status);
-      if (planType) params.set('planType', planType);
       if (sport) params.set('sport', sport);
       params.set('page', page);
       params.set('limit', limit);
@@ -232,13 +224,12 @@ export default function Memberships() {
 
   // ── users query ───────────────────────────────────────
   const { data: usersData, isLoading: usersLoading } = useQuery({
-    queryKey: ['super-admin-users', debouncedUserSearch, userPage, userMembershipFilter, userSport, userPlanType, userPaymentStatus],
+    queryKey: ['super-admin-users', debouncedUserSearch, userPage, userMembershipFilter, userSport, userPaymentStatus],
     queryFn: async () => {
       const params = new URLSearchParams({ page: userPage, limit: 20 });
       if (debouncedUserSearch) params.set('search', debouncedUserSearch);
       if (userMembershipFilter) params.set('membershipStatus', userMembershipFilter);
       if (userSport) params.set('sport', userSport);
-      if (userPlanType) params.set('planType', userPlanType);
       if (userPaymentStatus) params.set('paymentStatus', userPaymentStatus);
       const res = await api.get(`/super-admin/users?${params}`);
       return res.data;
@@ -350,12 +341,11 @@ export default function Memberships() {
     setSearch('');
     setDebouncedSearch('');
     setStatus('');
-    setPlanType('');
     setSport('');
     setPage(1);
   };
 
-  const hasActiveFilters = debouncedSearch || status || planType || sport;
+  const hasActiveFilters = debouncedSearch || status || sport;
 
   // ═════════════════════════════════════════════════════════
   return (
@@ -421,17 +411,6 @@ export default function Memberships() {
             className="input-field w-auto min-w-[150px]"
           >
             {STATUS_OPTIONS.map(o => (
-              <option key={o.value} value={o.value}>{o.label}</option>
-            ))}
-          </select>
-
-          {/* Plan Type */}
-          <select
-            value={planType}
-            onChange={(e) => { setPlanType(e.target.value); setPage(1); }}
-            className="input-field w-auto min-w-[160px]"
-          >
-            {PLAN_TYPE_OPTIONS.map(o => (
               <option key={o.value} value={o.value}>{o.label}</option>
             ))}
           </select>
@@ -727,15 +706,6 @@ export default function Memberships() {
                 <option value="none">No Membership</option>
               </select>
               <select
-                value={userPlanType}
-                onChange={e => { setUserPlanType(e.target.value); setUserPage(1); }}
-                className="input-field w-auto min-w-[160px]"
-              >
-                <option value="">All Plan Types</option>
-                <option value="all-services">All-Services Tier</option>
-                <option value="sport-specific">Sport-Specific</option>
-              </select>
-              <select
                 value={userSport}
                 onChange={e => { setUserSport(e.target.value); setUserPage(1); }}
                 className="input-field w-auto min-w-[140px]"
@@ -758,9 +728,9 @@ export default function Memberships() {
                 <option value="refunded">Refunded</option>
                 <option value="cancelled">Cancelled</option>
               </select>
-              {(userSearch || userMembershipFilter || userSport || userPlanType || userPaymentStatus) && (
+              {(userSearch || userMembershipFilter || userSport || userPaymentStatus) && (
                 <button
-                  onClick={() => { setUserSearch(''); setDebouncedUserSearch(''); setUserMembershipFilter(''); setUserSport(''); setUserPlanType(''); setUserPaymentStatus(''); setUserPage(1); }}
+                  onClick={() => { setUserSearch(''); setDebouncedUserSearch(''); setUserMembershipFilter(''); setUserSport(''); setUserPaymentStatus(''); setUserPage(1); }}
                   className="btn-ghost text-xs gap-1 shrink-0"
                 >
                   <X size={14} /> Clear

@@ -67,7 +67,7 @@ export default function BadmintonCourtRohtak() {
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
-            <Link to="/buy-membership" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership?sport=badminton" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Badminton Membership
             </Link>
           </div>
@@ -100,11 +100,8 @@ export default function BadmintonCourtRohtak() {
           <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More Sports at Alchemy 360 Arena, Rohtak</h2>
           <div className="flex flex-wrap gap-3">
             {[
-              { label: 'Cricket Academy', to: '/cricket-academy-rohtak' },
               { label: 'Pickleball', to: '/pickleball-court-rohtak' },
-              { label: 'Swimming', to: '/swimming-pool-rohtak' },
               { label: 'Gym', to: '/gym-in-rohtak' },
-              { label: "Kids' Academy", to: '/kids-sports-academy-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

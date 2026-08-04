@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'What is the best sports complex in Haryana?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is among Haryana\'s best multi-sport complexes — offering cricket, badminton, pickleball, swimming, gym, football, and kids academy under one roof.',
+    a: 'Alchemy 360 Sports Arena in Rohtak is among Haryana\'s best multi-sport complexes — offering cricket, badminton, pickleball, gym, football, and kids academy under one roof.',
   },
   {
     q: 'Where is Alchemy 360 Sports Complex located in Haryana?',
@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: 'What sports are available at Alchemy 360 Sports Complex?',
-    a: 'Cricket (box cricket and practice ground), badminton, pickleball, swimming, gym, football, and a kids sports academy. Plus food court and sports accessories shop.',
+    a: 'Cricket (box cricket and practice ground), badminton, pickleball, gym, football, and a kids sports academy. Plus food court and sports accessories shop.',
   },
   {
     q: 'Is Alchemy 360 Sports Complex suitable for corporate events in Haryana?',
@@ -50,7 +50,7 @@ export default function SportsComplexHaryana() {
     <SEOLandingLayout>
       <SEOHead
         title="Sports Complex in Haryana | Best Multi-Sport Facility | Alchemy 360 Rohtak"
-        description="Alchemy 360 Sports Arena in Rohtak — Haryana's best sports complex with cricket, badminton, swimming, gym, pickleball, and kids academy. Membership and online booking available."
+        description="Alchemy 360 Sports Arena in Rohtak — Haryana's best sports complex with cricket, badminton, gym, pickleball, and kids academy. Membership and online booking available."
         canonical="/sports-complex-haryana"
         schema={schema}
       />
@@ -64,7 +64,7 @@ export default function SportsComplexHaryana() {
             Sports Complex in Haryana
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak is Haryana's most complete multi-sport complex — offering cricket, badminton, pickleball, swimming, gym, and football under one roof. Serving players from across Haryana with professional facilities, expert coaching, and flexible membership plans.
+            Alchemy 360 Sports Arena in Rohtak is Haryana's most complete multi-sport complex — offering cricket, badminton, pickleball, gym, and football under one roof. Serving players from across Haryana with professional facilities, expert coaching, and flexible membership plans.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/buy-membership" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -86,7 +86,7 @@ export default function SportsComplexHaryana() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { title: '6 Sports Under One Roof', desc: 'Cricket, badminton, pickleball, swimming, gym, and football — the most comprehensive multi-sport complex in Haryana.' },
+            { title: '6 Sports Under One Roof', desc: 'Cricket, badminton, pickleball, gym, and football — the most comprehensive multi-sport complex in Haryana.' },
             { title: 'Central Haryana Location', desc: 'Rohtak\'s central position in Haryana means Alchemy 360 is accessible from Jhajjar, Sonipat, Bahadurgarh, Hisar, and Delhi NCR.' },
             { title: 'Haryana Sports Events', desc: 'Host of the Rohtak Cricket League and regular Haryana-wide sports events — Alchemy 360 is the sports events hub of the region.' },
           ].map(item => (
@@ -103,8 +103,6 @@ export default function SportsComplexHaryana() {
           <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>All Sports at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
-              { label: 'Cricket Ground', to: '/cricket-ground-rohtak' },
-              { label: 'Swimming Pool', to: '/swimming-pool-rohtak' },
               { label: 'Badminton Court', to: '/badminton-court-rohtak' },
               { label: 'Gym', to: '/gym-in-rohtak' },
               { label: 'Pickleball', to: '/pickleball-court-rohtak' },

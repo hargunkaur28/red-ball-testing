@@ -1,20 +1,18 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Loader2, Search, GraduationCap, ArrowLeft, ArrowRight } from 'lucide-react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Loader2, Search, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import api from '../lib/axios';
 import SportCard from '../components/sports/SportCard';
 import ComboPlanCard from '../components/sports/ComboPlanCard';
+import CourtMembershipCard from '../components/sports/CourtMembershipCard';
 import { groupComboFamilies } from '../lib/comboPlans';
 import useAuthStore from '../store/authStore';
 import Navbar from '../components/home/Navbar';
 
 export default function BookSlotsMarketplace({ embedded = false }) {
   const { isAuthenticated } = useAuthStore();
-  const [searchParams] = useSearchParams();
-  const program = searchParams.get('program'); // e.g. 'kids-academy'
-  const isKidsMode = program === 'kids-academy';
 
   const { data, isLoading } = useQuery({
     queryKey: ['public-sports'],
@@ -22,37 +20,38 @@ export default function BookSlotsMarketplace({ embedded = false }) {
     staleTime: 5 * 60 * 1000,
   });
 
-  // Fetch which sport slugs have active kids academy plans (only when needed)
-  const { data: kidsData, isLoading: kidsLoading } = useQuery({
-    queryKey: ['kids-academy-public-slugs'],
-    queryFn: () => api.get('/sports/kids-academy/public').then((r) => r.data),
-    staleTime: 5 * 60 * 1000,
-    enabled: isKidsMode,
-  });
-
   const allSports = useMemo(
     () => (data?.sports || []).filter((s) => s.name?.toLowerCase() !== 'coaching'),
     [data]
   );
 
-  const sports = useMemo(() => {
-    if (!isKidsMode) return allSports;
-    const slugs = new Set(kidsData?.slugs || []);
-    return allSports.filter((s) => slugs.has(s.slug));
-  }, [allSports, isKidsMode, kidsData]);
+  const sports = allSports;
 
-  // Combo packages — not shown in Kids Academy mode, which is its own programme
   const { data: plansData } = useQuery({
     queryKey: ['public-membership-plans'],
     queryFn: () => api.get('/plans').then((r) => r.data),
     staleTime: 5 * 60 * 1000,
-    enabled: !isKidsMode,
   });
 
   const comboFamilies = useMemo(
-    () => (isKidsMode ? [] : groupComboFamilies(plansData?.plans || [])),
-    [plansData, isKidsMode]
+    () => groupComboFamilies(plansData?.plans || []),
+    [plansData]
   );
+
+  // Court memberships get their own section — one card per sport, listing that
+  // sport's own bands, so prices from two sports never sit side by side.
+  const courtSports = useMemo(() => {
+    const bySlug = {};
+    (plansData?.plans || [])
+      .filter((p) => p.isCourtMembership && p.isActive)
+      .forEach((p) => {
+        const slug = p.sportsIncluded?.[0];
+        if (!slug) return;
+        if (!bySlug[slug]) bySlug[slug] = { slug, plans: [] };
+        bySlug[slug].plans.push(p);
+      });
+    return Object.values(bySlug);
+  }, [plansData]);
 
   const sportsBySlug = useMemo(
     () => Object.fromEntries(allSports.map((s) => [s.slug, s])),
@@ -61,7 +60,7 @@ export default function BookSlotsMarketplace({ embedded = false }) {
 
   const sportLinkPrefix = embedded ? '/user/sports' : '/sports';
   const membershipPath = embedded ? '/user/buy-memberships' : '/buy-membership';
-  const loading = isLoading || (isKidsMode && kidsLoading);
+  const loading = isLoading;
 
   const wrapClass = embedded
     ? 'min-h-[60vh] py-8'
@@ -83,58 +82,25 @@ export default function BookSlotsMarketplace({ embedded = false }) {
           transition={{ duration: 0.55 }}
           className="mb-10"
         >
-          {isKidsMode ? (
-            <>
-              {/* Kids Academy mode header */}
-              <Link
-                to={embedded ? '/user/book-slots' : '/book-slots'}
-                className="inline-flex items-center gap-1.5 text-white/35 hover:text-white/60 text-xs font-semibold mb-5 transition-colors"
-              >
-                <ArrowLeft size={13} /> All Sports
-              </Link>
-              <div
-                className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.25em] mb-4 ml-3"
-                style={{ background: 'rgba(197, 219, 59,0.13)', color: '#D6E86B', border: '1px solid rgba(197, 219, 59,0.28)' }}
-              >
-                <GraduationCap size={11} /> For Kids &amp; Beginners
-              </div>
-              <h1
-                className="text-white leading-none mb-3"
-                style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: 'clamp(2.5rem, 6vw, 4rem)',
-                  letterSpacing: '1px',
-                }}
-              >
-                Kids Academy
-              </h1>
-              <p className="text-white/45 text-base max-w-lg" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Structured coaching programmes with a dedicated coach. Select a sport below to get started.
-              </p>
-            </>
-          ) : (
-            <>
-              <p
-                className="uppercase tracking-[5px] text-[12px] text-[#F5A623] mb-3"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
-              >
-                Facilities
-              </p>
-              <h1
-                className="text-white leading-none mb-3"
-                style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: 'clamp(2.5rem, 6vw, 4rem)',
-                  letterSpacing: '1px',
-                }}
-              >
-                Choose Your Sport
-              </h1>
-              <p className="text-white/45 text-base max-w-lg" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Book a facility by the hour or grab a membership for unlimited play.
-              </p>
-            </>
-          )}
+          <p
+            className="uppercase tracking-[5px] text-[12px] text-[#F5A623] mb-3"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
+            Facilities
+          </p>
+          <h1
+            className="text-white leading-none mb-3"
+            style={{
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+              letterSpacing: '1px',
+            }}
+          >
+            Choose Your Sport
+          </h1>
+          <p className="text-white/45 text-base max-w-lg" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            Book a facility by the hour or grab a membership for unlimited play.
+          </p>
         </motion.div>
 
         {/* Loading */}
@@ -149,17 +115,8 @@ export default function BookSlotsMarketplace({ embedded = false }) {
         {!loading && sports.length === 0 && (
           <div className="text-center py-20 text-white/25">
             <Search size={36} className="mx-auto mb-4 opacity-40" />
-            {isKidsMode ? (
-              <>
-                <p className="text-base font-semibold">No Kids Academy sports available yet.</p>
-                <p className="text-sm mt-1">Check back soon — programmes are being set up.</p>
-              </>
-            ) : (
-              <>
-                <p className="text-base font-semibold">No active sports available right now.</p>
-                <p className="text-sm mt-1">Check back soon — new facilities are being added.</p>
-              </>
-            )}
+            <p className="text-base font-semibold">No active sports available right now.</p>
+            <p className="text-sm mt-1">Check back soon — new facilities are being added.</p>
           </div>
         )}
 
@@ -174,7 +131,7 @@ export default function BookSlotsMarketplace({ embedded = false }) {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <p className="text-white/30 text-xs uppercase tracking-[4px] font-bold mb-1">
-                  {isKidsMode ? 'Kids Academy' : 'All Facilities'}
+                  All Facilities
                 </p>
                 <h2
                   className="text-white font-black text-xl"
@@ -224,7 +181,7 @@ export default function BookSlotsMarketplace({ embedded = false }) {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4">
               {comboFamilies.map((family, i) => (
                 <motion.div
                   key={family.baseName}
@@ -248,43 +205,52 @@ export default function BookSlotsMarketplace({ embedded = false }) {
           </motion.div>
         )}
 
-        {/* Kids Academy strip — only in normal mode */}
-        {!isKidsMode && !loading && sports.length > 0 && (
+
+        {/* Court memberships */}
+        {!loading && courtSports.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mt-8 rounded-3xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden"
-            style={{
-              background: 'linear-gradient(135deg, rgba(197, 219, 59,0.12) 0%, rgba(197, 219, 59,0.04) 100%)',
-              border: '1px solid rgba(197, 219, 59,0.2)',
-            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mt-12"
           >
-            <div
-              className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-20"
-              style={{ background: '#C5DB3B' }}
-            />
-            <div className="relative z-10">
-              <p className="text-[#C5DB3B] font-black text-xl leading-tight mb-1">
-                Want to Train Your Kids Too?
+            <div className="mb-6">
+              <p className="text-white/30 text-xs uppercase tracking-[4px] font-bold mb-1">
+                Private Court
               </p>
-              <p className="text-white/50 text-sm">
-                Cricket, swimming, badminton &amp; more — dedicated coaches for kids &amp; beginners.
+              <h2
+                className="text-white font-black text-xl"
+                style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '1px' }}
+              >
+                Court Memberships
+              </h2>
+              <p className="text-white/40 text-sm mt-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                Reserve the whole court to yourself for one hour a day, within your chosen time band — one flat monthly price, no hourly fees.
               </p>
             </div>
-            <Link
-              to="/book-slots?program=kids-academy"
-              className="relative z-10 px-7 py-3 rounded-xl bg-[#C5DB3B] text-white font-black text-sm uppercase tracking-wider hover:bg-[#96AC2E] transition-colors shrink-0 whitespace-nowrap shadow-lg"
-              style={{ boxShadow: '0 6px 20px rgba(197, 219, 59,0.25)' }}
-            >
-              Explore Kids Academy
-            </Link>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+              {courtSports.map((entry, i) => (
+                <motion.div
+                  key={entry.slug}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                >
+                  <CourtMembershipCard
+                    sport={sportsBySlug[entry.slug]}
+                    plans={entry.plans}
+                    membershipPath={membershipPath}
+                  />
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         )}
 
-        {/* Membership upsell banner — hide in kids mode (irrelevant) */}
-        {!embedded && !isKidsMode && (
+        {/* Membership upsell banner */}
+        {!embedded && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

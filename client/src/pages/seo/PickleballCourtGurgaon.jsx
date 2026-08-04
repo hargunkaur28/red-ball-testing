@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: 'Can I combine pickleball with other sports at Alchemy 360?',
-    a: 'Absolutely. Alchemy 360 also has badminton courts, cricket (Box 360 circular format), swimming, and a gymnasium. Gurgaon visitors often plan a full-day sports trip combining multiple activities.',
+    a: 'Absolutely. Alchemy 360 also has badminton courts, cricket (Box 360 circular format), and a gymnasium. Gurgaon visitors often plan a full-day sports trip combining multiple activities.',
   },
   {
     q: 'Is advance booking required for the pickleball court at Alchemy 360?',

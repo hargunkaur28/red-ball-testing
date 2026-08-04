@@ -14,7 +14,7 @@ const { istDayBoundaries } = require('../utils/istUtils');
 // GET /api/super-admin/memberships - Manage and view memberships with attendance aggregation
 exports.getMemberships = async (req, res) => {
   try {
-    const { search, sport, status, planType, page = 1, limit = 10 } = req.query;
+    const { search, sport, status, page = 1, limit = 10 } = req.query;
 
     const query = {};
 
@@ -40,29 +40,10 @@ exports.getMemberships = async (req, res) => {
       query.studentId = { $in: studentIds };
     }
 
-    // 3. Filter by Sport / Plan Type
-    const planQuery = {};
-    let shouldFilterPlans = false;
-
+    // 3. Filter by Sport — every plan is sport-specific now
     if (sport) {
-      planQuery.sportsIncluded = sport;
-      shouldFilterPlans = true;
-    }
-
-    if (planType) {
-      shouldFilterPlans = true;
-      if (planType === 'all-services') {
-        planQuery.sportsIncluded = 'all-services';
-      } else if (planType === 'sport-specific' && !sport) {
-        // Only apply when no specific sport is selected — a specific sport already implies sport-specific
-        planQuery.sportsIncluded = { $ne: 'all-services' };
-      }
-    }
-
-    if (shouldFilterPlans) {
-      const plans = await MembershipPlan.find(planQuery).select('_id');
-      const planIds = plans.map(p => p._id);
-      query.planId = { $in: planIds };
+      const plans = await MembershipPlan.find({ sportsIncluded: sport }).select('_id');
+      query.planId = { $in: plans.map(p => p._id) };
     }
 
     const skipCount = (parseInt(page) - 1) * parseInt(limit);
@@ -754,7 +735,7 @@ exports.getSlotBookings = async (req, res) => {
 // GET /api/super-admin/users
 exports.getUsers = async (req, res) => {
   try {
-    const { search = '', page = 1, limit = 20, role = 'user', membershipStatus = '', sport = '', planType = '', paymentStatus = '' } = req.query;
+    const { search = '', page = 1, limit = 20, role = 'user', membershipStatus = '', sport = '', paymentStatus = '' } = req.query;
     const limitNum = Math.min(parseInt(limit) || 20, 100);
     const skip = (parseInt(page) - 1) * limitNum;
 
@@ -764,24 +745,16 @@ exports.getUsers = async (req, res) => {
       query.$or = [{ name: re }, { email: re }, { phone: re }];
     }
 
-    // Filter by membership status, sport, and/or planType
+    // Filter by membership status and/or sport
     if (membershipStatus === 'none') {
       const usersWithMembership = await Membership.distinct('studentId');
       query._id = { $nin: usersWithMembership };
-    } else if (membershipStatus || sport || planType) {
+    } else if (membershipStatus || sport) {
       const membershipQuery = {};
       if (membershipStatus) membershipQuery.status = membershipStatus;
 
-      if (sport || planType) {
-        const planQuery = {};
-        if (sport) {
-          planQuery.sportsIncluded = sport;
-        } else if (planType === 'all-services') {
-          planQuery.sportsIncluded = 'all-services';
-        } else if (planType === 'sport-specific') {
-          planQuery.sportsIncluded = { $ne: 'all-services' };
-        }
-        const matchingPlans = await MembershipPlan.find(planQuery).select('_id');
+      if (sport) {
+        const matchingPlans = await MembershipPlan.find({ sportsIncluded: sport }).select('_id');
         membershipQuery.planId = { $in: matchingPlans.map(p => p._id) };
       }
 

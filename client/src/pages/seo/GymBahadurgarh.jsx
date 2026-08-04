@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: 'Is Alchemy 360\'s gym better than gyms in Bahadurgarh?',
-    a: "Alchemy 360's gym operates within a full sports complex — alongside cricket, badminton, swimming, and pickleball facilities. For fitness enthusiasts from Bahadurgarh who want a training environment that extends beyond standard gym equipment, it's a significant step up.",
+    a: "Alchemy 360's gym operates within a full sports complex — alongside cricket, badminton, and pickleball facilities. For fitness enthusiasts from Bahadurgarh who want a training environment that extends beyond standard gym equipment, it's a significant step up.",
   },
   {
     q: 'Can I swim and use the gym on the same visit from Bahadurgarh?',
@@ -48,7 +48,7 @@ export default function GymBahadurgarh() {
     <SEOLandingLayout>
       <SEOHead
         title="Gym Near Bahadurgarh | Alchemy 360 Sports Arena Rohtak"
-        description="Gym near Bahadurgarh — Alchemy 360 Sports Arena, Rohtak, 45 km / 40 min away. Well-equipped gymnasium, memberships, full sports complex with cricket, swimming & more."
+        description="Gym near Bahadurgarh — Alchemy 360 Sports Arena, Rohtak, 45 km / 40 min away. Well-equipped gymnasium, memberships, full sports complex with cricket & more."
         canonical="/gym-bahadurgarh"
         schema={schema}
       />
@@ -79,12 +79,12 @@ export default function GymBahadurgarh() {
           Bahadurgarh's Best Gym is 40 Minutes Away
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Bahadurgarh is well-connected to Rohtak by NH-148B, and for fitness enthusiasts from Bahadurgarh who want a gym that forms part of a real sports environment, Alchemy 360 Sports Arena is the obvious upgrade. The gymnasium here isn't bolted onto a shopping complex — it's inside a dedicated sports arena alongside Box 360 cricket, an open-air swimming pool, badminton courts, and pickleball. Bahadurgarh gym-goers who visit regularly often add a swim or a sport to their routine, making the 40-minute commute feel entirely worthwhile.
+          Bahadurgarh is well-connected to Rohtak by NH-148B, and for fitness enthusiasts from Bahadurgarh who want a gym that forms part of a real sports environment, Alchemy 360 Sports Arena is the obvious upgrade. The gymnasium here isn't bolted onto a shopping complex — it's inside a dedicated sports arena alongside Box 360 cricket, badminton courts, and pickleball. Bahadurgarh gym-goers who visit regularly often add a swim or a sport to their routine, making the 40-minute commute feel entirely worthwhile.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: '40 Min NH-148B Drive', desc: 'Smooth, well-maintained highway from Bahadurgarh to Rohtak. Alchemy 360 is right off the main road near Omaxe — easy to find, easy to park.' },
-            { title: 'Sports Complex Gym', desc: 'Train in a facility built for athletes — surrounded by cricket, swimming, and racket sports infrastructure that keeps motivation high.' },
+            { title: 'Sports Complex Gym', desc: 'Train in a facility built for athletes — surrounded by cricket, and racket sports infrastructure that keeps motivation high.' },
             { title: 'Gym + Meal', desc: "Post-workout nutrition sorted — Alchemy 360's on-site restaurant serves food for gym members and sports visitors from Bahadurgarh without any extra planning." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
@@ -101,9 +101,7 @@ export default function GymBahadurgarh() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Gym Rohtak', to: '/gym-rohtak' },
-              { label: 'Cricket Ground Bahadurgarh', to: '/cricket-ground-bahadurgarh' },
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
-              { label: 'Swimming Pool Rohtak', to: '/swimming-pool-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

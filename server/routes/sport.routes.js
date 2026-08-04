@@ -34,8 +34,8 @@ router.delete('/hero-cards/:cardId', auth, authorize('superadmin'), sportControl
 // ==========================================
 router.get('/public', sportController.getPublicSports);
 router.get('/public/:slug', optionalAuth, sportController.getPublicSportBySlug);
-router.get('/kids-academy/public', sportController.listPublicKidsAcademy);
-router.get('/kids-academy', auth, authorize('superadmin'), sportController.listKidsAcademy);
+router.get('/court-memberships/public', sportController.listPublicCourtMemberships);
+router.get('/court-memberships', auth, authorize('superadmin'), sportController.listCourtMemberships);
 router.get('/', auth, authorize('superadmin'), sportController.getAllSports);
 router.get('/:id', auth, authorize('superadmin'), sportController.getSportById);
 router.post('/', auth, authorize('superadmin'), upload.single('imageFile'), sportController.createSport);
@@ -44,9 +44,9 @@ router.delete('/:id', auth, authorize('superadmin'), sportController.deleteSport
 router.patch('/:id/unarchive', auth, authorize('superadmin'), sportController.unarchiveSport);
 router.patch('/:id/toggle', auth, authorize('superadmin'), sportController.toggleActive);
 router.post('/:id/regenerate-qr', auth, authorize('superadmin'), sportController.regenerateQR);
-router.post('/:id/kids-academy', auth, authorize('superadmin'), sportController.upsertKidsAcademy);
-router.put('/:id/kids-academy', auth, authorize('superadmin'), sportController.upsertKidsAcademy);
-router.delete('/:id/kids-academy', auth, authorize('superadmin'), sportController.deleteKidsAcademy);
+router.post('/:id/court-memberships', auth, authorize('superadmin'), sportController.upsertCourtMemberships);
+router.put('/:id/court-memberships', auth, authorize('superadmin'), sportController.upsertCourtMemberships);
+router.delete('/:id/court-memberships', auth, authorize('superadmin'), sportController.deleteCourtMemberships);
 
 // ==========================================
 // PHASE 3 — SMART ENTRY QR ACCESS ROUTES

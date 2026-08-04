@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'What sports does Alchemy 360 Sports Arena offer in Rohtak?',
-    a: 'Alchemy 360 Sports Arena offers box cricket, badminton, pickleball, swimming, gym & fitness training, and a dedicated kids sports academy in Rohtak, Haryana.',
+    a: 'Alchemy 360 Sports Arena offers box cricket, badminton, pickleball, gym & fitness training, and a dedicated kids sports academy in Rohtak, Haryana.',
   },
   {
     q: 'How do I book a session at the sports academy in Rohtak?',
@@ -41,7 +41,7 @@ export default function SportsAcademyRohtak() {
     <SEOLandingLayout>
       <SEOHead
         title="Sports Academy in Rohtak | Alchemy 360 Sports Arena"
-        description="Alchemy 360 Sports Academy in Rohtak, Haryana offers professional coaching in cricket, badminton, pickleball, swimming & gym. Memberships, slot bookings & kids programs available."
+        description="Alchemy 360 Sports Academy in Rohtak, Haryana offers professional coaching in cricket, badminton, pickleball & gym. Memberships, slot bookings & kids programs available."
         canonical="/sports-academy-rohtak"
         schema={schema}
       />
@@ -76,12 +76,9 @@ export default function SportsAcademyRohtak() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {[
-            { sport: 'Box Cricket', desc: 'Floodlit indoor box cricket ground with professional pitch and equipment.', link: '/cricket-academy-rohtak' },
             { sport: 'Badminton Courts', desc: 'Wooden-floored badminton courts with professional nets. Open to all skill levels.', link: '/badminton-court-rohtak' },
             { sport: 'Pickleball', desc: 'Dedicated pickleball courts — a growing sport now available right here in Rohtak.', link: '/pickleball-court-rohtak' },
-            { sport: 'Swimming Pool', desc: 'Swimming pool open year-round with experienced instructors on hand.', link: '/swimming-pool-rohtak' },
             { sport: 'Gym & Fitness', desc: 'Modern gym with equipment for strength, cardio, and conditioning.', link: '/gym-in-rohtak' },
-            { sport: "Kids' Sports Academy", desc: 'Structured coaching for children in cricket and badminton with age-appropriate batches.', link: '/kids-sports-academy-rohtak' },
           ].map(item => (
             <Link key={item.sport} to={item.link} className="border border-black/10 rounded-xl p-5 hover:border-[#C5DB3B]/40 hover:shadow-sm transition-all group">
               <h3 className="font-bold text-[#0D0D0D] mb-2 group-hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.sport}</h3>

@@ -4,6 +4,7 @@ const Admission = require('../models/Admission');
 const User = require('../models/User');
 const MembershipPlan = require('../models/MembershipPlan');
 const { getDurationMs } = require('../utils/dateUtils');
+const { syncSlotStatus } = require('../utils/slotStatus');
 const { calculateGST } = require('../utils/gstCalculator');
 const {
   verifyPaymentSignature,
@@ -549,21 +550,6 @@ async function activateOnPaymentSuccess(payment, req) {
         { paymentStatus: 'paid' }
       );
 
-      // Mark admission as paid if this payment included an admission fee
-      if (payment.admissionFeeAmount > 0 && payment.admissionSportId) {
-        const AcademyAdmission = require('../models/AcademyAdmission');
-        await AcademyAdmission.findOneAndUpdate(
-          { userId: membership.studentId._id, sportId: payment.admissionSportId },
-          {
-            admissionPaid: true,
-            paidAt: new Date(),
-            paymentId: payment._id,
-            amount: payment.admissionFeeAmount,
-          },
-          { upsert: true, new: true }
-        );
-      }
-
       // Send welcome email with invoice (fire-and-forget)
       if (membership.studentId?.email && !payment.emailSentAt) {
         const { buildInvoiceHTML } = require('../utils/invoiceBuilder');
@@ -659,7 +645,8 @@ async function activateOnPaymentSuccess(payment, req) {
         $addToSet: { bookings: booking._id },
         $inc: { currentBookings: 1 },
       });
-      
+      await syncSlotStatus(booking.slotId);
+
       const claimedSlot = await Slot.findById(booking.slotId);
       const Sport = require('../models/Sport');
       const sport = claimedSlot?.sportId ? await Sport.findById(claimedSlot.sportId).select('name') : null;
@@ -707,6 +694,7 @@ async function activateOnPaymentSuccess(payment, req) {
         );
 
         if (claimedSlot) {
+          await syncSlotStatus(claimedSlot);
           const sport = claimedSlot.sportId ? await Sport.findById(claimedSlot.sportId).select('name slug') : null;
           
           const eventData = req?.body?.payload?.payment?.entity;
@@ -872,10 +860,25 @@ exports.webhookHandler = async (req, res) => {
     const event = req.body.event;
     const eventData = req.body.payload.payment.entity;
 
-    if (event === 'payment.authorized' || event === 'payment.captured') {
-      // Payment successful
+    if (event === 'payment.authorized') {
+      // Authorized is NOT money in hand — the capture can still fail, and the
+      // customer sees "Payment could not be completed" while retrying. Activating
+      // here booked slots and marked orders paid for payments that never captured.
+      // Do nothing: 'payment.captured' is the only success signal. Deliberately
+      // don't store razorpayPaymentId either — a later retry captures under a
+      // different payment id, and stashing this one would reject that retry.
+      console.log(`[Webhook] payment.authorized ignored (awaiting capture): ${eventData.id}`);
+    } else if (event === 'payment.captured') {
+      // Payment successful — money actually captured
       const payment = await Payment.findOne({ razorpayOrderId: eventData.order_id });
       if (payment) {
+        // Guard against a captured amount that doesn't match what we billed
+        if (eventData.amount !== Math.round(payment.totalAmount * 100)) {
+          console.error(
+            `[Webhook] Amount mismatch for order ${eventData.order_id}: expected ${Math.round(payment.totalAmount * 100)}, got ${eventData.amount}. Not activating.`
+          );
+          return res.json({ success: true });
+        }
         payment.razorpayPaymentId = eventData.id;
         payment.amountPaid = payment.totalAmount;
         payment.remainingAmount = 0;

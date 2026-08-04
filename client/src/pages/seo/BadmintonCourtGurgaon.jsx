@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'Why would a Gurgaon badminton player travel to Rohtak?',
-    a: 'Alchemy 360 offers a full sports complex experience — professional courts, cricket, swimming, gym, pickleball, and a restaurant — in a quieter, less congested setting than Gurgaon. Many players come for the atmosphere and value.',
+    a: 'Alchemy 360 offers a full sports complex experience — professional courts, cricket, gym, pickleball, and a restaurant — in a quieter, less congested setting than Gurgaon. Many players come for the atmosphere and value.',
   },
   {
     q: 'Can I book a badminton court at Alchemy 360 from Gurgaon online?',
@@ -101,9 +101,7 @@ export default function BadmintonCourtGurgaon() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },
-              { label: 'Cricket Ground Gurgaon', to: '/cricket-ground-gurgaon' },
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
-              { label: 'Swimming Pool Rohtak', to: '/swimming-pool-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

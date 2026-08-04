@@ -101,8 +101,6 @@ export default function GymJhajjar() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Gym Rohtak', to: '/gym-rohtak' },
-              { label: 'Cricket Ground Jhajjar', to: '/cricket-ground-jhajjar' },
-              { label: 'Swimming Pool Rohtak', to: '/swimming-pool-rohtak' },
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}

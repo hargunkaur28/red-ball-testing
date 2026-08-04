@@ -32,14 +32,6 @@ const landingItems = [
     image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop',
   },
   {
-    name: 'Box Cricket',
-    href: '/sports/box-cricket',
-    slug: 'box-cricket',
-    icon: <SportIllustration slug="cricket" color="#C5DB3B" className="w-[80%] h-[80%] drop-shadow-md" />,
-    color: '#C5DB3B',
-    tagline: 'Play & Train',
-  },
-  {
     name: 'Badminton',
     href: '/sports/badminton',
     slug: 'badminton',
@@ -54,22 +46,6 @@ const landingItems = [
     icon: <SportIllustration slug="pickleball" color="#A855F7" className="w-[80%] h-[80%] drop-shadow-md" />,
     color: '#A855F7',
     tagline: 'Cushioned',
-  },
-  {
-    name: 'Swimming',
-    href: '/sports/swimming',
-    slug: 'swimming',
-    icon: <SportIllustration slug="swimming" color="#0EA5E9" className="w-[80%] h-[80%] drop-shadow-md" />,
-    color: '#0EA5E9',
-    tagline: 'Heated Pool',
-  },
-  {
-    name: 'All Services',
-    href: '/sports/all-services',
-    slug: 'all-services',
-    icon: <SportIllustration slug="all" color="#F5A623" className="w-[80%] h-[80%] drop-shadow-md" />,
-    color: '#F5A623',
-    tagline: 'VIP Access',
   },
   {
     name: 'Gym & Fitness',

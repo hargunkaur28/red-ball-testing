@@ -27,10 +27,6 @@ const membershipPlanSchema = new mongoose.Schema({
   sportsIncluded: [{
     type: String,
   }],
-  isAllServices: {
-    type: Boolean,
-    default: false,
-  },
   requiresSlotBooking: {
     type: Boolean,
     default: true,
@@ -83,22 +79,21 @@ const membershipPlanSchema = new mongoose.Schema({
     type: Number,
   },
 
-  // Kids Academy add-on flags
-  isKidsAcademy: {
+  // Court Membership — books the whole court for one hour a day, but only inside
+  // a fixed time band (Morning / Evening / Happy Hours). Monthly only, priced per
+  // sport per band. A slot must fall entirely within [startTime, endTime].
+  isCourtMembership: {
     type: Boolean,
     default: false,
   },
-  coachIncluded: {
-    type: Boolean,
-    default: false,
-  },
-  admissionFeeRequired: {
-    type: Boolean,
-    default: false,
-  },
-  admissionFeeAmount: {
-    type: Number,
-    default: 0,
+  courtBand: {
+    key: {
+      type: String,
+      enum: ['morning', 'evening', 'happy-hours'],
+    },
+    label: String,
+    startTime: String, // "05:30"
+    endTime: String,   // "09:30"
   },
 }, {
   timestamps: true,

@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'What is the best private sports academy in Haryana?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is widely regarded as one of Haryana\'s best private multi-sport academies, offering cricket (including the Box 360 circular format), badminton, pickleball, swimming, and gymnasium in a single complex.',
+    a: 'Alchemy 360 Sports Arena in Rohtak is widely regarded as one of Haryana\'s best private multi-sport academies, offering cricket (including the Box 360 circular format), badminton, pickleball, and gymnasium in a single complex.',
   },
   {
     q: 'Which cities in Haryana can access Alchemy 360 Sports Arena?',
@@ -14,14 +14,14 @@ const faqs = [
   },
   {
     q: 'Does Alchemy 360 Sports Arena offer coaching for all age groups?',
-    a: 'Yes. Alchemy 360 has structured programmes for kids, teenagers, and adults across cricket, badminton, pickleball, and swimming. Separate batches ensure age-appropriate training.',
+    a: 'Yes. Alchemy 360 has structured programmes for kids, teenagers, and adults across cricket, badminton, pickleball. Separate batches ensure age-appropriate training.',
   },
   {
     q: 'Is Alchemy 360 Sports Arena the only facility with Box 360 cricket in Haryana?',
     a: 'Box 360 at Alchemy 360 is Rohtak\'s first 24/7 circular box cricket ground. This unique format — available round the clock — sets Alchemy 360 apart from any other sports facility in the region.',
   },
   {
-    q: 'How do I enrol in a sports academy programme at Alchemy 360 from anywhere in Haryana?',
+    q: 'How do I enroll in a sports academy programme at Alchemy 360 from anywhere in Haryana?',
     a: 'Call +91 93500 76653 or book online. Alchemy 360\'s team will help you choose the right programme and batch timing to fit your commute from anywhere in Haryana.',
   },
 ];
@@ -48,7 +48,7 @@ export default function SportsAcademyHaryana() {
     <SEOLandingLayout>
       <SEOHead
         title="Sports Academy in Haryana | Alchemy 360 Sports Arena Rohtak"
-        description="Best sports academy in Haryana — Alchemy 360 Sports Arena, Rohtak. Serving Jhajjar, Sonipat, Bahadurgarh, Panipat, Gurgaon and beyond. Cricket, badminton, swimming, pickleball."
+        description="Best sports academy in Haryana — Alchemy 360 Sports Arena, Rohtak. Serving Jhajjar, Sonipat, Bahadurgarh, Panipat, Gurgaon and beyond. Cricket, badminton, pickleball."
         canonical="/sports-academy-haryana"
         schema={schema}
       />
@@ -80,13 +80,13 @@ export default function SportsAcademyHaryana() {
           Haryana's Premier Private Multi-Sport Academy
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Haryana breeds champions — and Alchemy 360 Sports Arena in Rohtak is where many of them train. Athletes from Jhajjar drive 25 minutes, those from Bahadurgarh take 40 minutes, and families from Sonipat and Panipat travel over an hour, all because the quality at Alchemy 360 is simply not available closer to home. The Box 360 circular cricket ground is open 24 hours, 7 days a week — the first of its kind in Rohtak and unique across Haryana. The open-air swimming pool, professional badminton and pickleball courts, and a full gymnasium make Alchemy 360 a complete sporting destination. Add professional coaching staff and structured academy programmes for kids, teens, and adults, and the drive from anywhere in Haryana becomes an easy decision.
+          Haryana breeds champions — and Alchemy 360 Sports Arena in Rohtak is where many of them train. Athletes from Jhajjar drive 25 minutes, those from Bahadurgarh take 40 minutes, and families from Sonipat and Panipat travel over an hour, all because the quality at Alchemy 360 is simply not available closer to home. The Box 360 circular cricket ground is open 24 hours, 7 days a week — the first of its kind in Rohtak and unique across Haryana. professional badminton and pickleball courts, and a full gymnasium make Alchemy 360 a complete sporting destination. Add professional coaching staff and structured academy programmes for kids, teens, and adults, and the drive from anywhere in Haryana becomes an easy decision.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: 'Haryana-Wide Catchment', desc: 'Athletes travel from Jhajjar, Bahadurgarh, Sonipat, Panipat, Gurgaon, and beyond. Rohtak\'s central location in Haryana makes Alchemy 360 accessible from all directions.' },
             { title: 'Best Sports Academy Rohtak', desc: 'Alchemy 360 has earned its reputation as Rohtak\'s top sports academy through results — competitive cricketers, strong swimmers, and skilled badminton players trained here.' },
-            { title: 'Compete, Train + Restaurant', desc: 'From academy enrolment to tournament play in the Rohtak Cricket League, Alchemy 360 is a full sports ecosystem. Stay for a meal at the on-site restaurant after your session.' },
+            { title: 'Compete, Train + Restaurant', desc: 'From academy enrollment to tournament play in the Rohtak Cricket League, Alchemy 360 is a full sports ecosystem. Stay for a meal at the on-site restaurant after your session.' },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>
@@ -103,7 +103,6 @@ export default function SportsAcademyHaryana() {
             {[
               { label: 'Sports Academy Rohtak', to: '/sports-academy-rohtak' },
               { label: 'Best Sports Academy Rohtak', to: '/best-sports-academy-rohtak' },
-              { label: 'Cricket Academy Rohtak', to: '/cricket-academy-rohtak' },
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}

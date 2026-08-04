@@ -173,13 +173,13 @@ export default function FacilityRentals() {
           }}
         >
           <div>
-            <p className="text-white font-black text-lg">Want unlimited access?</p>
+            <p className="text-white font-black text-lg">We also offer Court Memberships</p>
             <p className="text-white/45 text-sm mt-0.5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-              Memberships starting at just a few thousand rupees a month.
+              Get the whole court to yourself for one hour every day — one flat monthly price, morning, evening or happy hours.
             </p>
           </div>
           <Link
-            to={isAuthenticated ? '/user/book-slots' : '/book-slots'}
+            to={isAuthenticated ? '/user/buy-memberships?sport=court-memberships' : '/buy-membership?sport=court-memberships'}
             className="px-6 py-2.5 rounded-xl font-bold text-sm uppercase tracking-wider transition-colors shrink-0 whitespace-nowrap"
             style={{
               background: 'rgba(245,166,35,0.1)',
@@ -187,7 +187,7 @@ export default function FacilityRentals() {
               color: '#F5A623',
             }}
           >
-            Explore Memberships →
+            View Court Memberships →
           </Link>
         </motion.div>
       </div>

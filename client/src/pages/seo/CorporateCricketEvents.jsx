@@ -6,7 +6,7 @@ import { stadiumOrArenaSchema, breadcrumbSchema, faqSchema } from '../../compone
 const faqs = [
   {
     q: 'Does Alchemy 360 organise corporate cricket events?',
-    a: 'Yes. Alchemy 360 Sports Arena specialises in corporate cricket events — from half-day team tournaments to full-day sports days with cricket, badminton, swimming, and food.',
+    a: 'Yes. Alchemy 360 Sports Arena specialises in corporate cricket events — from half-day team tournaments to full-day sports days with cricket, badminton, and food.',
   },
   {
     q: 'How many employees can participate in a corporate cricket event at Alchemy 360?',
@@ -82,7 +82,7 @@ export default function CorporateCricketEvents() {
           {[
             { title: 'End-to-End Event Management', desc: 'Ground booking, team brackets, umpires, live scoring, food service, trophy ceremony — fully managed so HR teams can relax and enjoy.' },
             { title: 'Flexible Team Sizes', desc: 'Events for 20 to 200+ employees. Multiple matches scheduled across the day with round-robin or knockout formats.' },
-            { title: 'Multi-Sport Options', desc: 'Add badminton, pickleball, or swimming to your corporate sports day. Alchemy 360\'s multi-sport facilities make full-day corporate events possible.' },
+            { title: 'Multi-Sport Options', desc: 'Add badminton, pickleball,  to your corporate sports day. Alchemy 360\'s multi-sport facilities make full-day corporate events possible.' },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>
@@ -100,7 +100,6 @@ export default function CorporateCricketEvents() {
               { label: 'Rohtak Cricket League', to: '/rohtak-cricket-league' },
               { label: 'Cricket Tournaments', to: '/cricket-tournaments-rohtak' },
               { label: 'Inter-College Cricket', to: '/inter-college-cricket-tournaments' },
-              { label: 'Cricket Stadium', to: '/cricket-stadium-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

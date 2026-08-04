@@ -43,7 +43,6 @@ const adminCommunicationRoutes = require('./routes/adminCommunicationRoutes');
 const academySettingsRoutes = require('./routes/academySettings.routes');
 const courtRoutes = require('./routes/court.routes');
 const couponRoutes = require('./routes/coupon.routes');
-const academyRoutes = require('./routes/academy.routes');
 const sessionConfigRoutes = require('./routes/sessionConfig.routes');
 const blogRoutes = require('./routes/blog.routes');
 
@@ -335,7 +334,6 @@ app.use('/api/super-admin/communication', adminCommunicationRoutes);
 app.use('/api/academy-settings', academySettingsRoutes);
 app.use('/api/courts', courtRoutes);
 app.use('/api/coupons', couponRoutes);
-app.use('/api/academy', academyRoutes);
 app.use('/api/session-config', sessionConfigRoutes);
 app.use('/api/blog', blogRoutes);
 

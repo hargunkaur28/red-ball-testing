@@ -68,18 +68,6 @@ async function seedSports() {
       twelveMonthPrice: 25000,
       active: true,
     },
-
-    {
-      name: 'All Services',
-      slug: 'all-services',
-      hourlyPrice: 0,
-      dayPrice: 1500,
-      oneMonthPrice: 4500,
-      threeMonthPrice: 10000,
-      sixMonthPrice: 17000,
-      twelveMonthPrice: 30000,
-      active: true,
-    },
   ];
 
   console.log('🌱 Starting sports seeding...');

@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'Is Alchemy 360\'s gym worth the 90-minute drive from Panipat?',
-    a: "For serious fitness enthusiasts or athletes from Panipat who want a gym within a full sports complex — with cricket, swimming, badminton, and an on-site restaurant — the answer is yes. It's a proper sports day, not just a gym session.",
+    a: "For serious fitness enthusiasts or athletes from Panipat who want a gym within a full sports complex — with cricket, badminton, and an on-site restaurant — the answer is yes. It's a proper sports day, not just a gym session.",
   },
   {
     q: 'Can Panipat gym members combine training with cricket at Alchemy 360?',
@@ -48,7 +48,7 @@ export default function GymPanipat() {
     <SEOLandingLayout>
       <SEOHead
         title="Gym Near Panipat | Alchemy 360 Sports Arena Rohtak"
-        description="Gym near Panipat — Alchemy 360 Sports Arena, Rohtak, 95 km / 90 min away. Sports-complex gymnasium, Box 360 cricket, swimming, online booking, on-site restaurant."
+        description="Gym near Panipat — Alchemy 360 Sports Arena, Rohtak, 95 km / 90 min away. Sports-complex gymnasium, Box 360 cricket, online booking, on-site restaurant."
         canonical="/gym-panipat"
         schema={schema}
       />
@@ -84,7 +84,7 @@ export default function GymPanipat() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: 'NH-44 from Panipat', desc: 'Panipat to Rohtak via NH-44 is a well-known intercity route. Alchemy 360 is near Omaxe, Sector 22-D — plan an early start for a full day of training.' },
-            { title: 'Athletes\' Environment', desc: 'The Alchemy 360 gym sits alongside Box 360 cricket, badminton courts, and a swimming pool — the kind of multi-sport environment that fuels serious Panipat athletes.' },
+            { title: 'Athletes\' Environment', desc: 'The Alchemy 360 gym sits alongside Box 360 cricket, badminton courts — the kind of multi-sport environment that fuels serious Panipat athletes.' },
             { title: 'Dine Before You Drive', desc: "Alchemy 360's on-site restaurant is the natural stop after a training session before Panipat visitors head back on NH-44. Good food, no guesswork." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
@@ -101,9 +101,7 @@ export default function GymPanipat() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Gym Rohtak', to: '/gym-rohtak' },
-              { label: 'Cricket Ground Panipat', to: '/cricket-ground-panipat' },
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
-              { label: 'Swimming Pool Rohtak', to: '/swimming-pool-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

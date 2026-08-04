@@ -21,6 +21,11 @@ const orderSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  customerEmail: {
+    type: String,
+    trim: true,
+    lowercase: true,
+  },
   orderType: {
     type: String,
     enum: ['table', 'delivery', 'pickup'],

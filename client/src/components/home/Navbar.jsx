@@ -12,12 +12,9 @@ const navLinks = [
 ];
 
 const dropdownSports = [
-  { label: 'Box Cricket', href: '/sports/box-cricket', color: '#C5DB3B' },
-  { label: 'Swimming', href: '/sports/swimming', color: '#0EA5E9' },
   { label: 'Badminton', href: '/sports/badminton', color: '#8B5CF6' },
   { label: 'Gym', href: '/sports/gym', color: '#F59E0B' },
   { label: 'Pickleball', href: '/sports/pickleball', color: '#A855F7' },
-  { label: 'All Services', href: '/sports/all-services', color: '#F5A623' },
 ];
 
 const parseBgColor = (colorStr) => {
@@ -329,23 +326,25 @@ export default function Navbar({ hideLogo = false }) {
               </Link>
             );
           })}
-          {/* Kids Academy — mobile only */}
-          <Link
-            to="/kids-sports-academy-rohtak"
-            onClick={() => setDrawerOpen(false)}
-            className="text-xl py-3 border-b border-white/5 transition-all duration-250 flex items-center gap-2"
-            style={{
-              fontFamily: "'Bebas Neue', sans-serif",
-              letterSpacing: '2px',
-              color: '#D6E86B',
-              animationDelay: drawerOpen ? `${navLinks.length * 60}ms` : '0ms',
-              opacity: drawerOpen ? 1 : 0,
-              transform: drawerOpen ? 'translateX(0)' : 'translateX(24px)',
-              transition: `opacity 250ms ease ${navLinks.length * 60}ms, transform 250ms ease ${navLinks.length * 60}ms`,
-            }}
-          >
-            Kids Academy
-          </Link>
+
+          {/* Dashboard — mobile drawer only, and only once signed in */}
+          {isAuthenticated && (
+            <Link
+              to="/user"
+              onClick={() => setDrawerOpen(false)}
+              className="text-xl py-3 border-b border-white/5 transition-all duration-250"
+              style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                letterSpacing: '2px',
+                color: '#C5DB3B',
+                opacity: drawerOpen ? 1 : 0,
+                transform: drawerOpen ? 'translateX(0)' : 'translateX(24px)',
+                transition: `opacity 250ms ease ${navLinks.length * 60}ms, transform 250ms ease ${navLinks.length * 60}ms`,
+              }}
+            >
+              Dashboard
+            </Link>
+          )}
         </nav>
 
         {/* Drawer CTAs */}

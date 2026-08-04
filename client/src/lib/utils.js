@@ -5,6 +5,12 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
+// Every session is advertised to members as one hour, whatever the admin sets as
+// the real allowance. The configured value (currently 75 min) stays the billing
+// figure server-side — it acts as a grace buffer — but members always see 60 so
+// the promise is consistent regardless of how the config is tuned.
+export const DISPLAY_SESSION_MINUTES = 60;
+
 export function formatCurrency(amount) {
   const hasDecimal = amount % 1 !== 0;
   return new Intl.NumberFormat('en-IN', {

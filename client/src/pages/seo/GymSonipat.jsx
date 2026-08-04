@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: 'What makes Alchemy 360\'s gym different from local gyms in Sonipat?',
-    a: "Alchemy 360's gym is embedded in a multi-sport complex. Sonipat members get access to cricket, swimming, badminton, and pickleball alongside their training — it's a full sports lifestyle, not just a workout room.",
+    a: "Alchemy 360's gym is embedded in a multi-sport complex. Sonipat members get access to cricket, badminton, and pickleball alongside their training — it's a full sports lifestyle, not just a workout room.",
   },
   {
     q: 'Can I do both gym and cricket on the same trip from Sonipat?',
@@ -48,7 +48,7 @@ export default function GymSonipat() {
     <SEOLandingLayout>
       <SEOHead
         title="Gym Near Sonipat | Alchemy 360 Sports Arena Rohtak"
-        description="Gym near Sonipat — Alchemy 360 Sports Arena, Rohtak, 55 km / 55 min away. Sports-complex gymnasium, memberships, cricket, swimming & more in one facility."
+        description="Gym near Sonipat — Alchemy 360 Sports Arena, Rohtak, 55 km / 55 min away. Sports-complex gymnasium, memberships, cricket & more in one facility."
         canonical="/gym-sonipat"
         schema={schema}
       />
@@ -79,7 +79,7 @@ export default function GymSonipat() {
           Train at Rohtak's Best Sports Complex — From Sonipat
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Sonipat has a solid sporting culture, and Alchemy 360 Sports Arena in Rohtak is increasingly where Sonipat athletes and fitness enthusiasts go when they want to step up their game. The gym is well-equipped and sits within a complex that also houses Box 360 cricket, an open-air swimming pool, badminton courts, and pickleball. Sonipat members who visit Alchemy 360 regularly often structure their visit around multiple activities, making the hour-long commute feel efficient and well-spent.
+          Sonipat has a solid sporting culture, and Alchemy 360 Sports Arena in Rohtak is increasingly where Sonipat athletes and fitness enthusiasts go when they want to step up their game. The gym is well-equipped and sits within a complex that also houses Box 360 cricket, badminton courts, and pickleball. Sonipat members who visit Alchemy 360 regularly often structure their visit around multiple activities, making the hour-long commute feel efficient and well-spent.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -101,9 +101,7 @@ export default function GymSonipat() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Gym Rohtak', to: '/gym-rohtak' },
-              { label: 'Cricket Ground Sonipat', to: '/cricket-ground-sonipat' },
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
-              { label: 'Swimming Pool Rohtak', to: '/swimming-pool-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

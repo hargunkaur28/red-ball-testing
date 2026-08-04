@@ -4,8 +4,6 @@ import toast from 'react-hot-toast';
 import { useAcademyInfo } from '../../hooks/useAcademyInfo';
 
 const programs = [
-  { label: 'Box Cricket', to: '/sports/box-cricket' },
-  { label: 'Swimming', to: '/sports/swimming' },
   { label: 'Badminton', to: '/sports/badminton' },
   { label: 'Pickleball', to: '/sports/pickleball' },
   { label: 'Gym & Fitness', to: '/sports/gym' },
@@ -22,10 +20,8 @@ const quickLinks = [
 const seoLinks = [
   { label: 'Sports Academy Rohtak', to: '/sports-academy-rohtak' },
   { label: 'Stadium in Rohtak', to: '/stadium-in-rohtak' },
-  { label: 'Cricket Academy Rohtak', to: '/cricket-academy-rohtak' },
   { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },
   { label: 'Gym in Rohtak', to: '/gym-in-rohtak' },
-  { label: "Kids' Sports Academy", to: '/kids-sports-academy-rohtak' },
 ];
 
 // Instagram SVG

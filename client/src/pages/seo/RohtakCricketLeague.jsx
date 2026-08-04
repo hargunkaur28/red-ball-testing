@@ -127,9 +127,6 @@ export default function RohtakCricketLeague() {
           <p className="text-white/60 text-sm md:text-base max-w-2xl leading-relaxed mb-5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             Alongside the main cricket ground, Alchemy 360 features Box 360 — a unique circular box cricket format available 24/7. It's the first of its kind in Rohtak, offering a fast, high-intensity game format perfect for practice or a quick competitive match at any hour.
           </p>
-          <Link to="/box-cricket-rohtak" className="inline-block border border-white/30 text-white font-bold px-5 py-2.5 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Learn About Box 360
-          </Link>
         </div>
       </section>
 
@@ -141,9 +138,6 @@ export default function RohtakCricketLeague() {
               { label: 'Cricket Tournaments', to: '/cricket-tournaments-rohtak' },
               { label: 'Corporate Cricket', to: '/corporate-cricket-events' },
               { label: 'Inter-College Cricket', to: '/inter-college-cricket-tournaments' },
-              { label: 'Box Cricket Rohtak', to: '/box-cricket-rohtak' },
-              { label: 'Cricket Ground', to: '/cricket-ground-rohtak' },
-              { label: 'Cricket Academy', to: '/cricket-academy-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

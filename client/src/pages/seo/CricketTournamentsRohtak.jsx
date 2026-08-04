@@ -33,7 +33,6 @@ const faqs = [
 const schema = [
   stadiumOrArenaSchema,
   breadcrumbSchema([
-    { name: 'Cricket Ground Rohtak', path: '/cricket-ground-rohtak' },
     { name: 'Cricket Tournaments Rohtak', path: '/cricket-tournaments-rohtak' },
   ]),
   faqSchema(faqs),
@@ -100,8 +99,6 @@ export default function CricketTournamentsRohtak() {
               { label: 'Rohtak Cricket League', to: '/rohtak-cricket-league' },
               { label: 'Corporate Cricket', to: '/corporate-cricket-events' },
               { label: 'Inter-College Cricket', to: '/inter-college-cricket-tournaments' },
-              { label: 'Cricket Ground', to: '/cricket-ground-rohtak' },
-              { label: 'Cricket Stadium', to: '/cricket-stadium-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

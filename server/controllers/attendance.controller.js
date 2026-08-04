@@ -50,9 +50,7 @@ exports.getActiveSessions = async (req, res) => {
     // Get entitlement info for context
     const entitlement = await calculateEntitlement(req.user.userId);
 
-    const remainingSlots = entitlement.isAllServices
-      ? null
-      : Math.max(0, entitlement.concurrentSessionLimit - enrichedSessions.length);
+    const remainingSlots = Math.max(0, entitlement.concurrentSessionLimit - enrichedSessions.length);
 
     res.json({
       activeSessions: enrichedSessions,
@@ -84,9 +82,7 @@ exports.getEntitlementStatus = async (req, res) => {
       .select('sport sportId checkInTime sessionStatus allowedDurationMinutes entitlementType')
       .sort({ checkInTime: -1 });
 
-    const remainingSlots = entitlement.isAllServices
-      ? null
-      : Math.max(0, entitlement.concurrentSessionLimit - activeSessions.length);
+    const remainingSlots = Math.max(0, entitlement.concurrentSessionLimit - activeSessions.length);
 
     res.json({
       entitlement: {
@@ -209,11 +205,10 @@ exports.checkIn = async (req, res) => {
       matchingMembership = entitlement.activeMemberships.find(m => {
         const plan = m.planId;
         if (!plan) return false;
-        if (plan.isAllServices) return true;
         const includedKeys = (plan.sportsIncluded || []).map(s => (s || '').trim().toLowerCase());
         const sportSlug = sportDoc?.slug || (sport || '').trim().toLowerCase();
         const sportName = sportDoc?.name?.toLowerCase() || (sport || '').trim().toLowerCase();
-        return includedKeys.some(k => k === 'all' || k === 'all-services' || k === sportSlug || k === sportName);
+        return includedKeys.some(k => k === sportSlug || k === sportName);
       });
       if (!matchingMembership) matchingMembership = entitlement.activeMemberships[0];
     }

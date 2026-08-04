@@ -63,7 +63,7 @@ export default function PickleballCourtRohtak() {
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Pickleball Court
             </Link>
-            <Link to="/buy-membership" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership?sport=pickleball" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Get a Membership
             </Link>
           </div>
@@ -98,8 +98,6 @@ export default function PickleballCourtRohtak() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Courts', to: '/badminton-court-rohtak' },
-              { label: 'Box Cricket', to: '/box-cricket-rohtak' },
-              { label: 'Swimming Pool', to: '/swimming-pool-rohtak' },
               { label: 'Gym', to: '/gym-in-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}

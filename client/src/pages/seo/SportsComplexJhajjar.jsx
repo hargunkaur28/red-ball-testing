@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a sports complex near Jhajjar?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is the nearest multi-sport complex to Jhajjar — just 25 km away on Jhajjar Road, approximately 25 minutes by car. It offers cricket, badminton, pickleball, swimming, a gym, and a restaurant all in one facility.',
+    a: 'Alchemy 360 Sports Arena in Rohtak is the nearest multi-sport complex to Jhajjar — just 25 km away on Jhajjar Road, approximately 25 minutes by car. It offers cricket, badminton, pickleball, a gym, and a restaurant all in one facility.',
   },
   {
     q: 'How far is Alchemy 360 Sports Arena from Jhajjar?',
@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'Which sports are available at Alchemy 360 for Jhajjar visitors?',
-    a: 'Cricket (Box 360 circular box cricket + open ground), badminton, pickleball, open-air swimming pool, and a fully equipped gymnasium — all under one roof at Alchemy 360 Sports Arena, Rohtak.',
+    a: 'Cricket (Box 360 circular box cricket + open ground), badminton, pickleball, and a fully equipped gymnasium — all under one roof at Alchemy 360 Sports Arena, Rohtak.',
   },
   {
     q: 'Can Jhajjar families visit Alchemy 360 for a sports day?',
@@ -47,7 +47,7 @@ export default function SportsComplexJhajjar() {
     <SEOLandingLayout>
       <SEOHead
         title="Sports Complex Near Jhajjar | Alchemy 360 Sports Arena Rohtak"
-        description="Best sports complex near Jhajjar — Alchemy 360 Sports Arena in Rohtak, just 25 km away. Cricket, badminton, pickleball, swimming, gym & restaurant under one roof."
+        description="Best sports complex near Jhajjar — Alchemy 360 Sports Arena in Rohtak, just 25 km away. Cricket, badminton, pickleball, gym & restaurant under one roof."
         canonical="/sports-complex-jhajjar"
         schema={schema}
       />
@@ -61,7 +61,7 @@ export default function SportsComplexJhajjar() {
             Sports Complex Near Jhajjar
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak is Jhajjar's nearest proper sports complex — just 25 km on Jhajjar Road, about 25 minutes away. Cricket, badminton, pickleball, a swimming pool, a gym, and an on-site restaurant — all the sports infrastructure Jhajjar residents need, right next door.
+            Alchemy 360 Sports Arena in Rohtak is Jhajjar's nearest proper sports complex — just 25 km on Jhajjar Road, about 25 minutes away. Cricket, badminton, pickleball, a gym, and an on-site restaurant — all the sports infrastructure Jhajjar residents need, right next door.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -84,7 +84,7 @@ export default function SportsComplexJhajjar() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: 'Direct on Jhajjar Road', desc: 'Alchemy 360 is located at Sector 22-D, Jhajjar Road, Rohtak — you pass right by it on the main Jhajjar–Rohtak route. No detour, no hassle.' },
-            { title: '5 Sports Under One Roof', desc: 'Cricket (Box 360 + open ground), badminton, pickleball, open-air swimming pool, and a full gymnasium — the most complete sports facility accessible from Jhajjar.' },
+            { title: '5 Sports Under One Roof', desc: 'Cricket (Box 360 + open ground), badminton, pickleball, and a full gymnasium — the most complete sports facility accessible from Jhajjar.' },
             { title: 'Sports + Dining', desc: "Alchemy 360's on-site restaurant means Jhajjar families and teams can have a full day out without leaving the complex — play, swim, train, and eat all in one place." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
@@ -101,7 +101,6 @@ export default function SportsComplexJhajjar() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
-              { label: 'Cricket Ground Jhajjar', to: '/cricket-ground-jhajjar' },
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
             ].map(item => (

@@ -115,6 +115,7 @@ exports.create = async (req, res) => {
       customerId: req.user ? req.user.userId : customerId,
       customerName,
       customerPhone,
+      customerEmail: (req.user?.email || req.body.customerEmail || '').toLowerCase().trim(),
       orderType: normalizedOrderType,
       deliveryAddress,
       deliveryLocation,
@@ -266,12 +267,30 @@ exports.cancelOrder = async (req, res) => {
 // ── GET /api/orders/my-orders ──────────────────────────────────────────────────
 exports.getCustomerOrders = async (req, res) => {
   try {
-    // Phone is a fallback for guest/table orders placed without logging in, so it
-    // is scoped to orders that were never claimed by an account. Phone numbers are
-    // not unique on User, so an unscoped match leaks a second account's orders to
-    // anyone who signed up with the same number.
-    const filter = { $or: [{ customerId: req.user.userId }] };
-    if (req.user.phone) filter.$or.push({ customerPhone: req.user.phone, customerId: null });
+    const userEmail = (req.user?.email || '').toLowerCase().trim();
+    const userPhone = req.user?.phone;
+    const filter = {
+      $or: [
+        { customerId: req.user.userId },
+      ],
+    };
+
+    if (userEmail) {
+      filter.$or.push({ customerEmail: userEmail });
+    }
+
+    if (userPhone) {
+      filter.$or.push({
+        customerPhone: userPhone,
+        $or: [
+          { customerEmail: { $exists: false } },
+          { customerEmail: '' },
+          { customerEmail: null },
+          { customerEmail: userEmail },
+        ],
+      });
+    }
+
     const orders = await Order.find(filter).populate('tableId', 'label').sort({ createdAt: -1 });
     res.json({ orders });
   } catch (error) {
@@ -506,6 +525,7 @@ exports.createDirect = async (req, res) => {
       customerId: effectiveCustomerId,
       customerName,
       customerPhone,
+      customerEmail: (req.user?.email || req.body.customerEmail || '').toLowerCase().trim(),
       orderType: normalizedOrderType,
       deliveryAddress,
       deliveryLocation,

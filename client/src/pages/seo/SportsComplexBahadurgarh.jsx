@@ -6,15 +6,11 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a sports complex near Bahadurgarh?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is the nearest multi-sport complex to Bahadurgarh — approximately 45 km, about 40 minutes on NH-334B. It offers cricket, badminton, pickleball, swimming, a gym, and an on-site restaurant.',
+    a: 'Alchemy 360 Sports Arena in Rohtak is the nearest multi-sport complex to Bahadurgarh — approximately 45 km, about 40 minutes on NH-334B. It offers cricket, badminton, pickleball, a gym, and an on-site restaurant.',
   },
   {
     q: 'How long does it take to drive from Bahadurgarh to Alchemy 360?',
     a: 'The drive from Bahadurgarh to Alchemy 360 Sports Arena in Rohtak takes approximately 40 minutes on NH-334B. The facility is at Sector 22-D, Jhajjar Road, Rohtak.',
-  },
-  {
-    q: 'Does Alchemy 360 have a swimming pool?',
-    a: 'Yes. Alchemy 360 Sports Arena has an open-air swimming pool — one of the best-maintained pools accessible from Bahadurgarh. Swimming sessions and memberships are available.',
   },
   {
     q: 'Can Bahadurgarh corporate groups book multiple sports facilities?',
@@ -47,7 +43,7 @@ export default function SportsComplexBahadurgarh() {
     <SEOLandingLayout>
       <SEOHead
         title="Sports Complex Near Bahadurgarh | Alchemy 360 Sports Arena Rohtak"
-        description="Sports complex near Bahadurgarh — Alchemy 360 Sports Arena in Rohtak, ~45 km, 40 min drive. Cricket, badminton, pickleball, swimming pool, gym & restaurant."
+        description="Sports complex near Bahadurgarh — Alchemy 360 Sports Arena in Rohtak, ~45 km, 40 min drive. Cricket, badminton, pickleball, gym & restaurant."
         canonical="/sports-complex-bahadurgarh"
         schema={schema}
       />
@@ -79,12 +75,11 @@ export default function SportsComplexBahadurgarh() {
           Skip Delhi — Rohtak's Alchemy 360 Has It All
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Bahadurgarh sits on the edge of Delhi, but heading west to Rohtak for sports is often faster and far less stressful than navigating Delhi's traffic. Alchemy 360 Sports Arena at Sector 22-D, Jhajjar Road, Rohtak is a 40-minute drive with no major congestion — and the facility genuinely competes with the best Delhi has to offer. Cricket, badminton, pickleball, a swimming pool, a full gym, and an on-site restaurant — all accessible, all bookable online.
+          Bahadurgarh sits on the edge of Delhi, but heading west to Rohtak for sports is often faster and far less stressful than navigating Delhi's traffic. Alchemy 360 Sports Arena at Sector 22-D, Jhajjar Road, Rohtak is a 40-minute drive with no major congestion — and the facility genuinely competes with the best Delhi has to offer. Cricket, badminton, pickleball, a full gym, and an on-site restaurant — all accessible, all bookable online.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: 'Rohtak Over Delhi', desc: 'From Bahadurgarh, Rohtak is faster and easier than Delhi. Alchemy 360 gives you the same quality facilities without the capital\'s traffic and parking nightmare.' },
-            { title: 'Cricket + Swimming + Gym', desc: 'Bring the whole family — one plays cricket, another swims, another hits the gym. Alchemy 360 covers all bases for Bahadurgarh families wanting proper sports access.' },
             { title: 'Lunch on-site', desc: "Alchemy 360's on-site restaurant means you can eat between sessions or after — no need to search for food on the Bahadurgarh–Rohtak highway." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
@@ -101,8 +96,6 @@ export default function SportsComplexBahadurgarh() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
-              { label: 'Cricket Ground Bahadurgarh', to: '/cricket-ground-bahadurgarh' },
-              { label: 'Swimming Pool Rohtak', to: '/swimming-pool-rohtak' },
               { label: 'Football Ground Bahadurgarh', to: '/football-ground-bahadurgarh' },
             ].map(item => (
               <Link key={item.label} to={item.to}

@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is Alchemy 360 Sports Arena a full stadium in Rohtak?',
-    a: 'Alchemy 360 Sports Arena is a modern multi-sport complex in Rohtak with floodlit courts, a covered box cricket ground, swimming pool, gym, and sports facilities — comparable to a community sports stadium.',
+    a: 'Alchemy 360 Sports Arena is a modern multi-sport complex in Rohtak with floodlit courts, a covered box cricket ground, gym, and sports facilities — comparable to a community sports stadium.',
   },
   {
     q: 'Can I rent the sports complex for tournaments or events?',
@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'What facilities are available at the arena?',
-    a: 'The arena has box cricket grounds, badminton courts, pickleball courts, a swimming pool, a modern gym, a restaurant, and a kids sports zone.',
+    a: 'The arena has box cricket grounds, badminton courts, pickleball courts, a modern gym, a restaurant, and a kids sports zone.',
   },
   {
     q: 'Is the ground available for early morning sessions?',
@@ -41,7 +41,7 @@ export default function StadiumInRohtak() {
     <SEOLandingLayout>
       <SEOHead
         title="Stadium in Rohtak | Alchemy 360 Sports Arena & Complex"
-        description="Looking for a stadium or sports complex in Rohtak? Alchemy 360 Sports Arena offers world-class facilities — box cricket, badminton, swimming, gym & pickleball. Book online today."
+        description="Looking for a stadium or sports complex in Rohtak? Alchemy 360 Sports Arena offers world-class facilities — box cricket, badminton, gym & pickleball. Book online today."
         canonical="/stadium-in-rohtak"
         schema={schema}
       />
@@ -76,12 +76,9 @@ export default function StadiumInRohtak() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
-            { title: 'Box Cricket Ground', desc: 'Covered, floodlit box cricket pitch with professional surface. Ideal for matches, practice, and tournaments.', link: '/box-cricket-rohtak' },
             { title: 'Badminton Courts', desc: 'Multiple wooden-floored badminton courts with lighting for daytime and evening sessions.', link: '/badminton-court-rohtak' },
             { title: 'Pickleball Courts', desc: 'Dedicated pickleball courts in Rohtak — a growing sport with limited venues in Haryana.', link: '/pickleball-court-rohtak' },
-            { title: 'Swimming Pool', desc: 'Clean, maintained swimming pool open year-round. Instructor-led sessions available.', link: '/swimming-pool-rohtak' },
             { title: 'Gym & Fitness Centre', desc: 'Modern gym with weights, cardio machines, and strength equipment.', link: '/gym-in-rohtak' },
-            { title: "Kids' Sports Zone", desc: 'Safe, structured sports environment for children. Coaching in cricket and badminton.', link: '/kids-sports-academy-rohtak' },
           ].map(item => (
             <Link key={item.title} to={item.link} className="border border-black/10 rounded-xl p-5 hover:border-[#C5DB3B]/40 hover:shadow-sm transition-all group">
               <h3 className="font-bold text-[#0D0D0D] mb-2 group-hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>

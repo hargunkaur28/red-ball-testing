@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, CreditCard, CheckCircle2, Loader2, User, Mail, Phone,
-  Sparkles, ShieldCheck, Check, Zap, Crown, Dumbbell, Plus, GraduationCap
+  Sparkles, ShieldCheck, Check, Zap, Crown, Dumbbell, Plus
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
@@ -31,18 +31,7 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
   const basePrice = plan?.price || 0;
   const trainingPrice = plan?.trainingPrice || 0;
 
-  // Kids Academy admission fee check
-  const isKidsAcademy = !!plan?.isKidsAcademy;
-  const { data: admissionData } = useQuery({
-    queryKey: ['academy-admission-status', sport?._id],
-    queryFn: () => api.get('/academy/admission-status', { params: { sportId: sport._id } }).then((r) => r.data),
-    enabled: isKidsAcademy && isAuthenticated && !!sport?._id && isOpen,
-    staleTime: 60_000,
-  });
-  const admissionAlreadyPaid = admissionData?.admissionPaid === true;
-  const admissionFee = isKidsAcademy && !admissionAlreadyPaid ? (plan?.admissionFeeAmount || 0) : 0;
-
-  const totalPrice = basePrice + (withTraining ? trainingPrice : 0) + admissionFee;
+  const totalPrice = basePrice + (withTraining ? trainingPrice : 0);
 
   // Reset training option when modal opens/plan changes
   useEffect(() => {
@@ -127,7 +116,6 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
       const { data: orderRes } = await api.post('/memberships/public-purchase', {
         planId: plan._id,
         withTraining: trainingAvailable && withTraining,
-        ...(isKidsAcademy && sport?._id ? { sportId: sport._id } : {}),
         customerDetails: isAuthenticated ? {
           name: user.name,
           email: user.email,
@@ -313,24 +301,6 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
                         <span className="text-white/50">{plan?.duration} Pass</span>
                         <span className="text-white font-semibold">{formatCurrency(basePrice)}</span>
                       </div>
-                      {admissionFee > 0 && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-white/50 flex items-center gap-1.5">
-                            <GraduationCap size={12} className="text-violet-400" />
-                            Admission Fee <span className="text-white/30 text-[10px]">(one-time)</span>
-                          </span>
-                          <span className="text-white font-semibold">+{formatCurrency(admissionFee)}</span>
-                        </div>
-                      )}
-                      {admissionAlreadyPaid && isKidsAcademy && (
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-white/50 flex items-center gap-1.5">
-                            <Check size={12} className="text-green-400" />
-                            Admission Fee
-                          </span>
-                          <span className="text-green-400 font-semibold text-xs">Already paid</span>
-                        </div>
-                      )}
                       {withTraining && trainingAvailable && (
                         <div className="flex justify-between items-center text-sm">
                           <span className="text-white/50 flex items-center gap-1.5"><Dumbbell size={12} className="text-[#C5DB3B]" /> Training Add-on</span>

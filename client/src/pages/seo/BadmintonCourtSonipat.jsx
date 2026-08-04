@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'What else can Sonipat visitors do at Alchemy 360 besides badminton?',
-    a: "Sonipat visitors often combine badminton with other facilities at Alchemy 360 — the open-air swimming pool, the gymnasium, Box 360 box cricket, and the on-site restaurant make it a full day out.",
+    a: "Sonipat visitors often combine badminton with other facilities at Alchemy 360 — the gymnasium, Box 360 box cricket, and the on-site restaurant make it a full day out.",
   },
 ];
 
@@ -79,7 +79,7 @@ export default function BadmintonCourtSonipat() {
           Worth the Drive from Sonipat
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Sonipat players looking for serious badminton infrastructure often find that Alchemy 360 Sports Arena in Rohtak fills the gap. The courts are professionally lit and maintained, the booking process is entirely online, and the wider facility — with its swimming pool, gym, and Box 360 cricket — means a trip to Alchemy 360 rarely feels like just one sport. Groups from Sonipat regularly book multiple courts for club sessions on weekends.
+          Sonipat players looking for serious badminton infrastructure often find that Alchemy 360 Sports Arena in Rohtak fills the gap. The courts are professionally lit and maintained, the booking process is entirely online, and the wider facility — with its gym and Box 360 cricket — means a trip to Alchemy 360 rarely feels like just one sport. Groups from Sonipat regularly book multiple courts for club sessions on weekends.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -101,9 +101,7 @@ export default function BadmintonCourtSonipat() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },
-              { label: 'Cricket Ground Sonipat', to: '/cricket-ground-sonipat' },
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
-              { label: 'Swimming Pool Rohtak', to: '/swimming-pool-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

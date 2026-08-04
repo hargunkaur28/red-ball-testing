@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is Alchemy 360 Sports Arena in Rohtak worth visiting for gym from Gurgaon?',
-    a: 'For Gurgaon fitness enthusiasts who want a multi-sport experience beyond a city gym, yes. Alchemy 360 is 90 km and 90 minutes from Gurgaon — a full sports complex with gym, cricket, swimming, badminton, and an on-site restaurant.',
+    a: 'For Gurgaon fitness enthusiasts who want a multi-sport experience beyond a city gym, yes. Alchemy 360 is 90 km and 90 minutes from Gurgaon — a full sports complex with gym, cricket, badminton, and an on-site restaurant.',
   },
   {
     q: 'How do I drive from Gurgaon to Alchemy 360 Sports Arena?',
@@ -48,7 +48,7 @@ export default function GymGurgaon() {
     <SEOLandingLayout>
       <SEOHead
         title="Gym Near Gurgaon | Alchemy 360 Sports Arena Rohtak"
-        description="Gym near Gurgaon — Alchemy 360 Sports Arena, Rohtak, 90 km / 90 min away. Sports-complex gym, Box 360 cricket, swimming pool, online booking, on-site restaurant."
+        description="Gym near Gurgaon — Alchemy 360 Sports Arena, Rohtak, 90 km / 90 min away. Sports-complex gym, Box 360 cricket, online booking, on-site restaurant."
         canonical="/gym-gurgaon"
         schema={schema}
       />
@@ -79,7 +79,7 @@ export default function GymGurgaon() {
           Trade Your City Gym for a Sports Complex Weekend
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Gurgaon gym-goers who visit Alchemy 360 Sports Arena in Rohtak consistently describe it as a reset from the corporate fitness routine. The gym is in a real sports facility — Box 360 circular cricket, open-air swimming, badminton, and pickleball are all available on the same visit. The 90-minute highway run from Gurgaon on NH-148B is smooth on weekend mornings, and by the time you're done training and eating at the on-site restaurant, you'll understand why Gurgaon visitors make this a regular trip.
+          Gurgaon gym-goers who visit Alchemy 360 Sports Arena in Rohtak consistently describe it as a reset from the corporate fitness routine. The gym is in a real sports facility — Box 360 circular cricket, badminton, and pickleball are all available on the same visit. The 90-minute highway run from Gurgaon on NH-148B is smooth on weekend mornings, and by the time you're done training and eating at the on-site restaurant, you'll understand why Gurgaon visitors make this a regular trip.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -101,9 +101,7 @@ export default function GymGurgaon() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Gym Rohtak', to: '/gym-rohtak' },
-              { label: 'Cricket Ground Gurgaon', to: '/cricket-ground-gurgaon' },
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
-              { label: 'Swimming Pool Rohtak', to: '/swimming-pool-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

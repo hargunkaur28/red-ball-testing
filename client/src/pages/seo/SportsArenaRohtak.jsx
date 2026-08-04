@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'What is Alchemy 360 Sports Arena in Rohtak?',
-    a: 'Alchemy 360 Sports Arena is a multi-sport facility in Rohtak, Haryana, offering box cricket, badminton, pickleball, swimming, gym, and a kids sports academy — all in one location.',
+    a: 'Alchemy 360 Sports Arena is a multi-sport facility in Rohtak, Haryana, offering box cricket, badminton, pickleball, gym, and a kids sports academy — all in one location.',
   },
   {
     q: 'Can I play without a membership at the sports arena?',
@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'Are there coaches available at Alchemy 360 Sports Arena?',
-    a: 'Yes. Experienced coaches are available for badminton, cricket, and swimming. You can request coaching sessions when booking your slot.',
+    a: 'Yes. Experienced coaches are available for badminton, cricket. You can request coaching sessions when booking your slot.',
   },
   {
     q: 'How do I reach Alchemy 360 Sports Arena in Rohtak?',
@@ -69,16 +69,13 @@ export default function SportsArenaRohtak() {
           Play Every Sport, All in One Place
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Alchemy 360 Sports Arena in Rohtak is designed to be the city's go-to sports destination. Whether you love cricket, prefer racquet sports, enjoy swimming laps, or want to lift weights — you'll find it all here with professional-grade equipment and expert coaching.
+          Alchemy 360 Sports Arena in Rohtak is designed to be the city's go-to sports destination. Whether you love cricket, prefer racquet sports, or want to lift weights — you'll find it all here with professional-grade equipment and expert coaching.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {[
-            { label: '🏏 Box Cricket', to: '/box-cricket-rohtak' },
             { label: '🏸 Badminton', to: '/badminton-court-rohtak' },
             { label: '🥒 Pickleball', to: '/pickleball-court-rohtak' },
-            { label: '🏊 Swimming', to: '/swimming-pool-rohtak' },
             { label: '🏋️ Gym', to: '/gym-in-rohtak' },
-            { label: "👦 Kids' Academy", to: '/kids-sports-academy-rohtak' },
           ].map(item => (
             <Link key={item.label} to={item.to}
               className="border border-black/10 rounded-xl p-4 text-center text-sm font-semibold text-[#0D0D0D] hover:border-[#C5DB3B]/50 hover:text-[#C5DB3B] transition-all"

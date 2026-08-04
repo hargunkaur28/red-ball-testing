@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, Crown, Sparkles } from 'lucide-react';
+import { Check, Crown, Sparkles, Clock } from 'lucide-react';
 import MembershipBookingModal from './MembershipBookingModal';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/axios';
 import { formatCurrency } from '../../lib/utils';
 import useAuthStore from '../../store/authStore';
+
+const fmtBandTime = (hhmm) => {
+  if (!hhmm) return '';
+  const [h, m] = hhmm.split(':').map(Number);
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
+};
 
 const DURATION_LABEL = {
   '1 Month': { short: '1 Month', badge: null },
@@ -37,8 +43,6 @@ export default function MembershipPlanCard({ plan, index = 0 }) {
     if (!['active', 'pending', 'frozen'].includes(m.status)) return false;
     // Direct plan match
     if (m.planId?._id === plan._id || m.planId === plan._id) return true;
-    // All-services membership covers every sport
-    if (m.planId?.isAllServices) return true;
     // Membership whose sportsIncluded overlaps with this plan's sports
     const mSports = (m.planId?.sportsIncluded || []).map(s => (s || '').trim().toLowerCase());
     return currentPlanSports.length > 0 && mSports.some(s => currentPlanSports.includes(s));
@@ -95,6 +99,17 @@ export default function MembershipPlanCard({ plan, index = 0 }) {
             </span>
           </div>
           <p className="text-white font-black text-xl leading-tight pr-4">{plan.name}</p>
+          {plan.isCourtMembership && plan.courtBand?.startTime && (
+            <div
+              className="inline-flex items-center gap-1.5 mt-2 px-2 py-1 rounded-lg"
+              style={{ background: 'rgba(197,219,59,0.1)', border: '1px solid rgba(197,219,59,0.22)' }}
+            >
+              <Clock size={10} className="text-[#C5DB3B]" />
+              <span className="text-[10px] font-bold text-[#C5DB3B]">
+                {fmtBandTime(plan.courtBand.startTime)} – {fmtBandTime(plan.courtBand.endTime)}
+              </span>
+            </div>
+          )}
         </div>
         <div className="flex items-end gap-2">
           <p

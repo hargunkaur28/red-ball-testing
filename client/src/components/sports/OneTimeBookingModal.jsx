@@ -1,8 +1,8 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  X, CreditCard, CheckCircle2, Loader2, User, Mail, Phone,
+  X, CreditCard, CheckCircle2, Loader2,
   ShieldCheck, Check, Calendar, Building2, Clock, ChevronLeft,
   Tag, AlertTriangle, Zap, Ticket, Crown,
 } from 'lucide-react';
@@ -42,23 +42,42 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
   const { user, isAuthenticated, checkAuth, clearPendingEntryIntent, googleAuth } = useAuthStore();
 
   // Check if user has an active membership covering this sport
+  const userId = user?.id || user?._id;
   const { data: membershipData } = useQuery({
-    queryKey: ['my-membership', user?.id],
-    queryFn: () => api.get(`/memberships/${user.id}`).then((r) => r.data),
-    enabled: !!user?.id && isAuthenticated && isOpen,
-    staleTime: 60_000,
+    queryKey: ['my-membership', userId],
+    queryFn: () => api.get(`/memberships/${userId}`).then((r) => r.data),
+    enabled: !!userId && isAuthenticated && isOpen,
+    staleTime: 30_000,
   });
-  const activeMembership = (membershipData?.memberships || (membershipData?.membership ? [membershipData.membership] : []))
-    .find((m) => m.status === 'active' && new Date(m.endDate) > new Date());
-  const membershipCoversSport = (() => {
-    if (!activeMembership || !sport) return false;
-    const plan = activeMembership.planId;
-    if (!plan) return false;
-    if (plan.isAllServices) return true;
-    const keys = (plan.sportsIncluded || []).map((k) => (k || '').trim().toLowerCase());
-    const isAllKey = (k) => k === 'all' || k === 'all-services';
-    return keys.some((k) => isAllKey(k) || k === sport.slug?.toLowerCase() || k === sport.name?.toLowerCase());
-  })();
+
+  const activeMembershipsList = useMemo(() => {
+    const raw = membershipData?.memberships || (membershipData?.membership ? [membershipData.membership] : []);
+    const now = new Date();
+    return raw.filter((m) => m.status === 'active' && (!m.endDate || new Date(m.endDate) > now));
+  }, [membershipData]);
+
+  const activeMembership = useMemo(() => {
+    if (!activeMembershipsList.length || !sport) return null;
+    const sSlug = (sport.slug || '').toLowerCase();
+    const sName = (sport.name || '').toLowerCase();
+
+    return (
+      activeMembershipsList.find((m) => {
+        const plan = m.planId;
+        if (!plan) return false;
+        const keys = (plan.sportsIncluded || []).map((k) => (k || '').trim().toLowerCase());
+        const planName = (plan.name || '').toLowerCase();
+
+        return (
+          keys.some((k) => k === sSlug || k === sName) ||
+          (sSlug && planName.includes(sSlug)) ||
+          (sName && planName.includes(sName))
+        );
+      }) || null
+    );
+  }, [activeMembershipsList, sport]);
+
+  const membershipCoversSport = !!activeMembership;
 
   // ── Step state: 'date' | 'slot' | 'details' | 'success'
   const [step, setStep] = useState('date');
@@ -256,10 +275,9 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
 
   const handlePayment = async () => {
     if (!selectedSlot) return toast.error('Please select a slot.');
-    if (isAuthenticated && !user?.phone) { setShowPhoneModal(true); return; }
-    if (!isAuthenticated && (!details.name || !details.email || !details.phone)) {
-      return toast.error('Please fill in all contact fields.');
-    }
+    // Guest checkout is gone — booking requires a signed-in account
+    if (!isAuthenticated) return toast.error('Please sign in to continue.');
+    if (!user?.phone) { setShowPhoneModal(true); return; }
     if (!scriptLoaded || !window.Razorpay) return toast.error('Payment gateway loading. Please retry.');
     if (!import.meta.env.VITE_RAZORPAY_KEY_ID) {
       return toast.error('Payment key not configured.');
@@ -269,9 +287,9 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
     try {
       const orderPayload = {
         slotId: selectedSlot._id,
-        playerName: isAuthenticated ? user.name : details.name,
-        playerPhone: isAuthenticated ? user.phone : details.phone,
-        playerEmail: isAuthenticated ? user.email : details.email,
+        playerName: user.name,
+        playerPhone: user.phone,
+        playerEmail: user.email,
       };
       if (appliedCoupon) {
         orderPayload.couponId = appliedCoupon.couponId;
@@ -279,9 +297,9 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
       }
       const { data: orderRes } = await api.post('/slots/public/slot-order', orderPayload);
 
-      const playerName = isAuthenticated ? user.name : details.name;
-      const playerPhone = isAuthenticated ? user.phone : details.phone;
-      const playerEmail = isAuthenticated ? user.email : details.email;
+      const playerName = user.name;
+      const playerPhone = user.phone;
+      const playerEmail = user.email;
 
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
@@ -757,35 +775,16 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                             </div>
                           </div>
                         ) : (
-                          <div className="space-y-3">
-                            <div className="rounded-2xl p-4 text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                              <p className="text-white/50 text-xs mb-3">Sign in or fill in your details to continue.</p>
-                              <div ref={googleButtonRef} className="flex justify-center" />
-                            </div>
-                            {[
-                              { icon: User, placeholder: 'Full Name', key: 'name', type: 'text' },
-                              { icon: Mail, placeholder: 'Email Address', key: 'email', type: 'email' },
-                              { icon: Phone, placeholder: 'Mobile Number', key: 'phone', type: 'tel' },
-                            ].map(({ icon: Icon, placeholder, key, type }) => (
-                              <div key={key} className="relative">
-                                <Icon className="absolute left-4 top-3.5 text-white/30" size={16} />
-                                <input
-                                  type={type}
-                                  placeholder={placeholder}
-                                  value={details[key]}
-                                  onChange={(e) => setDetails({ ...details, [key]: e.target.value })}
-                                  className="w-full pl-11 pr-4 py-3 rounded-xl text-sm text-white placeholder-white/25 outline-none"
-                                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
-                                />
-                              </div>
-                            ))}
+                          <div className="rounded-2xl p-4 text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                            <p className="text-white/50 text-xs mb-3">Sign in to continue with your booking.</p>
+                            <div ref={googleButtonRef} className="flex justify-center" />
                           </div>
                         )}
 
                         <button
                           onClick={handlePayment}
-                          disabled={submitting}
-                          className="w-full py-4 rounded-2xl font-black text-sm flex flex-col items-center justify-center gap-1 disabled:opacity-50"
+                          disabled={submitting || !isAuthenticated}
+                          className="w-full py-4 rounded-2xl font-black text-sm flex flex-col items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
                           style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor}BB)`, boxShadow: `0 8px 24px ${accentColor}30` }}
                         >
                           {submitting ? (

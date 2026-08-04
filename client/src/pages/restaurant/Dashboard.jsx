@@ -1,48 +1,17 @@
-import { useEffect, useCallback, useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useCallback } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '../../lib/axios';
 import socket, { connectSocket } from '../../lib/socket';
 import StatCard from '../../components/shared/StatCard';
 import { ClipboardList, IndianRupee, AlertTriangle, Timer, ShoppingBag, ChefHat, Bike, Package, Banknote, Smartphone, CheckCircle2 } from 'lucide-react';
 import PageHeader from '../../components/shared/PageHeader';
 import { formatCurrency } from '../../lib/utils';
-import { toast } from 'sonner';
-
-const KITCHEN_STATES = [
-  { value: 'open',        label: 'Open',        dot: 'bg-green-500',  ring: 'ring-green-500/30', bar: 'bg-green-500/10 border-green-500/30 text-green-800'  },
-  { value: 'busy',        label: 'Busy',        dot: 'bg-amber-500',  ring: 'ring-amber-500/30', bar: 'bg-amber-500/10 border-amber-500/30 text-amber-800'  },
-  { value: 'closed',      label: 'Closed',      dot: 'bg-red-500',    ring: 'ring-red-500/30',   bar: 'bg-red-500/10 border-red-500/30 text-red-800'        },
-  { value: 'maintenance', label: 'Maintenance', dot: 'bg-gray-500',   ring: 'ring-gray-500/30',  bar: 'bg-gray-500/10 border-gray-500/30 text-gray-800'     },
-];
 
 export default function RestaurantDashboard() {
   const qc = useQueryClient();
-  const [statusLoading, setStatusLoading] = useState(false);
 
   const { data: orders } = useQuery({ queryKey: ['orders'], queryFn: () => api.get('/orders').then(r => r.data) });
   const { data: menuData } = useQuery({ queryKey: ['menu'], queryFn: () => api.get('/menu').then(r => r.data) });
-  const { data: kitchenData, refetch: refetchKitchen } = useQuery({
-    queryKey: ['kitchen-status'],
-    queryFn: () => api.get('/kitchen/status').then(r => r.data),
-    staleTime: 30000,
-  });
-
-  const kitchenStatus = kitchenData?.kitchenStatus || 'open';
-  const currentState = KITCHEN_STATES.find(s => s.value === kitchenStatus) || KITCHEN_STATES[0];
-
-  const kitchenMutation = useMutation({
-    mutationFn: (status) => api.put('/kitchen/status', { status }),
-    onMutate: () => setStatusLoading(true),
-    onSuccess: (_, status) => {
-      qc.setQueryData(['kitchen-status'], { kitchenStatus: status });
-      setStatusLoading(false);
-      toast.success(`Kitchen status set to ${status}.`);
-    },
-    onError: () => {
-      setStatusLoading(false);
-      toast.error('Failed to update kitchen status.');
-    },
-  });
 
   const invalidate = useCallback(() => {
     qc.invalidateQueries({ queryKey: ['orders'] });
@@ -55,15 +24,11 @@ export default function RestaurantDashboard() {
     socket.on('order:updated', invalidate);
     socket.on('order:cancelled', invalidate);
     socket.on('menu:updated', () => qc.invalidateQueries({ queryKey: ['menu'] }));
-    socket.on('restaurant:kitchenStatus', ({ status }) => {
-      qc.setQueryData(['kitchen-status'], { kitchenStatus: status });
-    });
     return () => {
       socket.off('order:new', invalidate);
       socket.off('order:updated', invalidate);
       socket.off('order:cancelled', invalidate);
       socket.off('menu:updated');
-      socket.off('restaurant:kitchenStatus');
     };
   }, [invalidate, qc]);
 
@@ -82,36 +47,6 @@ export default function RestaurantDashboard() {
   return (
     <div>
       <PageHeader title="Restaurant Dashboard" subtitle="Overview of today's operations" />
-
-      {/* Kitchen Status Control */}
-      <div className={`mb-6 rounded-2xl border p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${currentState.bar}`}>
-        <div className="flex items-center gap-3">
-          <div className={`relative flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm ring-2 ${currentState.ring}`}>
-            <span className={`h-4 w-4 rounded-full ${currentState.dot} ${kitchenStatus === 'open' ? 'animate-pulse' : ''}`} />
-          </div>
-          <div>
-            <p className="text-xs font-black uppercase tracking-widest opacity-60">Kitchen Status</p>
-            <p className="text-base font-black">{currentState.label}</p>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {KITCHEN_STATES.map(state => (
-            <button
-              key={state.value}
-              disabled={statusLoading || state.value === kitchenStatus}
-              onClick={() => kitchenMutation.mutate(state.value)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black border transition-all disabled:cursor-not-allowed ${
-                state.value === kitchenStatus
-                  ? `ring-2 ${state.ring} bg-white shadow-sm opacity-100`
-                  : 'bg-white/60 border-transparent hover:bg-white hover:shadow-sm opacity-70 hover:opacity-100'
-              }`}
-            >
-              <span className={`h-2 w-2 rounded-full ${state.dot}`} />
-              {state.label}
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* Active Alerts Section */}
       {activeOrders.length > 0 && (

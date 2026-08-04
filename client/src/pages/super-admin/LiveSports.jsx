@@ -1538,7 +1538,7 @@ function BookingsSection() {
     staleTime: 300_000,
   });
   const sportsList = (sportsData?.sports || []).filter(s =>
-    s.active && !s.deletedAt && s.slug !== 'all-services' && (s.name || '').toLowerCase() !== 'coaching'
+    s.active && !s.deletedAt && (s.name || '').toLowerCase() !== 'coaching'
   );
 
   const toMin = (t) => { const [h, m] = (t || '0:0').split(':').map(Number); return h * 60 + m; };
@@ -1604,11 +1604,11 @@ function BookingsSection() {
 
           {mode === 'date' && (
             <input type="date" value={pickedDate} onChange={e => setPickedDate(e.target.value)}
-              className="border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
+              className="bg-white text-[#111] border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
           )}
           {mode === 'month' && (
             <input type="month" value={pickedMonth} onChange={e => setPickedMonth(e.target.value)}
-              className="border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
+              className="bg-white text-[#111] border border-[#EAEAEA] rounded-lg px-2.5 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
           )}
 
           {/* Sport filter */}
@@ -1831,7 +1831,7 @@ export default function LiveSports() {
         <div className="flex items-center gap-2">
           <button onClick={() => changeDate(-1)} className="w-8 h-8 rounded-lg border border-[#EAEAEA] flex items-center justify-center hover:bg-[#F5F5F5]"><ChevronLeft size={16} /></button>
           <input type="date" value={date} onChange={(e) => { setDate(e.target.value); setSelectedSportId(null); setOpenCourtGroup(null); }}
-            className="border border-[#EAEAEA] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
+            className="bg-white text-[#111] border border-[#EAEAEA] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#C5DB3B]/20" />
           <button onClick={() => changeDate(1)} className="w-8 h-8 rounded-lg border border-[#EAEAEA] flex items-center justify-center hover:bg-[#F5F5F5]"><ChevronRight size={16} /></button>
           {!isToday && (
             <button onClick={() => { setDate(todayStr()); setSelectedSportId(null); setOpenCourtGroup(null); }}
@@ -1855,7 +1855,7 @@ export default function LiveSports() {
           <div className="card py-10 text-center text-sm text-[#999]">No sports found.</div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-            {(overviewData?.overview || []).filter((item) => item.sport?.slug !== 'all-services').map((item) => (
+            {(overviewData?.overview || []).map((item) => (
               <SportOverviewCard key={item.sport._id} item={item}
                 selected={selectedSportId === item.sport._id}
                 onClick={() => { setSelectedSportId(selectedSportId === item.sport._id ? null : item.sport._id); setOpenCourtGroup(null); }} />

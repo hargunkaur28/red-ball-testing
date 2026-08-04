@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Clock, QrCode, Zap, ChevronRight, Loader2, Sun, Moon, GraduationCap } from 'lucide-react';
+import { Clock, QrCode, Zap, ChevronRight, Loader2, Sun, Moon } from 'lucide-react';
 import { formatCurrency } from '../../lib/utils';
 import { getSportFallback } from './sportFallbacks';
 import { isComboPlan } from '../../lib/comboPlans';
 import MembershipPlanCard from './MembershipPlanCard';
-import KidsAcademyPlanCard from './KidsAcademyPlanCard';
 import OneTimeBookingModal from './OneTimeBookingModal';
 
 export default function SportBookingOptions({ sport, plans = [], plansLoading = false }) {
@@ -111,52 +110,36 @@ export default function SportBookingOptions({ sport, plans = [], plansLoading = 
 
       {/* ── Membership Plans ──────────────────────────── */}
       {(() => {
-        const regularPlans = plans.filter(p => !p.isKidsAcademy && !isComboPlan(p) && ['1 Month', '3 Months', '6 Months', '1 Year'].includes(p.duration));
-        const kidsPlans = plans.filter(p => p.isKidsAcademy);
+        // Court memberships get their own section on /book-slots — they'd otherwise
+        // sit here as three more "1 Month" cards with no way to tell them apart.
+        const regularPlans = plans.filter(p => !isComboPlan(p) && !p.isCourtMembership && ['1 Month', '3 Months', '6 Months', '1 Year'].includes(p.duration));
         return (
-          <>
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-base">🏅</span>
-                <h3 className="text-white/40 text-xs uppercase tracking-[3px] font-bold">Membership Plans</h3>
-              </div>
-
-              {plansLoading ? (
-                <div className="flex items-center justify-center py-10 text-white/30 gap-2">
-                  <Loader2 size={18} className="animate-spin" />
-                  <span className="text-sm">Loading plans...</span>
-                </div>
-              ) : regularPlans.length === 0 ? (
-                <div
-                  className="rounded-2xl p-6 text-center"
-                  style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
-                >
-                  <p className="text-white/30 text-sm">No membership plans available for this sport.</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {regularPlans.map((plan, i) => (
-                    <MembershipPlanCard key={plan._id} plan={plan} index={i} />
-                  ))}
-                </div>
-              )}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-base">🏅</span>
+              <h3 className="text-white/40 text-xs uppercase tracking-[3px] font-bold">Membership Plans</h3>
             </div>
 
-            {/* ── Kids Academy Plans ───────────────────── */}
-            {kidsPlans.length > 0 && (
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 mb-4">
-                  <GraduationCap size={16} className="text-violet-400" />
-                  <h3 className="text-white/40 text-xs uppercase tracking-[3px] font-bold">Kids Academy Programme</h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {kidsPlans.map((plan, i) => (
-                    <KidsAcademyPlanCard key={plan._id} plan={plan} sport={sport} index={i} />
-                  ))}
-                </div>
+            {plansLoading ? (
+              <div className="flex items-center justify-center py-10 text-white/30 gap-2">
+                <Loader2 size={18} className="animate-spin" />
+                <span className="text-sm">Loading plans...</span>
+              </div>
+            ) : regularPlans.length === 0 ? (
+              <div
+                className="rounded-2xl p-6 text-center"
+                style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
+              >
+                <p className="text-white/30 text-sm">No membership plans available for this sport.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {regularPlans.map((plan, i) => (
+                  <MembershipPlanCard key={plan._id} plan={plan} index={i} />
+                ))}
               </div>
             )}
-          </>
+          </div>
         );
       })()}
 

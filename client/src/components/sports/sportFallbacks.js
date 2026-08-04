@@ -96,24 +96,6 @@ const FALLBACKS = {
     ],
     color: '#A855F7',
   },
-  'all-services': {
-    icon: '👑',
-    tagline: 'The Ultimate Access Pass.',
-    rentalEquipment: '',
-    description:
-      'Gain VIP entry to all sports facilities at Alchemy 360 Academy. Unlimited bookings for Box Cricket, Badminton, Pickleball, Swimming Pool, and Gym. Your absolute all-access pass to fitness and premium sports.',
-    features: ['Access All Sports', 'VIP Priority Booking', 'Custom Performance Logs', 'Personalized Support', 'Unlock All Events'],
-    chips: ['All Access', 'VIP Perks', 'Best Value'],
-    thumbnail: 'https://mediarelations.gwu.edu/sites/g/files/zaxdzs5306/files/2024-06/adobestock_510555809.jpeg',
-    heroImage: 'https://mediarelations.gwu.edu/sites/g/files/zaxdzs5306/files/2024-06/adobestock_510555809.jpeg',
-    images: [
-      'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?q=80&w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1530549387789-4c1017266635?q=80&w=800&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop',
-    ],
-    color: '#F5A623',
-  },
 };
 
 const DEFAULT_FALLBACK = {

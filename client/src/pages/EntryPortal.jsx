@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertCircle, ArrowLeft, BadgeCheck, Check, Clock, CreditCard, Loader2, Lock, Mail, Phone, ShieldCheck, User, Wallet } from 'lucide-react';
 import api from '../lib/axios';
+import { DISPLAY_SESSION_MINUTES } from '../lib/utils';
 import useAuthStore from '../store/authStore';
 import { toast } from 'sonner';
 import PhoneCollectModal from '../components/shared/PhoneCollectModal';
@@ -294,28 +295,6 @@ const css = `
   color: rgba(255,255,255,0.18);
 }
 
-.plan-card.all-services-plan {
-  position: relative;
-  border-color: rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.045);
-}
-
-.plan-card.all-services-plan::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  border-radius: 14px 0 0 14px;
-  background: #f5a400;
-}
-
-.plan-card.all-services-plan .plan-icon {
-  background: transparent;
-  color: #f5b400;
-}
-
 .checkout-summary {
   border: 1px solid rgba(255,255,255,0.11);
   background: rgba(255,255,255,0.045);
@@ -553,13 +532,6 @@ const css = `
 
 const formatMoney = (amount = 0) => `₹${Number(amount || 0).toLocaleString('en-IN')}`;
 
-const isAllServicesPlan = (plan) => {
-  return (plan?.sportsIncluded || []).some((sport) => {
-    const key = (sport || '').trim().toLowerCase();
-    return key === 'all' || key === 'all-services';
-  });
-};
-
 const loadRazorpayScript = () => new Promise((resolve, reject) => {
   if (window.Razorpay) {
     resolve(true);
@@ -772,17 +744,13 @@ export default function EntryPortal() {
   }, [data?.sport?.hourlyPrice, data?.sport?.name, selectedOption]);
 
   const visiblePlans = useMemo(() => {
-    const hiddenNames = new Set(['all services monthly']);
     const sportSlug = (data?.sport?.slug || '').trim().toLowerCase();
     const sportName = (data?.sport?.name || '').trim().toLowerCase();
 
     const planRank = (plan) => {
       const included = (plan.sportsIncluded || []).map((sport) => (sport || '').trim().toLowerCase());
       const isCurrentSport = included.some((sport) => sport === sportSlug || sport === sportName);
-      const isAllServices = included.some((sport) => sport === 'all' || sport === 'all-services');
-      if (isCurrentSport) return 0;
-      if (isAllServices) return 1;
-      return 2;
+      return isCurrentSport ? 0 : 1;
     };
 
     const durationRank = (plan) => {
@@ -794,10 +762,8 @@ export default function EntryPortal() {
 
     return (data?.plans || [])
       .filter((plan) => {
-        const name = (plan.name || '').trim().toLowerCase();
         const unit = (plan.durationUnit || '').trim().toLowerCase();
         const duration = (plan.duration || '').trim().toLowerCase();
-        if (hiddenNames.has(name)) return false;
         if (unit === 'minutes' || duration.includes('minute')) return false;
         return true;
       })
@@ -1169,7 +1135,7 @@ export default function EntryPortal() {
                             <div className="summary-row"><span>Sport</span><strong>{data?.sport?.name || 'Sport'}</strong></div>
                             <div className="summary-row"><span>Checked in</span><strong>{data?.activeCheckIn?.checkInTime ? new Date(data.activeCheckIn.checkInTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '-'}</strong></div>
                             <div className="summary-row"><span>Session duration</span><strong>{elapsedTime}</strong></div>
-                            <div className="summary-row"><span>Allowed time</span><strong>{data?.sport?.allowedDurationMinutes || 75} mins</strong></div>
+                            <div className="summary-row"><span>Allowed time</span><strong>{DISPLAY_SESSION_MINUTES} mins</strong></div>
                           </div>
                           <button className="entry-action-btn btn-checkout" onClick={handleCheckOut} disabled={actionLoading}>
                             {actionLoading ? <Loader2 size={18} className="animate-spin" /> : 'Confirm Check-Out'}

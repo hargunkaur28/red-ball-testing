@@ -18,11 +18,11 @@ const faqs = [
   },
   {
     q: 'What sports can I play at Alchemy 360 besides badminton?',
-    a: "Alchemy 360 offers cricket on Box 360 (Rohtak's first 24/7 circular box cricket facility), open-air swimming pool, gymnasium, and pickleball courts — making it a worthwhile day trip from Hisar.",
+    a: "Alchemy 360 offers cricket on Box 360 (Rohtak's first 24/7 circular box cricket facility), gymnasium, and pickleball courts — making it a worthwhile day trip from Hisar.",
   },
   {
     q: 'Does Alchemy 360 have a sports academy for players from Hisar?',
-    a: 'Yes. Alchemy 360 Sports Arena runs a sports academy with coaching in cricket, badminton, and swimming. Players from Hisar interested in regular training can enquire about academy memberships.',
+    a: 'Yes. Alchemy 360 Sports Arena runs a sports academy with coaching in cricket, badminton. Players from Hisar interested in regular training can enquire about academy memberships.',
   },
 ];
 
@@ -48,7 +48,7 @@ export default function BadmintonCourtHisar() {
     <SEOLandingLayout>
       <SEOHead
         title="Badminton Court Near Hisar | Alchemy 360 Sports Arena Rohtak"
-        description="Professional badminton court near Hisar — Alchemy 360 Sports Arena, Rohtak, 100 km / 100 min away. Book online, full sports complex with cricket, swimming & gym."
+        description="Professional badminton court near Hisar — Alchemy 360 Sports Arena, Rohtak, 100 km / 100 min away. Book online, full sports complex with cricket & gym."
         canonical="/badminton-court-hisar"
         schema={schema}
       />
@@ -84,7 +84,7 @@ export default function BadmintonCourtHisar() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: 'NH-9 Direct from Hisar', desc: 'Hisar to Rohtak on NH-9 is a smooth national highway route. Plan your drive for an early start and you\'ll be on court within 100 minutes.' },
-            { title: 'Full Sports Complex', desc: 'Beyond badminton, explore Box 360 cricket, open-air swimming, and a well-equipped gym — all available on the same visit from Hisar.' },
+            { title: 'Full Sports Complex', desc: 'Beyond badminton, explore Box 360 cricket, and a well-equipped gym — all available on the same visit from Hisar.' },
             { title: 'Eat On-Site', desc: "Alchemy 360's restaurant means Hisar visitors can refuel without searching for food in an unfamiliar part of Rohtak. Convenient and good." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
@@ -103,7 +103,6 @@ export default function BadmintonCourtHisar() {
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
               { label: 'Sports Academy Rohtak', to: '/sports-academy-rohtak' },
-              { label: 'Swimming Pool Rohtak', to: '/swimming-pool-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

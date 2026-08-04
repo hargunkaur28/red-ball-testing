@@ -6,7 +6,7 @@ import { sportsClubSchema, breadcrumbSchema, faqSchema } from '../../components/
 const faqs = [
   {
     q: "What is Alchemy 360 Sports Arena's sports club membership?",
-    a: "Alchemy 360's sports club membership gives access to all facilities — cricket, badminton, pickleball, swimming, and gym — with priority booking and discounted slot rates.",
+    a: "Alchemy 360's sports club membership gives access to all facilities — cricket, badminton, pickleball, and gym — with priority booking and discounted slot rates.",
   },
   {
     q: 'How much does sports club membership cost at Alchemy 360?',
@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'What facilities are included in Alchemy 360 sports club membership?',
-    a: 'Club membership includes cricket, badminton, pickleball, swimming, and gym access. Food court, sports accessories shop, and coaching programs are available as add-ons.',
+    a: 'Club membership includes cricket, badminton, pickleball, and gym access. Food court, sports accessories shop, and coaching programs are available as add-ons.',
   },
   {
     q: 'Can I try the sports club before committing to membership?',
@@ -44,7 +44,7 @@ export default function SportsClubRohtak() {
     <SEOLandingLayout>
       <SEOHead
         title="Sports Club in Rohtak | Multi-Sport Membership | Alchemy 360 Sports Arena"
-        description="Alchemy 360 Sports Arena is Rohtak's premier sports club — cricket, badminton, swimming, gym, pickleball, and football with flexible membership plans. Join today."
+        description="Alchemy 360 Sports Arena is Rohtak's premier sports club — cricket, badminton, gym, pickleball, and football with flexible membership plans. Join today."
         canonical="/sports-club-rohtak"
         schema={schema}
       />
@@ -58,7 +58,7 @@ export default function SportsClubRohtak() {
             Sports Club in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena is Rohtak's most complete sports club — offering membership access across cricket, badminton, pickleball, swimming, gym, and football under one roof. As a club member, you get priority booking, discounted rates, and access to all facilities at Rohtak's most active multi-sport complex.
+            Alchemy 360 Sports Arena is Rohtak's most complete sports club — offering membership access across cricket, badminton, pickleball, gym, and football under one roof. As a club member, you get priority booking, discounted rates, and access to all facilities at Rohtak's most active multi-sport complex.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/buy-membership" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -80,9 +80,9 @@ export default function SportsClubRohtak() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { title: 'Multi-Sport Access', desc: 'One membership gives you access to cricket, badminton, pickleball, swimming, and gym. The most comprehensive sports club value in Rohtak.' },
-            { title: 'Priority Booking', desc: 'Club members get priority access to slot bookings, court reservations, and coaching program enrolments before open availability.' },
-            { title: 'Community Events', desc: 'Regular cricket tournaments, badminton leagues, swimming events, and social sports gatherings exclusive to Alchemy 360 club members.' },
+            { title: 'Multi-Sport Access', desc: 'One membership gives you access to cricket, badminton, pickleball, and gym. The most comprehensive sports club value in Rohtak.' },
+            { title: 'Priority Booking', desc: 'Club members get priority access to slot bookings, court reservations, and coaching program enrollments before open availability.' },
+            { title: 'Community Events', desc: 'Regular cricket tournaments, badminton leagues events, and social sports gatherings exclusive to Alchemy 360 club members.' },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>
@@ -98,8 +98,6 @@ export default function SportsClubRohtak() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Sports Complex', to: '/sports-complex-rohtak' },
-              { label: 'Cricket Ground', to: '/cricket-ground-rohtak' },
-              { label: 'Swimming Pool', to: '/swimming-pool-rohtak' },
               { label: 'Badminton Court', to: '/badminton-court-rohtak' },
               { label: 'Gym', to: '/gym-in-rohtak' },
               { label: 'Pickleball', to: '/pickleball-court-rohtak' },

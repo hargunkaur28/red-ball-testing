@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a sports complex near Gurgaon in Haryana?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is approximately 90 km from Gurgaon — about 90 minutes by road. It is one of the most complete multi-sport complexes in Haryana, with cricket, badminton, pickleball, swimming, a gym, and a restaurant.',
+    a: 'Alchemy 360 Sports Arena in Rohtak is approximately 90 km from Gurgaon — about 90 minutes by road. It is one of the most complete multi-sport complexes in Haryana, with cricket, badminton, pickleball, a gym, and a restaurant.',
   },
   {
     q: 'How far is Alchemy 360 Sports Arena from Gurgaon?',
@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'Why would Gurgaon teams travel to Rohtak for sports?',
-    a: "Alchemy 360 offers experiences you can't find in Gurgaon — including Box 360, Rohtak's first 24/7 circular box cricket ground, pickleball courts, and a proper open-air swimming pool, all in a far less congested environment.",
+    a: "Alchemy 360 offers experiences you can't find in Gurgaon — including Box 360, Rohtak's first 24/7 circular box cricket ground, pickleball courts, all in a far less congested environment.",
   },
   {
     q: 'Does Alchemy 360 have pickleball courts?',
@@ -48,7 +48,7 @@ export default function SportsComplexGurgaon() {
     <SEOLandingLayout>
       <SEOHead
         title="Sports Complex Near Gurgaon | Alchemy 360 Sports Arena Rohtak"
-        description="Sports complex near Gurgaon — Alchemy 360 Sports Arena in Rohtak, ~90 km, ~90 min drive. Cricket (Box 360), pickleball, badminton, swimming, gym & restaurant in Haryana."
+        description="Sports complex near Gurgaon — Alchemy 360 Sports Arena in Rohtak, ~90 km, ~90 min drive. Cricket (Box 360), pickleball, badminton, gym & restaurant in Haryana."
         canonical="/sports-complex-gurgaon"
         schema={schema}
       />
@@ -62,7 +62,7 @@ export default function SportsComplexGurgaon() {
             Sports Complex Near Gurgaon
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak is approximately 90 km from Gurgaon — about 90 minutes on the highway. For Gurgaon professionals and corporate teams that want a proper Haryana sports experience outside the NCR, Alchemy 360 offers cricket, pickleball, badminton, swimming, and a full gym — all without the city noise and pricing.
+            Alchemy 360 Sports Arena in Rohtak is approximately 90 km from Gurgaon — about 90 minutes on the highway. For Gurgaon professionals and corporate teams that want a proper Haryana sports experience outside the NCR, Alchemy 360 offers cricket, pickleball, badminton, and a full gym — all without the city noise and pricing.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -102,7 +102,6 @@ export default function SportsComplexGurgaon() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
-              { label: 'Cricket Ground Gurgaon', to: '/cricket-ground-gurgaon' },
               { label: 'Pickleball Court Rohtak', to: '/pickleball-court-rohtak' },
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },
             ].map(item => (

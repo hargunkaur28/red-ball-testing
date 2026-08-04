@@ -19,9 +19,6 @@ async function seedTestPlans(adminId) {
     { name: 'Badminton Half-Yearly', duration: '6 Months', durationValue: 6, durationUnit: 'months', price: 10000, sportsIncluded: ['badminton'] },
     { name: 'Badminton Yearly', duration: '1 Year', durationValue: 1, durationUnit: 'years', price: 16000, sportsIncluded: ['badminton'] },
     { name: 'Children Coaching Monthly', duration: '1 Month', durationValue: 1, durationUnit: 'months', price: 3000, sportsIncluded: ['coaching'], features: ['5PM-7PM', '2 slots', 'Minimum 1 month'] },
-    { name: 'All Services Quarterly', duration: '3 Months', durationValue: 3, durationUnit: 'months', price: 10000, sportsIncluded: ['all-services'] },
-    { name: 'All Services Half-Yearly', duration: '6 Months', durationValue: 6, durationUnit: 'months', price: 17000, sportsIncluded: ['all-services'] },
-    { name: 'All Services Yearly', duration: '1 Year', durationValue: 1, durationUnit: 'years', price: 30000, sportsIncluded: ['all-services'] },
   ];
 
   for (const planData of plans) {
@@ -50,9 +47,6 @@ async function seedTestPlans(adminId) {
     ] },
     { name: 'Children Coaching', hourlyPrice: 3000, playerCapacity: 20, category: 'coaching', availability: '5PM-7PM, 2 slots', pricingOptions: [
       { label: 'Monthly with coaching', price: 3000, unit: 'month', note: 'Minimum 1 month' },
-    ] },
-    { name: 'All Services Package', hourlyPrice: 10000, playerCapacity: 50, category: 'package', availability: 'All services access', pricingOptions: [
-      { label: '3 Months', price: 10000, unit: '3 months' }, { label: '6 Months', price: 17000, unit: '6 months' }, { label: 'Yearly', price: 30000, unit: 'year' },
     ] },
   ];
 

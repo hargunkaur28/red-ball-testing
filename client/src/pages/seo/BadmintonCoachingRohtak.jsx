@@ -65,7 +65,7 @@ export default function BadmintonCoachingRohtak() {
             Alchemy 360 Sports Arena provides professional badminton coaching in Rohtak — with experienced coaches who break down technique, identify weaknesses, and build consistent, tournament-ready skills. Whether you want to fix your smash, improve footwork, or master net play — our programs deliver structured improvement.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/buy-membership" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership?sport=badminton-coaching" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Start Coaching
             </Link>
             <Link to="/book-slots" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -103,8 +103,6 @@ export default function BadmintonCoachingRohtak() {
             {[
               { label: 'Badminton Court', to: '/badminton-court-rohtak' },
               { label: 'Badminton Academy', to: '/badminton-academy-rohtak' },
-              { label: 'Kids Badminton', to: '/kids-badminton-classes-rohtak' },
-              { label: 'Cricket Coaching', to: '/cricket-coaching-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

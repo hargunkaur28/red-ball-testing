@@ -101,9 +101,7 @@ export default function BadmintonCourtPanipat() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },
-              { label: 'Cricket Ground Panipat', to: '/cricket-ground-panipat' },
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
-              { label: 'Swimming Pool Rohtak', to: '/swimming-pool-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

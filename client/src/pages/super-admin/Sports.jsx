@@ -39,17 +39,17 @@ import PageHeader from '../../components/shared/PageHeader';
 // ---------------------------------------------------------------------------
 const FILTER_TABS = [
   { key: 'active', label: 'Active' },
+  { key: 'combo-plans', label: 'Combo Plans' },
+  { key: 'court-memberships', label: 'Court Memberships' },
   { key: 'archived', label: 'Archived' },
   { key: 'all', label: 'All' },
   { key: 'hero', label: 'Hero Icons' },
   { key: 'discounts', label: 'Discounts' },
   { key: 'coupons', label: 'Coupons' },
-  { key: 'combo-plans', label: 'Combo Plans' },
-  { key: 'kids-academy', label: 'Kids Academy' },
 ];
 
 // Tabs that render their own panel instead of the sport card grid
-const PANEL_TABS = ['hero', 'discounts', 'coupons', 'combo-plans', 'kids-academy'];
+const PANEL_TABS = ['hero', 'discounts', 'coupons', 'combo-plans', 'court-memberships'];
 
 // ---------------------------------------------------------------------------
 // Skeleton card for loading state
@@ -330,8 +330,8 @@ export default function Sports() {
       {/* Combo Plans */}
       {filter === 'combo-plans' && <ComboPlansPanel sports={sports} />}
 
-      {/* Kids Academy */}
-      {filter === 'kids-academy' && <KidsAcademyPanel sports={sports} />}
+      {/* Court Memberships */}
+      {filter === 'court-memberships' && <CourtMembershipsPanel sports={sports} />}
 
       {/* Content */}
       {!PANEL_TABS.includes(filter) && isLoading ? (
@@ -620,7 +620,6 @@ function SportCard({ sport, onEdit, onToggle, onArchive, onViewQR, onConfig, isA
           >
             <Power size={14} /> {isActive ? 'Disable' : 'Enable'}
           </button>
-          {sport.slug !== 'all-services' && (
           <button
             onClick={onViewQR}
             className="flex-1 min-w-[80px] flex items-center justify-center gap-1.5 p-2 rounded-lg bg-violet-50 text-violet-600 hover:bg-violet-100 transition-colors text-xs font-semibold"
@@ -628,7 +627,6 @@ function SportCard({ sport, onEdit, onToggle, onArchive, onViewQR, onConfig, isA
           >
             <QrCode size={14} /> QR
           </button>
-          )}
           <button
             onClick={onConfig}
             className="flex-1 min-w-[80px] flex items-center justify-center gap-1.5 p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors text-xs font-semibold"
@@ -668,7 +666,6 @@ const HERO_SLUGS = [
   { slug: 'badminton',    label: 'Badminton',      defaultTagline: 'AC Courts',     defaultHref: '/sports/badminton' },
   { slug: 'pickleball',   label: 'Pickleball',     defaultTagline: 'Cushioned',     defaultHref: '/sports/pickleball' },
   { slug: 'swimming',     label: 'Swimming',       defaultTagline: 'Heated Pool',   defaultHref: '/sports/swimming' },
-  { slug: 'all-services', label: 'All Services',   defaultTagline: 'VIP Access',    defaultHref: '/sports/all-services' },
   { slug: 'gym',          label: 'Gym & Fitness',  defaultTagline: 'AC Facility',   defaultHref: '/sports/gym' },
 ];
 
@@ -1056,7 +1053,7 @@ function HeroIconsEditor() {
                 <label className="block text-xs font-medium text-gray-600 mb-1">Link (href) <span className="text-red-500">*</span></label>
                 <input
                   type="text"
-                  placeholder="e.g. /kids-sports-academy-rohtak"
+                  placeholder="e.g. /sports/badminton"
                   value={cardForm.href}
                   onChange={(e) => setCardForm((f) => ({ ...f, href: e.target.value }))}
                   className="input-field text-sm"
@@ -1262,50 +1259,6 @@ function SportDrawer({ sport, onClose, onSubmit, isPending }) {
   const [previewUrl, setPreviewUrl] = useState(sport?.thumbnail || '');
   const [imageFile, setImageFile] = useState(null);
   const [pricingMode, setPricingMode] = useState(sport?.slotPricingMode || 'flat');
-
-  // Kids Academy state (only for badminton/cricket)
-  const isKidsEligible = sport && (sport.slug === 'badminton' || sport.slug === 'cricket' || sport.slug === 'box-cricket');
-  const [kidsEnabled, setKidsEnabled] = useState(false);
-  const [kidsAdmissionFee, setKidsAdmissionFee] = useState('');
-  const [kidsMonthlyPrice, setKidsMonthlyPrice] = useState('');
-  const [kidsActive, setKidsActive] = useState(true);
-  const [kidsSaving, setKidsSaving] = useState(false);
-
-  // Load existing kids academy plan if editing a kids-eligible sport
-  useEffect(() => {
-    if (!sport?._id || !isKidsEligible) return;
-    api.get('/plans')
-      .then(r => {
-        const allPlans = r.data.plans || [];
-        const kidsPlan = allPlans.find(p => p.isKidsAcademy && (p.sportsIncluded || []).includes(sport.slug));
-        if (kidsPlan) {
-          setKidsEnabled(kidsPlan.isActive !== false);
-          setKidsAdmissionFee(kidsPlan.admissionFeeAmount?.toString() || '');
-          setKidsMonthlyPrice(kidsPlan.price?.toString() || '');
-          setKidsActive(kidsPlan.isActive !== false);
-        }
-      })
-      .catch(() => {});
-  }, [sport?._id, sport?.slug, isKidsEligible]);
-
-  const handleSaveKidsAcademy = async () => {
-    if (!sport?._id) return;
-    setKidsSaving(true);
-    try {
-      await api.post(`/sports/${sport._id}/kids-academy`, {
-        enabled: kidsEnabled,
-        admissionFeeAmount: Number(kidsAdmissionFee) || 0,
-        price: Number(kidsMonthlyPrice) || 0,
-        active: kidsActive,
-      });
-      qc.invalidateQueries({ queryKey: ['membership-plans'] });
-      toast.success('Kids Academy plan saved.');
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to save Kids Academy plan.');
-    } finally {
-      setKidsSaving(false);
-    }
-  };
 
   // Close on Escape
   useEffect(() => {
@@ -1566,80 +1519,6 @@ function SportDrawer({ sport, onClose, onSubmit, isPending }) {
               </div>
               <p className="text-[11px] text-gray-400">If enabled, membership users can choose "With Training" for +₹ this amount.</p>
             </div>
-
-            {/* Kids Academy subsection — only for badminton/cricket */}
-            {isEdit && isKidsEligible && (
-              <div className="border border-violet-200 rounded-xl p-4 space-y-3 bg-violet-50/50">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <GraduationCap size={14} className="text-violet-600" />
-                    <p className="text-sm font-semibold text-gray-800">Kids Academy</p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={kidsEnabled}
-                      onChange={e => setKidsEnabled(e.target.checked)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-violet-600" />
-                  </label>
-                </div>
-                {kidsEnabled && (
-                  <>
-                    <div className="flex items-center gap-2 text-xs text-violet-600 bg-violet-100 border border-violet-200 rounded-lg px-3 py-2">
-                      <Check size={11} /> Coach Included (always enabled for Kids Academy)
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs text-gray-500 mb-1">Admission Fee (₹)</label>
-                        <input
-                          type="number"
-                          min="0"
-                          value={kidsAdmissionFee}
-                          onChange={e => setKidsAdmissionFee(e.target.value)}
-                          className="input-field"
-                          placeholder="e.g., 1500"
-                        />
-                        <p className="text-[10px] text-gray-400 mt-0.5">Charged only once per student</p>
-                      </div>
-                      <div>
-                        <label className="block text-xs text-gray-500 mb-1">Monthly Price (₹)</label>
-                        <input
-                          type="number"
-                          min="0"
-                          value={kidsMonthlyPrice}
-                          onChange={e => setKidsMonthlyPrice(e.target.value)}
-                          className="input-field"
-                          placeholder="e.g., 2000"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <p className="text-xs text-gray-600">Plan Active</p>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={kidsActive}
-                          onChange={e => setKidsActive(e.target.checked)}
-                          className="sr-only peer"
-                        />
-                        <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-violet-600" />
-                      </label>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={handleSaveKidsAcademy}
-                      disabled={kidsSaving}
-                      className="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 transition-colors disabled:opacity-50"
-                    >
-                      {kidsSaving ? <Loader2 size={12} className="animate-spin" /> : null}
-                      Save Kids Academy Plan
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
 
             {/* Active toggle */}
             <div className="flex items-center justify-between py-3 border-t border-b border-gray-100">
@@ -2739,321 +2618,6 @@ function CouponFormModal({ initial, sports, onSave, onCancel, isPending }) {
 }
 
 // ===========================================================================
-// Kids Academy Panel
-// ===========================================================================
-const DURATION_LABELS = ['1 Month', '3 Months', '6 Months', '1 Year'];
-
-function KidsAcademyPanel({ sports }) {
-  const qc = useQueryClient();
-  const [showForm, setShowForm] = useState(false);
-  const [editingSport, setEditingSport] = useState(null); // sport object being edited
-
-  const { data: academyPlans = [], isLoading } = useQuery({
-    queryKey: ['kids-academy-plans'],
-    queryFn: () => api.get('/sports/kids-academy').then((r) => r.data),
-    staleTime: 30_000,
-  });
-
-  // Group plans by sport
-  const bySport = academyPlans.reduce((acc, plan) => {
-    const sid = plan.sport?._id || plan.sport;
-    if (!acc[sid]) acc[sid] = { sport: plan.sport, plans: [] };
-    acc[sid].plans.push(plan);
-    return acc;
-  }, {});
-
-  const handleEdit = (sportObj) => {
-    setEditingSport(sportObj);
-    setShowForm(true);
-  };
-
-  const handleDelete = async (sportId) => {
-    if (!window.confirm('Remove Kids Academy programmes for this sport?')) return;
-    try {
-      await api.delete(`/sports/${sportId}/kids-academy`);
-      qc.invalidateQueries({ queryKey: ['kids-academy-plans'] });
-      toast.success('Kids Academy programmes removed');
-    } catch {
-      toast.error('Failed to remove programmes');
-    }
-  };
-
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }}>
-            <GraduationCap size={20} className="text-white" />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-gray-900">Kids Academy</h2>
-            <p className="text-sm text-gray-500">Manage junior training programmes per sport</p>
-          </div>
-        </div>
-        <button
-          onClick={() => { setEditingSport(null); setShowForm(true); }}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all"
-          style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }}
-        >
-          <Plus size={16} />
-          Add Programme
-        </button>
-      </div>
-
-      {/* Form modal */}
-      <AnimatePresence>
-        {showForm && (
-          <KidsAcademyFormModal
-            sports={sports}
-            editingSport={editingSport}
-            existingPlans={editingSport ? (bySport[editingSport._id]?.plans || []) : []}
-            onClose={() => { setShowForm(false); setEditingSport(null); }}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Cards */}
-      {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[1, 2].map((i) => <div key={i} className="h-48 rounded-2xl skeleton" />)}
-        </div>
-      ) : Object.keys(bySport).length === 0 ? (
-        <div className="text-center py-16">
-          <GraduationCap size={48} className="mx-auto text-gray-300 mb-3" />
-          <p className="text-gray-500 font-medium">No Kids Academy programmes yet</p>
-          <p className="text-gray-400 text-sm mt-1">Click "Add Programme" to get started</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {Object.values(bySport).map(({ sport, plans }) => (
-            <KidsAcademySportCard
-              key={sport?._id || sport}
-              sport={sport}
-              plans={plans}
-              onEdit={() => handleEdit(sport)}
-              onDelete={() => handleDelete(sport?._id || sport)}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function KidsAcademySportCard({ sport, plans, onEdit, onDelete }) {
-  const admissionFee = plans[0]?.admissionFeeAmount || 0;
-  const sortOrder = { '1 Month': 0, '3 Months': 1, '6 Months': 2, '1 Year': 3 };
-  const sorted = [...plans].sort((a, b) => (sortOrder[a.duration] ?? 99) - (sortOrder[b.duration] ?? 99));
-
-  return (
-    <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-      {/* Sport header */}
-      <div className="px-5 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #0D0A1A 0%, #1A0F2E 100%)' }}>
-        <div className="flex items-center gap-3">
-          {sport?.imageUrl ? (
-            <img src={sport.imageUrl} alt={sport.name} className="w-8 h-8 rounded-lg object-cover" />
-          ) : (
-            <div className="w-8 h-8 rounded-lg bg-violet-600/30 flex items-center justify-center">
-              <GraduationCap size={16} className="text-violet-400" />
-            </div>
-          )}
-          <div>
-            <p className="font-bold text-white text-sm">{sport?.name || 'Unknown Sport'}</p>
-            <p className="text-violet-300 text-xs">Admission: {formatCurrency(admissionFee)} (once)</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <button onClick={onEdit} className="p-1.5 rounded-lg text-violet-300 hover:text-white hover:bg-violet-600/20 transition-colors">
-            <Pencil size={14} />
-          </button>
-          <button onClick={onDelete} className="p-1.5 rounded-lg text-red-400 hover:text-white hover:bg-red-600/20 transition-colors">
-            <Trash2 size={14} />
-          </button>
-        </div>
-      </div>
-
-      {/* Duration tiers */}
-      <div className="p-4 grid grid-cols-2 gap-2">
-        {sorted.map((plan) => (
-          <div
-            key={plan._id}
-            className={`rounded-xl p-3 border ${plan.active !== false ? 'border-violet-100 bg-violet-50' : 'border-gray-100 bg-gray-50 opacity-50'}`}
-          >
-            <p className="text-[10px] font-bold uppercase tracking-wider text-violet-500">{plan.duration}</p>
-            <p className="text-lg font-black text-gray-900 mt-0.5">{formatCurrency(plan.price)}</p>
-            {plan.active === false && <p className="text-[9px] text-gray-400 uppercase mt-0.5">Inactive</p>}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function KidsAcademyFormModal({ sports, editingSport, existingPlans, onClose }) {
-  const qc = useQueryClient();
-  const [selectedSportId, setSelectedSportId] = useState(editingSport?._id || '');
-  const [admissionFee, setAdmissionFee] = useState('');
-  const [tiers, setTiers] = useState(() =>
-    DURATION_LABELS.map((dur) => {
-      const existing = existingPlans.find((p) => p.duration === dur);
-      return { duration: dur, price: existing?.price ?? '', active: existing?.active !== false };
-    })
-  );
-
-  // Populate admission fee from existing plans when editing
-  useEffect(() => {
-    if (existingPlans.length > 0) {
-      setAdmissionFee(existingPlans[0]?.admissionFeeAmount ?? '');
-    }
-  }, [existingPlans]);
-
-  const { mutate: save, isPending } = useMutation({
-    mutationFn: (body) => api.post(`/sports/${selectedSportId}/kids-academy`, body),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['kids-academy-plans'] });
-      toast.success(editingSport ? 'Kids Academy updated' : 'Kids Academy programme created');
-      onClose();
-    },
-    onError: (err) => toast.error(err?.response?.data?.message || 'Failed to save'),
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!selectedSportId) return toast.error('Please select a sport');
-    const activeTiers = tiers.filter((t) => t.price !== '' && t.price !== null);
-    if (activeTiers.length === 0) return toast.error('Enter at least one tier price');
-    save({
-      enabled: true,
-      admissionFeeAmount: Number(admissionFee) || 0,
-      plans: tiers.map((t) => ({ duration: t.duration, price: Number(t.price) || 0, active: t.active })),
-    });
-  };
-
-  const updateTier = (idx, field, value) => {
-    setTiers((prev) => prev.map((t, i) => (i === idx ? { ...t, [field]: value } : t)));
-  };
-
-  const activeSports = sports?.filter((s) => !s.isArchived) || [];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,0.5)' }}
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden"
-      >
-        {/* Header */}
-        <div className="px-6 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }}>
-          <div className="flex items-center gap-2">
-            <GraduationCap size={20} className="text-white" />
-            <h3 className="text-white font-bold text-lg">{editingSport ? 'Edit Programme' : 'Add Kids Academy Programme'}</h3>
-          </div>
-          <button onClick={onClose} className="text-white/70 hover:text-white"><X size={20} /></button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
-          {/* Sport selector */}
-          <div>
-            <label className="block text-xs font-semibold text-gray-600 mb-1.5">Sport</label>
-            {editingSport ? (
-              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 border border-gray-200">
-                {editingSport.imageUrl && <img src={editingSport.imageUrl} alt={editingSport.name} className="w-6 h-6 rounded object-cover" />}
-                <span className="font-semibold text-gray-800">{editingSport.name}</span>
-              </div>
-            ) : (
-              <select
-                value={selectedSportId}
-                onChange={(e) => setSelectedSportId(e.target.value)}
-                className="input-field text-sm"
-                required
-              >
-                <option value="">Select a sport...</option>
-                {activeSports.map((s) => (
-                  <option key={s._id} value={s._id}>{s.name}</option>
-                ))}
-              </select>
-            )}
-          </div>
-
-          {/* Admission fee */}
-          <div>
-            <label className="block text-xs font-semibold text-gray-600 mb-1.5">Admission Fee (one-time, ₹)</label>
-            <input
-              type="number"
-              min="0"
-              value={admissionFee}
-              onChange={(e) => setAdmissionFee(e.target.value)}
-              className="input-field text-sm"
-              placeholder="e.g. 500"
-            />
-            <p className="text-[11px] text-gray-400 mt-1">Charged once per student, never again</p>
-          </div>
-
-          {/* Duration tiers */}
-          <div>
-            <label className="block text-xs font-semibold text-gray-600 mb-2">Membership Tiers</label>
-            <div className="space-y-2">
-              {tiers.map((tier, idx) => (
-                <div key={tier.duration} className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
-                  <div className="w-20 shrink-0">
-                    <p className="text-xs font-bold text-gray-700">{tier.duration}</p>
-                  </div>
-                  <div className="flex-1 relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">₹</span>
-                    <input
-                      type="number"
-                      min="0"
-                      value={tier.price}
-                      onChange={(e) => updateTier(idx, 'price', e.target.value)}
-                      className="w-full pl-7 pr-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
-                      placeholder="Price"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => updateTier(idx, 'active', !tier.active)}
-                    className={`shrink-0 transition-colors ${tier.active ? 'text-violet-600' : 'text-gray-300'}`}
-                    title={tier.active ? 'Active' : 'Inactive'}
-                  >
-                    {tier.active ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}
-                  </button>
-                </div>
-              ))}
-            </div>
-            <p className="text-[11px] text-gray-400 mt-1">Toggle to enable/disable individual tiers. Leave price blank to skip a tier.</p>
-          </div>
-
-          {/* Actions */}
-          <div className="flex gap-2 pt-1">
-            <button type="button" onClick={onClose} className="flex-1 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 hover:bg-gray-100">
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isPending}
-              className="flex-1 py-2 rounded-xl text-white text-sm font-semibold disabled:opacity-60 flex items-center justify-center gap-1"
-              style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }}
-            >
-              {isPending ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
-              {editingSport ? 'Save Changes' : 'Create Programme'}
-            </button>
-          </div>
-        </form>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-// ===========================================================================
 // Combo Plans Panel
 // ===========================================================================
 // Multi-sport and specialty membership plans. Unlike the per-sport plans that
@@ -3365,7 +2929,7 @@ function ComboPlanFormModal({ sports, family, onSave, onClose }) {
   const [previewUrl, setPreviewUrl] = useState(family?.image || '');
   const [isSaving, setIsSaving] = useState(false);
 
-  const selectableSports = sports.filter((s) => !s.deletedAt && s.slug !== 'all-services');
+  const selectableSports = sports.filter((s) => !s.deletedAt);
 
   const toggleSlug = (slug) =>
     setSlugs((prev) => (prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]));
@@ -3572,6 +3136,359 @@ function ComboPlanFormModal({ sports, family, onSave, onClose }) {
             >
               {isSaving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
               {family ? 'Save Changes' : 'Create Plan'}
+            </button>
+          </div>
+        </form>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ===========================================================================
+// Court Memberships Panel
+// ===========================================================================
+// A Court Membership reserves the whole court for one hour a day, but only within
+// a time band. Monthly only; each sport prices each band independently. Leaving a
+// price blank takes that band off sale without losing its configured times.
+
+const COURT_BAND_DEFS = [
+  { key: 'morning', label: 'Morning', defaultStart: '05:30', defaultEnd: '09:30' },
+  { key: 'evening', label: 'Evening', defaultStart: '17:00', defaultEnd: '21:30' },
+  { key: 'happy-hours', label: 'Happy Hours', defaultStart: '09:30', defaultEnd: '16:00' },
+];
+
+const fmt12h = (hhmm) => {
+  if (!hhmm) return '—';
+  const [h, m] = hhmm.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${period}`;
+};
+
+function CourtMembershipsPanel({ sports }) {
+  const qc = useQueryClient();
+  const [editingSport, setEditingSport] = useState(null);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['court-memberships'],
+    queryFn: () => api.get('/sports/court-memberships').then((r) => r.data),
+    staleTime: 30_000,
+  });
+
+  const plans = data?.plans || [];
+
+  // One card per sport that has any court plan configured
+  const bySport = plans.reduce((acc, p) => {
+    const slug = p.sportsIncluded?.[0];
+    if (!slug) return acc;
+    if (!acc[slug]) acc[slug] = { slug, sport: p.sport, plans: [] };
+    acc[slug].plans.push(p);
+    return acc;
+  }, {});
+  const configured = Object.values(bySport);
+
+  const handleDelete = async (slug) => {
+    const sport = sports.find((s) => s.slug === slug);
+    if (!sport) return;
+    try {
+      await api.delete(`/sports/${sport._id}/court-memberships`);
+      qc.invalidateQueries({ queryKey: ['court-memberships'] });
+      qc.invalidateQueries({ queryKey: ['membership-plans'] });
+      toast.success('Court memberships removed.');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to remove.');
+    } finally {
+      setDeleteConfirm(null);
+    }
+  };
+
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h2 className="text-lg font-bold text-gray-900">Court Memberships</h2>
+          <p className="text-xs text-gray-500 mt-0.5">
+            Whole-court access, one hour per day, within a fixed time band. Monthly only.
+          </p>
+        </div>
+        <button
+          onClick={() => setEditingSport({ slug: '', plans: [] })}
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] transition-colors"
+        >
+          <Plus size={15} /> Configure a Sport
+        </button>
+      </div>
+
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="h-40 rounded-2xl border border-gray-200 bg-white animate-pulse" />
+          ))}
+        </div>
+      ) : configured.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-gray-300 py-12 text-center">
+          <p className="text-sm font-semibold text-gray-700">No court memberships configured yet.</p>
+          <p className="text-xs text-gray-500 mt-1">
+            Add one to sell Morning, Evening or Happy Hours court access for a sport.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {configured.map((entry) => (
+            <div key={entry.slug} className="rounded-2xl border border-gray-200 bg-white p-5">
+              <div className="flex items-start justify-between gap-3 mb-4">
+                <div>
+                  <h3 className="font-bold text-gray-900">{entry.sport?.name || entry.slug}</h3>
+                  <p className="text-[11px] text-gray-500 mt-0.5">
+                    {entry.plans.filter((p) => p.isActive).length} of {entry.plans.length} band
+                    {entry.plans.length === 1 ? '' : 's'} on sale
+                  </p>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <button
+                    onClick={() => setEditingSport(entry)}
+                    className="p-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
+                    title="Edit"
+                  >
+                    <Pencil size={13} />
+                  </button>
+                  <button
+                    onClick={() => setDeleteConfirm(entry.slug)}
+                    className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                    title="Remove all"
+                  >
+                    <Trash2 size={13} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                {COURT_BAND_DEFS.map((def) => {
+                  const plan = entry.plans.find((p) => p.courtBand?.key === def.key);
+                  if (!plan) return null;
+                  return (
+                    <div
+                      key={def.key}
+                      className={`flex items-center justify-between gap-3 rounded-xl px-3 py-2 ${
+                        plan.isActive ? 'bg-gray-50' : 'bg-gray-50 opacity-50'
+                      }`}
+                    >
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold text-gray-900">
+                          {def.label}
+                          {!plan.isActive && (
+                            <span className="ml-1.5 text-[10px] font-semibold text-gray-400">(off sale)</span>
+                          )}
+                        </p>
+                        <p className="text-[11px] text-gray-500">
+                          {fmt12h(plan.courtBand?.startTime)} – {fmt12h(plan.courtBand?.endTime)}
+                        </p>
+                      </div>
+                      <p className="text-sm font-bold text-gray-900 shrink-0">
+                        {formatCurrency(plan.price)}
+                        <span className="text-[10px] font-medium text-gray-400">/mo</span>
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {editingSport && (
+        <CourtMembershipFormModal
+          sports={sports}
+          entry={editingSport}
+          configuredSlugs={configured.map((c) => c.slug)}
+          onClose={() => setEditingSport(null)}
+        />
+      )}
+
+      {deleteConfirm && (
+        <ConfirmModal
+          data={{
+            message:
+              'Remove all court membership plans for this sport? Members who already bought one keep it until it expires.',
+          }}
+          onCancel={() => setDeleteConfirm(null)}
+          onConfirm={() => handleDelete(deleteConfirm)}
+        />
+      )}
+    </div>
+  );
+}
+
+function CourtMembershipFormModal({ sports, entry, configuredSlugs, onClose }) {
+  const qc = useQueryClient();
+  const isEdit = !!entry.slug;
+  const [selectedSlug, setSelectedSlug] = useState(entry.slug || '');
+  const [saving, setSaving] = useState(false);
+
+  const [bands, setBands] = useState(() =>
+    COURT_BAND_DEFS.map((def) => {
+      const plan = (entry.plans || []).find((p) => p.courtBand?.key === def.key);
+      return {
+        key: def.key,
+        label: def.label,
+        startTime: plan?.courtBand?.startTime || def.defaultStart,
+        endTime: plan?.courtBand?.endTime || def.defaultEnd,
+        price: plan?.price != null ? String(plan.price) : '',
+        active: plan ? plan.isActive !== false : true,
+      };
+    })
+  );
+
+  const updateBand = (key, patch) =>
+    setBands((prev) => prev.map((b) => (b.key === key ? { ...b, ...patch } : b)));
+
+  // Gym has no court to reserve, and a sport already configured is edited from its card
+  const selectable = sports.filter(
+    (s) => !s.deletedAt && s.slug !== 'gym' && (s.slug === entry.slug || !configuredSlugs.includes(s.slug))
+  );
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const sport = sports.find((s) => s.slug === selectedSlug);
+    if (!sport) return toast.error('Pick a sport first.');
+    if (!bands.some((b) => Number(b.price) > 0)) {
+      return toast.error('Set a price on at least one band.');
+    }
+    setSaving(true);
+    try {
+      await api.post(`/sports/${sport._id}/court-memberships`, {
+        bands: bands.map((b) => ({
+          key: b.key,
+          startTime: b.startTime,
+          endTime: b.endTime,
+          price: Number(b.price) || 0,
+          active: b.active,
+        })),
+      });
+      qc.invalidateQueries({ queryKey: ['court-memberships'] });
+      qc.invalidateQueries({ queryKey: ['membership-plans'] });
+      toast.success('Court memberships saved.');
+      onClose();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to save.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.97, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        className="bg-white rounded-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          <div>
+            <h3 className="text-lg font-bold text-gray-900">
+              {isEdit ? 'Edit Court Memberships' : 'Add Court Memberships'}
+            </h3>
+            <p className="text-xs text-gray-500 mt-0.5">
+              A member books one hour per day inside the band. The whole slot must fit within it.
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-600 mb-1.5">Sport</label>
+            <select
+              value={selectedSlug}
+              onChange={(e) => setSelectedSlug(e.target.value)}
+              className="input-field"
+              disabled={isEdit}
+              required
+            >
+              <option value="">Select a sport…</option>
+              {selectable.map((s) => (
+                <option key={s._id} value={s.slug}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+            {!isEdit && selectable.length === 0 && (
+              <p className="text-[11px] text-amber-600 mt-1">
+                Every eligible sport already has court memberships configured.
+              </p>
+            )}
+          </div>
+
+          <div className="space-y-3">
+            {bands.map((band) => (
+              <div key={band.key} className="border border-gray-200 rounded-xl p-3.5 space-y-3">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-bold text-gray-900">{band.label}</p>
+                  <label className="flex items-center gap-1.5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={band.active}
+                      onChange={(e) => updateBand(band.key, { active: e.target.checked })}
+                      className="rounded"
+                    />
+                    <span className="text-[11px] font-semibold text-gray-500">On sale</span>
+                  </label>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  <div>
+                    <label className="block text-[10px] font-semibold text-gray-500 mb-1">From</label>
+                    <input
+                      type="time"
+                      value={band.startTime}
+                      onChange={(e) => updateBand(band.key, { startTime: e.target.value })}
+                      className="input-field text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-semibold text-gray-500 mb-1">To</label>
+                    <input
+                      type="time"
+                      value={band.endTime}
+                      onChange={(e) => updateBand(band.key, { endTime: e.target.value })}
+                      className="input-field text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-semibold text-gray-500 mb-1">₹ / month</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={band.price}
+                      onChange={(e) => updateBand(band.key, { price: e.target.value })}
+                      className="input-field text-sm"
+                      placeholder="—"
+                    />
+                  </div>
+                </div>
+                <p className="text-[10px] text-gray-400">Leave the price blank to take this band off sale.</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex gap-2 pt-1">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-semibold hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={saving}
+              className="flex-1 py-2 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-1"
+            >
+              {saving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
+              Save
             </button>
           </div>
         </form>

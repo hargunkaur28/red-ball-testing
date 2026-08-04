@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'What else can I do at Alchemy 360 when visiting from Sonipat?',
-    a: 'Alongside pickleball, Alchemy 360 offers badminton courts, the Box 360 circular cricket ground, an open-air swimming pool, and a gymnasium. Sonipat visitors often spend a full day enjoying multiple sports.',
+    a: 'Alongside pickleball, Alchemy 360 offers badminton courts, the Box 360 circular cricket ground, and a gymnasium. Sonipat visitors often spend a full day enjoying multiple sports.',
   },
 ];
 

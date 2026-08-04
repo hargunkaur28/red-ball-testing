@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: 'Can Hisar residents buy a gym membership at Alchemy 360?',
-    a: 'Yes. Monthly, quarterly, and annual memberships are available. Some plans include access to multiple sports — swimming, badminton, and more. Contact us at +91 93500 76653 for current pricing.',
+    a: 'Yes. Monthly, quarterly, and annual memberships are available. Some plans include access to multiple sports — badminton, pickleball, and more. Contact us at +91 93500 76653 for current pricing.',
   },
   {
     q: 'Is there somewhere to eat at Alchemy 360 after a gym session?',
@@ -65,7 +65,7 @@ export default function GymHisar() {
             Alchemy 360 Sports Arena in Rohtak is approximately 100 km from Hisar — about 100 minutes on NH-9. If you're looking for a serious gym with proper equipment, trained staff, and multi-sport access all under one roof, the drive from Hisar is absolutely worth it.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/buy-membership" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership?sport=gym" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join the Gym
             </Link>
             <Link to="/gym-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -102,7 +102,6 @@ export default function GymHisar() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Gym Rohtak', to: '/gym-rohtak' },
-              { label: 'Swimming Pool Rohtak', to: '/swimming-pool-rohtak' },
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
               { label: 'Sports Complex Hisar', to: '/sports-complex-hisar' },
             ].map(item => (

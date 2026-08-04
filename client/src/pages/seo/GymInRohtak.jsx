@@ -26,7 +26,7 @@ const faqs = [
   },
   {
     q: 'Is the gym combined with other sports access?',
-    a: 'Some membership plans include multi-sport access covering gym, badminton, swimming, and more. Check our membership options for combined plans.',
+    a: 'Some membership plans include multi-sport access covering gym, badminton, and more. Check our membership options for combined plans.',
   },
 ];
 
@@ -64,7 +64,7 @@ export default function GymInRohtak() {
             Alchemy 360 Sports Arena's gym in Rohtak is equipped for serious training. Whether your goal is strength, weight loss, endurance, or athletic performance — train here with the right equipment and expert guidance.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/buy-membership" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership?sport=gym" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Gym
             </Link>
             <Link to="/book-slots" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -101,13 +101,11 @@ export default function GymInRohtak() {
             Gym + Sports — The Complete Fitness Package
           </h2>
           <p className="text-sm text-[#0D0D0D]/60 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Combine gym training with cricket, badminton, or swimming at Alchemy 360 for a complete sports fitness routine.
+            Combine gym training with cricket, badminton,  at Alchemy 360 for a complete sports fitness routine.
           </p>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Courts', to: '/badminton-court-rohtak' },
-              { label: 'Swimming Pool', to: '/swimming-pool-rohtak' },
-              { label: 'Cricket Ground', to: '/cricket-academy-rohtak' },
               { label: 'Memberships', to: '/buy-membership' },
             ].map(item => (
               <Link key={item.label} to={item.to}

@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     q: 'Which sports can I learn at Alchemy 360 Academy Rohtak?',
-    a: 'You can train in cricket (box cricket), badminton, pickleball, swimming, and fitness/gym. Kids programs are available for cricket and badminton.',
+    a: 'You can train in cricket (box cricket), badminton, pickleball, and fitness/gym. Kids programs are available for cricket and badminton.',
   },
   {
     q: 'Is Alchemy 360 Academy good for beginners?',
@@ -37,7 +37,7 @@ export default function BestSportsAcademyRohtak() {
     <SEOLandingLayout>
       <SEOHead
         title="Best Sports Academy in Rohtak | Alchemy 360 Sports Arena"
-        description="Alchemy 360 Sports Arena is the best sports academy in Rohtak, Haryana. Multi-sport facility with cricket, badminton, pickleball, swimming, gym & kids programs. Book online."
+        description="Alchemy 360 Sports Arena is the best sports academy in Rohtak, Haryana. Multi-sport facility with cricket, badminton, pickleball, gym & kids programs. Book online."
         canonical="/best-sports-academy-rohtak"
         schema={schema}
       />
@@ -70,7 +70,7 @@ export default function BestSportsAcademyRohtak() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
-            { icon: '🏟️', title: 'Multi-Sport Infrastructure', desc: 'Cricket, badminton, pickleball, swimming, and gym — all in one location in Rohtak.' },
+            { icon: '🏟️', title: 'Multi-Sport Infrastructure', desc: 'Cricket, badminton, pickleball, and gym — all in one location in Rohtak.' },
             { icon: '👨‍🏫', title: 'Expert Coaching', desc: 'Experienced coaches across disciplines for both kids and adults, beginner to advanced.' },
             { icon: '📱', title: 'Digital Booking', desc: 'Book any court or slot online in minutes. No phone calls, no waiting.' },
             { icon: '🎓', title: "Kids' Academy", desc: 'Dedicated youth programs for cricket and badminton with age-appropriate coaching.' },
@@ -95,13 +95,9 @@ export default function BestSportsAcademyRohtak() {
           </h2>
           <div className="flex flex-wrap gap-3">
             {[
-              { label: 'Cricket Academy', to: '/cricket-academy-rohtak' },
-              { label: 'Box Cricket', to: '/box-cricket-rohtak' },
               { label: 'Badminton', to: '/badminton-court-rohtak' },
               { label: 'Pickleball', to: '/pickleball-court-rohtak' },
-              { label: 'Swimming', to: '/swimming-pool-rohtak' },
               { label: 'Gym', to: '/gym-in-rohtak' },
-              { label: "Kids' Academy", to: '/kids-sports-academy-rohtak' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

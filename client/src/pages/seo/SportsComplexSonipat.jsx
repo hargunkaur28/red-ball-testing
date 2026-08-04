@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a sports complex near Sonipat?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is the nearest comprehensive multi-sport complex to Sonipat — approximately 55 km away, around 55 minutes by road. It has cricket, badminton, pickleball, a swimming pool, a gym, and a restaurant.',
+    a: 'Alchemy 360 Sports Arena in Rohtak is the nearest comprehensive multi-sport complex to Sonipat — approximately 55 km away, around 55 minutes by road. It has cricket, badminton, pickleball, a gym, and a restaurant.',
   },
   {
     q: 'How far is Alchemy 360 Sports Arena from Sonipat?',
@@ -47,7 +47,7 @@ export default function SportsComplexSonipat() {
     <SEOLandingLayout>
       <SEOHead
         title="Sports Complex Near Sonipat | Alchemy 360 Sports Arena Rohtak"
-        description="Sports complex near Sonipat — Alchemy 360 Sports Arena in Rohtak, ~55 km, ~55 min drive. Cricket, badminton, pickleball, swimming, gym & on-site restaurant."
+        description="Sports complex near Sonipat — Alchemy 360 Sports Arena in Rohtak, ~55 km, ~55 min drive. Cricket, badminton, pickleball, gym & on-site restaurant."
         canonical="/sports-complex-sonipat"
         schema={schema}
       />
@@ -61,7 +61,7 @@ export default function SportsComplexSonipat() {
             Sports Complex Near Sonipat
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak is approximately 55 km from Sonipat — around 55 minutes on the Rohtak–Sonipat Road. Sonipat players, students, and teams looking for a serious multi-sport facility will find everything at Alchemy 360 that isn't locally available — including Box 360 circular box cricket, a professional swimming pool, and courts for badminton and pickleball.
+            Alchemy 360 Sports Arena in Rohtak is approximately 55 km from Sonipat — around 55 minutes on the Rohtak–Sonipat Road. Sonipat players, students, and teams looking for a serious multi-sport facility will find everything at Alchemy 360 that isn't locally available — including Box 360 circular box cricket and courts for badminton and pickleball.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -101,7 +101,6 @@ export default function SportsComplexSonipat() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
-              { label: 'Cricket Ground Sonipat', to: '/cricket-ground-sonipat' },
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },
               { label: 'Football Ground Sonipat', to: '/football-ground-sonipat' },
             ].map(item => (

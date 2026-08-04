@@ -20,7 +20,7 @@ export function stripTierSuffix(name = '') {
 }
 
 export function isComboPlan(plan) {
-  return !!plan?.isStandalone && !plan?.isKidsAcademy;
+  return !!plan?.isStandalone;
 }
 
 const tierIndex = (plan) => {

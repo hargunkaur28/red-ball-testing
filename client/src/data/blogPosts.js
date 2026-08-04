@@ -113,7 +113,7 @@ export const blogPosts = [
       },
       {
         heading: 'Swimming Classes Timings and Batch Schedule',
-        body: 'Alchemy 360\'s swimming classes run in two main windows: morning (5:30 AM–9:00 AM) and evening (4:00 PM–8:00 PM). Morning batches are popular with adults and serious swimmers who want to train before their day begins. Evening batches are popular with school-age children and working adults who prefer post-work sessions.\n\nEach batch session is 45 minutes long. Multiple batches run simultaneously for different levels. Class days are typically 5–6 days per week with Sunday as an optional open practice day. Monthly, quarterly, and annual enrolment options are available. A trial session can be booked as a one-time access booking to experience the pool and meet the coach before committing to a program.',
+        body: 'Alchemy 360\'s swimming classes run in two main windows: morning (5:30 AM–9:00 AM) and evening (4:00 PM–8:00 PM). Morning batches are popular with adults and serious swimmers who want to train before their day begins. Evening batches are popular with school-age children and working adults who prefer post-work sessions.\n\nEach batch session is 45 minutes long. Multiple batches run simultaneously for different levels. Class days are typically 5–6 days per week with Sunday as an optional open practice day. Monthly, quarterly, and annual enrollment options are available. A trial session can be booked as a one-time access booking to experience the pool and meet the coach before committing to a program.',
       },
       {
         heading: 'Kids Swimming Classes in Rohtak',
@@ -433,15 +433,15 @@ export const blogPosts = [
         body: 'Badminton is particularly valuable for children because the quick reflexes, footwork agility, and hand-eye coordination it demands build cognitive and physical abilities that transfer to many other sports and daily life activities. Alchemy 360\'s kids badminton program starts at age 6 and follows a structured progression from basic rallying through to competitive match play.\n\nSwimming at Alchemy 360\'s kids academy is more than a sport — it is safety training. Children who can swim are safe near water. Children who cannot are at risk. This alone makes the swimming program one of the most important investments a Rohtak parent can make. Beyond safety, the physical development benefits of swimming — lung capacity, full-body coordination, cardiovascular fitness — are among the best of any activity available to children.',
       },
       {
-        heading: 'How to Enrol Your Child at Alchemy 360\'s Sports Academy',
-        body: 'Enrolment at Alchemy 360 Sports Arena\'s kids academy is straightforward. Visit the facility at Sector 22-D, Jhajjar Road, Rohtak, or visit redballsportsarena.in to check current enrollment status for specific programs. Contact Alchemy 360 at +91 93500 76653 to discuss which program is right for your child\'s age and current skill level.\n\nNew students are assessed in a trial session before being placed in the appropriate level batch. This ensures your child starts in a group that challenges without overwhelming them. Membership plans for kids academy include access to the specific sport program(s) enrolled and are available monthly, quarterly, and annually. Summer intensives and school holiday camps are also offered seasonally.',
+        heading: 'How to Enroll Your Child at Alchemy 360\'s Sports Academy',
+        body: 'Enrollment at Alchemy 360 Sports Arena\'s kids academy is straightforward. Visit the facility at Sector 22-D, Jhajjar Road, Rohtak, or visit redballsportsarena.in to check current enrollment status for specific programs. Contact Alchemy 360 at +91 93500 76653 to discuss which program is right for your child\'s age and current skill level.\n\nNew students are assessed in a trial session before being placed in the appropriate level batch. This ensures your child starts in a group that challenges without overwhelming them. Membership plans for kids academy include access to the specific sport program(s) enrolled and are available monthly, quarterly, and annually. Summer intensives and school holiday camps are also offered seasonally.',
       },
     ],
     faqs: [
       { q: 'At what age can children join Alchemy 360\'s kids sports academy?', a: 'Swimming classes accept children from age 4. Cricket and badminton programs start from age 6. Contact Alchemy 360 for age-specific program details.' },
       { q: 'How many days per week are kids academy sessions?', a: 'Standard academy programs run 5–6 days per week with one rest day. Parents can choose morning or evening batch times based on school schedules.' },
       { q: 'Are the kids academy coaches qualified?', a: 'Yes. Alchemy 360\'s kids coaches are assessed for both sport-specific expertise and child instruction ability. All children\'s coaches undergo child safety and first aid training.' },
-      { q: 'Can my child join the academy mid-year?', a: 'Yes. Alchemy 360 accepts enrolments year-round. New students are assessed and placed in the appropriate level batch based on their current skill level.' },
+      { q: 'Can my child join the academy mid-year?', a: 'Yes. Alchemy 360 accepts enrollments year-round. New students are assessed and placed in the appropriate level batch based on their current skill level.' },
     ],
   },
   {

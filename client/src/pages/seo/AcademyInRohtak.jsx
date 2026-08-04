@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'What kind of academy is Alchemy 360 in Rohtak?',
-    a: 'Alchemy 360 is a sports academy in Rohtak, Haryana, offering training in cricket, badminton, swimming, and fitness. It also has a dedicated kids sports academy for young athletes.',
+    a: 'Alchemy 360 is a sports academy in Rohtak, Haryana, offering training in cricket, badminton, and fitness. It also has a dedicated kids sports academy for young athletes.',
   },
   {
     q: 'What age groups can join the academy?',
@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'Are there professional coaches at the academy?',
-    a: 'Yes. Alchemy 360 Academy has experienced coaches for cricket, badminton, and swimming. Coaches offer both group and individual training sessions.',
+    a: 'Yes. Alchemy 360 Academy has experienced coaches for cricket, badminton. Coaches offer both group and individual training sessions.',
   },
   {
     q: 'What is the admission fee for the academy?',
@@ -37,7 +37,7 @@ export default function AcademyInRohtak() {
     <SEOLandingLayout>
       <SEOHead
         title="Academy in Rohtak | Alchemy 360 Sports Academy Haryana"
-        description="Alchemy 360 Academy in Rohtak offers professional sports training for all ages. Cricket, badminton, swimming, gym & kids programs. Join the best sports academy in Rohtak, Haryana."
+        description="Alchemy 360 Academy in Rohtak offers professional sports training for all ages. Cricket, badminton, gym & kids programs. Join the best sports academy in Rohtak, Haryana."
         canonical="/academy-in-rohtak"
         schema={schema}
       />
@@ -71,24 +71,9 @@ export default function AcademyInRohtak() {
         <div className="space-y-4">
           {[
             {
-              title: 'Cricket Academy',
-              desc: 'Professional cricket training on our box cricket ground. Includes batting, bowling, and fielding drills for all skill levels.',
-              to: '/cricket-academy-rohtak',
-            },
-            {
               title: 'Badminton Academy',
               desc: 'Learn badminton with experienced coaches. Available for beginners, intermediate players, and competitive athletes.',
               to: '/badminton-court-rohtak',
-            },
-            {
-              title: "Kids' Sports Academy",
-              desc: 'Fun and structured coaching for children aged 6–16 in cricket and badminton. Age-appropriate batches with experienced youth coaches.',
-              to: '/kids-sports-academy-rohtak',
-            },
-            {
-              title: 'Swimming Program',
-              desc: 'Learn-to-swim and advanced swim training with experienced swimming instructors.',
-              to: '/swimming-pool-rohtak',
             },
             {
               title: 'Gym & Fitness',

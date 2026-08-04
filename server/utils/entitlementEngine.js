@@ -34,22 +34,6 @@ exports.invalidateEntitlementCache = (userId) => {
 };
 
 // ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-/**
- * Returns true for plan keys that grant access to ALL sports/services.
- * Handles 'all' and 'all-services' (case-insensitive, trimmed).
- */
-const isAllServicesKey = (key) => {
-  if (!key || typeof key !== 'string') return false;
-  const normalized = key.trim().toLowerCase();
-  return normalized === 'all' || normalized === 'all-services';
-};
-
-exports.isAllServicesKey = isAllServicesKey;
-
-// ---------------------------------------------------------------------------
 // calculateEntitlement
 // ---------------------------------------------------------------------------
 
@@ -80,41 +64,14 @@ const calculateEntitlement = async (userId) => {
 
   // 3. Collect every sport entry across all plans
   const allSportEntries = [];
-  let hasAllServices = false;
 
   for (const m of validMemberships) {
-    if (m.planId.isAllServices) {
-      hasAllServices = true;
-    }
     for (const entry of m.planId.sportsIncluded || []) {
-      if (isAllServicesKey(entry)) {
-        hasAllServices = true;
-      }
       allSportEntries.push(entry);
     }
   }
 
-  // 4. Build the result based on whether any plan grants all-services access
-  if (hasAllServices) {
-    // All-services plans grant access to every sport with no concurrent cap
-    const allSports = await Sport.find({ active: true, deletedAt: null })
-      .select('slug name')
-      .lean();
-
-    const result = {
-      entitlementType: 'all-services',
-      concurrentSessionLimit: null,
-      isUnlimited: true,
-      allowedSports: allSports.map((s) => s.slug),
-      activeMemberships: validMemberships,
-      isAllServices: true,
-    };
-
-    setCachedEntitlement(userId, result);
-    return result;
-  }
-
-  // 5. For non-all-services plans, resolve which sport slugs are actually known
+  // 4. Resolve which sport slugs are actually known
   const activeSports = await Sport.find({ active: true, deletedAt: null })
     .select('slug name')
     .lean();
@@ -167,7 +124,6 @@ const calculateEntitlement = async (userId) => {
     isUnlimited: false,
     allowedSports: Array.from(allowedSportsSet),
     activeMemberships: validMemberships,
-    isAllServices: false,
   };
 
   setCachedEntitlement(userId, result);
@@ -223,7 +179,6 @@ exports.validateCheckIn = async (userId, sportName) => {
     concurrentSessionLimit: entitlement.concurrentSessionLimit,
     isUnlimited: entitlement.isUnlimited,
     allowedSports: entitlement.allowedSports,
-    isAllServices: entitlement.isAllServices,
   };
 
   // Determine source: prepaid pass takes priority over membership so it gets consumed first
@@ -245,7 +200,7 @@ exports.validateCheckIn = async (userId, sportName) => {
   } else {
     // Fall back to membership coverage
     const hasMembershipCoverage = entitlement.entitlementType !== 'none' &&
-      (entitlement.isAllServices || entitlement.allowedSports.includes(resolvedSportSlug)) &&
+      entitlement.allowedSports.includes(resolvedSportSlug) &&
       entitlement.activeMemberships.length > 0;
 
     if (!hasMembershipCoverage) {

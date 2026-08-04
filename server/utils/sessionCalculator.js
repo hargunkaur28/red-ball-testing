@@ -206,7 +206,14 @@ const resolveLateMinutesForAttendance = async (attendance) => {
     }
   }
 
-  // 2. Walk-in membership or fallback: align check-in time to the hourly block
+  // A walk-in has no scheduled start, so it cannot be late. Aligning it to the
+  // hourly grid made anyone arriving mid-hour "late" by that many minutes — and
+  // lateMinutes feeds actualDurationMinutes, so it was billed as overtime.
+  const isSlotBased = ['slot-booking', 'membership-slot'].includes(attendance.relatedBookingType);
+  if (!startTime && !isSlotBased) return 0;
+
+  // 2. Slot-based session whose booking couldn't be resolved: fall back to the
+  //    hourly block that covers the check-in.
   if (!startTime) {
     const checkInIST = new Date(new Date(attendance.checkInTime).getTime() + IST_OFFSET_MS);
     const hhmm = `${String(checkInIST.getUTCHours()).padStart(2, '0')}:${String(checkInIST.getUTCMinutes()).padStart(2, '0')}`;
@@ -280,8 +287,15 @@ const enrichSessionWithSlotAndLateMinutes = async (session) => {
     }
   }
 
-  // 2. Fall back to hourly block alignment (walk-in or missing booking fallback)
-  if (!startTime) {
+  // A walk-in (gym, or any membership check-in without a booked slot) runs for its
+  // allowed duration from the moment of check-in. Pinning it to the hourly grid
+  // ended the session at the top of the hour — check in at 15:41 and the UI
+  // counted down to 16:00 instead of giving the full allowance.
+  const isSlotBasedSession = ['slot-booking', 'membership-slot'].includes(sessionObj.relatedBookingType);
+
+  // 2. Slot-based session whose booking couldn't be resolved: fall back to the
+  //    hourly block that covers the check-in.
+  if (!startTime && isSlotBasedSession) {
     const checkInIST = new Date(new Date(sessionObj.checkInTime).getTime() + IST_OFFSET_MS);
     const hhmm = `${String(checkInIST.getUTCHours()).padStart(2, '0')}:${String(checkInIST.getUTCMinutes()).padStart(2, '0')}`;
 

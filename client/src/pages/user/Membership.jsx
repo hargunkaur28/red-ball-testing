@@ -11,6 +11,7 @@ import useAuthStore from '../../store/authStore';
 import { formatCurrency } from '../../lib/utils';
 import { toast } from 'sonner';
 import MembershipSlotBookingModal from '../../components/sports/MembershipSlotBookingModal';
+import { planHasNoSlots } from '../../lib/planSlots';
 
 const emptyDash = '-';
 
@@ -49,16 +50,7 @@ const bookingStatusStyles = {
   cancelled: 'text-red-300 bg-red-500/10 border-red-400/20',
 };
 
-const hasNoSlots = (p) => {
-  if (!p) return false;
-  if (p.requiresSlotBooking === false) return true;
-  if (p.isAllServices) return true;
-  // Fallback for older database records
-  const name = (p.name || '').trim().toLowerCase();
-  if (name.includes('gym')) return true;
-  const sports = (p.sportsIncluded || []).map(s => (s || '').trim().toLowerCase());
-  return sports.every(s => s === 'gym' || s === 'all' || s === 'all-services');
-};
+const hasNoSlots = planHasNoSlots;
 
 function Surface({ children, className = '' }) {
   return (

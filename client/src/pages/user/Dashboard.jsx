@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
 import api from '../../lib/axios';
 import useAuthStore from '../../store/authStore';
-import { formatCurrency } from '../../lib/utils';
+import { formatCurrency, DISPLAY_SESSION_MINUTES } from '../../lib/utils';
 import socket from '../../lib/socket';
-import { Trophy, Calendar, Utensils, Clock, AlertTriangle, CheckCircle, QrCode, TimerReset, User, Star, ShieldCheck, Zap } from 'lucide-react';
+import { Trophy, Calendar, Utensils, Clock, AlertTriangle, CheckCircle, QrCode, TimerReset, User, Star, ShieldCheck, Zap, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 const formatSessionClock = (milliseconds) => {
@@ -122,6 +122,32 @@ export default function UserDashboard() {
   }, [slotBookingsData]);
   const hasReferenceBooking = useMemo(() => slotBookingsList.some(b => b.isReference), [slotBookingsList]);
 
+  // Cancelling an upcoming membership slot — same endpoint the membership page uses,
+  // allowed right up until the slot's start time.
+  const [confirmCancelId, setConfirmCancelId] = useState(null);
+  const cancelBookingMutation = useMutation({
+    mutationFn: (id) => api.delete(`/slots/membership/bookings/${id}/cancel`),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['my-membership-slot-bookings'] });
+      setConfirmCancelId(null);
+      toast.success('Booking cancelled');
+    },
+    onError: (e) => {
+      setConfirmCancelId(null);
+      toast.error(e?.response?.data?.message || 'Cancellation failed');
+    },
+  });
+
+  const canCancelBooking = (b) => {
+    if (b.status !== 'confirmed') return false;
+    const slotDate = b.slotId?.date;
+    if (!slotDate) return false;
+    const [sh, sm] = (b.startTime || '00:00').split(':').map(Number);
+    const slotStart = new Date(slotDate);
+    slotStart.setHours(sh, sm, 0, 0);
+    return new Date() < slotStart;
+  };
+
   const upcomingMembershipBookings = useMemo(() => {
     const all = membershipBookingsData?.bookings || [];
     const todayStr = new Date().toISOString().slice(0, 10);
@@ -198,26 +224,20 @@ export default function UserDashboard() {
   const sessionState = useMemo(() => {
     if (!activeSession?.checkInTime) return null;
     
-    let displayMinutes = 60; // default
+    // Members are always told one hour, regardless of the configured allowance —
+    // see DISPLAY_SESSION_MINUTES. The server keeps billing on the real config.
+    const displayMinutes = DISPLAY_SESSION_MINUTES;
     const checkInMs = new Date(activeSession.checkInTime).getTime();
     let endsAt;
 
     if (activeSession.slotBooking && activeSession.slotBooking.endTime) {
-      // Slot booking: session ends at the slot's end time
+      // Booked slot: the court is only theirs until the slot's end time
       const [hours, minutes] = activeSession.slotBooking.endTime.split(':').map(Number);
       const sessionDate = new Date(activeSession.date || activeSession.checkInTime);
       sessionDate.setHours(hours, minutes, 0, 0);
       endsAt = sessionDate.getTime();
-
-      // Calculate the allowed duration for this slot
-      if (activeSession.slotBooking.startTime) {
-        const [startH, startM] = activeSession.slotBooking.startTime.split(':').map(Number);
-        const startMs = new Date(sessionDate).setHours(startH, startM, 0, 0);
-        displayMinutes = Math.round((endsAt - startMs) / 60000);
-      }
     } else {
-      // Normal check-in (e.g. gym, walk-in membership): ends 60 mins after check-in
-      displayMinutes = activeSession.allowedDurationMinutes || sessionData?.allowedDurationMinutes || 60;
+      // Walk-in (gym): the hour runs from the moment of check-in
       endsAt = checkInMs + displayMinutes * 60000;
     }
 
@@ -253,7 +273,7 @@ export default function UserDashboard() {
         month: 'short',
       }),
     };
-  }, [activeSession, now, sessionData?.allowedDurationMinutes]);
+  }, [activeSession, now]);
 
   const statusConfig = {
     active: { color: 'border-green-500/25 bg-green-500/8 text-green-300', icon: <CheckCircle size={20} />, text: 'Active' },
@@ -378,7 +398,7 @@ export default function UserDashboard() {
       {activeMemberships.length === 0 && (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/40 mb-4">Get Started</p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link to="/user/buy-memberships" className="group">
               <div className="ota-card p-5 flex flex-col gap-3 hover:border-[#C5DB3B]/40 transition-all cursor-pointer h-full">
                 <div className="w-11 h-11 rounded-xl bg-[#C5DB3B]/10 border border-[#C5DB3B]/25 flex items-center justify-center text-[#C5DB3B] group-hover:bg-[#C5DB3B]/20 transition-colors">
@@ -386,21 +406,9 @@ export default function UserDashboard() {
                 </div>
                 <div>
                   <h3 className="font-extrabold text-white text-base leading-tight">Buy Sport Membership</h3>
-                  <p className="text-xs text-white/45 mt-1">Monthly, quarterly &amp; yearly plans for one or all sports</p>
+                  <p className="text-xs text-white/45 mt-1">Monthly, quarterly &amp; yearly plans for one or more sports</p>
                 </div>
                 <span className="mt-auto text-xs font-bold text-[#C5DB3B] group-hover:underline">View Plans →</span>
-              </div>
-            </Link>
-            <Link to="/user/buy-memberships?sport=all-services" className="group">
-              <div className="ota-card p-5 flex flex-col gap-3 hover:border-amber-500/40 transition-all cursor-pointer h-full">
-                <div className="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 group-hover:bg-amber-500/20 transition-colors">
-                  <Star size={22} strokeWidth={1.8} />
-                </div>
-                <div>
-                  <h3 className="font-extrabold text-white text-base leading-tight">All Services Plan</h3>
-                  <p className="text-xs text-white/45 mt-1">Access every sport at one flat price — best value</p>
-                </div>
-                <span className="mt-auto text-xs font-bold text-amber-400 group-hover:underline">View Plans →</span>
               </div>
             </Link>
             <Link to="/user/book-slots" className="group">
@@ -510,53 +518,12 @@ export default function UserDashboard() {
           );
         })}
 
-      {/* Explore More Sports — shown below active memberships */}
-      {activeMemberships.length > 0 && (
-        <div className="mb-8">
-          <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/40 mb-4">Explore More Sports</p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <Link to="/user/book-slots" className="group">
-              <div className="ota-card p-5 flex flex-col gap-3 hover:border-white/15 transition-all cursor-pointer h-full">
-                <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/55 group-hover:text-white transition-colors">
-                  <Calendar size={22} strokeWidth={1.8} />
-                </div>
-                <div>
-                  <h3 className="font-extrabold text-white text-sm leading-tight">Book Sports</h3>
-                  <p className="text-xs text-white/40 mt-1">Browse courts and book by the hour</p>
-                </div>
-              </div>
-            </Link>
-            <Link to="/user/buy-memberships" className="group">
-              <div className="ota-card p-5 flex flex-col gap-3 hover:border-white/15 transition-all cursor-pointer h-full">
-                <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/55 group-hover:text-white transition-colors">
-                  <Trophy size={22} strokeWidth={1.8} />
-                </div>
-                <div>
-                  <h3 className="font-extrabold text-white text-sm leading-tight">Add Another Plan</h3>
-                  <p className="text-xs text-white/40 mt-1">Upgrade or add a new sport membership</p>
-                </div>
-              </div>
-            </Link>
-            <Link to="/user/membership" className="group">
-              <div className="ota-card p-5 flex flex-col gap-3 hover:border-white/15 transition-all cursor-pointer h-full">
-                <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/55 group-hover:text-white transition-colors">
-                  <Star size={22} strokeWidth={1.8} />
-                </div>
-                <div>
-                  <h3 className="font-extrabold text-white text-sm leading-tight">Manage Membership</h3>
-                  <p className="text-xs text-white/40 mt-1">View invoices, renew or upgrade</p>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </div>
-      )}
       {/* Upcoming Membership Slot Bookings */}
       <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-extrabold text-white/70 uppercase tracking-wider">Upcoming Membership Bookings</h3>
+        <div className="flex items-center justify-between gap-3 mb-4">
+          <h3 className="text-sm font-extrabold text-white/70 uppercase tracking-wider min-w-0">Upcoming Membership Bookings</h3>
           {upcomingMembershipBookings.length > 0 && (
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(124,58,237,0.15)', color: '#a78bfa', border: '1px solid rgba(124,58,237,0.25)' }}>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap" style={{ background: 'rgba(124,58,237,0.15)', color: '#a78bfa', border: '1px solid rgba(124,58,237,0.25)' }}>
               {upcomingMembershipBookings.length} upcoming
             </span>
           )}
@@ -601,7 +568,7 @@ export default function UserDashboard() {
                         <p className="text-sm font-bold text-white truncate">
                           {booking.sportNameSnapshot || 'Sport'}{booking.courtNameSnapshot ? ` · ${booking.courtNameSnapshot}` : ''}
                         </p>
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold shrink-0" style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.25)', color: '#a78bfa' }}>
+                        <span className="inline-block max-w-full truncate px-2 py-0.5 rounded-full text-[9px] font-bold" style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.25)', color: '#a78bfa' }}>
                           {planName}
                         </span>
                       </div>
@@ -610,13 +577,42 @@ export default function UserDashboard() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 shrink-0">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(124,58,237,0.1)', color: '#a78bfa', border: '1px solid rgba(124,58,237,0.2)' }}>
+                  {/* Mobile: a wrapped row under the details, separated by a rule.
+                      sm+: a right-aligned column beside them. */}
+                  <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-white/5 sm:flex-col sm:items-end sm:justify-center sm:gap-2 sm:pt-0 sm:border-t-0 sm:shrink-0">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0" style={{ background: 'rgba(124,58,237,0.1)', color: '#a78bfa', border: '1px solid rgba(124,58,237,0.2)' }}>
                       Free
                     </span>
-                    <span className={`text-[10px] font-bold uppercase tracking-wide ${statusColors[booking.status] || 'text-white/40'}`}>
+                    <span className={`text-[10px] font-bold uppercase tracking-wide shrink-0 ${statusColors[booking.status] || 'text-white/40'}`}>
                       {booking.status}
                     </span>
+                    {canCancelBooking(booking) && (
+                      confirmCancelId === booking._id ? (
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <button
+                            onClick={() => cancelBookingMutation.mutate(booking._id)}
+                            disabled={cancelBookingMutation.isPending}
+                            className="text-[10px] font-bold px-2 py-1 rounded-lg bg-red-500/15 text-red-300 border border-red-400/25 hover:bg-red-500/25 transition-colors disabled:opacity-60"
+                          >
+                            {cancelBookingMutation.isPending ? 'Cancelling…' : 'Yes, cancel'}
+                          </button>
+                          <button
+                            onClick={() => setConfirmCancelId(null)}
+                            disabled={cancelBookingMutation.isPending}
+                            className="text-[10px] font-bold px-2 py-1 rounded-lg bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 transition-colors"
+                          >
+                            Keep
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => setConfirmCancelId(booking._id)}
+                          className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-lg bg-white/5 text-white/45 border border-white/10 hover:text-red-300 hover:border-red-400/25 transition-colors shrink-0 ml-auto sm:ml-0"
+                        >
+                          <X size={10} /> Cancel
+                        </button>
+                      )
+                    )}
                   </div>
                 </motion.div>
               );
@@ -955,6 +951,48 @@ export default function UserDashboard() {
           </div>
         )}
       </div>
+
+      {/* Explore More Sports — shown below active memberships */}
+      {activeMemberships.length > 0 && (
+        <div className="mb-8">
+          <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/40 mb-4">Explore More Sports</p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <Link to="/user/book-slots" className="group">
+              <div className="ota-card p-5 flex flex-col gap-3 hover:border-white/15 transition-all cursor-pointer h-full">
+                <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/55 group-hover:text-white transition-colors">
+                  <Calendar size={22} strokeWidth={1.8} />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-white text-sm leading-tight">Book Sports</h3>
+                  <p className="text-xs text-white/40 mt-1">Browse courts and book by the hour</p>
+                </div>
+              </div>
+            </Link>
+            <Link to="/user/buy-memberships" className="group">
+              <div className="ota-card p-5 flex flex-col gap-3 hover:border-white/15 transition-all cursor-pointer h-full">
+                <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/55 group-hover:text-white transition-colors">
+                  <Trophy size={22} strokeWidth={1.8} />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-white text-sm leading-tight">Add Another Plan</h3>
+                  <p className="text-xs text-white/40 mt-1">Upgrade or add a new sport membership</p>
+                </div>
+              </div>
+            </Link>
+            <Link to="/user/membership" className="group">
+              <div className="ota-card p-5 flex flex-col gap-3 hover:border-white/15 transition-all cursor-pointer h-full">
+                <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/55 group-hover:text-white transition-colors">
+                  <Star size={22} strokeWidth={1.8} />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-white text-sm leading-tight">Manage Membership</h3>
+                  <p className="text-xs text-white/40 mt-1">View invoices, renew or upgrade</p>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Quick Actions */}
       <div className="grid grid-cols-2 gap-4 mb-8">

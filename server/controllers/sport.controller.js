@@ -10,7 +10,7 @@ const cache = require('../utils/memCache');
 const mongoose = require('mongoose');
 const { todayISTBoundaries } = require('../utils/istUtils');
 const { DEFAULT_ALLOWED_DURATION_MINUTES, applySessionCheckout, getEffectiveConfig } = require('../utils/sessionCalculator');
-const { calculateEntitlement, validateCheckIn, isAllServicesKey } = require('../utils/entitlementEngine');
+const { calculateEntitlement, validateCheckIn } = require('../utils/entitlementEngine');
 
 // Helper to run operations within a transaction, falling back gracefully on standalone mongo
 const runTransaction = async (workFn) => {
@@ -82,23 +82,15 @@ exports.getAllSports = async (req, res) => {
       endDate: { $gt: now },
     }).populate({ path: 'planId', select: 'sportsIncluded' });
 
-    const isAllServicesSlug = (k) =>
-      ['all', 'all-services', 'allservices'].includes((k || '').toLowerCase().replace(/\s+/g, '-'));
-
     const sportsWithCounts = enrichedSports.map((sport) => {
       const slug = (sport.slug || '').toLowerCase();
       const name = (sport.name || '').toLowerCase();
-      const isAllServicesCard = isAllServicesSlug(slug);
 
       const count = activeMemberships.filter((m) => {
         const included = (m.planId?.sportsIncluded || []).map((s) =>
           (s || '').toLowerCase().replace(/\s+/g, '-')
         );
-        if (isAllServicesCard) {
-          return included.some((k) => isAllServicesSlug(k));
-        }
-        // Only count memberships explicitly for this sport — exclude all-services plans
-        return included.some((k) => !isAllServicesSlug(k) && (k === slug || k === name));
+        return included.some((k) => k === slug || k === name);
       }).length;
       return { ...sport, memberCount: count };
     });
@@ -190,7 +182,7 @@ const syncMembershipPlans = async (sport, session) => {
     if (def.optional && (price === undefined || price === null || price === 0)) {
       // If optional and price not provided, archive existing auto-sync yearly plan if any
       await MembershipPlan.findOneAndUpdate(
-        { sportsIncluded: [sport.slug], duration: def.duration, autoSync: { $ne: false }, isStandalone: { $ne: true } },
+        { sportsIncluded: [sport.slug], duration: def.duration, autoSync: { $ne: false }, isStandalone: { $ne: true }, isCourtMembership: { $ne: true } },
         { isActive: false },
         opts
       );
@@ -202,7 +194,7 @@ const syncMembershipPlans = async (sport, session) => {
     // and isStandalone excludes single-sport specialty plans like "Badminton
     // Coaching" — neither should be mistaken for this sport's own tier.
     const existingPlan = await MembershipPlan.findOne(
-      { sportsIncluded: [sport.slug], duration: def.duration, isStandalone: { $ne: true } },
+      { sportsIncluded: [sport.slug], duration: def.duration, isStandalone: { $ne: true }, isCourtMembership: { $ne: true } },
       null,
       opts
     );
@@ -220,8 +212,7 @@ const syncMembershipPlans = async (sport, session) => {
       existingPlan.name = `${sport.name} ${def.nameSuffix}`;
       existingPlan.trainingAvailable = !!sport.trainingAvailable;
       existingPlan.trainingPrice = sport.trainingAvailable ? (sport.trainingPrice || 0) : 0;
-      existingPlan.requiresSlotBooking = sport.slug !== 'gym' && sport.slug !== 'all-services';
-      existingPlan.isAllServices = sport.slug === 'all-services';
+      existingPlan.requiresSlotBooking = sport.slug !== 'gym';
       await existingPlan.save(opts);
     } else {
       // Create new plan if it doesn't exist
@@ -237,8 +228,7 @@ const syncMembershipPlans = async (sport, session) => {
         features: [`Full access to ${sport.name} facilities`],
         trainingAvailable: !!sport.trainingAvailable,
         trainingPrice: sport.trainingAvailable ? (sport.trainingPrice || 0) : 0,
-        requiresSlotBooking: sport.slug !== 'gym' && sport.slug !== 'all-services',
-        isAllServices: sport.slug === 'all-services',
+        requiresSlotBooking: sport.slug !== 'gym',
       }], opts);
     }
   }
@@ -697,7 +687,7 @@ const planIsValidForSmartEntry = (plan, sport, activeSportKeys) => {
   }
 
   const includedKeys = plan.sportsIncluded.map(normalizeKey).filter(Boolean);
-  const hasOnlyKnownSports = includedKeys.every((key) => isAllServicesKey(key) || activeSportKeys.has(key));
+  const hasOnlyKnownSports = includedKeys.every((key) => activeSportKeys.has(key));
   if (!hasOnlyKnownSports) return false;
 
   const sportSlug = normalizeKey(sport.slug);
@@ -761,9 +751,8 @@ exports.entryCheck = async (req, res) => {
       entitlementSource = validation.entitlementSource || 'membership';
       hasPrepaidPass = !!validation.matchingPass;
       
-      // If entitlement allows this sport (or all services)
-      if (entitlement.entitlementType !== 'none' && 
-         (entitlement.isAllServices || entitlement.allowedSports.includes(sport.slug))) {
+      // If entitlement allows this sport
+      if (entitlement.entitlementType !== 'none' && entitlement.allowedSports.includes(sport.slug)) {
         hasMembership = true;
       }
       
@@ -799,12 +788,8 @@ exports.entryCheck = async (req, res) => {
     let hasUpcomingSlot = false;
 
     if (req.user) {
-      const isGym = sport.slug === 'gym';
-      const hasAllServicesMembership = entitlement && (
-        entitlement.isAllServices || 
-        (entitlement.allowedSports || []).some(s => s === 'all-services' || s === 'all')
-      );
-      slotBookingRequired = !(isGym || hasAllServicesMembership);
+      // Gym is walk-in; every other sport needs a court reserved first
+      slotBookingRequired = sport.slug !== 'gym';
 
       validSlotBookingForCheck = await findValidSlotBooking(req.user.userId, sport._id);
 
@@ -836,7 +821,7 @@ exports.entryCheck = async (req, res) => {
           }
         }
       } else {
-        // Slot booking NOT required (Gym or All Services)
+        // Slot booking NOT required (Gym)
         if (validSlotBookingForCheck) {
           hasSlotBooking = true;
           hasUpcomingSlot = true;
@@ -906,12 +891,8 @@ exports.entryCheckIn = async (req, res) => {
     const validation = await validateCheckIn(req.user.userId, sport.slug);
     const { entitlement } = validation;
 
-    const isGym = sport.slug === 'gym';
-    const hasAllServicesMembership = entitlement && (
-      entitlement.isAllServices || 
-      (entitlement.allowedSports || []).some(s => s === 'all-services' || s === 'all')
-    );
-    const slotBookingRequired = !(isGym || hasAllServicesMembership);
+    // Gym is walk-in; every other sport needs a court reserved first
+    const slotBookingRequired = sport.slug !== 'gym';
 
     // Check for a valid slot booking (time-window based entitlement)
     const validSlotBooking = await findValidSlotBooking(req.user.userId, sport._id);
@@ -932,7 +913,7 @@ exports.entryCheckIn = async (req, res) => {
         return res.status(403).json({ success: false, message: validation.reason, activeSessions: validation.activeSessions });
       }
     } else {
-      // Slot booking NOT required (Gym or All Services)
+      // Slot booking NOT required (Gym)
       // They just need a valid membership/pass entitlement.
       if (!validation.allowed) {
         checkInLocks.delete(lockKey);
@@ -951,9 +932,8 @@ exports.entryCheckIn = async (req, res) => {
       matchingMembership = fullEntitlement.activeMemberships.find(m => {
         const plan = m.planId;
         if (!plan) return false;
-        if (plan.isAllServices) return true;
         const includedKeys = (plan.sportsIncluded || []).map(s => (s || '').trim().toLowerCase());
-        return includedKeys.some(k => k === 'all' || k === 'all-services' || k === sport.slug || k === sport.name.toLowerCase());
+        return includedKeys.some(k => k === sport.slug || k === sport.name.toLowerCase());
       });
       if (!matchingMembership) matchingMembership = fullEntitlement.activeMemberships[0];
     }
@@ -982,28 +962,6 @@ exports.entryCheckIn = async (req, res) => {
       if (anyActiveSession) {
         const activeSportName = anyActiveSession.sport || 'another sport';
         throw new Error(`You have an active session for ${activeSportName}. Please check out of ${activeSportName} first before checking into ${sport.name}.`);
-      }
-
-      // For all-services memberships: prevent re-check-in to the same sport on the same day
-      if (matchingMembership) {
-        const plan = matchingMembership.planId;
-        const planIsAllServices = plan && (
-          plan.isAllServices ||
-          (plan.sportsIncluded || []).some((k) => isAllServicesKey(k))
-        );
-        if (planIsAllServices) {
-          const { startOfDay, endOfDay } = todayISTBoundaries();
-          const alreadyUsedToday = await Attendance.findOne({
-            userId: req.user.userId,
-            sportId: sport._id,
-            relatedBookingId: matchingMembership._id,
-            createdAt: { $gte: startOfDay, $lte: endOfDay },
-            sessionStatus: { $in: ['Completed', 'Auto Closed', 'Overtime'] },
-          }, null, opts);
-          if (alreadyUsedToday) {
-            throw new Error(`You have already used your ${sport.name} session today.`);
-          }
-        }
       }
 
       const { startOfDay: today } = todayISTBoundaries();
@@ -1745,125 +1703,6 @@ exports.deleteDiscount = async (req, res) => {
   }
 };
 
-// ── POST/PUT /api/sports/:id/kids-academy ─────────────────────────────────────
-// Creates or updates Kids Academy MembershipPlans (one per duration tier) for a sport.
-// Body: { enabled, admissionFeeAmount, plans: [{ duration, price, active }] }
-exports.upsertKidsAcademy = async (req, res) => {
-  try {
-    const sport = await Sport.findById(req.params.id);
-    if (!sport) return res.status(404).json({ message: 'Sport not found.' });
-
-    const { enabled, admissionFeeAmount, plans } = req.body;
-
-    if (!enabled) {
-      await MembershipPlan.updateMany(
-        { sportsIncluded: sport.slug, isKidsAcademy: true },
-        { isActive: false }
-      );
-      return res.json({ message: 'Kids Academy disabled.' });
-    }
-
-    if (!plans || !plans.length) {
-      return res.status(400).json({ message: 'At least one duration plan is required.' });
-    }
-
-    const DURATION_META = {
-      '1 Month':   { durationValue: 1, durationUnit: 'months', durationDays: 30,  nameSuffix: 'Monthly' },
-      '3 Months':  { durationValue: 3, durationUnit: 'months', durationDays: 90,  nameSuffix: 'Quarterly' },
-      '6 Months':  { durationValue: 6, durationUnit: 'months', durationDays: 180, nameSuffix: 'Half-Yearly' },
-      '1 Year':    { durationValue: 1, durationUnit: 'years',  durationDays: 365, nameSuffix: 'Yearly' },
-    };
-
-    const savedPlans = [];
-    for (const tier of plans) {
-      const meta = DURATION_META[tier.duration];
-      if (!meta) continue;
-      if (!tier.price || Number(tier.price) <= 0) {
-        // Deactivate if price removed
-        await MembershipPlan.updateMany(
-          { sportsIncluded: sport.slug, isKidsAcademy: true, duration: tier.duration },
-          { isActive: false }
-        );
-        continue;
-      }
-      const planData = {
-        name: `${sport.name} Kids Academy ${meta.nameSuffix}`,
-        duration: tier.duration,
-        durationValue: meta.durationValue,
-        durationUnit: meta.durationUnit,
-        durationDays: meta.durationDays,
-        sportsIncluded: [sport.slug],
-        isKidsAcademy: true,
-        coachIncluded: true,
-        admissionFeeRequired: true,
-        admissionFeeAmount: Number(admissionFeeAmount) || 0,
-        price: Number(tier.price),
-        isActive: tier.active !== false,
-        features: ['Coach Included', 'Structured Training', 'Admission Fee Charged Once'],
-        autoSync: false,
-      };
-      let existing = await MembershipPlan.findOne({ sportsIncluded: sport.slug, isKidsAcademy: true, duration: tier.duration });
-      if (existing) {
-        Object.assign(existing, planData);
-        await existing.save();
-        savedPlans.push(existing);
-      } else {
-        savedPlans.push(await MembershipPlan.create({ ...planData, createdBy: req.user?.userId }));
-      }
-    }
-
-    res.json({ message: 'Kids Academy plans saved.', plans: savedPlans });
-  } catch (error) {
-    console.error('upsertKidsAcademy error:', error);
-    res.status(500).json({ message: 'Server error.', error: error.message });
-  }
-};
-
-// ── GET /api/sports/kids-academy ──────────────────────────────────────────────
-// Returns all Kids Academy MembershipPlans with populated sport reference.
-exports.listKidsAcademy = async (req, res) => {
-  try {
-    const plans = await MembershipPlan.find({ isKidsAcademy: true }).lean();
-    const slugs = [...new Set(plans.flatMap((p) => p.sportsIncluded || []))];
-    const sportDocs = await Sport.find({ slug: { $in: slugs } }).lean();
-    const slugMap = Object.fromEntries(sportDocs.map((s) => [s.slug, s]));
-    const withSport = plans.map((p) => ({ ...p, sport: slugMap[p.sportsIncluded?.[0]] || null }));
-    res.json(withSport);
-  } catch (error) {
-    console.error('listKidsAcademy error:', error);
-    res.status(500).json({ message: 'Server error.', error: error.message });
-  }
-};
-
-// ── GET /api/sports/kids-academy/public ──────────────────────────────────────
-// Public endpoint: returns sports that have active Kids Academy plans.
-exports.listPublicKidsAcademy = async (req, res) => {
-  try {
-    const plans = await MembershipPlan.find({ isKidsAcademy: true, isActive: true }).lean();
-    const slugs = [...new Set(plans.flatMap((p) => p.sportsIncluded || []))];
-    const sportDocs = await Sport.find({ slug: { $in: slugs }, active: true, deletedAt: null })
-      .select('slug name heroIcon thumbnail')
-      .lean();
-    res.json({ slugs, sports: sportDocs });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error.' });
-  }
-};
-
-// ── DELETE /api/sports/:id/kids-academy ──────────────────────────────────────
-// Removes all Kids Academy MembershipPlans for a sport.
-exports.deleteKidsAcademy = async (req, res) => {
-  try {
-    const sport = await Sport.findById(req.params.id);
-    if (!sport) return res.status(404).json({ message: 'Sport not found' });
-    await MembershipPlan.deleteMany({ sportsIncluded: sport.slug, isKidsAcademy: true });
-    res.json({ message: 'Kids Academy programmes removed.' });
-  } catch (error) {
-    console.error('deleteKidsAcademy error:', error);
-    res.status(500).json({ message: 'Server error.', error: error.message });
-  }
-};
-
 // ===========================================================================
 // HERO CARD CRUD
 // ===========================================================================
@@ -1926,3 +1765,141 @@ exports.deleteHeroCard = async (req, res) => {
   }
 };
 
+
+// ===========================================================================
+// COURT MEMBERSHIPS
+// ===========================================================================
+// A Court Membership books the whole court for one hour a day, but only inside a
+// fixed time band. Monthly only; each sport prices each band separately. Plans are
+// ordinary MembershipPlans flagged isCourtMembership so the per-sport price sync
+// leaves them alone.
+
+const COURT_BANDS = {
+  morning: { label: 'Morning', startTime: '05:30', endTime: '09:30' },
+  evening: { label: 'Evening', startTime: '17:00', endTime: '21:30' },
+  'happy-hours': { label: 'Happy Hours', startTime: '09:30', endTime: '16:00' },
+};
+
+const isValidHHMM = (t) => typeof t === 'string' && /^([01]\d|2[0-3]):[0-5]\d$/.test(t);
+const hhmmToMinutes = (t) => {
+  const [h, m] = t.split(':').map(Number);
+  return h * 60 + m;
+};
+// Plan features are shown to members, so use the same 12-hour format as the UI
+const hhmmTo12h = (t) => {
+  const [h, m] = t.split(':').map(Number);
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
+};
+
+// GET /api/sports/court-memberships — all court membership plans, grouped by sport
+exports.listCourtMemberships = async (req, res) => {
+  try {
+    const plans = await MembershipPlan.find({ isCourtMembership: true }).lean();
+    const slugs = [...new Set(plans.flatMap((p) => p.sportsIncluded || []))];
+    const sportDocs = await Sport.find({ slug: { $in: slugs } }).select('slug name thumbnail').lean();
+    const slugMap = Object.fromEntries(sportDocs.map((s) => [s.slug, s]));
+    const withSport = plans.map((p) => ({ ...p, sport: slugMap[p.sportsIncluded?.[0]] || null }));
+    res.json({ plans: withSport, bands: COURT_BANDS });
+  } catch (error) {
+    console.error('listCourtMemberships error:', error);
+    res.status(500).json({ message: 'Server error.', error: error.message });
+  }
+};
+
+// GET /api/sports/court-memberships/public — active court plans for a sport slug
+exports.listPublicCourtMemberships = async (req, res) => {
+  try {
+    const filter = { isCourtMembership: true, isActive: true };
+    if (req.query.sportSlug) filter.sportsIncluded = req.query.sportSlug;
+    const plans = await MembershipPlan.find(filter).sort({ price: 1 }).lean();
+    res.json({ plans });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error.' });
+  }
+};
+
+// POST/PUT /api/sports/:id/court-memberships
+// Body: { bands: [{ key, startTime, endTime, price, active }] }
+// A band with no price (or price 0) is deactivated rather than deleted, so a
+// sport can be taken off sale without losing its configured times.
+exports.upsertCourtMemberships = async (req, res) => {
+  try {
+    const sport = await Sport.findById(req.params.id);
+    if (!sport) return res.status(404).json({ message: 'Sport not found.' });
+
+    const { bands } = req.body;
+    if (!Array.isArray(bands) || bands.length === 0) {
+      return res.status(400).json({ message: 'At least one band is required.' });
+    }
+
+    const saved = [];
+    for (const band of bands) {
+      const preset = COURT_BANDS[band.key];
+      if (!preset) continue;
+
+      const startTime = band.startTime || preset.startTime;
+      const endTime = band.endTime || preset.endTime;
+      if (!isValidHHMM(startTime) || !isValidHHMM(endTime)) {
+        return res.status(400).json({ message: `${preset.label}: times must be in HH:MM format.` });
+      }
+      if (hhmmToMinutes(startTime) >= hhmmToMinutes(endTime)) {
+        return res.status(400).json({ message: `${preset.label}: end time must be after start time.` });
+      }
+
+      const price = Number(band.price) || 0;
+      const query = { sportsIncluded: [sport.slug], isCourtMembership: true, 'courtBand.key': band.key };
+
+      if (price <= 0) {
+        await MembershipPlan.updateMany(query, { isActive: false });
+        continue;
+      }
+
+      const planData = {
+        name: `${sport.name} Court Membership — ${preset.label}`,
+        duration: '1 Month',
+        durationValue: 1,
+        durationUnit: 'months',
+        durationDays: 30,
+        sportsIncluded: [sport.slug],
+        price,
+        isActive: band.active !== false,
+        autoSync: false,
+        isCourtMembership: true,
+        requiresSlotBooking: true,
+        courtBand: { key: band.key, label: preset.label, startTime, endTime },
+        features: [
+          'Whole court reserved for your hour',
+          `Play between ${hhmmTo12h(startTime)} and ${hhmmTo12h(endTime)}`,
+          'One hour per day',
+        ],
+      };
+
+      const existing = await MembershipPlan.findOne(query);
+      if (existing) {
+        Object.assign(existing, planData);
+        await existing.save();
+        saved.push(existing);
+      } else {
+        saved.push(await MembershipPlan.create({ ...planData, createdBy: req.user?.userId }));
+      }
+    }
+
+    res.json({ message: 'Court memberships saved.', plans: saved });
+  } catch (error) {
+    console.error('upsertCourtMemberships error:', error);
+    res.status(500).json({ message: 'Server error.', error: error.message });
+  }
+};
+
+// DELETE /api/sports/:id/court-memberships — remove all court plans for a sport
+exports.deleteCourtMemberships = async (req, res) => {
+  try {
+    const sport = await Sport.findById(req.params.id);
+    if (!sport) return res.status(404).json({ message: 'Sport not found.' });
+    await MembershipPlan.deleteMany({ sportsIncluded: sport.slug, isCourtMembership: true });
+    res.json({ message: 'Court memberships removed.' });
+  } catch (error) {
+    console.error('deleteCourtMemberships error:', error);
+    res.status(500).json({ message: 'Server error.', error: error.message });
+  }
+};

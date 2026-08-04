@@ -14,6 +14,7 @@ const { calculateGST } = require('../utils/gstCalculator');
 const { createRazorpayOrder, verifyPaymentSignature, fetchPaymentDetails, createRefund } = require('../config/razorpay');
 const { sendSlotBookingConfirmationEmail } = require('../utils/emailService');
 const { IST_OFFSET_MS, nowIST, todayISTString, todayISTBoundaries, istDayBoundaries } = require('../utils/istUtils');
+const { syncSlotStatus } = require('../utils/slotStatus');
 
 const ALLOWED_MANUAL_PAYMENT_MODES = ['cash', 'upi', 'card', 'bank-transfer'];
 
@@ -400,7 +401,7 @@ exports.adminLiveOverview = async (req, res) => {
     const dateStr = req.query.date || todayISTString();
     const { startOfDay, endOfDay } = istDayBoundaries(dateStr);
 
-    const sports = await Sport.find({ active: true, deletedAt: null, slug: { $ne: 'all-services' } }).sort({ name: 1 });
+    const sports = await Sport.find({ active: true, deletedAt: null }).sort({ name: 1 });
 
     const overview = await Promise.all(sports.map(async (sport) => {
       const courts = await Court.find({ sportId: sport._id }).sort({ sortOrder: 1, name: 1 });
@@ -540,9 +541,6 @@ exports.getPublicAvailableSlots = async (req, res) => {
     if (!sportSlug || !date) {
       return res.status(400).json({ message: 'sportSlug and date are required.' });
     }
-    if (sportSlug === 'all-services') {
-      return res.status(400).json({ message: 'Slot booking is not available for All Services.' });
-    }
 
     const sport = await Sport.findOne({ slug: sportSlug, active: true, deletedAt: null });
     if (!sport) return res.status(404).json({ message: 'Sport not found.' });
@@ -580,10 +578,9 @@ exports.getPublicAvailableSlots = async (req, res) => {
     const nowIST = new Date(Date.now() + IST_OFFSET_MS);
     const todayLocalStr = `${nowIST.getUTCFullYear()}-${String(nowIST.getUTCMonth()+1).padStart(2,'0')}-${String(nowIST.getUTCDate()).padStart(2,'0')}`;
     const isToday = date === todayLocalStr;
-    let nextAllowedMinutes = 0;
+    let currentMinutes = 0;
     if (isToday) {
-      const curMin = nowIST.getUTCHours() * 60 + nowIST.getUTCMinutes();
-      nextAllowedMinutes = Math.ceil(curMin / 60) * 60;
+      currentMinutes = nowIST.getUTCHours() * 60 + nowIST.getUTCMinutes();
     }
 
     // Overlap check: logged-in user's confirmed bookings on this date (any sport)
@@ -606,11 +603,18 @@ exports.getPublicAvailableSlots = async (req, res) => {
       const courtClosed = s.courtId && closedCourtIds.has(s.courtId.toString());
       const slotStartMin = timeToMinutes(s.startTime);
       const slotEndMin = timeToMinutes(s.endTime);
-      const isPastTime = isToday && slotStartMin < nextAllowedMinutes;
+      const isPastTime = isToday && slotStartMin <= currentMinutes;
       const hasOverlap = userBookedRanges.some((r) => r.startMin < slotEndMin && slotStartMin < r.endMin);
-      const baseAvail = !courtClosed && s.isBookable && s.status !== 'full' && s.status !== 'maintenance';
+      // Capacity is the source of truth. The `status` field is maintained by a
+      // pre('save') hook that findOneAndUpdate skips, so a booked slot can still
+      // read 'available' — trusting it alone showed taken slots as bookable.
+      const isFull = s.currentBookings >= s.capacity;
+      const baseAvail = !courtClosed && s.isBookable && !isFull && s.status !== 'maintenance';
       const isAvailable = baseAvail && !isPastTime && !hasOverlap;
-      const unavailableReason = isPastTime ? 'past-time' : hasOverlap ? 'overlap' : undefined;
+      const unavailableReason = isFull ? 'full'
+        : isPastTime ? 'past-time'
+        : hasOverlap ? 'overlap'
+        : undefined;
 
       const originalPrice = s.pricePerSlot;
       let finalPrice = originalPrice;
@@ -685,8 +689,7 @@ exports.createSlotOrder = async (req, res) => {
     }
     if (slotDateISTStr === todayISTStr) {
       const curMin = _nowIST.getUTCHours() * 60 + _nowIST.getUTCMinutes();
-      const nextAllowedMin = Math.ceil(curMin / 60) * 60;
-      if (timeToMinutes(slot.startTime) < nextAllowedMin) {
+      if (timeToMinutes(slot.startTime) <= curMin) {
         return res.status(409).json({ message: 'Booking window for this slot has passed. Please choose a later slot.' });
       }
     }
@@ -999,6 +1002,8 @@ exports.verifySlotPayment = async (req, res) => {
       });
     }
 
+    await syncSlotStatus(claimedSlot);
+
     const sport = claimedSlot.sportId ? await Sport.findById(claimedSlot.sportId).select('name slug') : null;
 
     try {
@@ -1120,6 +1125,7 @@ exports.verifySlotPayment = async (req, res) => {
     } catch (createErr) {
       // Rollback the atomic capacity increment on failure
       await Slot.findByIdAndUpdate(slotId, { $inc: { currentBookings: -1 } });
+      await syncSlotStatus(slotId);
       throw createErr;
     }
   } catch (error) {
@@ -1227,6 +1233,7 @@ exports.adminManualBooking = async (req, res) => {
     if (!claimedSlot) {
       return res.status(409).json({ message: 'Slot is already fully booked.' });
     }
+    await syncSlotStatus(claimedSlot);
 
     const slotAmount = claimedSlot.pricePerSlot;
     const waivedAmount = isReference ? Math.max(0, slotAmount - paid) : 0;
@@ -1373,6 +1380,7 @@ exports.adminManualBooking = async (req, res) => {
     } catch (createErr) {
       // Rollback the atomic capacity increment on failure
       await Slot.findByIdAndUpdate(slotId, { $inc: { currentBookings: -1 } });
+      await syncSlotStatus(slotId);
       throw createErr;
     }
   } catch (error) {
@@ -1665,14 +1673,23 @@ exports.createPublicBooking = async (req, res) => {
 
 const Membership = require('../models/Membership');
 const MembershipPlan = require('../models/MembershipPlan');
-const { isAllServicesKey } = require('../utils/entitlementEngine');
-
 // Helper: check if a membership plan grants access to a given sport
 const membershipCoversSpot = (plan, sport) => {
   if (!plan) return false;
-  if (plan.isAllServices) return true;
   const keys = (plan.sportsIncluded || []).map((k) => (k || '').trim().toLowerCase());
-  return keys.some((k) => isAllServicesKey(k) || k === sport.slug || k === (sport.name || '').toLowerCase());
+  return keys.some((k) => k === sport.slug || k === (sport.name || '').toLowerCase());
+};
+
+// Court memberships only cover a fixed window of the day. The whole slot has to
+// fit inside it — a 9:00–10:00 slot is out of bounds for a band ending at 09:30,
+// so the member never holds the court beyond what they paid for.
+const slotWithinCourtBand = (plan, slot) => {
+  if (!plan?.isCourtMembership) return true;
+  const band = plan.courtBand;
+  if (!band?.startTime || !band?.endTime) return true;
+  const bandStart = timeToMinutes(band.startTime);
+  const bandEnd = timeToMinutes(band.endTime);
+  return timeToMinutes(slot.startTime) >= bandStart && timeToMinutes(slot.endTime) <= bandEnd;
 };
 
 // ── GET /api/slots/membership/available ──────────────────────────────────────
@@ -1683,9 +1700,6 @@ exports.getMembershipAvailableSlots = async (req, res) => {
     const { sportSlug, date, membershipId } = req.query;
     if (!sportSlug || !date || !membershipId) {
       return res.status(400).json({ message: 'sportSlug, date and membershipId are required.' });
-    }
-    if (sportSlug === 'all-services') {
-      return res.status(400).json({ message: 'Slot booking is not available for All Services.' });
     }
 
     // Validate membership
@@ -1735,10 +1749,9 @@ exports.getMembershipAvailableSlots = async (req, res) => {
     // Past-time filtering for today
     const _nowIST2 = nowIST();
     const isToday = date === todayISTString();
-    let nextAllowedMinutes = 0;
+    let currentMinutes = 0;
     if (isToday) {
-      const curMin = _nowIST2.getUTCHours() * 60 + _nowIST2.getUTCMinutes();
-      nextAllowedMinutes = Math.ceil(curMin / 60) * 60;
+      currentMinutes = _nowIST2.getUTCHours() * 60 + _nowIST2.getUTCMinutes();
     }
 
     // Cross-sport overlap check: all confirmed bookings by this user on this date (any sport)
@@ -1758,16 +1771,18 @@ exports.getMembershipAvailableSlots = async (req, res) => {
       const courtClosed = s.courtId && closedCourtIds.has(s.courtId.toString());
       const slotStartMin = timeToMinutes(s.startTime);
       const slotEndMin = timeToMinutes(s.endTime);
-      const isPastTime = isToday && slotStartMin < nextAllowedMinutes;
+      const isPastTime = isToday && slotStartMin <= currentMinutes;
       // overlap: exclude the slot's own booking (alreadyBooked) to avoid double-flagging
       const hasOverlap = !bookedSlotIds.has(s._id.toString()) && userBookedRanges.some(
         (r) => r.slotId !== s._id.toString() && r.startMin < slotEndMin && slotStartMin < r.endMin
       );
+      const outsideBand = !slotWithinCourtBand(membership.planId, s);
       const baseAvail = !courtClosed && s.currentBookings < s.capacity;
-      const isAvailable = baseAvail && !isPastTime && !hasOverlap && !bookedSlotIds.has(s._id.toString());
+      const isAvailable = baseAvail && !isPastTime && !hasOverlap && !outsideBand && !bookedSlotIds.has(s._id.toString());
       const unavailableReason = bookedSlotIds.has(s._id.toString()) ? 'already-booked'
         : isPastTime ? 'past-time'
         : hasOverlap ? 'overlap'
+        : outsideBand ? 'outside-band'
         : undefined;
       return {
         _id: s._id,
@@ -1787,7 +1802,12 @@ exports.getMembershipAvailableSlots = async (req, res) => {
       };
     });
 
-    res.json({ sport, slots: publicSlots, courts });
+    res.json({
+      sport,
+      slots: publicSlots,
+      courts,
+      courtBand: membership.planId?.isCourtMembership ? membership.planId.courtBand : null,
+    });
   } catch (error) {
     console.error('getMembershipAvailableSlots error:', error);
     res.status(500).json({ message: 'Server error.', error: error.message });
@@ -1909,6 +1929,14 @@ exports.bookMembershipSlot = async (req, res) => {
       return res.status(400).json({ message: 'Slot does not belong to this sport.' });
     }
 
+    // Court memberships are limited to their time band
+    if (!slotWithinCourtBand(membership.planId, slot)) {
+      const band = membership.planId.courtBand;
+      return res.status(403).json({
+        message: `Your ${band.label} court membership covers ${band.startTime}–${band.endTime}. Pick a slot that falls fully inside that window.`,
+      });
+    }
+
     // Ensure slot is not in the past (next-full-hour rule)
     const nowLocal2 = new Date();
     const todayLocalStr2 = `${nowLocal2.getFullYear()}-${String(nowLocal2.getMonth()+1).padStart(2,'0')}-${String(nowLocal2.getDate()).padStart(2,'0')}`;
@@ -1918,9 +1946,9 @@ exports.bookMembershipSlot = async (req, res) => {
       return res.status(409).json({ message: 'Cannot book a slot in the past.' });
     }
     if (slotDateLocalStr2 === todayLocalStr2) {
-      const curMin2 = nowLocal2.getHours() * 60 + nowLocal2.getMinutes();
-      const nextAllowedMin2 = Math.ceil(curMin2 / 60) * 60;
-      if (timeToMinutes(slot.startTime) < nextAllowedMin2) {
+      const _now2 = nowIST();
+      const curMin2 = _now2.getUTCHours() * 60 + _now2.getUTCMinutes();
+      if (timeToMinutes(slot.startTime) <= curMin2) {
         return res.status(409).json({ message: 'Booking window for this slot has passed. Please choose a later slot.' });
       }
     }
@@ -1988,6 +2016,7 @@ exports.bookMembershipSlot = async (req, res) => {
       { new: true }
     );
     if (!updatedSlot) return res.status(409).json({ message: 'Slot is fully booked. Please choose another.' });
+    await syncSlotStatus(updatedSlot);
 
     const user = await User.findById(req.user.userId).select('name email phone').lean();
 
@@ -2094,6 +2123,7 @@ exports.cancelMembershipBooking = async (req, res) => {
       $inc: { currentBookings: -1 },
       $pull: { bookings: booking._id },
     });
+    await syncSlotStatus(booking.slotId);
 
     const io = req.app.get('io');
     if (io) {

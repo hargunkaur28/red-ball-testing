@@ -82,6 +82,8 @@ const attendanceSchema = new mongoose.Schema({
   // Entitlement snapshot — frozen at check-in time
   entitlementType: {
     type: String,
+    // 'all-services' is legacy — the plan type is gone, but historical attendance
+    // rows still carry it and would fail validation on re-save if dropped.
     enum: ['single-sport', 'multi-sport', 'all-services', 'one-time-play', 'slot-booking', 'membership-slot'],
   },
   concurrentSessionLimit: {

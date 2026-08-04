@@ -31,13 +31,10 @@ exports.createPlan = async (req, res) => {
   try {
     let requiresSlotBooking = req.body.requiresSlotBooking;
     const sports = (req.body.sportsIncluded || []).map(s => (s || '').trim().toLowerCase());
-    const isAll = req.body.isAllServices || sports.some(s => s === 'all' || s === 'all-services');
 
     if (requiresSlotBooking === undefined) {
-      requiresSlotBooking = true;
-      if (isAll || (sports.length > 0 && sports.every(s => s === 'gym'))) {
-        requiresSlotBooking = false;
-      }
+      // Gym-only plans are walk-in; anything with a court needs a slot
+      requiresSlotBooking = !(sports.length > 0 && sports.every(s => s === 'gym'));
     }
 
     let image = req.body.image || '';
@@ -46,7 +43,6 @@ exports.createPlan = async (req, res) => {
     const plan = await MembershipPlan.create({
       ...req.body,
       image,
-      isAllServices: isAll,
       requiresSlotBooking,
       createdBy: req.user.userId
     });
@@ -61,18 +57,14 @@ exports.updatePlan = async (req, res) => {
   try {
     let requiresSlotBooking = req.body.requiresSlotBooking;
     const sports = (req.body.sportsIncluded || []).map(s => (s || '').trim().toLowerCase());
-    const isAll = req.body.isAllServices || sports.some(s => s === 'all' || s === 'all-services');
 
     if (requiresSlotBooking === undefined) {
-      requiresSlotBooking = true;
-      if (isAll || (sports.length > 0 && sports.every(s => s === 'gym'))) {
-        requiresSlotBooking = false;
-      }
+      // Gym-only plans are walk-in; anything with a court needs a slot
+      requiresSlotBooking = !(sports.length > 0 && sports.every(s => s === 'gym'));
     }
 
     const planData = {
       ...req.body,
-      isAllServices: isAll,
       requiresSlotBooking
     };
     if (req.file) planData.image = req.file.path;
@@ -539,22 +531,7 @@ exports.publicPurchaseOrder = async (req, res) => {
 
     const trainingAddon = withTraining && plan.trainingAvailable ? (plan.trainingPrice || 0) : 0;
 
-    // Kids Academy: check if admission fee is due for this user
-    let admissionFeeAmount = 0;
-    let admissionSportId = null;
-    if (plan.isKidsAcademy && plan.admissionFeeRequired && plan.admissionFeeAmount > 0 && sportId) {
-      const userId = req.user?.userId;
-      if (userId) {
-        const AcademyAdmission = require('../models/AcademyAdmission');
-        const existing = await AcademyAdmission.findOne({ userId, sportId });
-        if (!existing || !existing.admissionPaid) {
-          admissionFeeAmount = plan.admissionFeeAmount;
-          admissionSportId = sportId;
-        }
-      }
-    }
-
-    const totalAmount = plan.price + trainingAddon + admissionFeeAmount;
+    const totalAmount = plan.price + trainingAddon;
 
     // Resolve or pre-create user profile to guarantee payment -> studentId link
     let targetUserId = req.user?.userId;
@@ -599,8 +576,6 @@ exports.publicPurchaseOrder = async (req, res) => {
       withTraining: !!trainingAddon,
       trainingAmount: trainingAddon,
       basePlanAmount: plan.price,
-      admissionFeeAmount,
-      admissionSportId: admissionSportId || undefined,
     });
 
     const rzpOrder = await createRazorpayOrder({
@@ -632,7 +607,6 @@ exports.publicPurchaseOrder = async (req, res) => {
       withTraining: !!trainingAddon,
       trainingAmount: trainingAddon,
       basePlanAmount: plan.price,
-      admissionFeeAmount,
       totalAmount,
     });
   } catch (error) {
@@ -734,6 +708,14 @@ exports.publicVerifyPayment = async (req, res) => {
     const result = await runTransaction(async (session) => {
       const opts = session ? { session } : {};
 
+      // The Razorpay webhook may have already applied this exact payment while we
+      // were verifying with Razorpay. Without this check both paths run and each
+      // adds a full term — a 1-month plan ends up with 60 days.
+      const alreadyApplied = await Membership.findOne({ paymentId: pendingPayment._id }, null, opts);
+      if (alreadyApplied) {
+        return { payment: pendingPayment, membership: alreadyApplied, alreadyApplied: true };
+      }
+
       let existingMembership = await Membership.findOne({
         studentId: targetUserId,
         planId: plan._id,
@@ -787,21 +769,6 @@ exports.publicVerifyPayment = async (req, res) => {
       return { payment: pendingPayment, membership: membershipRec };
     });
 
-    // Mark admission as paid if this payment included an admission fee
-    if (pendingPayment.admissionFeeAmount > 0 && pendingPayment.admissionSportId) {
-      const AcademyAdmission = require('../models/AcademyAdmission');
-      await AcademyAdmission.findOneAndUpdate(
-        { userId: targetUserId, sportId: pendingPayment.admissionSportId },
-        {
-          admissionPaid: true,
-          paidAt: new Date(),
-          paymentId: pendingPayment._id,
-          amount: pendingPayment.admissionFeeAmount,
-        },
-        { upsert: true, new: true }
-      );
-    }
-
     let token = null;
     if (!req.user) {
       token = jwt.sign(
@@ -812,6 +779,17 @@ exports.publicVerifyPayment = async (req, res) => {
     }
 
     invalidateEntitlementCache(targetUserId);
+
+    // The webhook already applied this payment (and sent its own welcome email) —
+    // don't re-send or double-count.
+    if (result.alreadyApplied) {
+      return res.json({
+        success: true,
+        message: 'Payment already processed.',
+        membership: result.membership,
+        token,
+      });
+    }
 
     const payment = result.payment;
     const membership = result.membership;
@@ -839,6 +817,7 @@ exports.publicVerifyPayment = async (req, res) => {
       status: 'PAID',
     });
 
+    console.log(`[Membership Email] Sending welcome email to: "${user.email}" (name: ${user.name}, plan: ${plan.name}, invoice: ${payment.invoiceNumber})`);
     sendMembershipWelcomeEmail({
       toEmail: user.email,
       toName: user.name,
@@ -848,7 +827,8 @@ exports.publicVerifyPayment = async (req, res) => {
       totalAmount: pendingPayment.totalAmount,
       invoiceHtml,
       invoiceNumber: payment.invoiceNumber,
-    }).catch((err) => console.error('Welcome email failed:', err.message));
+    }).then(() => console.log(`[Membership Email] ✅ Welcome email sent successfully to ${user.email}`))
+      .catch((err) => console.error(`[Membership Email] ❌ Welcome email FAILED for ${user.email}:`, err.message, err));
 
     sendAdminPaymentAlert({
       adminEmail: process.env.ADMIN_NOTIFICATION_EMAIL,
