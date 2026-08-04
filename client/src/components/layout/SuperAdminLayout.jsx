@@ -14,10 +14,11 @@ const menuItems = [
   { path: '/super-admin/session-overtime', label: 'Session Overtime', icon: <TimerReset size={18} /> },
   { path: '/super-admin/one-time', label: 'One-Time Entries', icon: <Ticket size={18} /> },
   { path: '/super-admin/communication', label: 'Communication', icon: <MessageSquare size={18} /> },
-  { path: '/super-admin/orders', label: 'Order Management', icon: <ClipboardList size={18} /> },
-  { path: '/super-admin/menu', label: 'Menu Items', icon: <UtensilsCrossed size={18} /> },
+  // RESTAURANT DISABLED — see README "Restaurant module (disabled)"
+  // { path: '/super-admin/orders', label: 'Order Management', icon: <ClipboardList size={18} /> },
+  // { path: '/super-admin/menu', label: 'Menu Items', icon: <UtensilsCrossed size={18} /> },
   { path: '/super-admin/blogs', label: 'Blog Posts', icon: <BookOpen size={18} /> },
-  { path: '/super-admin/tables', label: 'Tables & QR', icon: <QrCode size={18} /> },
+  // { path: '/super-admin/tables', label: 'Tables & QR', icon: <QrCode size={18} /> },
   { path: '/super-admin/settings', label: 'Settings', icon: <Settings size={18} /> },
 ];
 

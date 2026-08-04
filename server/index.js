@@ -300,9 +300,10 @@ const restaurantOrderLimiter = rateLimit({
   legacyHeaders: false,
   message: rateLimitMessage(10 * 60 * 1000),
 });
-app.use('/api/orders/direct', restaurantOrderLimiter);
-app.use('/api/orders/table-order', restaurantOrderLimiter);
-app.use('/api/orders/create-razorpay-order', restaurantOrderLimiter);
+// RESTAURANT DISABLED — see README "Restaurant module (disabled)"
+// app.use('/api/orders/direct', restaurantOrderLimiter);
+// app.use('/api/orders/table-order', restaurantOrderLimiter);
+// app.use('/api/orders/create-razorpay-order', restaurantOrderLimiter);
 
 // Static Files
 app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));
@@ -317,10 +318,11 @@ app.use('/api/onetimeaccess', oneTimeAccessRoutes);
 app.use('/api/slots', slotRoutes);
 app.use('/api/operations', operationRoutes);
 app.use('/api/attendance', attendanceRoutes);
-app.use('/api/menu', menuRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/tables', tableRoutes);
-app.use('/api/inventory', inventoryRoutes);
+// RESTAURANT DISABLED — see README "Restaurant module (disabled)"
+// app.use('/api/menu', menuRoutes);
+// app.use('/api/orders', orderRoutes);
+// app.use('/api/tables', tableRoutes);
+// app.use('/api/inventory', inventoryRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/blocked-schedules', blockedScheduleRoutes);
@@ -328,7 +330,8 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/sports', sportRoutes);
 app.use('/api/super-admin', superadminRoutes);
-app.use('/api/kitchen', kitchenRoutes);
+// RESTAURANT DISABLED — see README "Restaurant module (disabled)"
+// app.use('/api/kitchen', kitchenRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/super-admin/communication', adminCommunicationRoutes);
 app.use('/api/academy-settings', academySettingsRoutes);

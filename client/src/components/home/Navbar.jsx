@@ -7,7 +7,8 @@ const navLinks = [
   { label: 'Home', href: '#hero' },
   { label: 'About Us', href: '#about' },
   { label: 'Our Sports', href: '#sports', mobileHref: '/book-slots', hasDropdown: true },
-  { label: 'Restaurant', href: '/table-portal' },
+  // RESTAURANT DISABLED — see README "Restaurant module (disabled)"
+  // { label: 'Restaurant', href: '/table-portal' },
   { label: 'Contact', href: '#contact' },
 ];
 

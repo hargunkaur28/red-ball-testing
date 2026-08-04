@@ -187,7 +187,9 @@ const useAuthStore = create((set, get) => ({
 
     switch (user.role) {
       case 'superadmin': return '/super-admin';
-      case 'manager': return '/restaurant';
+      // RESTAURANT DISABLED — was '/restaurant', which no longer has a route.
+      // See README "Restaurant module (disabled)"
+      case 'manager': return '/user';
       case 'user': return '/user';
       default: return '/login';
     }

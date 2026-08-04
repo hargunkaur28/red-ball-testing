@@ -8,8 +8,9 @@ import FacilityRentals from '../components/home/FacilityRentals';
 
 import AboutSection from '../components/home/AboutSection';
 import ValuesMarquee from '../components/home/ValuesMarquee';
-import FeaturedMenu from '../components/home/FeaturedMenu';
-import RestaurantTeaser from '../components/home/RestaurantTeaser';
+// RESTAURANT DISABLED — see README "Restaurant module (disabled)"
+// import FeaturedMenu from '../components/home/FeaturedMenu';
+// import RestaurantTeaser from '../components/home/RestaurantTeaser';
 import Testimonials from '../components/home/Testimonials';
 import HomeBlogSection from '../components/home/HomeBlogSection';
 import MotivationalBanner from '../components/home/MotivationalBanner';
@@ -78,12 +79,14 @@ export default function Home() {
           <FacilityRentals />
         </FlowSection>
 
+        {/* RESTAURANT DISABLED — see README "Restaurant module (disabled)"
         <FlowSection id="section-featured-menu" theme="light">
           <FeaturedMenu />
         </FlowSection>
         <FlowSection id="section-restaurant" theme="dark">
           <RestaurantTeaser />
         </FlowSection>
+        */}
 
         <div id="section-about" data-theme="light">
           <AboutSection />

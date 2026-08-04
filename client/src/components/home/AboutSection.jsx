@@ -84,10 +84,10 @@ export default function AboutSection() {
               {/* Founder */}
               <div className="flex items-center gap-4 pt-2">
                 <div className="w-12 h-12 rounded-full bg-[#C5DB3B]/10 flex items-center justify-center shrink-0 text-[#C5DB3B] font-black text-lg" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
-                  SM
+                  RG
                 </div>
                 <div>
-                  <p className="text-[#0D0D0D] font-bold text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>Sonu Malik</p>
+                  <p className="text-[#0D0D0D] font-bold text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>Ram Goyal</p>
                   <p className="text-[#9CA3AF] text-xs uppercase tracking-widest" style={{ fontFamily: "'DM Sans', sans-serif" }}>Founder & Owner</p>
                 </div>
               </div>

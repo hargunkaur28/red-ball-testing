@@ -17,20 +17,21 @@ const heroImages = [
 ];
 
 const landingItems = [
-  {
-    name: 'Order Food',
-    href: '/table-portal',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-9 h-9 text-[#F5A623]">
-        <path d="M3 17h18c0-4.97-4.03-9-9-9s-9 4.03-9 9z" fill="currentColor" fillOpacity="0.1" />
-        <path d="M12 8V5a1 1 0 0 1 1-1h1M3 17h18M5 20h14" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-    color: '#C5DB3B',
-    tagline: 'Fresh & Hot',
-    fullWidth: true,
-    image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop',
-  },
+  // RESTAURANT DISABLED — see README "Restaurant module (disabled)"
+  // {
+  //   name: 'Order Food',
+  //   href: '/table-portal',
+  //   icon: (
+  //     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-9 h-9 text-[#F5A623]">
+  //       <path d="M3 17h18c0-4.97-4.03-9-9-9s-9 4.03-9 9z" fill="currentColor" fillOpacity="0.1" />
+  //       <path d="M12 8V5a1 1 0 0 1 1-1h1M3 17h18M5 20h14" strokeLinecap="round" strokeLinejoin="round" />
+  //     </svg>
+  //   ),
+  //   color: '#C5DB3B',
+  //   tagline: 'Fresh & Hot',
+  //   fullWidth: true,
+  //   image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800&auto=format&fit=crop',
+  // },
   {
     name: 'Badminton',
     href: '/sports/badminton',
@@ -245,9 +246,10 @@ export default function HeroSection() {
                 </Link>
                 
                 <div className="flex gap-3 w-full sm:w-auto">
+                  {/* RESTAURANT DISABLED — 'manager' used to land on /restaurant */}
                   {isAuthenticated ? (
                     <Link
-                      to={user?.role === 'superadmin' ? '/super-admin' : user?.role === 'manager' ? '/restaurant' : '/user'}
+                      to={user?.role === 'superadmin' ? '/super-admin' : '/user'}
                       className="flex-1 sm:flex-none justify-center flex items-center px-4 sm:px-8 py-3.5 rounded-full border-2 border-[#F5A623] text-[#F5A623] text-sm sm:text-base font-semibold transition-all duration-200 hover:bg-[#F5A623] hover:text-black hover:scale-[1.04]"
                       style={{ fontFamily: "'DM Sans', sans-serif" }}
                     >

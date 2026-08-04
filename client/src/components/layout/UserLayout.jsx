@@ -13,8 +13,9 @@ const menuItems = [
   { path: '/user/scan', label: 'Scan QR Entry', icon: <ScanLine size={18} /> },
   { path: '/user/membership', label: 'Membership', icon: <CreditCard size={18} /> },
   { path: '/user/book-slots', label: 'Book Sports', icon: <Calendar size={18} /> },
-  { path: '/user/table-portal', label: 'Order Food', icon: <Utensils size={18} /> },
-  { path: '/user/orders', label: 'Order History', icon: <ClipboardList size={18} /> },
+  // RESTAURANT DISABLED — see README "Restaurant module (disabled)"
+  // { path: '/user/table-portal', label: 'Order Food', icon: <Utensils size={18} /> },
+  // { path: '/user/orders', label: 'Order History', icon: <ClipboardList size={18} /> },
   { path: '/user/reviews', label: 'Reviews', icon: <Star size={18} /> },
   { path: '/user/profile', label: 'Profile', icon: <User size={18} /> },
   { path: '/', label: 'Back to Website', icon: <Globe size={18} /> },
@@ -42,7 +43,8 @@ export default function UserLayout() {
   const mobileNavItems = [
     { path: '/user', label: 'Home', Icon: Home, match: (path) => path === '/user' || path === '/user/dashboard' },
     { path: bookingsPath, label: 'Bookings', Icon: Calendar, match: (path) => path === '/user/book-slots' || path === '/user/membership' || path === '/user/one-time-booking' },
-    { path: '/user/table-portal', label: 'Order Food', Icon: Utensils, match: (path) => path === '/user/table-portal' },
+    // RESTAURANT DISABLED — see README "Restaurant module (disabled)"
+    // { path: '/user/table-portal', label: 'Order Food', Icon: Utensils, match: (path) => path === '/user/table-portal' },
     { isAction: true, action: 'openMenu', label: 'Menu', Icon: Menu, match: () => false },
   ];
 

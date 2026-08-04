@@ -87,9 +87,11 @@ export default function Settings() {
   };
 
   // ── delivery settings ────────────────────────────────────────────────────────
+  // RESTAURANT DISABLED — /api/kitchen is unmounted. See README "Restaurant module (disabled)"
   const { data: deliveryData, isLoading: deliveryLoading } = useQuery({
     queryKey: ['delivery-settings'],
     queryFn: () => api.get('/kitchen/delivery-settings').then(r => r.data),
+    enabled: false,
   });
 
   const [delivery, setDelivery] = useState({
@@ -161,7 +163,7 @@ export default function Settings() {
           )}
         </div>
 
-        {/* Delivery Charge */}
+        {/* RESTAURANT DISABLED — Delivery Charge settings. See README "Restaurant module (disabled)"
         <div className="card lg:col-span-2">
           <h3 className="text-sm font-medium text-[#111] mb-1 flex items-center gap-2">
             <Truck size={16} className="text-[#C5DB3B]" /> Delivery Charge
@@ -212,6 +214,7 @@ export default function Settings() {
             </form>
           )}
         </div>
+        */}
 
         {/* Global Session Configuration */}
         <div className="card lg:col-span-2">

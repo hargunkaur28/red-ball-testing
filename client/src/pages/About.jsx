@@ -41,7 +41,7 @@ const STATS = [
 ];
 
 const TIMELINE = [
-  { year: 'Founded', text: 'Alchemy 360 Sports Arena was established by Sonu Malik with a vision to bring world-class multi-sport facilities to Rohtak, Haryana.' },
+  { year: 'Founded', text: 'Alchemy 360 Sports Arena was established by Ram Goyal with a vision to bring world-class multi-sport facilities to Rohtak, Haryana.' },
   { year: 'Cricket', text: 'The cricket ground quickly became the home of the Rohtak Cricket League (RCL) — Rohtak\'s premier T20 competition, broadcast live on YouTube, Siti Cable, and DEN Networks.' },
   { year: 'Expansion', text: 'Added badminton courts, gym, pickleball courts, and Box 360 — making Alchemy 360 one of the most comprehensive private sports complexes in Haryana.' },
   { year: 'Today', text: 'Serving 500+ active members across Rohtak and surrounding districts. Registered with the Haryana Cricket Association (HCA).' },
@@ -67,7 +67,7 @@ export default function About() {
     <>
       <SEOHead
         title="About Alchemy 360 Sports Arena — Rohtak's Premier Multi-Sport Complex"
-        description="Learn about Alchemy 360 Sports Arena in Rohtak, Haryana — founded by Sonu Malik. Home of the Rohtak Cricket League. Cricket, badminton, pickleball, gym, and court memberships."
+        description="Learn about Alchemy 360 Sports Arena in Rohtak, Haryana — founded by Ram Goyal. Home of the Rohtak Cricket League. Cricket, badminton, pickleball, gym, and court memberships."
         canonical="/about"
       />
       <Navbar />
@@ -116,7 +116,7 @@ export default function About() {
                 Built for Rohtak's Sports Community
               </h2>
               <p className="text-[#6B7280] leading-relaxed mb-5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Alchemy 360 Sports Arena was founded by <strong className="text-[#0D0D0D]">Sonu Malik</strong> with a single goal: to give the people of Rohtak access to world-class sports infrastructure — no compromises.
+                Alchemy 360 Sports Arena was founded by <strong className="text-[#0D0D0D]">Ram Goyal</strong> with a single goal: to give the people of Rohtak access to world-class sports infrastructure — no compromises.
               </p>
               <p className="text-[#6B7280] leading-relaxed mb-5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 What started as a cricket ground has grown into Rohtak's most complete sports destination — multiple sports, an on-site restaurant, digital QR-based entry, and the home of the Rohtak Cricket League (RCL), broadcast live across Haryana.
@@ -127,9 +127,9 @@ export default function About() {
 
               {/* Founder chip */}
               <div className="flex items-center gap-4 mt-8 p-4 rounded-2xl bg-gray-50 border border-gray-100 w-fit">
-                <div className="w-11 h-11 rounded-full bg-[#C5DB3B] flex items-center justify-center text-white font-black text-sm shrink-0" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>SM</div>
+                <div className="w-11 h-11 rounded-full bg-[#C5DB3B] flex items-center justify-center text-white font-black text-sm shrink-0" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>RG</div>
                 <div>
-                  <p className="text-[#0D0D0D] font-bold text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>Sonu Malik</p>
+                  <p className="text-[#0D0D0D] font-bold text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>Ram Goyal</p>
                   <p className="text-[#9CA3AF] text-xs uppercase tracking-widest" style={{ fontFamily: "'DM Sans', sans-serif" }}>Founder & Owner</p>
                 </div>
               </div>

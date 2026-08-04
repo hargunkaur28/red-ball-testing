@@ -35,11 +35,12 @@ export default function UserDashboard() {
     enabled: !!user?.id,
   });
 
-  const { data: orders } = useQuery({
-    queryKey: ['my-orders'],
-    queryFn: () => api.get('/orders/my-orders').then(r => r.data),
-    enabled: !!user?.id,
-  });
+  // RESTAURANT DISABLED — see README "Restaurant module (disabled)"
+  // const { data: orders } = useQuery({
+  //   queryKey: ['my-orders'],
+  //   queryFn: () => api.get('/orders/my-orders').then(r => r.data),
+  //   enabled: !!user?.id,
+  // });
 
   const { data: sessionData } = useQuery({
     queryKey: ['attendance', 'active-session', user?.id],
@@ -1005,6 +1006,7 @@ export default function UserDashboard() {
             </div>
           </motion.div>
         </Link>
+        {/* RESTAURANT DISABLED — see README "Restaurant module (disabled)"
         <Link to="/user/table-portal">
           <motion.div whileHover={{ scale: 1.02 }} className="ota-card flex items-center gap-4 cursor-pointer p-5 hover:border-white/15 transition-all h-full">
             <Utensils size={28} strokeWidth={1.5} className="text-[#C5DB3B] shrink-0" />
@@ -1023,6 +1025,7 @@ export default function UserDashboard() {
             </div>
           </motion.div>
         </Link>
+        */}
         <Link to="/user/profile">
           <motion.div whileHover={{ scale: 1.02 }} className="ota-card flex items-center gap-4 cursor-pointer p-5 hover:border-white/15 transition-all h-full">
             <User size={28} strokeWidth={1.5} className="text-[#C5DB3B] shrink-0" />
@@ -1034,7 +1037,7 @@ export default function UserDashboard() {
         </Link>
       </div>
 
-      {/* Recent Orders */}
+      {/* RESTAURANT DISABLED — Recent Food Orders. See README "Restaurant module (disabled)"
       <div className="ota-card p-6">
         <h3 className="text-sm font-extrabold text-white/70 uppercase tracking-wider mb-4">Recent Food Orders</h3>
         <div className="space-y-2">
@@ -1047,7 +1050,7 @@ export default function UserDashboard() {
                   <p className="text-sm font-medium text-white">{order.orderNumber}</p>
                   <p className="text-xs text-white/40 mb-2">{order.items?.length} items • {new Date(order.createdAt).toLocaleDateString('en-IN')}</p>
                   
-                  {/* List order items */}
+                  // List order items
                   {order.items && order.items.length > 0 && (
                     <div className="space-y-1 mt-1 border-t border-white/5 pt-1.5">
                       {order.items.map((item, idx) => {
@@ -1086,6 +1089,7 @@ export default function UserDashboard() {
           )}
         </div>
       </div>
+      */}
     </div>
   );
 }

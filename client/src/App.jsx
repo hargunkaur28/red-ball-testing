@@ -215,8 +215,9 @@ export default function App() {
             <Routes>
               {/* Public Routes */}
               <Route path="/login" element={<GuestRoute><Auth /></GuestRoute>} />
-              <Route path="/table-portal" element={<TablePortal />} />
-              <Route path="/table/:tableId" element={<TableOrder />} />
+              {/* RESTAURANT DISABLED — see README "Restaurant module (disabled)" */}
+              {/* <Route path="/table-portal" element={<TablePortal />} /> */}
+              {/* <Route path="/table/:tableId" element={<TableOrder />} /> */}
               <Route path="/one-time-booking" element={<OneTimeBookingPortal />} />
               <Route path="/book-slots" element={<BookSlotsMarketplace />} />
               <Route path="/sports/:slug" element={<SportDetailPage />} />
@@ -235,11 +236,12 @@ export default function App() {
                 <Route path="one-time" element={<SAOneTime />} />
                 <Route path="live-sports" element={<SALiveSports />} />
                 <Route path="communication" element={<SACommunication />} />
-                <Route path="orders" element={<SAOrderManagement />} />
-                <Route path="menu" element={<SAMenuItems />} />
+                {/* RESTAURANT DISABLED */}
+                {/* <Route path="orders" element={<SAOrderManagement />} /> */}
+                {/* <Route path="menu" element={<SAMenuItems />} /> */}
                 <Route path="settings" element={<Settings />} />
                 <Route path="blogs" element={<SABlogs />} />
-                <Route path="tables" element={<SATables />} />
+                {/* <Route path="tables" element={<SATables />} /> */}
               </Route>
 
               {/* User/Student Panel */}
@@ -254,13 +256,15 @@ export default function App() {
                 <Route path="one-time-booking" element={<OneTimeBookingPortal embedded />} />
                 <Route path="sports/:slug" element={<SportDetailPage embedded />} />
                 <Route path="buy-memberships" element={<MembershipPortal embedded />} />
-                <Route path="table-portal" element={<TablePortal embedded />} />
-                <Route path="orders" element={<OrderHistory />} />
+                {/* RESTAURANT DISABLED */}
+                {/* <Route path="table-portal" element={<TablePortal embedded />} /> */}
+                {/* <Route path="orders" element={<OrderHistory />} /> */}
                 <Route path="reviews" element={<UserReviews />} />
                 <Route path="profile" element={<Profile />} />
               </Route>
 
-              {/* Restaurant Manager Panel */}
+              {/* RESTAURANT DISABLED — Restaurant Manager Panel.
+                  See README "Restaurant module (disabled)"
               <Route path="/restaurant" element={
                 <ProtectedRoute roles={['manager', 'superadmin']}><RestaurantLayout /></ProtectedRoute>
               }>
@@ -271,6 +275,7 @@ export default function App() {
                 <Route path="tables" element={<RestaurantTables />} />
                 <Route path="settings" element={<RestaurantSettings />} />
               </Route>
+              */}
 
               {/* SEO Landing Pages */}
               <Route path="/sports-academy-rohtak" element={<SportsAcademyRohtak />} />
