@@ -6,23 +6,23 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a sports academy near Jhajjar?',
-    a: 'Yes. Alchemy 360 Sports Arena in Rohtak is the nearest multi-sport academy to Jhajjar — only 25 km and about 25 minutes away on Jhajjar Road, Sector 22-D.',
+    a: 'Yes. Alchemy 360 in Rohtak is the nearest multi-sport academy to Jhajjar — only 25 km and about 25 minutes away on Jhajjar Road, Sector 22-D.',
   },
   {
     q: 'What sports can I train in at Alchemy 360 if I am from Jhajjar?',
     a: 'Alchemy 360 offers professional coaching in cricket (including Box 360 circular format), badminton, pickleball. All facilities are available for Jhajjar-based students.',
   },
   {
-    q: 'Is the drive from Jhajjar to Alchemy 360 Sports Arena convenient?',
+    q: 'Is the drive from Jhajjar to Alchemy 360 convenient?',
     a: 'Very convenient. Alchemy 360 is located directly on Jhajjar Road in Rohtak — the same road that connects Jhajjar to Rohtak, so you barely need to deviate from your route.',
   },
   {
-    q: 'Does Alchemy 360 Sports Academy offer memberships for Jhajjar students?',
+    q: 'Does Alchemy 360 offer memberships for Jhajjar students?',
     a: 'Yes. Monthly and annual memberships are available that cover coaching, facility access, and practice slots. Jhajjar students and families can contact us at +91 93500 76653 to enroll.',
   },
   {
     q: 'Are there facilities for kids from Jhajjar at Alchemy 360?',
-    a: 'Yes. Alchemy 360 has a dedicated Kids Sports Academy programme covering cricket, badminton — ideal for children aged 6 and above travelling from Jhajjar.',
+    a: 'Yes. Alchemy 360 has a dedicated Kids Sports Academy programme covering badminton — ideal for children aged 6 and above travelling from Jhajjar.',
   },
 ];
 
@@ -47,8 +47,8 @@ export default function SportsAcademyJhajjar() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Academy Near Jhajjar | Alchemy 360 Sports Arena Rohtak"
-        description="Nearest sports academy to Jhajjar — Alchemy 360 Sports Arena in Rohtak, just 25 km and 25 minutes away. Cricket, badminton, pickleball coaching. Enroll today."
+        title="Sports Academy Near Jhajjar | Alchemy 360 Rohtak"
+        description="Nearest sports academy to Jhajjar — Alchemy 360 in Rohtak, just 25 km and 25 minutes away. Badminton, pickleball coaching. Enroll today."
         canonical="/sports-academy-jhajjar"
         schema={schema}
       />
@@ -62,7 +62,7 @@ export default function SportsAcademyJhajjar() {
             Sports Academy Near Jhajjar
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak is the closest professional sports academy to Jhajjar — just 25 km away, roughly a 25-minute drive on Jhajjar Road. With facilities covering cricket, badminton, pickleball, the short commute is more than worth it for serious athletes and young learners alike.
+            Alchemy 360 in Rohtak is the closest professional sports academy to Jhajjar — just 25 km away, roughly a 25-minute drive on Jhajjar Road. With facilities covering badminton, pickleball, the short commute is more than worth it for serious athletes and young learners alike.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -80,7 +80,7 @@ export default function SportsAcademyJhajjar() {
           Jhajjar's Nearest Multi-Sport Academy
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Jhajjar lacks a full-scale multi-sport academy with professional coaching infrastructure. Alchemy 360 Sports Arena in Rohtak fills that gap perfectly. Situated on Jhajjar Road — the very road connecting Jhajjar to Rohtak — Alchemy 360 is effectively on your doorstep. Students from Jhajjar district train here daily for cricket at the iconic Box 360 circular ground, badminton on indoor courts in the open-air pool. Professional coaches, proper equipment, and structured programmes make Alchemy 360 the academy of choice for Jhajjar families who take sport seriously.
+          Jhajjar lacks a full-scale multi-sport academy with professional coaching infrastructure. Alchemy 360 in Rohtak fills that gap perfectly. Situated on Jhajjar Road — the very road connecting Jhajjar to Rohtak — Alchemy 360 is effectively on your doorstep. Students from Jhajjar district train here daily for cricket at the iconic Box 360 circular ground, badminton on indoor courts in the open-air pool. Professional coaches, proper equipment, and structured programmes make Alchemy 360 the academy of choice for Jhajjar families who take sport seriously.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -98,7 +98,7 @@ export default function SportsAcademyJhajjar() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Sports Academy Rohtak', to: '/sports-academy-rohtak' },

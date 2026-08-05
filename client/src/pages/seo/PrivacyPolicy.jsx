@@ -20,8 +20,8 @@ export default function PrivacyPolicy() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Privacy Policy | Alchemy 360 Sports Arena Rohtak"
-        description="Privacy Policy for Alchemy 360 Sports Arena and Alchemy 360 Academy, Rohtak, Haryana. Learn how we collect, use, and protect your personal data."
+        title="Privacy Policy | Alchemy 360 Rohtak"
+        description="Privacy Policy for Alchemy 360, Rohtak, Haryana. Learn how we collect, use, and protect your personal data."
         canonical="/privacy-policy"
         schema={schema}
       />
@@ -32,7 +32,7 @@ export default function PrivacyPolicy() {
           <Link to="/" className="text-white/50 text-xs hover:text-white mb-4 inline-block" style={{ fontFamily: "'DM Sans', sans-serif" }}>← Back to Home</Link>
           <h1 className="text-4xl md:text-5xl font-black" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '3px' }}>Privacy Policy</h1>
           <p className="text-white/50 text-sm mt-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena / Alchemy 360 Academy · Last updated: June 2026
+            Alchemy 360 · Last updated: June 2026
           </p>
         </div>
       </div>
@@ -42,7 +42,7 @@ export default function PrivacyPolicy() {
 
         <Section title="Introduction">
           <p>
-            Alchemy 360 Sports Arena ("we", "our", "us") operates the website at <strong>alchemy360.in</strong> and the Alchemy 360 Academy sports facility at Sector 22-D, Jhajjar Road, Rohtak, Haryana 124001.
+            Alchemy 360 ("we", "our", "us") operates the website at <strong>alchemy360.in</strong> and the Alchemy 360 sports facility at Sector 22-D, Jhajjar Road, Rohtak, Haryana 124001.
           </p>
           <p>
             This Privacy Policy explains what information we collect when you use our website, book sports sessions, purchase memberships, or use our services — and how we use, store, and protect that information. By using our website or services, you agree to the terms described here.
@@ -50,10 +50,9 @@ export default function PrivacyPolicy() {
         </Section>
 
         <Section title="Information We Collect">
-          <p><strong>Account information:</strong> When you create an account on our platform, we collect your name, email address, phone number, and a hashed (encrypted) password.</p>
+          <p><strong>Account information:</strong> When you create an account on our platform, we collect your name, email address, phone number, and a hashed (encrypted) password. An account is required to purchase a membership, so this information is collected before any membership can be bought.</p>
           <p><strong>Booking data:</strong> When you book a slot, we collect the sport selected, date/time, court, and payment details. We do not store full card numbers — payments are processed by Razorpay.</p>
           <p><strong>Membership data:</strong> Membership purchases include your name, contact details, selected plan, payment confirmation, and membership duration.</p>
-          <p><strong>Food and table orders:</strong> If you place food orders at our restaurant, we collect your table number, order details, and payment status.</p>
           <p><strong>QR and check-in data:</strong> We generate and store QR codes linked to your bookings for facility entry. Check-in and check-out timestamps are recorded.</p>
           <p><strong>Communication:</strong> If you contact us via email, phone, or our website contact form, we retain that correspondence.</p>
           <p><strong>Device and usage data:</strong> We may collect browser type, IP address, pages visited, and time spent — used for site analytics and security.</p>
@@ -132,7 +131,7 @@ export default function PrivacyPolicy() {
 
         <Section title="Children's Privacy">
           <p>
-            Our kids sports academy serves children under parental supervision. Accounts for minors must be created and managed by a parent or guardian. We do not knowingly collect personal data directly from children without parental consent.
+            Minors attending coaching sessions do so under parental supervision. Accounts for minors must be created and managed by a parent or guardian. We do not knowingly collect personal data directly from children without parental consent.
           </p>
         </Section>
 

@@ -1,7 +1,7 @@
 // Whether a membership plan involves booking a slot at all.
 //
 // Gym is walk-in — a member shows their QR at the door, there are no courts to
-// reserve. Court sports (badminton, pickleball, cricket …) and coaching do need
+// reserve. Court sports (badminton, pickleball) and coaching do need
 // a slot. Combos are mixed: "Gym + Badminton" books badminton slots, and the
 // sport picker drops gym from the options.
 //
@@ -28,11 +28,8 @@ export function planHasNoSlots(p) {
     name.includes('coaching') ||
     name.includes('pickleball') ||
     name.includes('badminton') ||
-    name.includes('cricket') ||
-    name.includes('swimming') ||
     name.includes('tennis') ||
-    name.includes('squash') ||
-    name.includes('box cricket')
+    name.includes('squash')
   ) {
     return false;
   }

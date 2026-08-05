@@ -5,7 +5,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 
 const faqs = [
   {
-    q: 'Does Alchemy 360 Sports Arena have a badminton academy?',
+    q: 'Does Alchemy 360 have a badminton academy?',
     a: 'Yes. Alchemy 360 runs a structured badminton academy with coaching programs for all skill levels — beginner, intermediate, and competitive — on professional wooden-floor courts.',
   },
   {
@@ -47,7 +47,7 @@ export default function BadmintonAcademyRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Badminton Academy in Rohtak | Professional Coaching | Alchemy 360 Sports Arena"
+        title="Badminton Academy in Rohtak | Professional Coaching | Alchemy 360"
         description="Join Alchemy 360 Badminton Academy in Rohtak — structured coaching programs, professional courts, expert coaches for beginners to competitive players. Enroll today."
         canonical="/badminton-academy-rohtak"
         schema={schema}
@@ -62,7 +62,7 @@ export default function BadmintonAcademyRohtak() {
             Badminton Academy in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena runs a full-scale badminton academy in Rohtak — offering structured coaching for beginners, intermediates, and competitive players. With professional wooden-floor courts and experienced coaches, it is Rohtak's most serious badminton training destination.
+            Alchemy 360 runs a full-scale badminton academy in Rohtak — offering structured coaching for beginners, intermediates, and competitive players. With professional wooden-floor courts and experienced coaches, it is Rohtak's most serious badminton training destination.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/buy-membership?sport=badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -98,7 +98,7 @@ export default function BadmintonAcademyRohtak() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Court', to: '/badminton-court-rohtak' },

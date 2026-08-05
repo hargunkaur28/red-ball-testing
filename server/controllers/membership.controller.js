@@ -12,6 +12,7 @@ const { DEFAULT_ALLOWED_DURATION_MINUTES } = require('../utils/sessionCalculator
 const { invalidateEntitlementCache, calculateEntitlement, validateCheckIn } = require('../utils/entitlementEngine');
 const { getEffectiveConfig } = require('../utils/sessionCalculator');
 const { runTransaction } = require('../utils/transactionHandler');
+const { findConflictingMembership, conflictMessage } = require('../utils/membershipConflict');
 const jwt = require('jsonwebtoken');
 const { sendMembershipWelcomeEmail, sendAdminPaymentAlert } = require('../utils/emailService');
 const { buildInvoiceHTML } = require('../utils/invoiceBuilder');
@@ -142,6 +143,14 @@ exports.assignMembership = async (req, res) => {
     } else {
       user = await User.findById(targetUserId);
       if (!user) return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // 1b. One live membership per sport — block duplicates/overlaps before any
+    // Payment is written, so a rejected assign leaves nothing behind.
+    // Renewals go through PUT /memberships/:id/renew, not this endpoint.
+    const conflict = await findConflictingMembership(targetUserId, plan);
+    if (conflict) {
+      return res.status(409).json({ message: conflictMessage(conflict) });
     }
 
     const startDate = new Date();
@@ -533,30 +542,24 @@ exports.publicPurchaseOrder = async (req, res) => {
 
     const totalAmount = plan.price + trainingAddon;
 
-    // Resolve or pre-create user profile to guarantee payment -> studentId link
-    let targetUserId = req.user?.userId;
-    let user = null;
+    // Sign-in is required for every membership type — the route is behind `auth`, so
+    // this only fires if that middleware is ever loosened. Guest checkout is gone:
+    // a membership must belong to a real account, otherwise entitlements, QR entry
+    // and the one-per-sport rule have no stable identity to hang off.
+    const targetUserId = req.user?.userId;
+    if (!targetUserId) {
+      return res.status(401).json({ success: false, message: 'Please sign in to buy a membership.' });
+    }
+    const user = await User.findById(targetUserId);
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'Your account could not be found. Please sign in again.' });
+    }
 
-    if (!targetUserId && customerDetails?.email) {
-      user = await User.findOne({ email: customerDetails.email.toLowerCase() });
-      if (!user && customerDetails.phone) {
-        user = await User.findOne({ phone: customerDetails.phone });
-      }
-      if (!user) {
-        const bcrypt = require('bcryptjs');
-        const hashedPassword = await bcrypt.hash('User@123', 10);
-        user = await User.create({
-          name: customerDetails.name,
-          email: customerDetails.email.toLowerCase(),
-          phone: customerDetails.phone,
-          password: hashedPassword,
-          role: 'user',
-          isActive: true,
-        });
-      }
-      targetUserId = user._id;
-    } else if (targetUserId) {
-      user = await User.findById(targetUserId);
+    // One live membership per sport — reject before Razorpay so the buyer is never
+    // charged for a plan that verify would refuse to activate.
+    const conflict = await findConflictingMembership(targetUserId, plan, { ignorePlanId: plan._id });
+    if (conflict) {
+      return res.status(409).json({ success: false, message: conflictMessage(conflict, { self: true }) });
     }
 
     // Create pending Payment BEFORE Razorpay order — snapshot binds verify to plan/training choice
@@ -674,31 +677,13 @@ exports.publicVerifyPayment = async (req, res) => {
     const plan = await MembershipPlan.findById(pendingPayment.referenceId);
     if (!plan) return res.status(404).json({ success: false, message: 'Membership plan not found.' });
 
-    // Match or create user
-    let targetUserId = req.user?.userId;
-    let user = null;
-
-    if (!targetUserId && customerDetails.email) {
-      user = await User.findOne({ email: customerDetails.email.toLowerCase() });
-      if (!user && customerDetails.phone) {
-        user = await User.findOne({ phone: customerDetails.phone });
-      }
-      if (!user) {
-        const bcrypt = require('bcryptjs');
-        const hashedPassword = await bcrypt.hash('User@123', 10);
-        user = await User.create({
-          name: customerDetails.name,
-          email: customerDetails.email.toLowerCase(),
-          phone: customerDetails.phone,
-          password: hashedPassword,
-          role: 'user',
-          isActive: true,
-        });
-      }
-      targetUserId = user._id;
-    } else if (targetUserId) {
-      user = await User.findById(targetUserId);
-    }
+    // Resolve the buyer from the payment record, NOT from client-supplied details.
+    // studentId was bound to the signed-in account when the order was created, so this
+    // still lands the membership correctly even if the session expired mid-payment —
+    // the money is already taken by this point, so failing here must be a last resort.
+    // No guest account is ever minted: purchase requires sign-in.
+    const targetUserId = pendingPayment.studentId || req.user?.userId;
+    const user = targetUserId ? await User.findById(targetUserId) : null;
 
     if (!user) {
       return res.status(400).json({ success: false, message: 'User identification failed.' });
@@ -720,6 +705,17 @@ exports.publicVerifyPayment = async (req, res) => {
         studentId: targetUserId,
         planId: plan._id,
       }, null, opts).sort({ createdAt: -1 });
+
+      // Backstop for the pre-payment check in publicPurchaseOrder: a clashing plan
+      // could have been taken between order creation and verify. Same plan is skipped
+      // — that is the renewal branch below, which extends rather than duplicates.
+      const conflict = await findConflictingMembership(targetUserId, plan, {
+        ignorePlanId: plan._id,
+        session: session || null,
+      });
+      if (conflict) {
+        throw new Error(conflictMessage(conflict, { self: true }));
+      }
 
       let startDate = new Date();
       if (existingMembership && existingMembership.status === 'active' && existingMembership.endDate > new Date()) {

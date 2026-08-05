@@ -142,7 +142,7 @@ export default function HeroSection() {
         >
           <img
             src={img}
-            alt="Alchemy 360 Academy"
+            alt="Alchemy 360"
             className="w-full h-full object-cover"
             loading={i === 0 ? 'eager' : 'lazy'}
           />
@@ -170,7 +170,7 @@ export default function HeroSection() {
               className="uppercase tracking-[6px] text-[13px] text-[#F5A623] mb-6"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
-              Welcome to Alchemy 360 Academy
+              Welcome to Alchemy 360
             </motion.p>
 
             {/* Main Headline — Line 1 */}

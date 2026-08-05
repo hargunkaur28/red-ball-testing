@@ -91,7 +91,7 @@ export default function UserReviews() {
   return (
     <div className="space-y-8">
       <div>
-        <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#C5DB3B]">Alchemy 360 Academy</p>
+        <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#C5DB3B]">Alchemy 360</p>
         <h1 className="mt-3 text-3xl font-black sm:text-4xl tracking-tight text-white">Reviews</h1>
         <p className="mt-2 text-sm text-white/50">Share your experience with our food and services</p>
       </div>

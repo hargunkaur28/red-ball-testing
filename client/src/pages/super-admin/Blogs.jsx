@@ -322,7 +322,7 @@ function PostEditor({ post, onClose }) {
           </div>
           <div>
             <label className="block text-xs font-semibold text-[#111] mb-1.5">Meta Keywords <span className="text-[#999] font-normal">(comma-separated)</span></label>
-            <input value={form.metaKeywords} onChange={set('metaKeywords')} placeholder="sports, rohtak, cricket"
+            <input value={form.metaKeywords} onChange={set('metaKeywords')} placeholder="sports, rohtak"
               className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#111] transition-colors bg-white" />
           </div>
         </div>

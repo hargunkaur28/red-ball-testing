@@ -47,8 +47,8 @@ export default function BadmintonCoachingRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Badminton Coaching in Rohtak | Expert Trainers | Alchemy 360 Sports Arena"
-        description="Professional badminton coaching in Rohtak at Alchemy 360 Sports Arena — expert coaches, smash training, footwork drills, singles and doubles tactics for all levels."
+        title="Badminton Coaching in Rohtak | Expert Trainers | Alchemy 360"
+        description="Professional badminton coaching in Rohtak at Alchemy 360 — expert coaches, smash training, footwork drills, singles and doubles tactics for all levels."
         canonical="/badminton-coaching-rohtak"
         schema={schema}
       />
@@ -62,7 +62,7 @@ export default function BadmintonCoachingRohtak() {
             Badminton Coaching in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena provides professional badminton coaching in Rohtak — with experienced coaches who break down technique, identify weaknesses, and build consistent, tournament-ready skills. Whether you want to fix your smash, improve footwork, or master net play — our programs deliver structured improvement.
+            Alchemy 360 provides professional badminton coaching in Rohtak — with experienced coaches who break down technique, identify weaknesses, and build consistent, tournament-ready skills. Whether you want to fix your smash, improve footwork, or master net play — our programs deliver structured improvement.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/buy-membership?sport=badminton-coaching" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -98,7 +98,7 @@ export default function BadmintonCoachingRohtak() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>Also at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Court', to: '/badminton-court-rohtak' },

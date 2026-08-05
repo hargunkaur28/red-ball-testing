@@ -179,7 +179,7 @@ const useAuthStore = create((set, get) => ({
     if (pendingEntryIntent && user.role === 'user') {
       const { flow, sportSlug, planId } = pendingEntryIntent;
       if (flow === 'one-time-access' && sportSlug) {
-        return `/one-time-booking?sport=${sportSlug}`;
+        return `/sports/${sportSlug}`;
       } else if (flow === 'membership') {
         return planId ? `/user/membership?planId=${planId}` : '/user/membership';
       }

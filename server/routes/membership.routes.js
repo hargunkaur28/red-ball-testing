@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth.middleware');
-const optAuth = require('../middleware/optAuth.middleware');
 const authorize = require('../middleware/role.middleware');
 const mc = require('../controllers/membership.controller');
 
@@ -13,9 +12,11 @@ router.post('/plans', auth, authorize('superadmin'), upload.single('imageFile'),
 router.put('/plans/:id', auth, authorize('superadmin'), upload.single('imageFile'), mc.updatePlan);
 router.delete('/plans/:id', auth, authorize('superadmin'), mc.deletePlan);
 
-// Public Membership Booking (optAuth so logged-in users get req.user set)
-router.post('/memberships/public-purchase', optAuth, mc.publicPurchaseOrder);
-router.post('/memberships/public-verify', optAuth, mc.publicVerifyPayment);
+// Membership purchase — sign-in REQUIRED for every plan type (sport, combo, court,
+// coaching). Guest checkout is deliberately not supported: a membership must belong to
+// a real account so entitlements, QR entry and renewals resolve to one member.
+router.post('/memberships/public-purchase', auth, mc.publicPurchaseOrder);
+router.post('/memberships/public-verify', auth, mc.publicVerifyPayment);
 
 // Memberships
 router.get('/memberships/all', auth, authorize('superadmin'), mc.getAllMemberships);

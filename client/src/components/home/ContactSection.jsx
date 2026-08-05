@@ -153,7 +153,7 @@ export default function ContactSection() {
                 style={{ border: 0, borderRadius: '12px', minHeight: '500px' }}
                 allowFullScreen
                 loading="lazy"
-                title="Alchemy 360 Academy Location"
+                title="Alchemy 360 Location"
               />
             </div>
 

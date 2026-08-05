@@ -6,14 +6,14 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'What makes Alchemy 360 the best sports academy in Rohtak?',
-    a: 'Alchemy 360 Sports Arena combines professional infrastructure, expert coaching across multiple sports, flexible membership options, digital booking, and a kids sports academy — making it the most complete sports facility in Rohtak.',
+    a: 'Alchemy 360 combines professional infrastructure, expert coaching across multiple sports, flexible membership options, digital booking, and a kids sports academy — making it the most complete sports facility in Rohtak.',
   },
   {
-    q: 'Which sports can I learn at Alchemy 360 Academy Rohtak?',
+    q: 'Which sports can I learn at Alchemy 360 Rohtak?',
     a: 'You can train in cricket (box cricket), badminton, pickleball, and fitness/gym. Kids programs are available for cricket and badminton.',
   },
   {
-    q: 'Is Alchemy 360 Academy good for beginners?',
+    q: 'Is Alchemy 360 good for beginners?',
     a: 'Yes. Our coaches work with all skill levels, from first-timers to competitive players. We offer beginner batches for kids and adults in multiple sports.',
   },
   {
@@ -21,7 +21,7 @@ const faqs = [
     a: "We offer monthly, quarterly, and annual memberships, as well as one-time slot bookings for those who don't want a commitment.",
   },
   {
-    q: 'Is there parking available at Alchemy 360 Sports Arena?',
+    q: 'Is there parking available at Alchemy 360?',
     a: 'Yes, parking is available at the facility. Our location on Jhajjar Road, Sector 22-D, Rohtak provides easy road access.',
   },
 ];
@@ -36,8 +36,8 @@ export default function BestSportsAcademyRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Best Sports Academy in Rohtak | Alchemy 360 Sports Arena"
-        description="Alchemy 360 Sports Arena is the best sports academy in Rohtak, Haryana. Multi-sport facility with cricket, badminton, pickleball, gym & kids programs. Book online."
+        title="Best Sports Academy in Rohtak | Alchemy 360"
+        description="Alchemy 360 is the best sports academy in Rohtak, Haryana. Multi-sport facility with badminton, pickleball, gym & kids programs. Book online."
         canonical="/best-sports-academy-rohtak"
         schema={schema}
       />
@@ -51,7 +51,7 @@ export default function BestSportsAcademyRohtak() {
             Best Sports Academy in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena stands out as Rohtak's most comprehensive sports facility. With multi-sport infrastructure, expert coaches, digital access, and a family-friendly environment, it's the clear choice for serious players and casual enthusiasts alike.
+            Alchemy 360 stands out as Rohtak's most comprehensive sports facility. With multi-sport infrastructure, expert coaches, digital access, and a family-friendly environment, it's the clear choice for serious players and casual enthusiasts alike.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/sports-academy-rohtak" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -70,7 +70,7 @@ export default function BestSportsAcademyRohtak() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
-            { icon: '🏟️', title: 'Multi-Sport Infrastructure', desc: 'Cricket, badminton, pickleball, and gym — all in one location in Rohtak.' },
+            { icon: '🏟️', title: 'Multi-Sport Infrastructure', desc: 'Badminton, pickleball, and gym — all in one location in Rohtak.' },
             { icon: '👨‍🏫', title: 'Expert Coaching', desc: 'Experienced coaches across disciplines for both kids and adults, beginner to advanced.' },
             { icon: '📱', title: 'Digital Booking', desc: 'Book any court or slot online in minutes. No phone calls, no waiting.' },
             { icon: '🎓', title: "Kids' Academy", desc: 'Dedicated youth programs for cricket and badminton with age-appropriate coaching.' },
@@ -91,7 +91,7 @@ export default function BestSportsAcademyRohtak() {
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-xl font-bold text-[#0D0D0D] mb-4" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-            Explore All Sports at Alchemy 360 Academy Rohtak
+            Explore All Sports at Alchemy 360 Rohtak
           </h2>
           <div className="flex flex-wrap gap-3">
             {[

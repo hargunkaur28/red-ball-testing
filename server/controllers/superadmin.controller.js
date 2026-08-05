@@ -1180,7 +1180,7 @@ exports.testSms = async (req, res) => {
 
     const result = await sendSms({
       numbers: [cleaned],
-      message: message || 'Test SMS from Alchemy 360 Academy. If you received this, Fast2SMS is working correctly.',
+      message: message || 'Test SMS from Alchemy 360. If you received this, Fast2SMS is working correctly.',
     });
 
     res.json({

@@ -6,19 +6,19 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a badminton court near Jhajjar?',
-    a: 'Yes. Alchemy 360 Sports Arena in Rohtak is the nearest badminton facility to Jhajjar — just 25 km away on Jhajjar Road, Sector 22-D, and reachable in about 25 minutes.',
+    a: 'Yes. Alchemy 360 in Rohtak is the nearest badminton facility to Jhajjar — just 25 km away on Jhajjar Road, Sector 22-D, and reachable in about 25 minutes.',
   },
   {
-    q: 'How far is Alchemy 360 Sports Arena from Jhajjar city?',
+    q: 'How far is Alchemy 360 from Jhajjar city?',
     a: 'Alchemy 360 is approximately 25 km from Jhajjar, directly on the Rohtak–Jhajjar Road. Most Jhajjar residents make the drive in 20–25 minutes.',
   },
   {
     q: 'Can I book a badminton court online from Jhajjar?',
-    a: 'Absolutely. You can book badminton court slots online at Alchemy 360 Sports Arena from anywhere, including Jhajjar. Just pick your time slot and pay digitally — no need to visit in advance.',
+    a: 'Absolutely. You can book badminton court slots online at Alchemy 360 from anywhere, including Jhajjar. Just pick your time slot and pay digitally — no need to visit in advance.',
   },
   {
     q: 'Does Alchemy 360 have professional badminton courts?',
-    a: 'Alchemy 360 Sports Arena features well-maintained indoor badminton courts with proper court markings and equipment. The facility caters to casual players, club teams, and serious training sessions.',
+    a: 'Alchemy 360 features well-maintained indoor badminton courts with proper court markings and equipment. The facility caters to casual players, club teams, and serious training sessions.',
   },
   {
     q: 'Is it worth driving from Jhajjar to Alchemy 360 for badminton?',
@@ -47,8 +47,8 @@ export default function BadmintonCourtJhajjar() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Badminton Court Near Jhajjar | Alchemy 360 Sports Arena Rohtak"
-        description="Nearest badminton court to Jhajjar — Alchemy 360 Sports Arena, Rohtak, just 25 km / 25 minutes away. Professional courts, online booking, on-site restaurant."
+        title="Badminton Court Near Jhajjar | Alchemy 360 Rohtak"
+        description="Nearest badminton court to Jhajjar — Alchemy 360, Rohtak, just 25 km / 25 minutes away. Professional courts, online booking, on-site restaurant."
         canonical="/badminton-court-jhajjar"
         schema={schema}
       />
@@ -61,10 +61,10 @@ export default function BadmintonCourtJhajjar() {
             Badminton Court Near Jhajjar
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak is the closest professional badminton facility to Jhajjar — located right on Jhajjar Road, Sector 22-D, just 25 km and about 25 minutes from Jhajjar. Whether you're looking for a regular court for weekend games or structured practice, the short drive from Jhajjar puts you on a proper badminton court.
+            Alchemy 360 in Rohtak is the closest professional badminton facility to Jhajjar — located right on Jhajjar Road, Sector 22-D, just 25 km and about 25 minutes from Jhajjar. Whether you're looking for a regular court for weekend games or structured practice, the short drive from Jhajjar puts you on a proper badminton court.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/badminton-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -79,7 +79,7 @@ export default function BadmintonCourtJhajjar() {
           Jhajjar's Nearest Badminton Facility
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Jhajjar district residents looking for a proper badminton court don't need to travel all the way to Rohtak city centre — Alchemy 360 Sports Arena sits directly on the Jhajjar–Rohtak highway, making it the most naturally accessible sports complex for Jhajjar players. The courts are maintained to a standard that supports both casual games and competitive club sessions, and the facility includes ample parking for visitors arriving from Jhajjar and surrounding villages.
+          Jhajjar district residents looking for a proper badminton court don't need to travel all the way to Rohtak city centre — Alchemy 360 sits directly on the Jhajjar–Rohtak highway, making it the most naturally accessible sports complex for Jhajjar players. The courts are maintained to a standard that supports both casual games and competitive club sessions, and the facility includes ample parking for visitors arriving from Jhajjar and surrounding villages.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -97,7 +97,7 @@ export default function BadmintonCourtJhajjar() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },

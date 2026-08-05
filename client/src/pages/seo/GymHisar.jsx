@@ -6,10 +6,10 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a good gym near Hisar?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is the closest fully-equipped gym to Hisar — approximately 100 km away, around 100 minutes on NH-9. The route is straightforward and the facility is worth making the trip for.',
+    a: 'Alchemy 360 in Rohtak is the closest fully-equipped gym to Hisar — approximately 100 km away, around 100 minutes on NH-9. The route is straightforward and the facility is worth making the trip for.',
   },
   {
-    q: 'How far is Alchemy 360 Sports Arena from Hisar?',
+    q: 'How far is Alchemy 360 from Hisar?',
     a: 'Alchemy 360 is around 100 km from Hisar city, located at Sector 22-D, Jhajjar Road, Rohtak. Most drivers from Hisar reach us in under 100 minutes via NH-9.',
   },
   {
@@ -47,8 +47,8 @@ export default function GymHisar() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Gym Near Hisar | Alchemy 360 Sports Arena Rohtak"
-        description="Looking for a gym near Hisar? Alchemy 360 Sports Arena in Rohtak is ~100 km away — fully equipped gym with free weights, cardio, personal training & memberships."
+        title="Gym Near Hisar | Alchemy 360 Rohtak"
+        description="Looking for a gym near Hisar? Alchemy 360 in Rohtak is ~100 km away — fully equipped gym with free weights, cardio, personal training & memberships."
         canonical="/gym-hisar"
         schema={schema}
       />
@@ -62,7 +62,7 @@ export default function GymHisar() {
             Gym Near Hisar
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak is approximately 100 km from Hisar — about 100 minutes on NH-9. If you're looking for a serious gym with proper equipment, trained staff, and multi-sport access all under one roof, the drive from Hisar is absolutely worth it.
+            Alchemy 360 in Rohtak is approximately 100 km from Hisar — about 100 minutes on NH-9. If you're looking for a serious gym with proper equipment, trained staff, and multi-sport access all under one roof, the drive from Hisar is absolutely worth it.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/buy-membership?sport=gym" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -80,7 +80,7 @@ export default function GymHisar() {
           Why Hisar Fitness Enthusiasts Come to Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          When you want a gym that goes beyond the basics, Alchemy 360 Sports Arena delivers. Located at Sector 22-D, Jhajjar Road in Rohtak, the facility offers serious strength equipment, cardio machines, and personal training — not a cramped studio with a few dumbbells. For Hisar residents visiting Rohtak for other reasons, or those planning a dedicated fitness trip, Alchemy 360 makes the journey count with a full day of training options across multiple sports.
+          When you want a gym that goes beyond the basics, Alchemy 360 delivers. Located at Sector 22-D, Jhajjar Road in Rohtak, the facility offers serious strength equipment, cardio machines, and personal training — not a cramped studio with a few dumbbells. For Hisar residents visiting Rohtak for other reasons, or those planning a dedicated fitness trip, Alchemy 360 makes the journey count with a full day of training options across multiple sports.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -98,7 +98,7 @@ export default function GymHisar() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Gym Rohtak', to: '/gym-rohtak' },

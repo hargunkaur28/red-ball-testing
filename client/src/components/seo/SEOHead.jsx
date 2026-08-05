@@ -6,7 +6,7 @@
 import { Helmet } from 'react-helmet-async';
 
 const SITE_URL = 'https://www.alchemy360.in';
-const SITE_NAME = 'Alchemy 360 Sports Arena';
+const SITE_NAME = 'Alchemy 360';
 const DEFAULT_IMAGE = `${SITE_URL}/banner.png`;
 
 export default function SEOHead({
@@ -17,7 +17,7 @@ export default function SEOHead({
   type = 'website',
   schema = null,
 }) {
-  const fullTitle = title.includes('Alchemy 360') ? title : `${title} | Alchemy 360 Sports Arena Rohtak`;
+  const fullTitle = title.includes('Alchemy 360') ? title : `${title} | Alchemy 360 Rohtak`;
   const canonicalUrl = canonical ? `${SITE_URL}${canonical}` : SITE_URL;
 
   return (
@@ -43,7 +43,7 @@ export default function SEOHead({
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
-      <meta name="twitter:image:alt" content={`${fullTitle} — Alchemy 360 Academy, Rohtak`} />
+      <meta name="twitter:image:alt" content={`${fullTitle} — Alchemy 360, Rohtak`} />
 
       {/* Geo */}
       <meta name="geo.region" content="IN-HR" />

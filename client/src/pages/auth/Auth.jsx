@@ -583,7 +583,7 @@ export default function Auth() {
         navigate(redirectTo || getRedirectPath());
       } else {
         await register({ name: formData.name, email: formData.email, phone: formData.phone, password: formData.password });
-        toast.success('Account created! Welcome to Alchemy 360 Academy.');
+        toast.success('Account created! Welcome to Alchemy 360.');
         navigate(redirectTo || getRedirectPath());
       }
     } catch (err) {
@@ -733,7 +733,7 @@ export default function Auth() {
               >
                 <div className="form-heading">{isLogin ? 'Welcome Back' : 'Join the Elite'}</div>
                 <div className="form-subheading">
-                  {isLogin ? 'Enter your credentials to continue' : 'Start your journey at Alchemy 360 Academy'}
+                  {isLogin ? 'Enter your credentials to continue' : 'Start your journey at Alchemy 360'}
                 </div>
 
                 <form onSubmit={handleSubmit}>

@@ -42,7 +42,7 @@ export default function UserLayout() {
 
   const mobileNavItems = [
     { path: '/user', label: 'Home', Icon: Home, match: (path) => path === '/user' || path === '/user/dashboard' },
-    { path: bookingsPath, label: 'Bookings', Icon: Calendar, match: (path) => path === '/user/book-slots' || path === '/user/membership' || path === '/user/one-time-booking' },
+    { path: bookingsPath, label: 'Bookings', Icon: Calendar, match: (path) => path === '/user/book-slots' || path === '/user/membership' },
     // RESTAURANT DISABLED — see README "Restaurant module (disabled)"
     // { path: '/user/table-portal', label: 'Order Food', Icon: Utensils, match: (path) => path === '/user/table-portal' },
     { path: '/user/profile', label: 'Profile', Icon: User, match: (path) => path === '/user/profile' },
@@ -62,7 +62,7 @@ export default function UserLayout() {
     <>
       <div className="flex items-center justify-between px-4 h-16 border-b border-white/10 shrink-0">
         <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="Alchemy 360 Academy" className="w-32 h-12 object-contain" />
+          <img src="/logo.png" alt="Alchemy 360" className="w-32 h-12 object-contain" />
         </div>
         <button onClick={() => setMobileOpen(false)} className="lg:hidden w-8 h-8 rounded-lg flex items-center justify-center text-white/60"><X size={18} /></button>
       </div>
@@ -111,7 +111,7 @@ export default function UserLayout() {
             <Menu size={20} />
           </button>
           <Link to="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="Alchemy 360 Academy" className="w-32 h-12 object-contain" />
+            <img src="/logo.png" alt="Alchemy 360" className="w-32 h-12 object-contain" />
           </Link>
           <Link to="/user/scan" className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#C5DB3B] text-[#0A1628] shadow-lg shadow-[#C5DB3B]/30">
             <ScanLine size={20} />

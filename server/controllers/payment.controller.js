@@ -1,4 +1,5 @@
 const Payment = require('../models/Payment');
+const { findConflictingMembership, conflictMessage } = require('../utils/membershipConflict');
 const Membership = require('../models/Membership');
 const Admission = require('../models/Admission');
 const User = require('../models/User');
@@ -523,14 +524,24 @@ async function activateOnPaymentSuccess(payment, req) {
               await existingMembership.save();
               membership = existingMembership;
             } else {
-              membership = await Membership.create({
-                studentId: user._id,
-                planId: plan._id,
-                startDate,
-                endDate,
-                status: 'active',
-                paymentId: payment._id,
-              });
+              // One live membership per sport. Same plan is skipped — that is the
+              // renewal branch above. A clashing plan means the buyer already holds
+              // cover for this sport, so do not mint a second membership here.
+              const conflict = await findConflictingMembership(user._id, plan, { ignorePlanId: plan._id });
+              if (conflict) {
+                console.warn(
+                  `[webhook] Skipped duplicate membership for user ${user._id}: ${conflictMessage(conflict)}`
+                );
+              } else {
+                membership = await Membership.create({
+                  studentId: user._id,
+                  planId: plan._id,
+                  startDate,
+                  endDate,
+                  status: 'active',
+                  paymentId: payment._id,
+                });
+              }
             }
 
             // Populate fields so welcome email/invoice builders can run

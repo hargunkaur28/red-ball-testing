@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Where can I play pickleball in Haryana?',
-    a: 'Alchemy 360 Sports Arena in Rohtak has one of Haryana\'s dedicated pickleball courts — a professional setup open to beginners and competitive players alike. Located in Sector 22-D, Jhajjar Road, Rohtak.',
+    a: 'Alchemy 360 in Rohtak has one of Haryana\'s dedicated pickleball courts — a professional setup open to beginners and competitive players alike. Located in Sector 22-D, Jhajjar Road, Rohtak.',
   },
   {
     q: 'Is pickleball popular in Haryana?',
@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'Is Alchemy 360 the only pickleball venue in Haryana?',
-    a: 'Purpose-built pickleball courts are rare in Haryana. Alchemy 360 Sports Arena in Rohtak is one of the very few venues in the state offering a proper dedicated pickleball court with regular play sessions.',
+    a: 'Purpose-built pickleball courts are rare in Haryana. Alchemy 360 in Rohtak is one of the very few venues in the state offering a proper dedicated pickleball court with regular play sessions.',
   },
 ];
 
@@ -47,8 +47,8 @@ export default function PickleballCourtHaryana() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Pickleball Court in Haryana | Alchemy 360 Sports Arena Rohtak"
-        description="Play pickleball in Haryana at Alchemy 360 Sports Arena, Rohtak. One of the state's few dedicated pickleball courts. Open for all levels — book your court today."
+        title="Pickleball Court in Haryana | Alchemy 360 Rohtak"
+        description="Play pickleball in Haryana at Alchemy 360, Rohtak. One of the state's few dedicated pickleball courts. Open for all levels — book your court today."
         canonical="/pickleball-court-haryana"
         schema={schema}
       />
@@ -62,10 +62,10 @@ export default function PickleballCourtHaryana() {
             Pickleball Court in Haryana
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Pickleball is one of the world's fastest-growing sports — and Haryana is catching on fast. Alchemy 360 Sports Arena in Rohtak hosts one of the state's dedicated pickleball courts, open to beginners and seasoned players from Jhajjar, Bahadurgarh, Sonipat, Gurgaon, Panipat, and beyond. Come try the sport everyone's talking about.
+            Pickleball is one of the world's fastest-growing sports — and Haryana is catching on fast. Alchemy 360 in Rohtak hosts one of the state's dedicated pickleball courts, open to beginners and seasoned players from Jhajjar, Bahadurgarh, Sonipat, Gurgaon, Panipat, and beyond. Come try the sport everyone's talking about.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/pickleball" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Pickleball Court
             </Link>
             <Link to="/pickleball-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -80,7 +80,7 @@ export default function PickleballCourtHaryana() {
           Haryana's Home for Pickleball
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Pickleball combines the best of badminton, tennis, and table tennis into a fast-paced, social game that anyone can learn in minutes. Haryana's sporting culture is embracing it, and Alchemy 360 Sports Arena in Rohtak is leading the way with one of the state's few purpose-built pickleball courts. Whether you're a corporate group looking for a team sport, a family wanting a shared activity, or a competitive player seeking regular court time — Alchemy 360's pickleball court in Rohtak is the answer. Players from across Haryana, from Jhajjar to Panipat, make the trip to Alchemy 360 specifically for pickleball.
+          Pickleball combines the best of badminton, tennis, and table tennis into a fast-paced, social game that anyone can learn in minutes. Haryana's sporting culture is embracing it, and Alchemy 360 in Rohtak is leading the way with one of the state's few purpose-built pickleball courts. Whether you're a corporate group looking for a team sport, a family wanting a shared activity, or a competitive player seeking regular court time — Alchemy 360's pickleball court in Rohtak is the answer. Players from across Haryana, from Jhajjar to Panipat, make the trip to Alchemy 360 specifically for pickleball.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -98,7 +98,7 @@ export default function PickleballCourtHaryana() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Pickleball Court Rohtak', to: '/pickleball-court-rohtak' },

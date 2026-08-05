@@ -12,7 +12,7 @@ const blogPostSchema = new mongoose.Schema({
   metaDescription: { type: String, default: '', maxlength: 160 },
   metaKeywords:    { type: String, default: '' },
   content:         { type: String, default: '' },
-  author:          { type: String, default: 'Alchemy 360 Sports Arena' },
+  author:          { type: String, default: 'Alchemy 360' },
 }, { timestamps: true });
 
 blogPostSchema.pre('validate', function (next) {

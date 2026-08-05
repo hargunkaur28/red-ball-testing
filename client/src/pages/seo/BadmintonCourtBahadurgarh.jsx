@@ -6,11 +6,11 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a badminton court near Bahadurgarh?',
-    a: 'Yes. Alchemy 360 Sports Arena in Rohtak is the nearest professional badminton facility to Bahadurgarh — approximately 45 km away and about 40 minutes by road.',
+    a: 'Yes. Alchemy 360 in Rohtak is the nearest professional badminton facility to Bahadurgarh — approximately 45 km away and about 40 minutes by road.',
   },
   {
-    q: 'How do I reach Alchemy 360 Sports Arena from Bahadurgarh?',
-    a: 'From Bahadurgarh, take NH-148B towards Rohtak. Alchemy 360 Sports Arena is at Sector 22-D, Jhajjar Road (near Omaxe), Rohtak — a straightforward 40-minute drive.',
+    q: 'How do I reach Alchemy 360 from Bahadurgarh?',
+    a: 'From Bahadurgarh, take NH-148B towards Rohtak. Alchemy 360 is at Sector 22-D, Jhajjar Road (near Omaxe), Rohtak — a straightforward 40-minute drive.',
   },
   {
     q: 'Can I book a badminton slot in advance from Bahadurgarh?',
@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'What facilities are available alongside the badminton courts at Alchemy 360?',
-    a: "Alchemy 360 Sports Arena also has cricket grounds, Box 360 box cricket, gym, pickleball courts, and an on-site restaurant — making it a full sports day destination for Bahadurgarh visitors.",
+    a: "Alchemy 360 also has cricket grounds, Box 360 box cricket, gym, pickleball courts, and an on-site restaurant — making it a full sports day destination for Bahadurgarh visitors.",
   },
 ];
 
@@ -47,8 +47,8 @@ export default function BadmintonCourtBahadurgarh() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Badminton Court Near Bahadurgarh | Alchemy 360 Sports Arena Rohtak"
-        description="Best badminton court near Bahadurgarh — Alchemy 360 Sports Arena in Rohtak, 45 km / 40 minutes away. Professional courts, online booking, on-site restaurant."
+        title="Badminton Court Near Bahadurgarh | Alchemy 360 Rohtak"
+        description="Best badminton court near Bahadurgarh — Alchemy 360 in Rohtak, 45 km / 40 minutes away. Professional courts, online booking, on-site restaurant."
         canonical="/badminton-court-bahadurgarh"
         schema={schema}
       />
@@ -61,10 +61,10 @@ export default function BadmintonCourtBahadurgarh() {
             Badminton Court Near Bahadurgarh
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena is Rohtak's premier badminton destination — and at just 45 km and 40 minutes from Bahadurgarh, it's the best professional court accessible to players in the area. Bahadurgarh players increasingly make Alchemy 360 their regular badminton venue, drawn by the quality courts, clean facility, and the convenience of online booking.
+            Alchemy 360 is Rohtak's premier badminton destination — and at just 45 km and 40 minutes from Bahadurgarh, it's the best professional court accessible to players in the area. Bahadurgarh players increasingly make Alchemy 360 their regular badminton venue, drawn by the quality courts, clean facility, and the convenience of online booking.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/badminton-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -79,7 +79,7 @@ export default function BadmintonCourtBahadurgarh() {
           The Go-To Badminton Court for Bahadurgarh Players
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Bahadurgarh sits on the Delhi–Rohtak corridor, and Alchemy 360 Sports Arena is a natural pit stop for badminton enthusiasts making that journey. The 40-minute drive on NH-148B is smooth and well-connected, and on arrival you'll find courts that are a clear step above anything available in the immediate Bahadurgarh area. Whether it's a weekend doubles game with friends or a regular training grind, Alchemy 360 has the infrastructure to support it.
+          Bahadurgarh sits on the Delhi–Rohtak corridor, and Alchemy 360 is a natural pit stop for badminton enthusiasts making that journey. The 40-minute drive on NH-148B is smooth and well-connected, and on arrival you'll find courts that are a clear step above anything available in the immediate Bahadurgarh area. Whether it's a weekend doubles game with friends or a regular training grind, Alchemy 360 has the infrastructure to support it.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -97,7 +97,7 @@ export default function BadmintonCourtBahadurgarh() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },

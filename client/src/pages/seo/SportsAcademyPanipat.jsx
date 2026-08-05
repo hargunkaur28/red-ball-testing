@@ -6,14 +6,14 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a multi-sport academy near Panipat?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is the closest comprehensive multi-sport academy to Panipat — around 95 km and 90 minutes away, offering cricket, badminton, pickleball.',
+    a: 'Alchemy 360 in Rohtak is the closest comprehensive multi-sport academy to Panipat — around 95 km and 90 minutes away, offering badminton, pickleball.',
   },
   {
-    q: 'How long is the drive from Panipat to Alchemy 360 Sports Arena?',
-    a: 'The drive from Panipat to Alchemy 360 Sports Arena in Rohtak takes approximately 90 minutes, covering about 95 km via the Panipat–Rohtak highway route.',
+    q: 'How long is the drive from Panipat to Alchemy 360?',
+    a: 'The drive from Panipat to Alchemy 360 in Rohtak takes approximately 90 minutes, covering about 95 km via the Panipat–Rohtak highway route.',
   },
   {
-    q: 'Is Alchemy 360 Sports Arena worth travelling to from Panipat?',
+    q: 'Is Alchemy 360 worth travelling to from Panipat?',
     a: 'For serious athletes and families committed to professional sports development, yes. Alchemy 360 offers facilities and coaching — including Rohtak\'s only Box 360 24/7 circular cricket ground — that are not available locally in Panipat.',
   },
   {
@@ -47,8 +47,8 @@ export default function SportsAcademyPanipat() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Academy Near Panipat | Alchemy 360 Sports Arena Rohtak"
-        description="Professional sports academy near Panipat — Alchemy 360 Sports Arena Rohtak, 95 km / 90 minutes. Cricket, badminton, pickleball coaching. Weekend batches available."
+        title="Sports Academy Near Panipat | Alchemy 360 Rohtak"
+        description="Professional sports academy near Panipat — Alchemy 360 Rohtak, 95 km / 90 minutes. Badminton, pickleball coaching. Weekend batches available."
         canonical="/sports-academy-panipat"
         schema={schema}
       />
@@ -62,7 +62,7 @@ export default function SportsAcademyPanipat() {
             Sports Academy Near Panipat
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak is 95 km from Panipat — about 90 minutes on the road. For athletes serious about their game, that 90 minutes unlocks access to Haryana's most comprehensive private sports complex: cricket, badminton, pickleball, gym, and an on-site restaurant. Panipat athletes make this trip, and they don't regret it.
+            Alchemy 360 in Rohtak is 95 km from Panipat — about 90 minutes on the road. For athletes serious about their game, that 90 minutes unlocks access to Haryana's most comprehensive private sports complex: badminton, pickleball, gym, and an on-site restaurant. Panipat athletes make this trip, and they don't regret it.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -80,7 +80,7 @@ export default function SportsAcademyPanipat() {
           The Nearest Serious Sports Academy for Panipat Athletes
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Panipat has a proud sporting heritage, but a fully-equipped private multi-sport complex with professional coaching across cricket and racket sports remains rare in the region. Alchemy 360 Sports Arena in Rohtak — on Jhajjar Road, Sector 22-D — is 90 minutes away and worth every minute. The Box 360 circular cricket ground is open 24/7 and is the first of its kind in Rohtak. Badminton and pickleball courts are kept to professional standards, and the in-house coaching team develops athletes for competitions and recreational fitness alike. Panipat families that visit once tend to come back regularly.
+          Panipat has a proud sporting heritage, but a fully-equipped private multi-sport complex with professional coaching across cricket and racket sports remains rare in the region. Alchemy 360 in Rohtak — on Jhajjar Road, Sector 22-D — is 90 minutes away and worth every minute. The Box 360 circular cricket ground is open 24/7 and is the first of its kind in Rohtak. Badminton and pickleball courts are kept to professional standards, and the in-house coaching team develops athletes for competitions and recreational fitness alike. Panipat families that visit once tend to come back regularly.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -98,7 +98,7 @@ export default function SportsAcademyPanipat() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Sports Academy Rohtak', to: '/sports-academy-rohtak' },

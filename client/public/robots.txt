@@ -13,7 +13,6 @@ Allow: /pickleball-court-rohtak
 Allow: /gym-in-rohtak
 Allow: /buy-membership
 Allow: /book-slots
-Allow: /one-time-booking
 Allow: /sports
 Allow: /privacy-policy
 Allow: /terms-and-conditions

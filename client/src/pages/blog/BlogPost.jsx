@@ -29,7 +29,7 @@ export default function BlogPost() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title={`${post.title} | Alchemy 360 Sports Arena Blog`}
+        title={`${post.title} | Alchemy 360 Blog`}
         description={post.metaDescription}
         canonical={`/blog/${post.slug}`}
         schema={schema}
@@ -88,7 +88,7 @@ export default function BlogPost() {
         <div className="mt-10 pt-8 border-t border-black/10">
           <div className="bg-[#F9F6F1] rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <div className="flex-1">
-              <p className="font-bold text-[#0D0D0D] text-sm mb-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>Alchemy 360 Sports Arena</p>
+              <p className="font-bold text-[#0D0D0D] text-sm mb-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>Alchemy 360</p>
               <p className="text-xs text-[#0D0D0D]/60" style={{ fontFamily: "'DM Sans', sans-serif" }}>Sector 22-D, Jhajjar Road, Rohtak, Haryana 124001 · +91 93500 76653</p>
             </div>
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-5 py-2.5 rounded-full text-sm hover:bg-[#96AC2E] transition-colors whitespace-nowrap" style={{ fontFamily: "'DM Sans', sans-serif" }}>

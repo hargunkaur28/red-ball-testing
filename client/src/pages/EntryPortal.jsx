@@ -586,7 +586,7 @@ export default function EntryPortal() {
               try {
                 const intent = JSON.parse(storedIntent);
                 if (intent.flow === 'one-time-access' && intent.sportSlug) {
-                  navigate(`/one-time-booking?sport=${intent.sportSlug}`);
+                  navigate(`/sports/${intent.sportSlug}`);
                   return;
                 } else if (intent.flow === 'membership') {
                   const target = intent.planId ? `/user/membership?planId=${intent.planId}` : '/user/membership';
@@ -867,7 +867,7 @@ export default function EntryPortal() {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: orderResponse.rzpOrder.amount,
       currency: orderResponse.rzpOrder.currency,
-      name: 'Alchemy 360 Academy',
+      name: 'Alchemy 360',
       description,
       order_id: orderResponse.rzpOrder.id,
       handler: async (response) => {
@@ -988,7 +988,7 @@ export default function EntryPortal() {
             <div className="entry-brand-block">
               <div className="entry-brand-row">
                 <span className="entry-mark" aria-hidden="true" />
-                <div className="entry-kicker">Alchemy 360 Academy</div>
+                <div className="entry-kicker">Alchemy 360</div>
               </div>
               <div className="entry-sport-name">{data?.sport?.name || 'Sport'}</div>
               <p className="entry-hero-copy">Choose walk-in access or a membership, confirm your details, and complete secure Razorpay payment before entry.</p>

@@ -302,7 +302,7 @@ export default function UserDashboard() {
       `}</style>
 
       <div className="mb-8">
-        <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#C5DB3B]">Alchemy 360 Academy</p>
+        <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#C5DB3B]">Alchemy 360</p>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h1 className="text-3xl md:text-5xl font-black tracking-tight text-white">
             Welcome, {user?.name?.split(' ')[0] || 'Player'}

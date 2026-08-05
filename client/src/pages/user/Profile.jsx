@@ -124,7 +124,7 @@ export default function Profile() {
   return (
     <div className="space-y-8 max-w-5xl">
       <div>
-        <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#C5DB3B]">Alchemy 360 Academy</p>
+        <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#C5DB3B]">Alchemy 360</p>
         <h1 className="mt-3 text-3xl font-black sm:text-4xl tracking-tight text-white">Profile</h1>
         <p className="mt-2 text-sm text-white/50">Manage your account details and security settings</p>
       </div>

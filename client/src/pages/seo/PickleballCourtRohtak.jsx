@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a pickleball court in Rohtak?',
-    a: 'Yes. Alchemy 360 Sports Arena has dedicated pickleball courts in Rohtak. Pickleball is a growing sport in India and Alchemy 360 is one of the few venues in Rohtak where you can play it.',
+    a: 'Yes. Alchemy 360 has dedicated pickleball courts in Rohtak. Pickleball is a growing sport in India and Alchemy 360 is one of the few venues in Rohtak where you can play it.',
   },
   {
     q: 'What is pickleball?',
@@ -42,8 +42,8 @@ export default function PickleballCourtRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Pickleball Court in Rohtak | Alchemy 360 Sports Arena Haryana"
-        description="Play pickleball in Rohtak at Alchemy 360 Sports Arena. Dedicated pickleball courts available for booking. A growing sport now accessible right here in Rohtak, Haryana."
+        title="Pickleball Court in Rohtak | Alchemy 360 Haryana"
+        description="Play pickleball in Rohtak at Alchemy 360. Dedicated pickleball courts available for booking. A growing sport now accessible right here in Rohtak, Haryana."
         canonical="/pickleball-court-rohtak"
         schema={schema}
       />
@@ -57,10 +57,10 @@ export default function PickleballCourtRohtak() {
             Pickleball Court in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena has dedicated pickleball courts in Rohtak. Pickleball is one of the fastest-growing sports in India — and now you can play it right here without travelling far. Perfect for all ages and fitness levels.
+            Alchemy 360 has dedicated pickleball courts in Rohtak. Pickleball is one of the fastest-growing sports in India — and now you can play it right here without travelling far. Perfect for all ages and fitness levels.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/pickleball" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Pickleball Court
             </Link>
             <Link to="/buy-membership?sport=pickleball" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -75,7 +75,7 @@ export default function PickleballCourtRohtak() {
           What is Pickleball?
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Pickleball combines the best elements of tennis, badminton, and table tennis. Played on a smaller court with a paddle and a perforated plastic ball, it's fast, social, and accessible. It's taking off across India — and Rohtak now has a proper venue for it at Alchemy 360 Sports Arena.
+          Pickleball combines the best elements of tennis, badminton, and table tennis. Played on a smaller court with a paddle and a perforated plastic ball, it's fast, social, and accessible. It's taking off across India — and Rohtak now has a proper venue for it at Alchemy 360.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[

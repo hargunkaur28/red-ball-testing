@@ -1,4 +1,5 @@
 const Admission = require('../models/Admission');
+const { findConflictingMembership, conflictMessage } = require('../utils/membershipConflict');
 const User = require('../models/User');
 const Membership = require('../models/Membership');
 const MembershipPlan = require('../models/MembershipPlan');
@@ -93,6 +94,20 @@ exports.create = async (req, res) => {
       await user.save({ validateBeforeSave: false });
     }
 
+    // STEP 1b: One live membership per sport. Checked BEFORE the Admission/Payment
+    // records exist, so a rejected admission does not leave orphans behind.
+    // Coaching plans carry their own sport tag, so an admission only clashes when it
+    // actually overlaps the sports an existing plan already covers.
+    if (planId) {
+      const planForCheck = await MembershipPlan.findById(planId);
+      if (planForCheck) {
+        const conflict = await findConflictingMembership(user._id, planForCheck);
+        if (conflict) {
+          return res.status(409).json({ message: conflictMessage(conflict) });
+        }
+      }
+    }
+
     // STEP 2: Create admission record (paymentStatus = pending by default)
     const admission = await Admission.create({
       studentId: user._id,
@@ -111,6 +126,13 @@ exports.create = async (req, res) => {
     if (planId) {
       const plan = await MembershipPlan.findById(planId);
       if (plan) {
+        // One live membership per sport. Coaching plans carry their own sport tag, so
+        // an admission only clashes when it actually overlaps an existing plan's sports.
+        const conflict = await findConflictingMembership(user._id, plan);
+        if (conflict) {
+          return res.status(409).json({ message: conflictMessage(conflict) });
+        }
+
         const startDate = new Date();
         const durationMs = getDurationMs(plan);
         const endDate = new Date(startDate.getTime() + durationMs);

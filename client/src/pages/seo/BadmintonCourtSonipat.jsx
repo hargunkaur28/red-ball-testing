@@ -6,11 +6,11 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a good badminton court near Sonipat?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is one of the best badminton facilities accessible from Sonipat — about 55 km and 55 minutes away, with professional courts and easy online booking.',
+    a: 'Alchemy 360 in Rohtak is one of the best badminton facilities accessible from Sonipat — about 55 km and 55 minutes away, with professional courts and easy online booking.',
   },
   {
     q: 'How long does it take to reach Alchemy 360 from Sonipat?',
-    a: 'The drive from Sonipat to Alchemy 360 Sports Arena in Rohtak takes approximately 55 minutes via NH-334B. The route is well-connected and straightforward.',
+    a: 'The drive from Sonipat to Alchemy 360 in Rohtak takes approximately 55 minutes via NH-334B. The route is well-connected and straightforward.',
   },
   {
     q: 'Can Sonipat players book badminton courts in advance at Alchemy 360?',
@@ -47,8 +47,8 @@ export default function BadmintonCourtSonipat() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Badminton Court Near Sonipat | Alchemy 360 Sports Arena Rohtak"
-        description="Professional badminton court near Sonipat — Alchemy 360 Sports Arena, Rohtak, 55 km / 55 min away. Book online, play on pro courts, dine at the on-site restaurant."
+        title="Badminton Court Near Sonipat | Alchemy 360 Rohtak"
+        description="Professional badminton court near Sonipat — Alchemy 360, Rohtak, 55 km / 55 min away. Book online, play on pro courts, dine at the on-site restaurant."
         canonical="/badminton-court-sonipat"
         schema={schema}
       />
@@ -61,10 +61,10 @@ export default function BadmintonCourtSonipat() {
             Badminton Court Near Sonipat
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            For badminton players in Sonipat seeking a professional venue, Alchemy 360 Sports Arena in Rohtak is the answer — 55 km and roughly 55 minutes away via NH-334B. The facility delivers the kind of courts, lighting, and atmosphere that make the journey from Sonipat completely worthwhile.
+            For badminton players in Sonipat seeking a professional venue, Alchemy 360 in Rohtak is the answer — 55 km and roughly 55 minutes away via NH-334B. The facility delivers the kind of courts, lighting, and atmosphere that make the journey from Sonipat completely worthwhile.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/badminton-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -79,7 +79,7 @@ export default function BadmintonCourtSonipat() {
           Worth the Drive from Sonipat
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Sonipat players looking for serious badminton infrastructure often find that Alchemy 360 Sports Arena in Rohtak fills the gap. The courts are professionally lit and maintained, the booking process is entirely online, and the wider facility — with its gym and Box 360 cricket — means a trip to Alchemy 360 rarely feels like just one sport. Groups from Sonipat regularly book multiple courts for club sessions on weekends.
+          Sonipat players looking for serious badminton infrastructure often find that Alchemy 360 in Rohtak fills the gap. The courts are professionally lit and maintained, the booking process is entirely online, and the wider facility — with its gym and Box 360 cricket — means a trip to Alchemy 360 rarely feels like just one sport. Groups from Sonipat regularly book multiple courts for club sessions on weekends.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -97,7 +97,7 @@ export default function BadmintonCourtSonipat() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },

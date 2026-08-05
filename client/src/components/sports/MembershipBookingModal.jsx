@@ -19,7 +19,6 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
   const navigate = useNavigate();
   const { user, isAuthenticated, checkAuth, googleAuth } = useAuthStore();
 
-  const [details, setDetails] = useState({ name: '', email: '', phone: '' });
   const [withTraining, setWithTraining] = useState(false);
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -37,13 +36,6 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
   useEffect(() => {
     if (isOpen) setWithTraining(false);
   }, [isOpen, plan?._id]);
-
-  // Sync auth user details
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      setDetails({ name: user.name || '', email: user.email || '', phone: user.phone || '' });
-    }
-  }, [isAuthenticated, user]);
 
   // Load Razorpay script once
   useEffect(() => {
@@ -100,12 +92,14 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
 
   const handlePurchase = async () => {
     if (!plan?._id) return toast.error('Plan not selected.');
-    if (isAuthenticated && !user?.phone) {
+    // Sign-in required for every membership type — the API rejects anonymous buyers,
+    // so stop before Razorpay opens on a purchase that cannot complete.
+    if (!isAuthenticated) {
+      return toast.error('Please sign in to buy a membership.');
+    }
+    if (!user?.phone) {
       setShowPhoneModal(true);
       return;
-    }
-    if (!isAuthenticated && (!details.name || !details.email || !details.phone)) {
-      return toast.error('Please fill in all contact fields.');
     }
     if (!scriptLoaded || !window.Razorpay) {
       return toast.error('Payment gateway loading. Please retry.');
@@ -116,11 +110,7 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
       const { data: orderRes } = await api.post('/memberships/public-purchase', {
         planId: plan._id,
         withTraining: trainingAvailable && withTraining,
-        customerDetails: isAuthenticated ? {
-          name: user.name,
-          email: user.email,
-          phone: user.phone
-        } : details,
+        customerDetails: { name: user.name, email: user.email, phone: user.phone },
       });
 
       if (!orderRes.success) throw new Error(orderRes.message);
@@ -129,14 +119,14 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: orderRes.rzpOrder.amount,
         currency: orderRes.rzpOrder.currency,
-        name: 'Alchemy 360 Academy',
+        name: 'Alchemy 360',
         description: `Membership: ${plan.name}${withTraining ? ' + Training' : ''}`,
         order_id: orderRes.rzpOrder.id,
         theme: { color: '#C5DB3B' },
         prefill: {
-          name: isAuthenticated ? user.name : details.name,
-          email: isAuthenticated ? user.email : details.email,
-          contact: validPhone(isAuthenticated ? user.phone : details.phone),
+          name: user.name,
+          email: user.email,
+          contact: validPhone(user.phone),
         },
         handler: async (response) => {
           setSubmitting(true);
@@ -145,7 +135,7 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
             razorpayOrderId: response.razorpay_order_id,
             razorpayPaymentId: response.razorpay_payment_id,
             razorpaySignature: response.razorpay_signature,
-            customerDetails: details,
+            customerDetails: { name: user.name, email: user.email, phone: user.phone },
           };
           try {
             const { data: verifyRes } = await api.post('/memberships/public-verify', verifyPayload);
@@ -201,10 +191,7 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
     <PhoneCollectModal
       open={showPhoneModal}
       onClose={() => setShowPhoneModal(false)}
-      onSuccess={(phone) => {
-        setDetails(d => ({ ...d, phone }));
-        setShowPhoneModal(false);
-      }}
+      onSuccess={() => setShowPhoneModal(false)}
     />
     {createPortal(
     <AnimatePresence>
@@ -353,38 +340,19 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
                         </div>
                       </div>
                     ) : (
+                      /* Sign-in required — guest checkout is not supported for any plan
+                         type, so collect an identity instead of contact fields. */
                       <div className="space-y-3">
                         <div
-                          className="rounded-2xl p-4 text-center"
+                          className="rounded-2xl p-5 text-center"
                           style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
                         >
-                          <p className="text-white/50 text-xs mb-3">
-                            Sign in for a faster checkout, or fill in your details below.
+                          <p className="text-white text-sm font-semibold mb-1">Sign in to continue</p>
+                          <p className="text-white/50 text-xs leading-relaxed mb-4">
+                            Memberships are tied to your account so your QR entry, bookings and renewals stay in one place.
                           </p>
                           <div ref={googleButtonRef} className="flex justify-center" />
                         </div>
-                        {[
-                          { icon: User, placeholder: 'Full Name', key: 'name', type: 'text' },
-                          { icon: Mail, placeholder: 'Email Address', key: 'email', type: 'email' },
-                          { icon: Phone, placeholder: 'Mobile Number', key: 'phone', type: 'tel' },
-                        ].map(({ icon: Icon, placeholder, key, type }) => (
-                          <div key={key} className="relative">
-                            <Icon className="absolute left-4 top-3.5 text-white/30" size={16} />
-                            <input
-                              type={type}
-                              placeholder={placeholder}
-                              value={details[key]}
-                              onChange={(e) => setDetails({ ...details, [key]: e.target.value })}
-                              className="w-full pl-11 pr-4 py-3 rounded-xl text-sm text-white placeholder-white/25 outline-none transition-all"
-                              style={{
-                                background: 'rgba(255,255,255,0.04)',
-                                border: '1px solid rgba(255,255,255,0.08)',
-                              }}
-                              onFocus={(e) => { e.currentTarget.style.borderColor = `#C5DB3B60`; e.currentTarget.style.background = `#C5DB3B08`; }}
-                              onBlur={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
-                            />
-                          </div>
-                        ))}
                       </div>
                     )}
 

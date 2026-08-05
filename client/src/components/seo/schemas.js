@@ -3,13 +3,13 @@ export const SITE_URL = 'https://www.alchemy360.in';
 export const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': ['SportsActivityLocation', 'LocalBusiness'],
-  name: 'Alchemy 360 Sports Arena',
-  alternateName: 'Alchemy 360 Academy',
+  name: 'Alchemy 360',
+  alternateName: 'Alchemy 360',
   url: SITE_URL,
   logo: `${SITE_URL}/icon.png`,
   image: `${SITE_URL}/banner.png`,
   description:
-    'Alchemy 360 Sports Arena is a premier multi-sport complex in Rohtak, Haryana offering box cricket, badminton, pickleball, swimming, gym, and kids sports academy with membership plans and slot booking.',
+    'Alchemy 360 is a premier multi-sport complex in Rohtak, Haryana offering badminton, pickleball and gym facilities with membership plans and slot booking.',
   telephone: '+919350076653',
   email: 'info.alchemy360@gmail.com',
   address: {
@@ -41,7 +41,7 @@ export const localBusinessSchema = {
 export const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Alchemy 360 Sports Arena',
+  name: 'Alchemy 360',
   url: SITE_URL,
   logo: `${SITE_URL}/logo.png`,
   contactPoint: {
@@ -56,7 +56,7 @@ export const organizationSchema = {
 export const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'Alchemy 360 Sports Arena',
+  name: 'Alchemy 360',
   url: SITE_URL,
   potentialAction: {
     '@type': 'SearchAction',
@@ -104,12 +104,12 @@ export function faqSchema(faqs) {
 export const stadiumOrArenaSchema = {
   '@context': 'https://schema.org',
   '@type': ['StadiumOrArena', 'SportsActivityLocation', 'LocalBusiness'],
-  name: 'Alchemy 360 Sports Arena',
-  alternateName: ['Alchemy 360 Cricket Ground', 'Alchemy 360 Cricket Stadium', 'Alchemy360 Sports Arena'],
+  name: 'Alchemy 360',
+  alternateName: ['Alchemy 360', 'Alchemy 360', 'Alchemy 360'],
   url: SITE_URL,
   logo: `${SITE_URL}/icon.png`,
   image: `${SITE_URL}/banner.png`,
-  description: 'Alchemy 360 Sports Arena is a premier cricket stadium and multi-sport complex in Rohtak, Haryana — home of the Rohtak Cricket League, professional box cricket, and corporate sports events.',
+  description: 'Alchemy 360 is a premier multi-sport complex in Rohtak, Haryana — badminton courts, a dedicated pickleball court, a modern gym, and corporate sports events.',
   telephone: '+919350076653',
   email: 'info.alchemy360@gmail.com',
   address: {
@@ -133,11 +133,9 @@ export const stadiumOrArenaSchema = {
       closes: '23:00',
     },
   ],
-  sport: ['Cricket', 'Box Cricket'],
+  sport: ['Badminton', 'Pickleball', 'Gym'],
   containsPlace: [
-    { '@type': 'SportsActivityLocation', name: 'Box Cricket Ground' },
     { '@type': 'SportsActivityLocation', name: 'Badminton Courts' },
-    { '@type': 'SportsActivityLocation', name: 'Swimming Pool' },
     { '@type': 'SportsActivityLocation', name: 'Gym' },
     { '@type': 'SportsActivityLocation', name: 'Pickleball Courts' },
   ],
@@ -146,12 +144,12 @@ export const stadiumOrArenaSchema = {
 export const sportsClubSchema = {
   '@context': 'https://schema.org',
   '@type': ['SportsClub', 'SportsActivityLocation', 'LocalBusiness'],
-  name: 'Alchemy 360 Sports Arena',
-  alternateName: ['Alchemy 360 Sports Club', 'Alchemy360 Sports Arena', 'Alchemy 360 Academy'],
+  name: 'Alchemy 360',
+  alternateName: ['Alchemy 360 Sports Club', 'Alchemy 360', 'Alchemy 360'],
   url: SITE_URL,
   logo: `${SITE_URL}/icon.png`,
   image: `${SITE_URL}/banner.png`,
-  description: 'Alchemy 360 Sports Arena is Rohtak\'s premier multi-sport club — offering cricket, badminton, pickleball, swimming, gym, and kids academy with flexible membership plans.',
+  description: 'Alchemy 360 is Rohtak\'s premier multi-sport club — offering badminton, pickleball and gym with flexible membership plans.',
   telephone: '+919350076653',
   email: 'info.alchemy360@gmail.com',
   address: {
@@ -167,13 +165,13 @@ export const sportsClubSchema = {
     latitude: 28.8955,
     longitude: 76.6066,
   },
-  sport: ['Cricket', 'Badminton', 'Pickleball', 'Swimming', 'Football', 'Gym'],
+  sport: ['Badminton', 'Pickleball', 'Gym'],
 };
 
 export const aggregateRatingSchema = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
-  name: 'Alchemy 360 Sports Arena',
+  name: 'Alchemy 360',
   url: SITE_URL,
   aggregateRating: {
     '@type': 'AggregateRating',
@@ -194,7 +192,7 @@ export function eventSchema({ name, description, startDate, endDate, location, o
     endDate,
     location: location || {
       '@type': 'SportsActivityLocation',
-      name: 'Alchemy 360 Sports Arena',
+      name: 'Alchemy 360',
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'Sector 22-D, Jhajjar Road, near Village-Maina',
@@ -206,7 +204,7 @@ export function eventSchema({ name, description, startDate, endDate, location, o
     },
     organizer: organizer || {
       '@type': 'Organization',
-      name: 'Alchemy 360 Sports Arena',
+      name: 'Alchemy 360',
       url: SITE_URL,
     },
     url: url || SITE_URL,
@@ -227,12 +225,12 @@ export function articleSchema({ title, description, datePublished, dateModified,
     image: `${SITE_URL}/banner.png`,
     author: {
       '@type': 'Organization',
-      name: 'Alchemy 360 Sports Arena',
+      name: 'Alchemy 360',
       url: SITE_URL,
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Alchemy 360 Sports Arena',
+      name: 'Alchemy 360',
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon.png` },
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blog/${slug}` },

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../lib/axios';
 
 const FALLBACK = {
-  academyName: 'Alchemy 360 Sports Arena',
+  academyName: 'Alchemy 360',
   address: 'Sector 22-D, Jhajjar Road, near Village-Maina, Rohtak, Haryana 124001',
   phone: '+91 99921 01885',
   email: 'info.alchemy360@gmail.com',

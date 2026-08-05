@@ -6,10 +6,10 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a professional badminton court near Panipat?',
-    a: 'Alchemy 360 Sports Arena in Rohtak offers professional badminton courts accessible from Panipat — approximately 95 km and 90 minutes away. It is a well-regarded destination for Panipat players seeking quality facilities.',
+    a: 'Alchemy 360 in Rohtak offers professional badminton courts accessible from Panipat — approximately 95 km and 90 minutes away. It is a well-regarded destination for Panipat players seeking quality facilities.',
   },
   {
-    q: 'How far is Alchemy 360 Sports Arena from Panipat?',
+    q: 'How far is Alchemy 360 from Panipat?',
     a: 'Alchemy 360 is roughly 95 km from Panipat, accessible via NH-44 and then the Rohtak bypass. The journey typically takes around 90 minutes depending on traffic.',
   },
   {
@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'Can Panipat college or club teams book multiple courts at Alchemy 360?',
-    a: 'Yes. Group and club bookings for multiple courts are available. College teams and clubs from Panipat can coordinate a full session or mini-tournament at Alchemy 360 Sports Arena.',
+    a: 'Yes. Group and club bookings for multiple courts are available. College teams and clubs from Panipat can coordinate a full session or mini-tournament at Alchemy 360.',
   },
 ];
 
@@ -47,8 +47,8 @@ export default function BadmintonCourtPanipat() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Badminton Court Near Panipat | Alchemy 360 Sports Arena Rohtak"
-        description="Professional badminton court near Panipat — Alchemy 360 Sports Arena, Rohtak, 95 km / 90 min away. Book courts online, full sports complex, on-site dining."
+        title="Badminton Court Near Panipat | Alchemy 360 Rohtak"
+        description="Professional badminton court near Panipat — Alchemy 360, Rohtak, 95 km / 90 min away. Book courts online, full sports complex, on-site dining."
         canonical="/badminton-court-panipat"
         schema={schema}
       />
@@ -61,10 +61,10 @@ export default function BadmintonCourtPanipat() {
             Badminton Court Near Panipat
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak is the go-to badminton venue for serious players across Haryana — and for Panipat players, it's 95 km and 90 minutes away, worth every kilometre. When you arrive, you'll find professional courts, a buzzing sports atmosphere, and a full facility that turns a badminton trip into a proper sports day out.
+            Alchemy 360 in Rohtak is the go-to badminton venue for serious players across Haryana — and for Panipat players, it's 95 km and 90 minutes away, worth every kilometre. When you arrive, you'll find professional courts, a buzzing sports atmosphere, and a full facility that turns a badminton trip into a proper sports day out.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/badminton-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -79,7 +79,7 @@ export default function BadmintonCourtPanipat() {
           A Proper Badminton Destination for Panipat Players
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Panipat is well-connected to Rohtak via NH-44, and the 90-minute drive to Alchemy 360 Sports Arena is a journey Panipat club teams and serious players make regularly. The draw is simple: courts that meet a professional standard, a facility that includes multiple sports under one roof, and a booking system that lets you plan your visit without any guesswork. For groups travelling from Panipat, the on-site restaurant is a welcome bonus after an intense session.
+          Panipat is well-connected to Rohtak via NH-44, and the 90-minute drive to Alchemy 360 is a journey Panipat club teams and serious players make regularly. The draw is simple: courts that meet a professional standard, a facility that includes multiple sports under one roof, and a booking system that lets you plan your visit without any guesswork. For groups travelling from Panipat, the on-site restaurant is a welcome bonus after an intense session.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -97,7 +97,7 @@ export default function BadmintonCourtPanipat() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },

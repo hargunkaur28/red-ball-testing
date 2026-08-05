@@ -12,7 +12,7 @@ exports.getPublicAcademySettings = async (req, res) => {
     const payload = {
       success: true,
       data: {
-        academyName: settings?.academyName || 'Alchemy 360 Sports Arena',
+        academyName: settings?.academyName || 'Alchemy 360',
         address: settings?.address || '',
         phone: settings?.phone || '',
         email: settings?.email || '',

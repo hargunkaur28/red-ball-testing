@@ -305,7 +305,7 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: orderRes.razorpayOrder.amount,
         currency: orderRes.razorpayOrder.currency,
-        name: 'Alchemy 360 Academy',
+        name: 'Alchemy 360',
         description: `${sport.name} — ${selectedSlot.startTime}–${selectedSlot.endTime}${selectedSlot.courtNameSnapshot ? ' · ' + selectedSlot.courtNameSnapshot : ''}`,
         order_id: orderRes.razorpayOrder.id,
         theme: { color: accentColor },

@@ -6,11 +6,11 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a gym near Jhajjar?',
-    a: 'Yes. Alchemy 360 Sports Arena in Rohtak has a well-equipped gymnasium — the nearest proper sports-complex gym to Jhajjar, just 25 km and 25 minutes along Jhajjar Road.',
+    a: 'Yes. Alchemy 360 in Rohtak has a well-equipped gymnasium — the nearest proper sports-complex gym to Jhajjar, just 25 km and 25 minutes along Jhajjar Road.',
   },
   {
     q: 'How far is Alchemy 360\'s gym from Jhajjar?',
-    a: 'Alchemy 360 Sports Arena is approximately 25 km from Jhajjar city, directly on the Rohtak–Jhajjar Road (Sector 22-D). Most Jhajjar residents reach it in 20–25 minutes.',
+    a: 'Alchemy 360 is approximately 25 km from Jhajjar city, directly on the Rohtak–Jhajjar Road (Sector 22-D). Most Jhajjar residents reach it in 20–25 minutes.',
   },
   {
     q: 'Can I join the gym at Alchemy 360 from Jhajjar?',
@@ -47,8 +47,8 @@ export default function GymJhajjar() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Gym Near Jhajjar | Alchemy 360 Sports Arena Rohtak"
-        description="Nearest gym to Jhajjar — Alchemy 360 Sports Arena, Rohtak, just 25 km / 25 min away. Well-equipped gymnasium, online membership, full sports complex."
+        title="Gym Near Jhajjar | Alchemy 360 Rohtak"
+        description="Nearest gym to Jhajjar — Alchemy 360, Rohtak, just 25 km / 25 min away. Well-equipped gymnasium, online membership, full sports complex."
         canonical="/gym-jhajjar"
         schema={schema}
       />
@@ -61,7 +61,7 @@ export default function GymJhajjar() {
             Gym Near Jhajjar
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak has a well-equipped gymnasium that is the closest proper sports-complex gym to Jhajjar — just 25 km and 25 minutes away on Jhajjar Road. For fitness-focused residents of Jhajjar who want more than a local commercial gym, Alchemy 360 delivers a training environment backed by a full multi-sport facility.
+            Alchemy 360 in Rohtak has a well-equipped gymnasium that is the closest proper sports-complex gym to Jhajjar — just 25 km and 25 minutes away on Jhajjar Road. For fitness-focused residents of Jhajjar who want more than a local commercial gym, Alchemy 360 delivers a training environment backed by a full multi-sport facility.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -79,7 +79,7 @@ export default function GymJhajjar() {
           The Gym Closest to Jhajjar — at Alchemy 360, Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Jhajjar fitness enthusiasts looking for a gym that offers more than standard commercial equipment will find Alchemy 360 Sports Arena the natural upgrade. The gymnasium sits within a full sports complex, so on any given visit you can train in the gym, follow it up with a sport, and eat at the on-site restaurant — all without leaving the facility. The 25-minute commute from Jhajjar on a clear road is a small price for a training environment this complete.
+          Jhajjar fitness enthusiasts looking for a gym that offers more than standard commercial equipment will find Alchemy 360 the natural upgrade. The gymnasium sits within a full sports complex, so on any given visit you can train in the gym, follow it up with a sport, and eat at the on-site restaurant — all without leaving the facility. The 25-minute commute from Jhajjar on a clear road is a small price for a training environment this complete.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -97,7 +97,7 @@ export default function GymJhajjar() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Gym Rohtak', to: '/gym-rohtak' },

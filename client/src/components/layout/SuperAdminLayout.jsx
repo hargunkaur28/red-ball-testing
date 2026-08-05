@@ -46,7 +46,7 @@ export default function SuperAdminLayout() {
       {/* Logo Header */}
       <div className="flex items-center justify-between px-5 h-16 border-b border-[#EAEAEA] shrink-0">
         <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <img src="/logo.png" alt="Alchemy 360 Academy" className="w-32 h-12 object-contain shrink-0" style={{ filter: 'brightness(0)' }} />
+          <img src="/logo.png" alt="Alchemy 360" className="w-32 h-12 object-contain shrink-0" style={{ filter: 'brightness(0)' }} />
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-[#111111] leading-tight">Alchemy 360</span>
             <span className="text-[10px] font-medium text-[#C5DB3B] tracking-wider uppercase">Super Admin</span>

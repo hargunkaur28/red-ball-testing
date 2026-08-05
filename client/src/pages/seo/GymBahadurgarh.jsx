@@ -6,11 +6,11 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a good gym near Bahadurgarh?',
-    a: 'Alchemy 360 Sports Arena in Rohtak has a well-equipped gymnasium accessible from Bahadurgarh — approximately 45 km and 40 minutes on NH-148B. It is part of a full multi-sport complex.',
+    a: 'Alchemy 360 in Rohtak has a well-equipped gymnasium accessible from Bahadurgarh — approximately 45 km and 40 minutes on NH-148B. It is part of a full multi-sport complex.',
   },
   {
     q: 'How far is Alchemy 360\'s gym from Bahadurgarh?',
-    a: 'Alchemy 360 Sports Arena is about 45 km from Bahadurgarh, reachable in approximately 40 minutes via NH-148B towards Rohtak. The complex is in Sector 22-D, near Omaxe.',
+    a: 'Alchemy 360 is about 45 km from Bahadurgarh, reachable in approximately 40 minutes via NH-148B towards Rohtak. The complex is in Sector 22-D, near Omaxe.',
   },
   {
     q: 'Can I get a gym membership at Alchemy 360 from Bahadurgarh?',
@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: 'Is Alchemy 360\'s gym better than gyms in Bahadurgarh?',
-    a: "Alchemy 360's gym operates within a full sports complex — alongside cricket, badminton, and pickleball facilities. For fitness enthusiasts from Bahadurgarh who want a training environment that extends beyond standard gym equipment, it's a significant step up.",
+    a: "Alchemy 360's gym operates within a full sports complex — alongside badminton and pickleball facilities. For fitness enthusiasts from Bahadurgarh who want a training environment that extends beyond standard gym equipment, it's a significant step up.",
   },
   {
     q: 'Can I swim and use the gym on the same visit from Bahadurgarh?',
@@ -47,8 +47,8 @@ export default function GymBahadurgarh() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Gym Near Bahadurgarh | Alchemy 360 Sports Arena Rohtak"
-        description="Gym near Bahadurgarh — Alchemy 360 Sports Arena, Rohtak, 45 km / 40 min away. Well-equipped gymnasium, memberships, full sports complex with cricket & more."
+        title="Gym Near Bahadurgarh | Alchemy 360 Rohtak"
+        description="Gym near Bahadurgarh — Alchemy 360, Rohtak, 45 km / 40 min away. Well-equipped gymnasium, memberships, full sports complex with cricket & more."
         canonical="/gym-bahadurgarh"
         schema={schema}
       />
@@ -61,7 +61,7 @@ export default function GymBahadurgarh() {
             Gym Near Bahadurgarh
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak offers a proper gymnasium within a full multi-sport complex — 45 km and 40 minutes from Bahadurgarh on NH-148B. For Bahadurgarh fitness enthusiasts who want more than a standalone gym and are willing to make a 40-minute highway drive for a complete sports experience, Alchemy 360 is the right move.
+            Alchemy 360 in Rohtak offers a proper gymnasium within a full multi-sport complex — 45 km and 40 minutes from Bahadurgarh on NH-148B. For Bahadurgarh fitness enthusiasts who want more than a standalone gym and are willing to make a 40-minute highway drive for a complete sports experience, Alchemy 360 is the right move.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -79,7 +79,7 @@ export default function GymBahadurgarh() {
           Bahadurgarh's Best Gym is 40 Minutes Away
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Bahadurgarh is well-connected to Rohtak by NH-148B, and for fitness enthusiasts from Bahadurgarh who want a gym that forms part of a real sports environment, Alchemy 360 Sports Arena is the obvious upgrade. The gymnasium here isn't bolted onto a shopping complex — it's inside a dedicated sports arena alongside Box 360 cricket, badminton courts, and pickleball. Bahadurgarh gym-goers who visit regularly often add a swim or a sport to their routine, making the 40-minute commute feel entirely worthwhile.
+          Bahadurgarh is well-connected to Rohtak by NH-148B, and for fitness enthusiasts from Bahadurgarh who want a gym that forms part of a real sports environment, Alchemy 360 is the obvious upgrade. The gymnasium here isn't bolted onto a shopping complex — it's inside a dedicated sports arena alongside badminton and pickleball courts. Bahadurgarh gym-goers who visit regularly often add a swim or a sport to their routine, making the 40-minute commute feel entirely worthwhile.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -97,7 +97,7 @@ export default function GymBahadurgarh() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Gym Rohtak', to: '/gym-rohtak' },

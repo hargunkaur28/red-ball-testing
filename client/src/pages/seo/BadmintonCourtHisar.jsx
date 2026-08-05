@@ -6,10 +6,10 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a professional badminton court near Hisar?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is one of the best badminton venues accessible from Hisar — approximately 100 km and 100 minutes away, offering professional courts and a full sports facility.',
+    a: 'Alchemy 360 in Rohtak is one of the best badminton venues accessible from Hisar — approximately 100 km and 100 minutes away, offering professional courts and a full sports facility.',
   },
   {
-    q: 'How far is Alchemy 360 Sports Arena from Hisar?',
+    q: 'How far is Alchemy 360 from Hisar?',
     a: 'Alchemy 360 is about 100 km from Hisar city, accessible via NH-9 towards Rohtak. The drive typically takes around 90–100 minutes on this well-maintained national highway.',
   },
   {
@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'Does Alchemy 360 have a sports academy for players from Hisar?',
-    a: 'Yes. Alchemy 360 Sports Arena runs a sports academy with coaching in cricket, badminton. Players from Hisar interested in regular training can enquire about academy memberships.',
+    a: 'Yes. Alchemy 360 runs a sports academy with coaching in badminton. Players from Hisar interested in regular training can enquire about academy memberships.',
   },
 ];
 
@@ -47,8 +47,8 @@ export default function BadmintonCourtHisar() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Badminton Court Near Hisar | Alchemy 360 Sports Arena Rohtak"
-        description="Professional badminton court near Hisar — Alchemy 360 Sports Arena, Rohtak, 100 km / 100 min away. Book online, full sports complex with cricket & gym."
+        title="Badminton Court Near Hisar | Alchemy 360 Rohtak"
+        description="Professional badminton court near Hisar — Alchemy 360, Rohtak, 100 km / 100 min away. Book online, full sports complex with cricket & gym."
         canonical="/badminton-court-hisar"
         schema={schema}
       />
@@ -61,10 +61,10 @@ export default function BadmintonCourtHisar() {
             Badminton Court Near Hisar
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak is 100 km and about 100 minutes from Hisar via NH-9 — a highway drive that drops you into Haryana's most fully-equipped sports complex. For Hisar badminton players who want professional courts and a facility worth the trip, Alchemy 360 is the destination.
+            Alchemy 360 in Rohtak is 100 km and about 100 minutes from Hisar via NH-9 — a highway drive that drops you into Haryana's most fully-equipped sports complex. For Hisar badminton players who want professional courts and a facility worth the trip, Alchemy 360 is the destination.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/badminton-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -79,7 +79,7 @@ export default function BadmintonCourtHisar() {
           Hisar's Best Badminton Option is in Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Hisar players with a competitive or enthusiastic approach to badminton consistently point to Alchemy 360 Sports Arena in Rohtak as the facility that justifies the highway drive. The courts are properly set up, the facility is clean and well-staffed, and the supporting amenities — including a gym, open-air pool, Box 360 cricket, and a restaurant — mean your day at Alchemy 360 is never just about one sport. Groups from Hisar planning a sports day often find Alchemy 360 the ideal destination.
+          Hisar players with a competitive or enthusiastic approach to badminton consistently point to Alchemy 360 in Rohtak as the facility that justifies the highway drive. The courts are properly set up, the facility is clean and well-staffed, and the supporting amenities — including a gym, open-air pool, Box 360 cricket, and a restaurant — mean your day at Alchemy 360 is never just about one sport. Groups from Hisar planning a sports day often find Alchemy 360 the ideal destination.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -97,7 +97,7 @@ export default function BadmintonCourtHisar() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Court Rohtak', to: '/badminton-court-rohtak' },

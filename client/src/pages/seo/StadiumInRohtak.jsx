@@ -5,12 +5,12 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 
 const faqs = [
   {
-    q: 'Is Alchemy 360 Sports Arena a full stadium in Rohtak?',
-    a: 'Alchemy 360 Sports Arena is a modern multi-sport complex in Rohtak with floodlit courts, a covered box cricket ground, gym, and sports facilities — comparable to a community sports stadium.',
+    q: 'Is Alchemy 360 a full stadium in Rohtak?',
+    a: 'Alchemy 360 is a modern multi-sport complex in Rohtak with floodlit courts, a covered box cricket ground, gym, and sports facilities — comparable to a community sports stadium.',
   },
   {
     q: 'Can I rent the sports complex for tournaments or events?',
-    a: 'Yes. Alchemy 360 Sports Arena can host local tournaments, corporate sports events, and group bookings. Contact us to discuss event requirements.',
+    a: 'Yes. Alchemy 360 can host local tournaments, corporate sports events, and group bookings. Contact us to discuss event requirements.',
   },
   {
     q: 'What facilities are available at the arena?',
@@ -25,7 +25,7 @@ const faqs = [
     a: 'Yes. You can book slots online through our website. Select your sport, choose a time slot, and pay securely through Razorpay.',
   },
   {
-    q: 'Where is Alchemy 360 Sports Arena located?',
+    q: 'Where is Alchemy 360 located?',
     a: 'We are at Sector 22-D, Jhajjar Road, near Village-Maina, Rohtak, Haryana 124001.',
   },
 ];
@@ -40,8 +40,8 @@ export default function StadiumInRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Stadium in Rohtak | Alchemy 360 Sports Arena & Complex"
-        description="Looking for a stadium or sports complex in Rohtak? Alchemy 360 Sports Arena offers world-class facilities — box cricket, badminton, gym & pickleball. Book online today."
+        title="Stadium in Rohtak | Alchemy 360 & Complex"
+        description="Looking for a stadium or sports complex in Rohtak? Alchemy 360 offers world-class facilities — badminton, gym & pickleball. Book online today."
         canonical="/stadium-in-rohtak"
         schema={schema}
       />
@@ -56,14 +56,11 @@ export default function StadiumInRohtak() {
             Stadium in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena is Rohtak's premier sports complex — a full-featured venue with cricket grounds, racquet sports courts, aquatic facilities, and a modern gym, all under one roof.
+            Alchemy 360 is Rohtak's premier sports complex — a full-featured venue with cricket grounds, racquet sports courts, aquatic facilities, and a modern gym, all under one roof.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book a Ground
-            </Link>
-            <Link to="/one-time-booking" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-              One-Time Access
             </Link>
           </div>
         </div>
@@ -95,7 +92,7 @@ export default function StadiumInRohtak() {
             Rohtak's Sports Hub for Individuals, Families & Teams
           </h2>
           <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Whether you're a casual player looking for a quick session, a serious athlete training daily, or a group organizing a corporate sports event — Alchemy 360 Sports Arena in Rohtak is equipped to host you. Our facility supports individual bookings, membership-based access, and bulk team bookings.
+            Whether you're a casual player looking for a quick session, a serious athlete training daily, or a group organizing a corporate sports event — Alchemy 360 in Rohtak is equipped to host you. Our facility supports individual bookings, membership-based access, and bulk team bookings.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/sports-academy-rohtak" className="text-[#C5DB3B] text-sm font-semibold hover:underline" style={{ fontFamily: "'DM Sans', sans-serif" }}>Sports Academy →</Link>

@@ -29,7 +29,7 @@ const send = async ({ to, subject, htmlContent }) => {
   const payload = {
     sender: {
       email: senderEmail,
-      name: process.env.BREVO_SENDER_NAME || 'Alchemy 360 Academy',
+      name: process.env.BREVO_SENDER_NAME || 'Alchemy 360',
     },
     to: recipients,
     subject,
@@ -61,10 +61,10 @@ const send = async ({ to, subject, htmlContent }) => {
 async function sendPasswordResetOTP({ toEmail, toName, otp }) {
   return send({
     to: toEmail,
-    subject: 'Your Alchemy 360 Academy Password Reset OTP',
+    subject: 'Your Alchemy 360 Password Reset OTP',
     htmlContent: `
       <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;">
-        <h2 style="color:#DC2626;">Alchemy 360 Academy</h2>
+        <h2 style="color:#DC2626;">Alchemy 360</h2>
         <p>Hi ${toName},</p>
         <p>Your password reset OTP is:</p>
         <div style="font-size:36px;font-weight:bold;letter-spacing:8px;color:#DC2626;
@@ -87,7 +87,7 @@ async function sendFailedLoginAlert({ targetEmail, attemptedEmail, role, attempt
     htmlContent: `
       <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;border:2px solid #DC2626;border-radius:8px;padding:24px;">
         <h2 style="color:#DC2626;margin-top:0;">Failed Login Alert</h2>
-        <p>There have been <strong>${attemptCount} failed login attempts</strong> on your Alchemy 360 Academy portal.</p>
+        <p>There have been <strong>${attemptCount} failed login attempts</strong> on your Alchemy 360 portal.</p>
         <table style="width:100%;border-collapse:collapse;margin:16px 0;">
           <tr><td style="padding:6px 0;color:#666;width:140px;">Account</td><td><strong>${attemptedEmail}</strong></td></tr>
           <tr><td style="padding:6px 0;color:#666;">Role</td><td>${role}</td></tr>
@@ -105,11 +105,11 @@ async function sendFailedLoginAlert({ targetEmail, attemptedEmail, role, attempt
 async function sendMembershipWelcomeEmail({ toEmail, toName, planName, startDate, endDate, totalAmount, invoiceHtml, invoiceNumber }) {
   return send({
     to: toEmail,
-    subject: `Welcome to Alchemy 360 Academy! Your ${planName} is Active`,
+    subject: `Welcome to Alchemy 360! Your ${planName} is Active`,
     htmlContent: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
         <div style="background:#DC2626;color:white;padding:24px;border-radius:8px 8px 0 0;text-align:center;">
-          <h1 style="margin:0;">Welcome to Alchemy 360 Academy!</h1>
+          <h1 style="margin:0;">Welcome to Alchemy 360!</h1>
         </div>
         <div style="padding:24px;border:1px solid #e0e0e0;border-top:none;border-radius:0 0 8px 8px;">
           <p>Hi <strong>${toName}</strong>,</p>
@@ -123,7 +123,7 @@ async function sendMembershipWelcomeEmail({ toEmail, toName, planName, startDate
           </table>
           <p>Your invoice is included below. Please keep it for your records.</p>
           <p style="margin-top:24px;">See you on the field!</p>
-          <p style="color:#DC2626;font-weight:bold;">Team Alchemy 360 Academy</p>
+          <p style="color:#DC2626;font-weight:bold;">Team Alchemy 360</p>
         </div>
         <hr style="margin:32px 0;"/>
         <p style="font-size:11px;color:#999;text-align:center;">Invoice</p>
@@ -158,7 +158,7 @@ async function sendAdminPaymentAlert({ adminEmail, payerName, payerEmail, payerP
 async function sendOneTimePassUserEmail({ toEmail, toName, sportName, amount, passId, validityHours, timestamp }) {
   return send({
     to: toEmail,
-    subject: `Your ${sportName} One-Time Pass is Ready — Alchemy 360 Academy`,
+    subject: `Your ${sportName} One-Time Pass is Ready — Alchemy 360`,
     htmlContent: `
       <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;">
         <div style="background:#DC2626;color:white;padding:24px;border-radius:8px 8px 0 0;text-align:center;">
@@ -176,7 +176,7 @@ async function sendOneTimePassUserEmail({ toEmail, toName, sportName, amount, pa
           </table>
           <p style="color:#666;font-size:13px;">Head to your bookings in the app to view your QR code.</p>
           <p style="margin-top:24px;">See you on the field!</p>
-          <p style="color:#DC2626;font-weight:bold;">Team Alchemy 360 Academy</p>
+          <p style="color:#DC2626;font-weight:bold;">Team Alchemy 360</p>
         </div>
       </div>
     `,
@@ -198,7 +198,7 @@ async function sendOrderReadyEmail({ toEmail, toName, orderNumber, orderType, ta
 
   return send({
     to: toEmail,
-    subject: `Order #${orderNumber} is Ready — Alchemy 360 Academy`,
+    subject: `Order #${orderNumber} is Ready — Alchemy 360`,
     htmlContent: `
       <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;">
         <div style="background:#16a34a;color:white;padding:24px;border-radius:8px 8px 0 0;text-align:center;">
@@ -227,7 +227,7 @@ async function sendOrderReadyEmail({ toEmail, toName, orderNumber, orderType, ta
               </tr>
             </tfoot>
           </table>
-          <p style="color:#DC2626;font-weight:bold;">Team Alchemy 360 Academy</p>
+          <p style="color:#DC2626;font-weight:bold;">Team Alchemy 360</p>
         </div>
       </div>
     `,
@@ -329,7 +329,7 @@ async function sendSlotBookingConfirmationEmail({ toEmail, toName, sportName, co
 
   return send({
     to: toEmail,
-    subject: `Booking Confirmed — ${sportName} Slot at Alchemy 360 Academy`,
+    subject: `Booking Confirmed — ${sportName} Slot at Alchemy 360`,
     htmlContent: `
       <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;">
         <div style="background:#DC2626;color:white;padding:24px;border-radius:8px 8px 0 0;text-align:center;">
@@ -337,7 +337,7 @@ async function sendSlotBookingConfirmationEmail({ toEmail, toName, sportName, co
         </div>
         <div style="padding:24px;border:1px solid #e0e0e0;border-top:none;border-radius:0 0 8px 8px;">
           <p>Hi <strong>${toName}</strong>,</p>
-          <p>Your slot has been booked successfully at Alchemy 360 Academy.</p>
+          <p>Your slot has been booked successfully at Alchemy 360.</p>
           <table style="width:100%;border-collapse:collapse;margin:16px 0;background:#f8f8f8;border-radius:8px;overflow:hidden;">
             <tr><td style="padding:10px 16px;color:#666;width:130px;">Sport</td><td style="padding:10px 16px;font-weight:bold;">${sportName}</td></tr>
             ${courtName ? `<tr style="background:white;"><td style="padding:10px 16px;color:#666;">Court</td><td style="padding:10px 16px;">${courtName}</td></tr>` : ''}
@@ -350,7 +350,7 @@ async function sendSlotBookingConfirmationEmail({ toEmail, toName, sportName, co
           </table>
           <p style="color:#666;font-size:13px;">Please arrive on time. Show this confirmation at the facility entrance.</p>
           <p style="margin-top:24px;">See you on the field!</p>
-          <p style="color:#DC2626;font-weight:bold;">Team Alchemy 360 Academy</p>
+          <p style="color:#DC2626;font-weight:bold;">Team Alchemy 360</p>
         </div>
       </div>
     `,

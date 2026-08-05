@@ -6,11 +6,11 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a professional sports academy near Bahadurgarh?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is the nearest full-scale multi-sport academy to Bahadurgarh — approximately 45 km and 40 minutes away via NH-9 and Jhajjar Road.',
+    a: 'Alchemy 360 in Rohtak is the nearest full-scale multi-sport academy to Bahadurgarh — approximately 45 km and 40 minutes away via NH-9 and Jhajjar Road.',
   },
   {
     q: 'How long does it take to reach Alchemy 360 from Bahadurgarh?',
-    a: 'The drive from Bahadurgarh to Alchemy 360 Sports Arena in Rohtak typically takes around 40 minutes, covering roughly 45 km. The route via Jhajjar Road is well connected.',
+    a: 'The drive from Bahadurgarh to Alchemy 360 in Rohtak typically takes around 40 minutes, covering roughly 45 km. The route via Jhajjar Road is well connected.',
   },
   {
     q: 'What coaching programmes does Alchemy 360 offer for Bahadurgarh students?',
@@ -47,8 +47,8 @@ export default function SportsAcademyBahadurgarh() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Academy Near Bahadurgarh | Alchemy 360 Sports Arena Rohtak"
-        description="Best sports academy near Bahadurgarh — Alchemy 360 Sports Arena Rohtak, 45 km / 40 minutes away. Cricket, badminton, pickleball. Join the academy today."
+        title="Sports Academy Near Bahadurgarh | Alchemy 360 Rohtak"
+        description="Best sports academy near Bahadurgarh — Alchemy 360 Rohtak, 45 km / 40 minutes away. Badminton, pickleball. Join the academy today."
         canonical="/sports-academy-bahadurgarh"
         schema={schema}
       />
@@ -62,7 +62,7 @@ export default function SportsAcademyBahadurgarh() {
             Sports Academy Near Bahadurgarh
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Bahadurgarh athletes deserve professional-grade training. Alchemy 360 Sports Arena in Rohtak is 45 km away — a 40-minute drive — and offers the kind of multi-sport coaching infrastructure that simply doesn't exist in the immediate Bahadurgarh area. Whether it's cricket, badminton, pickleball, , the drive pays off.
+            Bahadurgarh athletes deserve professional-grade training. Alchemy 360 in Rohtak is 45 km away — a 40-minute drive — and offers the kind of multi-sport coaching infrastructure that simply doesn't exist in the immediate Bahadurgarh area. Whether it's badminton or pickleball, the drive pays off.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -98,7 +98,7 @@ export default function SportsAcademyBahadurgarh() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Sports Academy Rohtak', to: '/sports-academy-rohtak' },

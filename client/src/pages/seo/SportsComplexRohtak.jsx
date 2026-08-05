@@ -5,8 +5,8 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 
 const faqs = [
   {
-    q: 'What makes Alchemy 360 Sports Complex different from other venues in Rohtak?',
-    a: 'Alchemy 360 Sports Arena brings multiple sports under one roof — cricket, badminton, pickleball, and gym — along with digital booking, membership plans, and an on-site restaurant, making it a complete sports destination in Rohtak.',
+    q: 'What makes Alchemy 360 different from other venues in Rohtak?',
+    a: 'Alchemy 360 brings multiple sports under one roof — badminton, pickleball, and gym — along with digital booking, membership plans, and an on-site restaurant, making it a complete sports destination in Rohtak.',
   },
   {
     q: 'Can I bring my whole family to the sports complex?',
@@ -36,8 +36,8 @@ export default function SportsComplexRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Complex in Rohtak | Alchemy 360 Sports Arena"
-        description="Alchemy 360 Sports Complex in Rohtak, Haryana — cricket, badminton, pickleball & gym under one roof. Family-friendly with memberships and online slot booking."
+        title="Sports Complex in Rohtak | Alchemy 360"
+        description="Alchemy 360 in Rohtak, Haryana — badminton, pickleball & gym under one roof. Family-friendly with memberships and online slot booking."
         canonical="/sports-complex-rohtak"
         schema={schema}
       />
@@ -51,7 +51,7 @@ export default function SportsComplexRohtak() {
             Sports Complex in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena is Rohtak's most complete sports complex — a single destination for cricket, badminton, pickleball, fitness, kids coaching, and post-game dining.
+            Alchemy 360 is Rohtak's most complete sports complex — a single destination for badminton, pickleball, fitness, kids coaching, and post-game dining.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -69,7 +69,7 @@ export default function SportsComplexRohtak() {
           A Complete Sports Complex for Rohtak Families
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Rohtak needed a proper multi-sport complex. Alchemy 360 Sports Arena fills that gap. Our facility brings together sports courts, aquatic facilities, fitness infrastructure, and structured coaching — creating a venue families can rely on for daily training and weekend recreation.
+          Rohtak needed a proper multi-sport complex. Alchemy 360 fills that gap. Our facility brings together sports courts, aquatic facilities, fitness infrastructure, and structured coaching — creating a venue families can rely on for daily training and weekend recreation.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
           {[

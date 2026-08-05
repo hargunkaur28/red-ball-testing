@@ -22,7 +22,7 @@ export default function SportDetailsSection({ sport }) {
           className="uppercase text-xs tracking-[4px] font-semibold"
           style={{ color: accentColor }}
         >
-          Alchemy 360 Academy
+          Alchemy 360
         </p>
         <div className="flex items-center gap-3 flex-wrap">
           <h2

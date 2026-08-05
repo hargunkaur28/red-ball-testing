@@ -6,11 +6,11 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a sports complex near Bahadurgarh?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is the nearest multi-sport complex to Bahadurgarh — approximately 45 km, about 40 minutes on NH-334B. It offers cricket, badminton, pickleball, a gym, and an on-site restaurant.',
+    a: 'Alchemy 360 in Rohtak is the nearest multi-sport complex to Bahadurgarh — approximately 45 km, about 40 minutes on NH-334B. It offers badminton, pickleball, a gym, and an on-site restaurant.',
   },
   {
     q: 'How long does it take to drive from Bahadurgarh to Alchemy 360?',
-    a: 'The drive from Bahadurgarh to Alchemy 360 Sports Arena in Rohtak takes approximately 40 minutes on NH-334B. The facility is at Sector 22-D, Jhajjar Road, Rohtak.',
+    a: 'The drive from Bahadurgarh to Alchemy 360 in Rohtak takes approximately 40 minutes on NH-334B. The facility is at Sector 22-D, Jhajjar Road, Rohtak.',
   },
   {
     q: 'Can Bahadurgarh corporate groups book multiple sports facilities?',
@@ -42,8 +42,8 @@ export default function SportsComplexBahadurgarh() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Complex Near Bahadurgarh | Alchemy 360 Sports Arena Rohtak"
-        description="Sports complex near Bahadurgarh — Alchemy 360 Sports Arena in Rohtak, ~45 km, 40 min drive. Cricket, badminton, pickleball, gym & restaurant."
+        title="Sports Complex Near Bahadurgarh | Alchemy 360 Rohtak"
+        description="Sports complex near Bahadurgarh — Alchemy 360 in Rohtak, ~45 km, 40 min drive. Badminton, pickleball, gym & restaurant."
         canonical="/sports-complex-bahadurgarh"
         schema={schema}
       />
@@ -57,7 +57,7 @@ export default function SportsComplexBahadurgarh() {
             Sports Complex Near Bahadurgarh
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak is approximately 45 km from Bahadurgarh — around 40 minutes on NH-334B. For Bahadurgarh residents wanting a complete multi-sport facility without going all the way into Delhi, Alchemy 360 is the most practical destination in the region.
+            Alchemy 360 in Rohtak is approximately 45 km from Bahadurgarh — around 40 minutes on NH-334B. For Bahadurgarh residents wanting a complete multi-sport facility without going all the way into Delhi, Alchemy 360 is the most practical destination in the region.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -75,7 +75,7 @@ export default function SportsComplexBahadurgarh() {
           Skip Delhi — Rohtak's Alchemy 360 Has It All
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Bahadurgarh sits on the edge of Delhi, but heading west to Rohtak for sports is often faster and far less stressful than navigating Delhi's traffic. Alchemy 360 Sports Arena at Sector 22-D, Jhajjar Road, Rohtak is a 40-minute drive with no major congestion — and the facility genuinely competes with the best Delhi has to offer. Cricket, badminton, pickleball, a full gym, and an on-site restaurant — all accessible, all bookable online.
+          Bahadurgarh sits on the edge of Delhi, but heading west to Rohtak for sports is often faster and far less stressful than navigating Delhi's traffic. Alchemy 360 at Sector 22-D, Jhajjar Road, Rohtak is a 40-minute drive with no major congestion — and the facility genuinely competes with the best Delhi has to offer. Badminton, pickleball, a full gym, and an on-site restaurant — all accessible, all bookable online.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -92,11 +92,10 @@ export default function SportsComplexBahadurgarh() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },
-              { label: 'Football Ground Bahadurgarh', to: '/football-ground-bahadurgarh' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"

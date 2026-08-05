@@ -257,7 +257,7 @@ export default function TablePortal({ embedded = false }) {
           
           fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`, {
             headers: {
-              'User-Agent': 'Alchemy360CricketAcademy/1.0'
+              'User-Agent': 'Alchemy360/1.0'
             }
           })
             .then(res => res.json())
@@ -476,7 +476,7 @@ export default function TablePortal({ embedded = false }) {
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity shrink-0">
-            <img src="/logo.png" alt="Alchemy 360 Academy" className="w-32 h-12 sm:w-36 sm:h-14 object-contain shrink-0" />
+            <img src="/logo.png" alt="Alchemy 360" className="w-32 h-12 sm:w-36 sm:h-14 object-contain shrink-0" />
             <div className="hidden sm:block">
               <h1 className="font-bold text-xl tracking-wide leading-none" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
                 ALCHEMY 360 ACADEMY
@@ -1210,7 +1210,7 @@ export default function TablePortal({ embedded = false }) {
 
       {/* Footer info */}
       <footer className="max-w-6xl mx-auto w-full text-center text-[10px] sm:text-xs text-gray-600 border-t border-white/5 pt-4 sm:pt-6 z-10">
-        Alchemy 360 Academy © {new Date().getFullYear()} • Secure Digital Table Ordering System
+        Alchemy 360 © {new Date().getFullYear()} • Secure Digital Table Ordering System
       </footer>
 
       <PhoneCollectModal

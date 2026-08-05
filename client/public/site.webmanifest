@@ -1,7 +1,7 @@
 {
-  "name": "Alchemy 360 Academy",
+  "name": "Alchemy 360",
   "short_name": "A360",
-  "description": "Play. Train. Dominate. Book sports courts, buy memberships, and train at Alchemy 360 Sports Arena, Rohtak.",
+  "description": "Play. Train. Dominate. Book badminton, pickleball and gym sessions, and buy memberships at Alchemy 360, Rohtak.",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#080808",

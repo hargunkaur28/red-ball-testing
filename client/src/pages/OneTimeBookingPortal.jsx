@@ -165,7 +165,7 @@ export default function OneTimeBookingPortal({ embedded = false }) {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: orderRes.rzpOrder.amount,
         currency: orderRes.rzpOrder.currency,
-        name: 'Alchemy 360 Academy',
+        name: 'Alchemy 360',
         description: `1 Hour Prepaid ${selectedSport.name} Access Pass`,
         order_id: orderRes.rzpOrder.id,
         theme: { color: '#C5DB3B' },

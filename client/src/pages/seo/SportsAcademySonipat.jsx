@@ -6,11 +6,11 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a good sports academy near Sonipat?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is the top multi-sport academy nearest to Sonipat — approximately 55 km and 55 minutes away, offering cricket, badminton, pickleball coaching.',
+    a: 'Alchemy 360 in Rohtak is the top multi-sport academy nearest to Sonipat — approximately 55 km and 55 minutes away, offering badminton, pickleball coaching.',
   },
   {
-    q: 'How far is Alchemy 360 Sports Arena from Sonipat?',
-    a: 'Alchemy 360 Sports Arena is located in Sector 22-D, Jhajjar Road, Rohtak — approximately 55 km from Sonipat, reachable in about 55 minutes via well-connected Haryana state highways.',
+    q: 'How far is Alchemy 360 from Sonipat?',
+    a: 'Alchemy 360 is located in Sector 22-D, Jhajjar Road, Rohtak — approximately 55 km from Sonipat, reachable in about 55 minutes via well-connected Haryana state highways.',
   },
   {
     q: 'Can Sonipat students enroll in cricket coaching at Alchemy 360?',
@@ -43,8 +43,8 @@ export default function SportsAcademySonipat() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Academy Near Sonipat | Alchemy 360 Sports Arena Rohtak"
-        description="Nearest professional sports academy to Sonipat — Alchemy 360 Sports Arena in Rohtak, 55 km / 55 minutes. Cricket, badminton, pickleball. Enroll your child today."
+        title="Sports Academy Near Sonipat | Alchemy 360 Rohtak"
+        description="Nearest professional sports academy to Sonipat — Alchemy 360 in Rohtak, 55 km / 55 minutes. Badminton, pickleball. Enroll your child today."
         canonical="/sports-academy-sonipat"
         schema={schema}
       />
@@ -58,7 +58,7 @@ export default function SportsAcademySonipat() {
             Sports Academy Near Sonipat
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena is Rohtak's premier multi-sport complex — and the best sports academy option for Sonipat athletes. At 55 km and a 55-minute drive, Alchemy 360 offers cricket, badminton, pickleball under one roof, with professional coaching that serious athletes from Sonipat have come to rely on.
+            Alchemy 360 is Rohtak's premier multi-sport complex — and the best sports academy option for Sonipat athletes. At 55 km and a 55-minute drive, Alchemy 360 offers badminton, pickleball under one roof, with professional coaching that serious athletes from Sonipat have come to rely on.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -76,7 +76,7 @@ export default function SportsAcademySonipat() {
           Sonipat's Go-To Sports Academy in Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Sonipat has a strong sporting culture, but a dedicated private multi-sport academy with the depth of Alchemy 360's offering is hard to find locally. Alchemy 360 Sports Arena in Rohtak provides exactly that — a single campus where cricketers train on the Box 360 circular ground (open 24/7), swimmers develop in the open-air pool, and racket sport players take to professional badminton and pickleball courts. The journey from Sonipat to Rohtak on NH-9 is well-maintained and takes under an hour — a reasonable investment for training that genuinely builds careers.
+          Sonipat has a strong sporting culture, but a dedicated private multi-sport academy with the depth of Alchemy 360's offering is hard to find locally. Alchemy 360 in Rohtak provides exactly that — a single campus where cricketers train on the Box 360 circular ground (open 24/7), swimmers develop in the open-air pool, and racket sport players take to professional badminton and pickleball courts. The journey from Sonipat to Rohtak on NH-9 is well-maintained and takes under an hour — a reasonable investment for training that genuinely builds careers.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -93,7 +93,7 @@ export default function SportsAcademySonipat() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Sports Academy Rohtak', to: '/sports-academy-rohtak' },

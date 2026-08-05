@@ -255,7 +255,7 @@ function buildCricketReminderMessage(booking) {
   const timeStr  = startFmt && endFmt ? `${startFmt}-${endFmt}` : startFmt;
   const courtStr = court ? ` at ${court}` : '';
 
-  return `Reminder: Your Cricket slot at Alchemy 360 is ${dateStr} ${timeStr}${courtStr}. Please arrive on time. -Alchemy 360 Academy`;
+  return `Reminder: Your Cricket slot at Alchemy 360 is ${dateStr} ${timeStr}${courtStr}. Please arrive on time. -Alchemy 360`;
 }
 
 /**

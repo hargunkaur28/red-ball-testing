@@ -55,18 +55,18 @@ export default function BlogIndex() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Blog | Cricket, Badminton, Swimming Tips | Alchemy 360 Sports Arena Rohtak"
-        description="Expert articles on cricket, badminton, swimming, fitness, and sports events in Rohtak and Haryana from Alchemy 360 Sports Arena — Rohtak's premier multi-sport complex."
+        title="Sports Blog | Cricket, Badminton, Swimming Tips | Alchemy 360 Rohtak"
+        description="Expert articles on badminton, fitness, and sports events in Rohtak and Haryana from Alchemy 360 — Rohtak's premier multi-sport complex."
         canonical="/blog"
         schema={{
           '@context': 'https://schema.org',
           '@type': 'Blog',
-          name: 'Alchemy 360 Sports Arena Blog',
-          description: 'Expert sports content from Alchemy 360 Sports Arena, Rohtak, Haryana',
+          name: 'Alchemy 360 Blog',
+          description: 'Expert sports content from Alchemy 360, Rohtak, Haryana',
           url: 'https://www.alchemy360.in/blog',
           publisher: {
             '@type': 'Organization',
-            name: 'Alchemy 360 Sports Arena',
+            name: 'Alchemy 360',
             url: 'https://www.alchemy360.in',
           },
         }}
@@ -79,7 +79,7 @@ export default function BlogIndex() {
             Sports Blog
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Cricket, badminton, swimming, fitness, and everything sports in Rohtak. Expert guides, tips, and local knowledge from Alchemy 360 Sports Arena.
+            Badminton, fitness, and everything sports in Rohtak. Expert guides, tips, and local knowledge from Alchemy 360.
           </p>
         </div>
       </section>

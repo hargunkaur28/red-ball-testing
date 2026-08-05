@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'What kind of academy is Alchemy 360 in Rohtak?',
-    a: 'Alchemy 360 is a sports academy in Rohtak, Haryana, offering training in cricket, badminton, and fitness. It also has a dedicated kids sports academy for young athletes.',
+    a: 'Alchemy 360 is a sports academy in Rohtak, Haryana, offering training in badminton and fitness. It also has a dedicated kids sports academy for young athletes.',
   },
   {
     q: 'What age groups can join the academy?',
@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'Are there professional coaches at the academy?',
-    a: 'Yes. Alchemy 360 Academy has experienced coaches for cricket, badminton. Coaches offer both group and individual training sessions.',
+    a: 'Yes. Alchemy 360 has experienced coaches for badminton. Coaches offer both group and individual training sessions.',
   },
   {
     q: 'What is the admission fee for the academy?',
@@ -36,8 +36,8 @@ export default function AcademyInRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Academy in Rohtak | Alchemy 360 Sports Academy Haryana"
-        description="Alchemy 360 Academy in Rohtak offers professional sports training for all ages. Cricket, badminton, gym & kids programs. Join the best sports academy in Rohtak, Haryana."
+        title="Academy in Rohtak | Alchemy 360 Haryana"
+        description="Alchemy 360 in Rohtak offers professional sports training for all ages. Badminton, gym & kids programs. Join the best sports academy in Rohtak, Haryana."
         canonical="/academy-in-rohtak"
         schema={schema}
       />
@@ -51,7 +51,7 @@ export default function AcademyInRohtak() {
             Academy in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Academy in Rohtak is where athletes are built — through structured coaching, consistent practice, and access to world-class infrastructure. Whether you're enrolling your child or pursuing personal athletic goals, we have the right program for you.
+            Alchemy 360 in Rohtak is where athletes are built — through structured coaching, consistent practice, and access to world-class infrastructure. Whether you're enrolling your child or pursuing personal athletic goals, we have the right program for you.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/buy-membership" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -66,7 +66,7 @@ export default function AcademyInRohtak() {
 
       <section className="max-w-4xl mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0D0D0D] mb-6" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-          Programs at Alchemy 360 Academy, Rohtak
+          Programs at Alchemy 360, Rohtak
         </h2>
         <div className="space-y-4">
           {[

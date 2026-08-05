@@ -714,7 +714,7 @@ export default function Dashboard() {
         transition={{ delay: 0.7, duration: 0.5 }}
         className="text-center text-xs text-[#9CA3AF] mt-6"
       >
-        Alchemy 360 Academy — Super Admin Panel
+        Alchemy 360 — Super Admin Panel
       </motion.p>
     </div>
   );

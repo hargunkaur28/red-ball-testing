@@ -11,7 +11,7 @@ export function CTAStrip() {
           Ready to Play? Book Your Slot Today.
         </h2>
         <p className="text-white/80 mb-6 text-sm md:text-base" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Alchemy 360 Sports Arena — Rohtak, Haryana. Walk-in welcome, online bookings preferred.
+          Alchemy 360 — Rohtak, Haryana. Walk-in welcome, online bookings preferred.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <Link to="/book-slots" className="bg-white text-[#C5DB3B] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#F9F6F1] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -19,9 +19,6 @@ export function CTAStrip() {
           </Link>
           <Link to="/buy-membership" className="border-2 border-white text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-white hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             Buy Membership
-          </Link>
-          <Link to="/one-time-booking" className="border-2 border-white/50 text-white/90 font-bold px-6 py-3 rounded-full text-sm hover:border-white hover:text-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            One-Time Booking
           </Link>
         </div>
       </div>
@@ -82,12 +79,8 @@ export function SportsNav({ activePath }) {
     { label: 'Badminton Academy', to: '/badminton-academy-rohtak' },
     { label: 'Badminton Coaching', to: '/badminton-coaching-rohtak' },
     { label: 'Pickleball', to: '/pickleball-court-rohtak' },
-    { label: 'Football', to: '/football-ground-rohtak' },
     { label: 'Gym', to: '/gym-in-rohtak' },
     { label: 'Sports Club', to: '/sports-club-rohtak' },
-    { label: 'RCL', to: '/rohtak-cricket-league' },
-    { label: 'Tournaments', to: '/cricket-tournaments-rohtak' },
-    { label: 'Corporate Cricket', to: '/corporate-cricket-events' },
     { label: 'Blog', to: '/blog' },
   ];
   return (

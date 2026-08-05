@@ -6,10 +6,10 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a sports complex near Hisar?',
-    a: 'Alchemy 360 Sports Arena in Rohtak is approximately 100 km from Hisar — about 100 minutes on NH-9. It is a complete multi-sport complex with cricket, badminton, pickleball, a gym, and a restaurant.',
+    a: 'Alchemy 360 in Rohtak is approximately 100 km from Hisar — about 100 minutes on NH-9. It is a complete multi-sport complex with badminton, pickleball, a gym, and a restaurant.',
   },
   {
-    q: 'How far is Alchemy 360 Sports Arena from Hisar?',
+    q: 'How far is Alchemy 360 from Hisar?',
     a: 'Alchemy 360 is around 100 km from Hisar city, at Sector 22-D, Jhajjar Road, Rohtak. Most drivers from Hisar reach Alchemy 360 in under 100 minutes on NH-9.',
   },
   {
@@ -21,7 +21,7 @@ const faqs = [
     a: 'For a dedicated sports day, absolutely. Alchemy 360 is the most complete sports complex in Haryana — the range of facilities, the quality of infrastructure, and the on-site restaurant make it a full-day destination that Hisar simply cannot match locally.',
   },
   {
-    q: 'Does Alchemy 360 Sports Arena have a sports academy for kids?',
+    q: 'Does Alchemy 360 have a sports academy for kids?',
     a: "Yes. Alchemy 360's sports academy offers structured coaching for children in cricket and badminton. Hisar families visiting Rohtak can enroll their kids or arrange trial sessions. Call +91 93500 76653.",
   },
 ];
@@ -46,8 +46,8 @@ export default function SportsComplexHisar() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Complex Near Hisar | Alchemy 360 Sports Arena Rohtak"
-        description="Sports complex near Hisar — Alchemy 360 Sports Arena in Rohtak, ~100 km, ~100 min drive. Cricket (Box 360), badminton, pickleball, gym & on-site restaurant."
+        title="Sports Complex Near Hisar | Alchemy 360 Rohtak"
+        description="Sports complex near Hisar — Alchemy 360 in Rohtak, ~100 km, ~100 min drive. Cricket (Box 360), badminton, pickleball, gym & on-site restaurant."
         canonical="/sports-complex-hisar"
         schema={schema}
       />
@@ -61,7 +61,7 @@ export default function SportsComplexHisar() {
             Sports Complex Near Hisar
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena in Rohtak is approximately 100 km from Hisar — about 100 minutes on NH-9. For Hisar athletes, families, and corporate teams looking for a genuinely complete sports complex, Alchemy 360 in Rohtak is the most worthwhile destination in western Haryana.
+            Alchemy 360 in Rohtak is approximately 100 km from Hisar — about 100 minutes on NH-9. For Hisar athletes, families, and corporate teams looking for a genuinely complete sports complex, Alchemy 360 in Rohtak is the most worthwhile destination in western Haryana.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -79,7 +79,7 @@ export default function SportsComplexHisar() {
           Haryana's Most Complete Sports Complex — Alchemy 360 in Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Hisar has sports culture but limited multi-sport infrastructure. Alchemy 360 Sports Arena in Rohtak fills that gap. The 100-minute drive on NH-9 puts you at Sector 22-D, Jhajjar Road — a complete sports campus where you can play Box 360 circular box cricket, train at the gym, swim in the open-air pool, play badminton or pickleball, and have a meal at the on-site restaurant all in one visit. For Hisar residents making a day trip, Alchemy 360 is worth planning around.
+          Hisar has sports culture but limited multi-sport infrastructure. Alchemy 360 in Rohtak fills that gap. The 100-minute drive on NH-9 puts you at Sector 22-D, Jhajjar Road — a complete sports campus where you can play Box 360 circular box cricket, train at the gym, swim in the open-air pool, play badminton or pickleball, and have a meal at the on-site restaurant all in one visit. For Hisar residents making a day trip, Alchemy 360 is worth planning around.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -97,7 +97,7 @@ export default function SportsComplexHisar() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Sports Complex Rohtak', to: '/sports-complex-rohtak' },

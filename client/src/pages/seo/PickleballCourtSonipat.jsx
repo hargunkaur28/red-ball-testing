@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is there a pickleball court near Sonipat?',
-    a: 'Alchemy 360 Sports Arena in Rohtak has a dedicated pickleball court — approximately 55 km and 55 minutes from Sonipat. It is one of the nearest proper pickleball venues to Sonipat.',
+    a: 'Alchemy 360 in Rohtak has a dedicated pickleball court — approximately 55 km and 55 minutes from Sonipat. It is one of the nearest proper pickleball venues to Sonipat.',
   },
   {
     q: 'How far is the Alchemy 360 pickleball court from Sonipat?',
@@ -47,8 +47,8 @@ export default function PickleballCourtSonipat() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Pickleball Court Near Sonipat | Alchemy 360 Sports Arena Rohtak"
-        description="Pickleball court near Sonipat — Alchemy 360 Sports Arena in Rohtak, 55 km / 55 minutes away. Dedicated pickleball court, beginner-friendly, group bookings. Book your slot."
+        title="Pickleball Court Near Sonipat | Alchemy 360 Rohtak"
+        description="Pickleball court near Sonipat — Alchemy 360 in Rohtak, 55 km / 55 minutes away. Dedicated pickleball court, beginner-friendly, group bookings. Book your slot."
         canonical="/pickleball-court-sonipat"
         schema={schema}
       />
@@ -62,10 +62,10 @@ export default function PickleballCourtSonipat() {
             Pickleball Court Near Sonipat
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Sonipat players looking for a dedicated pickleball court need look no further than Alchemy 360 Sports Arena in Rohtak — just 55 km and 55 minutes away. One of the only purpose-built pickleball setups in the region, Alchemy 360 is where Sonipat's pickleball community comes to play, compete, and improve.
+            Sonipat players looking for a dedicated pickleball court need look no further than Alchemy 360 in Rohtak — just 55 km and 55 minutes away. One of the only purpose-built pickleball setups in the region, Alchemy 360 is where Sonipat's pickleball community comes to play, compete, and improve.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/pickleball" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Pickleball Court
             </Link>
             <Link to="/badminton-court-sonipat" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -80,7 +80,7 @@ export default function PickleballCourtSonipat() {
           Sonipat's Nearest Pickleball Court — at Alchemy 360, Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Pickleball has swept through Haryana's sporting circles, and Sonipat players are among the most enthusiastic. The challenge has been finding a proper, dedicated court locally. Alchemy 360 Sports Arena in Rohtak solves this — a 55-minute drive on well-maintained roads brings Sonipat players to one of the region's few proper pickleball setups. The court sits within a full multi-sport complex, so a pickleball session can easily be extended with a badminton match, a swim, or a quick gym session. Whether you're a total newcomer or a regular player looking for competitive games, Alchemy 360 has the space and the setup for it.
+          Pickleball has swept through Haryana's sporting circles, and Sonipat players are among the most enthusiastic. The challenge has been finding a proper, dedicated court locally. Alchemy 360 in Rohtak solves this — a 55-minute drive on well-maintained roads brings Sonipat players to one of the region's few proper pickleball setups. The court sits within a full multi-sport complex, so a pickleball session can easily be extended with a badminton match, a swim, or a quick gym session. Whether you're a total newcomer or a regular player looking for competitive games, Alchemy 360 has the space and the setup for it.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
@@ -98,7 +98,7 @@ export default function PickleballCourtSonipat() {
 
       <section className="bg-[#F9F6F1] px-4 py-10">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360 Sports Arena</h2>
+          <h2 className="text-xl font-bold text-[#0D0D0D] mb-3" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>More at Alchemy 360</h2>
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Pickleball Court Rohtak', to: '/pickleball-court-rohtak' },

@@ -5,23 +5,23 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 
 const faqs = [
   {
-    q: 'What is Alchemy 360 Sports Arena in Rohtak?',
-    a: 'Alchemy 360 Sports Arena is a multi-sport facility in Rohtak, Haryana, offering box cricket, badminton, pickleball, gym, and a kids sports academy — all in one location.',
+    q: 'What is Alchemy 360 in Rohtak?',
+    a: 'Alchemy 360 is a multi-sport facility in Rohtak, Haryana, offering badminton, pickleball, gym, and a kids sports academy — all in one location.',
   },
   {
     q: 'Can I play without a membership at the sports arena?',
     a: 'Yes. You can book individual slots without a membership using our one-time booking or book-slots feature. Memberships are available for players who visit regularly.',
   },
   {
-    q: 'Are there coaches available at Alchemy 360 Sports Arena?',
-    a: 'Yes. Experienced coaches are available for badminton, cricket. You can request coaching sessions when booking your slot.',
+    q: 'Are there coaches available at Alchemy 360?',
+    a: 'Yes. Experienced coaches are available for badminton. You can request coaching sessions when booking your slot.',
   },
   {
-    q: 'How do I reach Alchemy 360 Sports Arena in Rohtak?',
+    q: 'How do I reach Alchemy 360 in Rohtak?',
     a: 'We are located at Sector 22-D, Jhajjar Road, near Village-Maina, Rohtak, Haryana 124001. The arena is well-connected by road from central Rohtak.',
   },
   {
-    q: 'Is Alchemy 360 Sports Arena suitable for corporate team events?',
+    q: 'Is Alchemy 360 suitable for corporate team events?',
     a: 'Absolutely. We host corporate sports days, team tournaments, and group bookings. Contact us to arrange a customised event for your team.',
   },
 ];
@@ -36,8 +36,8 @@ export default function SportsArenaRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Arena in Rohtak | Alchemy 360 Sports Arena Haryana"
-        description="Alchemy 360 Sports Arena in Rohtak is your one-stop sports destination. Play cricket, badminton, pickleball, swim, or hit the gym. Book slots online or get a membership."
+        title="Sports Arena in Rohtak | Alchemy 360 Haryana"
+        description="Alchemy 360 in Rohtak is your one-stop sports destination. Play badminton, pickleball, swim, or hit the gym. Book slots online or get a membership."
         canonical="/sports-arena-rohtak"
         schema={schema}
       />
@@ -51,7 +51,7 @@ export default function SportsArenaRohtak() {
             Sports Arena in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena brings world-class sports infrastructure to Rohtak. From floodlit cricket pitches to Olympic-standard courts, everything you need to play, train, and compete is here.
+            Alchemy 360 brings world-class sports infrastructure to Rohtak. From floodlit cricket pitches to Olympic-standard courts, everything you need to play, train, and compete is here.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -69,7 +69,7 @@ export default function SportsArenaRohtak() {
           Play Every Sport, All in One Place
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Alchemy 360 Sports Arena in Rohtak is designed to be the city's go-to sports destination. Whether you love cricket, prefer racquet sports, or want to lift weights — you'll find it all here with professional-grade equipment and expert coaching.
+          Alchemy 360 in Rohtak is designed to be the city's go-to sports destination. Whether you love cricket, prefer racquet sports, or want to lift weights — you'll find it all here with professional-grade equipment and expert coaching.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {[
@@ -92,10 +92,9 @@ export default function SportsArenaRohtak() {
             Flexible Access — Book Once or Join as a Member
           </h2>
           <p className="text-[#0D0D0D]/70 text-sm leading-relaxed mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena offers two ways to access the facilities. Book individual slots for a specific sport on any day you like, or opt for a monthly, quarterly, or annual membership for unlimited or fixed-quota access at a lower per-session cost.
+            Alchemy 360 offers two ways to access the facilities. Book individual slots for a specific sport on any day you like, or opt for a monthly, quarterly, or annual membership for unlimited or fixed-quota access at a lower per-session cost.
           </p>
           <div className="flex flex-wrap gap-3 mt-4">
-            <Link to="/one-time-booking" className="text-[#C5DB3B] text-sm font-semibold hover:underline" style={{ fontFamily: "'DM Sans', sans-serif" }}>One-Time Booking →</Link>
             <Link to="/buy-membership" className="text-[#C5DB3B] text-sm font-semibold hover:underline" style={{ fontFamily: "'DM Sans', sans-serif" }}>Membership Plans →</Link>
           </div>
         </div>

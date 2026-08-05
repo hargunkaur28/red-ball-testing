@@ -87,12 +87,6 @@
 
   <!-- Public Sport Detail Pages -->
   <url>
-    <loc>https://www.alchemy360.in/sports/box-cricket</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.alchemy360.in/sports/badminton</loc>
     <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
@@ -100,18 +94,6 @@
   </url>
   <url>
     <loc>https://www.alchemy360.in/sports/pickleball</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/sports/swimming</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/sports/coaching</loc>
     <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -136,42 +118,6 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
-    <loc>https://www.alchemy360.in/one-time-booking</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <!-- Cricket League & Tournament Pages -->
-  <url>
-    <loc>https://www.alchemy360.in/rohtak-cricket-league</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/cricket-tournaments-rohtak</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/corporate-cricket-events</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/inter-college-cricket-tournaments</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Geo Pages — Cricket (Haryana & NCR) -->
-
-  <!-- Geo Pages — Cricket Academy & Box Cricket -->
 
   <!-- Geo Pages — Badminton -->
   <url>
@@ -210,8 +156,6 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
-  <!-- Geo Pages — Swimming -->
 
   <!-- Geo Pages — Gym -->
   <url>
@@ -347,37 +291,12 @@
     <priority>0.7</priority>
   </url>
 
-
   <!-- Blog -->
   <url>
     <loc>https://www.alchemy360.in/blog</loc>
     <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/blog/cricket-ground-rohtak-booking-guide</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/blog/box-cricket-rules-format-rohtak</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/blog/swimming-pool-rohtak-guide</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/blog/kids-swimming-classes-rohtak-guide</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.alchemy360.in/blog/badminton-court-rohtak-guide</loc>
@@ -398,12 +317,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.alchemy360.in/blog/rohtak-cricket-league-guide</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://www.alchemy360.in/blog/gym-rohtak-fitness-guide</loc>
     <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
@@ -411,12 +324,6 @@
   </url>
   <url>
     <loc>https://www.alchemy360.in/blog/kids-sports-academy-rohtak-benefits</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/blog/cricket-tournament-hosting-guide</loc>
     <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -434,43 +341,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.alchemy360.in/blog/inter-college-cricket-tournaments-rohtak</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.alchemy360.in/blog/best-sports-complex-rohtak</loc>
     <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.alchemy360.in/blog/cricket-coaching-guide-rohtak</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/blog/box-cricket-vs-regular-cricket-guide</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/blog/swimming-training-beginners-guide</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.alchemy360.in/blog/kids-badminton-coaching-guide-rohtak</loc>
-    <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.alchemy360.in/blog/football-rohtak-guide</loc>
     <lastmod>2026-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

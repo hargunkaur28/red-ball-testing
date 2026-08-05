@@ -59,7 +59,6 @@ const RestaurantSettings = lazy(() => import('./pages/restaurant/Settings'));
 // Public
 const TableOrder = lazy(() => import('./pages/table/TableOrder'));
 const TablePortal = lazy(() => import('./pages/table/TablePortal'));
-const OneTimeBookingPortal = lazy(() => import('./pages/OneTimeBookingPortal'));
 const EntryPortal = lazy(() => import('./pages/EntryPortal'));
 const MembershipPortal = lazy(() => import('./pages/MembershipPortal'));
 const BookSlotsMarketplace = lazy(() => import('./pages/BookSlotsMarketplace'));
@@ -128,10 +127,6 @@ const PickleballCourtSonipat = lazy(() => import('./pages/seo/PickleballCourtSon
 
 
 // New SEO League & Tournament Pages
-const RohtakCricketLeague = lazy(() => import('./pages/seo/RohtakCricketLeague'));
-const CricketTournamentsRohtak = lazy(() => import('./pages/seo/CricketTournamentsRohtak'));
-const CorporateCricketEvents = lazy(() => import('./pages/seo/CorporateCricketEvents'));
-const InterCollegeCricketTournaments = lazy(() => import('./pages/seo/InterCollegeCricketTournaments'));
 
 // Blog Pages
 const BlogIndex = lazy(() => import('./pages/blog/BlogIndex'));
@@ -218,7 +213,6 @@ export default function App() {
               {/* RESTAURANT DISABLED — see README "Restaurant module (disabled)" */}
               {/* <Route path="/table-portal" element={<TablePortal />} /> */}
               {/* <Route path="/table/:tableId" element={<TableOrder />} /> */}
-              <Route path="/one-time-booking" element={<OneTimeBookingPortal />} />
               <Route path="/book-slots" element={<BookSlotsMarketplace />} />
               <Route path="/sports/:slug" element={<SportDetailPage />} />
               <Route path="/buy-membership" element={<MembershipPortal />} />
@@ -253,7 +247,6 @@ export default function App() {
                 <Route path="scan" element={<ScanQR />} />
                 <Route path="membership" element={<UserMembership />} />
                 <Route path="book-slots" element={<BookSlotsMarketplace embedded />} />
-                <Route path="one-time-booking" element={<OneTimeBookingPortal embedded />} />
                 <Route path="sports/:slug" element={<SportDetailPage embedded />} />
                 <Route path="buy-memberships" element={<MembershipPortal embedded />} />
                 {/* RESTAURANT DISABLED */}
@@ -341,10 +334,6 @@ export default function App() {
 
 
               {/* New SEO League & Tournament Pages */}
-              <Route path="/rohtak-cricket-league" element={<RohtakCricketLeague />} />
-              <Route path="/cricket-tournaments-rohtak" element={<CricketTournamentsRohtak />} />
-              <Route path="/corporate-cricket-events" element={<CorporateCricketEvents />} />
-              <Route path="/inter-college-cricket-tournaments" element={<InterCollegeCricketTournaments />} />
 
               {/* Blog */}
               <Route path="/blog" element={<BlogIndex />} />

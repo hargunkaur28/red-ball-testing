@@ -5,8 +5,8 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 
 const faqs = [
   {
-    q: 'What sports does Alchemy 360 Sports Arena offer in Rohtak?',
-    a: 'Alchemy 360 Sports Arena offers box cricket, badminton, pickleball, gym & fitness training, and a dedicated kids sports academy in Rohtak, Haryana.',
+    q: 'What sports does Alchemy 360 offer in Rohtak?',
+    a: 'Alchemy 360 offers badminton, pickleball, gym & fitness training, and a dedicated kids sports academy in Rohtak, Haryana.',
   },
   {
     q: 'How do I book a session at the sports academy in Rohtak?',
@@ -14,19 +14,19 @@ const faqs = [
   },
   {
     q: 'Is there a kids sports academy at Alchemy 360?',
-    a: 'Yes. Alchemy 360 Academy runs a dedicated kids sports program for badminton and cricket, with structured coaching sessions and beginner-friendly batches.',
+    a: 'Yes. Alchemy 360 runs a dedicated kids sports program for badminton, with structured coaching sessions and beginner-friendly batches.',
   },
   {
     q: 'What are the membership plans available?',
     a: 'We offer monthly, quarterly, and annual memberships for individuals and families, covering access to courts, pools, and gym facilities. View current plans on our Membership page.',
   },
   {
-    q: 'Where is Alchemy 360 Sports Arena located in Rohtak?',
+    q: 'Where is Alchemy 360 located in Rohtak?',
     a: 'We are located at Sector 22-D, Jhajjar Road, near Village-Maina, Rohtak, Haryana 124001.',
   },
   {
     q: 'What are the operating hours?',
-    a: 'Alchemy 360 Sports Arena is open 7 days a week, from 5:00 AM to 11:00 PM, to accommodate early-morning and evening sessions.',
+    a: 'Alchemy 360 is open 7 days a week, from 5:00 AM to 11:00 PM, to accommodate early-morning and evening sessions.',
   },
 ];
 
@@ -40,8 +40,8 @@ export default function SportsAcademyRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Academy in Rohtak | Alchemy 360 Sports Arena"
-        description="Alchemy 360 Sports Academy in Rohtak, Haryana offers professional coaching in cricket, badminton, pickleball & gym. Memberships, slot bookings & kids programs available."
+        title="Sports Academy in Rohtak | Alchemy 360"
+        description="Alchemy 360 in Rohtak, Haryana offers professional coaching in badminton, pickleball & gym. Memberships, slot bookings & kids programs available."
         canonical="/sports-academy-rohtak"
         schema={schema}
       />
@@ -56,7 +56,7 @@ export default function SportsAcademyRohtak() {
             Sports Academy in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena is Rohtak's multi-sport complex built for players of all ages. Train with expert coaches, book courts anytime, and choose membership plans that fit your schedule.
+            Alchemy 360 is Rohtak's multi-sport complex built for players of all ages. Train with expert coaches, book courts anytime, and choose membership plans that fit your schedule.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -72,7 +72,7 @@ export default function SportsAcademyRohtak() {
       {/* What We Offer */}
       <section className="max-w-4xl mx-auto px-4 py-12">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0D0D0D] mb-6" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-          What We Offer at Alchemy 360 Academy
+          What We Offer at Alchemy 360
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {[
@@ -92,7 +92,7 @@ export default function SportsAcademyRohtak() {
       <section className="bg-[#F9F6F1] px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-[#0D0D0D] mb-6" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '2px' }}>
-            Why Choose Alchemy 360 Sports Arena in Rohtak?
+            Why Choose Alchemy 360 in Rohtak?
           </h2>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-[#0D0D0D]/80" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             {[

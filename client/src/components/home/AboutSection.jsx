@@ -68,14 +68,14 @@ export default function AboutSection() {
               <h2
                 className="section-heading text-[#0D0D0D]"
               >
-                About Alchemy 360 Academy
+                About Alchemy 360
               </h2>
 
               <p
                 className="text-lg text-[#6B7280] leading-relaxed"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >
-                At Alchemy 360 Academy, we believe sport has the power to transform
+                At Alchemy 360, we believe sport has the power to transform
                 lives. Whether you're a weekend player, a competitive athlete, or a family
                 looking for a great outing — our expert coaches, premium grounds, and
                 world-class facilities are here for you.

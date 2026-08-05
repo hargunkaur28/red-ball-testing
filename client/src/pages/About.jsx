@@ -41,7 +41,7 @@ const STATS = [
 ];
 
 const TIMELINE = [
-  { year: 'Founded', text: 'Alchemy 360 Sports Arena was established by Ram Goyal with a vision to bring world-class multi-sport facilities to Rohtak, Haryana.' },
+  { year: 'Founded', text: 'Alchemy 360 was established by Ram Goyal with a vision to bring world-class multi-sport facilities to Rohtak, Haryana.' },
   { year: 'Cricket', text: 'The cricket ground quickly became the home of the Rohtak Cricket League (RCL) — Rohtak\'s premier T20 competition, broadcast live on YouTube, Siti Cable, and DEN Networks.' },
   { year: 'Expansion', text: 'Added badminton courts, gym, pickleball courts, and Box 360 — making Alchemy 360 one of the most comprehensive private sports complexes in Haryana.' },
   { year: 'Today', text: 'Serving 500+ active members across Rohtak and surrounding districts. Registered with the Haryana Cricket Association (HCA).' },
@@ -66,8 +66,8 @@ export default function About() {
   return (
     <>
       <SEOHead
-        title="About Alchemy 360 Sports Arena — Rohtak's Premier Multi-Sport Complex"
-        description="Learn about Alchemy 360 Sports Arena in Rohtak, Haryana — founded by Ram Goyal. Home of the Rohtak Cricket League. Cricket, badminton, pickleball, gym, and court memberships."
+        title="About Alchemy 360 — Rohtak's Premier Multi-Sport Complex"
+        description="Learn about Alchemy 360 in Rohtak, Haryana — founded by Ram Goyal. Home of the Rohtak Cricket League. Badminton, pickleball, gym, and court memberships."
         canonical="/about"
       />
       <Navbar />
@@ -80,7 +80,7 @@ export default function About() {
         </div>
         <div className="max-w-5xl mx-auto px-4 sm:px-8 relative z-10">
           <FadeIn>
-            <p className="text-[#C5DB3B] text-xs font-black uppercase tracking-[0.25em] mb-4">Rohtak, Haryana · Est. Alchemy 360 Sports Arena</p>
+            <p className="text-[#C5DB3B] text-xs font-black uppercase tracking-[0.25em] mb-4">Rohtak, Haryana · Est. Alchemy 360</p>
             <h1
               className="text-white leading-none mb-6"
               style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(3rem, 8vw, 6rem)', letterSpacing: '2px' }}
@@ -88,7 +88,7 @@ export default function About() {
               About Alchemy 360<br />Sports Arena
             </h1>
             <p className="text-white/55 text-lg max-w-2xl leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-              Rohtak's most comprehensive private multi-sport complex — cricket, badminton, pickleball, and gym under one roof. Home of the Rohtak Cricket League.
+              Rohtak's most comprehensive private multi-sport complex — badminton, pickleball, and gym under one roof. Home of the Rohtak Cricket League.
             </p>
           </FadeIn>
 
@@ -116,7 +116,7 @@ export default function About() {
                 Built for Rohtak's Sports Community
               </h2>
               <p className="text-[#6B7280] leading-relaxed mb-5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Alchemy 360 Sports Arena was founded by <strong className="text-[#0D0D0D]">Ram Goyal</strong> with a single goal: to give the people of Rohtak access to world-class sports infrastructure — no compromises.
+                Alchemy 360 was founded by <strong className="text-[#0D0D0D]">Ram Goyal</strong> with a single goal: to give the people of Rohtak access to world-class sports infrastructure — no compromises.
               </p>
               <p className="text-[#6B7280] leading-relaxed mb-5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 What started as a cricket ground has grown into Rohtak's most complete sports destination — multiple sports, an on-site restaurant, digital QR-based entry, and the home of the Rohtak Cricket League (RCL), broadcast live across Haryana.
@@ -194,7 +194,7 @@ export default function About() {
                 Home of the Rohtak Cricket League
               </h2>
               <p className="text-white/55 leading-relaxed mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Alchemy 360 Sports Arena is the official home ground of the <strong className="text-white">Rohtak Cricket League (RCL)</strong> — Rohtak's premier 20-over T20 competition featuring corporate and franchise teams from Rohtak, Haryana, and Delhi NCR.
+                Alchemy 360 is the official home ground of the <strong className="text-white">Rohtak Cricket League (RCL)</strong> — Rohtak's premier 20-over T20 competition featuring corporate and franchise teams from Rohtak, Haryana, and Delhi NCR.
               </p>
               <p className="text-white/55 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 RCL matches are broadcast live on YouTube, Siti Cable, and DEN Networks — making it one of the few local cricket leagues in Haryana with full live television and digital coverage.
@@ -223,7 +223,7 @@ export default function About() {
               <div className="rounded-2xl overflow-hidden border border-white/8">
                 <img
                   src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEP6A9XM-alVILJusO_Ifjrou4zYxU11ifUO2r_Pp2xb-PNxA7lV5vhtFrzmCk3CvcZHoGrtVEWDZ9Aly35PnKv7TVIKs3JVNXyMtsRE7CqUru4Jzvr9sonCeG2npxvlUuWOhhI=s1360-w1360-h1020-rw"
-                  alt="Rohtak Cricket League at Alchemy 360 Sports Arena"
+                  alt="Rohtak Cricket League at Alchemy 360"
                   className="w-full h-72 object-cover"
                 />
               </div>

@@ -70,12 +70,6 @@ export default function MembershipPortal({ embedded = false }) {
 
   const { user, isAuthenticated, checkAuth, googleAuth } = useAuthStore();
 
-  const [details, setDetails] = useState({
-    name: '',
-    email: '',
-    phone: '',
-  });
-
   const [selectedPlanId, setSelectedPlanId] = useState('');
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -128,16 +122,6 @@ export default function MembershipPortal({ embedded = false }) {
       }
     }
   }, [googleAuth]);
-
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      setDetails({
-        name: user.name || '',
-        email: user.email || '',
-        phone: user.phone || '',
-      });
-    }
-  }, [isAuthenticated, user]);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -306,12 +290,14 @@ export default function MembershipPortal({ embedded = false }) {
       toast.error('Please select a membership plan.');
       return;
     }
-    if (isAuthenticated && !user?.phone) {
-      setShowPhoneModal(true);
+    // Sign-in required for every membership type — the API rejects anonymous buyers,
+    // so stop here rather than opening Razorpay on a purchase that cannot complete.
+    if (!isAuthenticated) {
+      toast.error('Please sign in to buy a membership.');
       return;
     }
-    if (!isAuthenticated && (!details.name || !details.email || !details.phone)) {
-      toast.error('Please complete all contact fields.');
+    if (!user?.phone) {
+      setShowPhoneModal(true);
       return;
     }
     if (!scriptLoaded || !window.Razorpay) {
@@ -323,11 +309,7 @@ export default function MembershipPortal({ embedded = false }) {
     try {
       const { data: orderRes } = await api.post('/memberships/public-purchase', {
         planId: selectedPlanId,
-        customerDetails: isAuthenticated ? {
-          name: user.name,
-          email: user.email,
-          phone: user.phone
-        } : details,
+        customerDetails: { name: user.name, email: user.email, phone: user.phone },
       });
 
       if (!orderRes.success) {
@@ -342,9 +324,9 @@ export default function MembershipPortal({ embedded = false }) {
         description: `Membership: ${selectedPlan.name}`,
         order_id: orderRes.rzpOrder.id,
         prefill: {
-          name: isAuthenticated ? user.name : details.name,
-          email: isAuthenticated ? user.email : details.email,
-          contact: validPhone(isAuthenticated ? user.phone : details.phone),
+          name: user.name,
+          email: user.email,
+          contact: validPhone(user.phone),
         },
         theme: { color: '#C5DB3B' },
         handler: async (response) => {
@@ -355,7 +337,7 @@ export default function MembershipPortal({ embedded = false }) {
               razorpayOrderId: response.razorpay_order_id,
               razorpayPaymentId: response.razorpay_payment_id,
               razorpaySignature: response.razorpay_signature,
-              customerDetails: details,
+              customerDetails: { name: user.name, email: user.email, phone: user.phone },
             });
 
             if (verifyRes.success) {
@@ -420,10 +402,7 @@ export default function MembershipPortal({ embedded = false }) {
       <PhoneCollectModal
         open={showPhoneModal}
         onClose={() => setShowPhoneModal(false)}
-        onSuccess={(phone) => {
-          setDetails(d => ({ ...d, phone }));
-          setShowPhoneModal(false);
-        }}
+        onSuccess={() => setShowPhoneModal(false)}
       />
 
       {/* Back button */}
@@ -511,7 +490,7 @@ export default function MembershipPortal({ embedded = false }) {
           >
             <div className="space-y-2">
               <p className="uppercase text-xs tracking-[4px] font-semibold" style={{ color: accentColor }}>
-                Alchemy 360 Academy
+                Alchemy 360
               </p>
               <div className="flex items-center gap-3 flex-wrap">
                 <h2
@@ -795,46 +774,24 @@ export default function MembershipPortal({ embedded = false }) {
                   </div>
                 </div>
               ) : (
+                /* Sign-in required — guest checkout is not supported for any plan type,
+                   so collect an identity here rather than contact fields the API rejects. */
                 <div className="space-y-3 mb-6">
                   <div
-                    className="rounded-2xl p-4"
+                    className="rounded-2xl p-5 text-center"
                     style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
                   >
-                    <p className="text-xs text-white/60 leading-relaxed mb-3" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                      💡 <strong className="text-white/80">No account? No problem!</strong> We will automatically create a secure account for you.
+                    <p className="text-sm font-bold text-white mb-1">Sign in to continue</p>
+                    <p className="text-xs text-white/55 leading-relaxed mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                      Memberships are tied to your account so your QR entry, bookings and renewals all stay in one place.
                     </p>
-                    <div ref={googleButtonRef} className="w-full flex justify-center mt-2" />
-                  </div>
-                  <div className="relative">
-                    <User className="absolute left-4 top-3.5 text-white/40" size={18} />
-                    <input
-                      className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-white/[0.08] text-white placeholder-white/30 focus:border-[#C5DB3B] transition-all text-sm outline-none"
-                      placeholder="Full Name"
-                      value={details.name}
-                      onChange={(e) => setDetails({ ...details, name: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-3.5 text-white/40" size={18} />
-                    <input
-                      className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-white/[0.08] text-white placeholder-white/30 focus:border-[#C5DB3B] transition-all text-sm outline-none"
-                      type="email"
-                      placeholder="Email Address"
-                      value={details.email}
-                      onChange={(e) => setDetails({ ...details, email: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-3.5 text-white/40" size={18} />
-                    <input
-                      className="w-full pl-12 pr-4 py-3 rounded-2xl bg-white/5 border border-white/[0.08] text-white placeholder-white/30 focus:border-[#C5DB3B] transition-all text-sm outline-none"
-                      placeholder="Mobile Phone Number"
-                      value={details.phone}
-                      onChange={(e) => setDetails({ ...details, phone: e.target.value })}
-                      required
-                    />
+                    <div ref={googleButtonRef} className="w-full flex justify-center" />
+                    <Link
+                      to={`/login?redirectTo=${encodeURIComponent(window.location.pathname + window.location.search)}`}
+                      className="mt-4 inline-block text-xs font-bold text-[#C5DB3B] hover:underline"
+                    >
+                      Sign in with email instead
+                    </Link>
                   </div>
                 </div>
               )}

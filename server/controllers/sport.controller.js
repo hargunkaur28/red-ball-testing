@@ -1,4 +1,5 @@
 const Sport = require('../models/Sport');
+const { findConflictingMembership, conflictMessage } = require('../utils/membershipConflict');
 const HeroCard = require('../models/HeroCard');
 const MembershipPlan = require('../models/MembershipPlan');
 const Membership = require('../models/Membership');
@@ -1426,6 +1427,12 @@ exports.entryBuyMembership = async (req, res) => {
     const plan = await MembershipPlan.findById(planId);
     if (!plan) return res.status(404).json({ success: false, message: 'Membership plan not found' });
 
+    // One live membership per sport — reject before Razorpay, not after payment.
+    const conflict = await findConflictingMembership(req.user.userId, plan);
+    if (conflict) {
+      return res.status(409).json({ success: false, message: conflictMessage(conflict, { self: true }) });
+    }
+
     const { createRazorpayOrder } = require('../config/razorpay');
 
     const rzpOrder = await createRazorpayOrder({
@@ -1499,6 +1506,13 @@ exports.entryVerifyMembership = async (req, res) => {
     // 4. Execute inside a transaction
     const result = await runTransaction(async (session) => {
       const opts = session ? { session } : {};
+
+      // Backstop for the entryBuyMembership check — re-run inside the transaction so
+      // two concurrent verifies cannot both slip a clashing membership through.
+      const conflict = await findConflictingMembership(req.user.userId, plan, { session: session || null });
+      if (conflict) {
+        throw new Error(conflictMessage(conflict, { self: true }));
+      }
 
       // A. Create Payment
       const [payment] = await Payment.create([{

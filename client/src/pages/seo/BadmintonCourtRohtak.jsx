@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Where can I play badminton in Rohtak?',
-    a: 'Alchemy 360 Sports Arena has professional badminton courts in Rohtak at Sector 22-D, Jhajjar Road. Courts can be booked online or by walk-in.',
+    a: 'Alchemy 360 has professional badminton courts in Rohtak at Sector 22-D, Jhajjar Road. Courts can be booked online or by walk-in.',
   },
   {
     q: 'Are badminton coaching sessions available at Alchemy 360?',
@@ -17,7 +17,7 @@ const faqs = [
     a: 'Court rental rates are listed on our Book Slots page. Membership plans offer more economical per-session pricing for frequent players.',
   },
   {
-    q: 'Can kids learn badminton at Alchemy 360 Academy?',
+    q: 'Can kids learn badminton at Alchemy 360?',
     a: 'Yes. We have a kids badminton program with age-appropriate coaching for children. Check our Kids\' Sports Academy page for details.',
   },
   {
@@ -46,8 +46,8 @@ export default function BadmintonCourtRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Badminton Court in Rohtak | Book Badminton | Alchemy 360 Sports Arena"
-        description="Play badminton in Rohtak at Alchemy 360 Sports Arena. Professional wooden-floor courts, experienced coaches, kids programs & flexible membership plans. Book online."
+        title="Badminton Court in Rohtak | Book Badminton | Alchemy 360"
+        description="Play badminton in Rohtak at Alchemy 360. Professional wooden-floor courts, experienced coaches, kids programs & flexible membership plans. Book online."
         canonical="/badminton-court-rohtak"
         schema={schema}
       />
@@ -61,10 +61,10 @@ export default function BadmintonCourtRohtak() {
             Badminton Court in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena offers professional-grade badminton courts in Rohtak — wooden-floored, well-lit, and maintained to high standards. Play casually, compete seriously, or learn with an experienced coach.
+            Alchemy 360 offers professional-grade badminton courts in Rohtak — wooden-floored, well-lit, and maintained to high standards. Play casually, compete seriously, or learn with an experienced coach.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/buy-membership?sport=badminton" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>

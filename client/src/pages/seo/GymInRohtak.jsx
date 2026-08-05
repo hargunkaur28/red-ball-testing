@@ -5,8 +5,8 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 
 const faqs = [
   {
-    q: 'Is there a gym at Alchemy 360 Sports Arena in Rohtak?',
-    a: 'Yes. Alchemy 360 Sports Arena has a modern gym in Rohtak with strength, cardio, and conditioning equipment available to members and day-pass users.',
+    q: 'Is there a gym at Alchemy 360 in Rohtak?',
+    a: 'Yes. Alchemy 360 has a modern gym in Rohtak with strength, cardio, and conditioning equipment available to members and day-pass users.',
   },
   {
     q: 'What gym equipment is available at Alchemy 360?',
@@ -17,7 +17,7 @@ const faqs = [
     a: 'Yes. Personal trainers are available on request. Contact us to schedule personal training sessions.',
   },
   {
-    q: 'What are the gym timings at Alchemy 360 Sports Arena?',
+    q: 'What are the gym timings at Alchemy 360?',
     a: 'The gym is open from 5:00 AM to 11:00 PM, seven days a week. Early morning sessions are popular for working professionals and students.',
   },
   {
@@ -46,8 +46,8 @@ export default function GymInRohtak() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Gym in Rohtak | Fitness Centre at Alchemy 360 Sports Arena"
-        description="Modern gym in Rohtak at Alchemy 360 Sports Arena. Free weights, cardio machines, personal training & flexible memberships. Open 5 AM – 11 PM every day."
+        title="Gym in Rohtak | Fitness Centre at Alchemy 360"
+        description="Modern gym in Rohtak at Alchemy 360. Free weights, cardio machines, personal training & flexible memberships. Open 5 AM – 11 PM every day."
         canonical="/gym-in-rohtak"
         schema={schema}
       />
@@ -61,7 +61,7 @@ export default function GymInRohtak() {
             Gym in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 Sports Arena's gym in Rohtak is equipped for serious training. Whether your goal is strength, weight loss, endurance, or athletic performance — train here with the right equipment and expert guidance.
+            Alchemy 360's gym in Rohtak is equipped for serious training. Whether your goal is strength, weight loss, endurance, or athletic performance — train here with the right equipment and expert guidance.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link to="/buy-membership?sport=gym" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -101,7 +101,7 @@ export default function GymInRohtak() {
             Gym + Sports — The Complete Fitness Package
           </h2>
           <p className="text-sm text-[#0D0D0D]/60 mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Combine gym training with cricket, badminton,  at Alchemy 360 for a complete sports fitness routine.
+            Combine gym training with badminton,  at Alchemy 360 for a complete sports fitness routine.
           </p>
           <div className="flex flex-wrap gap-3">
             {[
