@@ -301,6 +301,7 @@ exports.updateSport = async (req, res) => {
     const {
       name, hourlyPrice, dayPrice, oneMonthPrice, threeMonthPrice, sixMonthPrice, twelveMonthPrice,
       active, forceDeactivate, thumbnail, description, tagline, rentalEquipment, heroIcon,
+      heroHref, heroActive,
       slotPricingMode, daySlotPrice, nightSlotPrice, dayStartTime, nightStartTime, nightEndTime,
       trainingAvailable, trainingPrice,
     } = req.body;
@@ -350,6 +351,11 @@ exports.updateSport = async (req, res) => {
     if (tagline !== undefined) sport.tagline = tagline;
     if (rentalEquipment !== undefined) sport.rentalEquipment = rentalEquipment;
     if (heroIcon !== undefined) sport.heroIcon = heroIcon;
+    // heroHref/heroActive drive the homepage hero grid. Without these the Super Admin
+    // "Hide" button and the hero link field silently no-op — the request succeeds but
+    // the value is discarded.
+    if (heroHref !== undefined) sport.heroHref = heroHref;
+    if (heroActive !== undefined) sport.heroActive = heroActive;
     if (slotPricingMode !== undefined) sport.slotPricingMode = slotPricingMode;
     if (daySlotPrice !== undefined) sport.daySlotPrice = daySlotPrice;
     if (nightSlotPrice !== undefined) sport.nightSlotPrice = nightSlotPrice;
@@ -1745,7 +1751,7 @@ exports.createHeroCard = async (req, res) => {
     const card = await HeroCard.create({
       name, tagline, href,
       iconUrl: iconUrl || '',
-      color: color || '#C8102E',
+      color: color || '#C5DB3B',
       order: order ?? 0,
     });
     res.status(201).json({ heroCard: card });

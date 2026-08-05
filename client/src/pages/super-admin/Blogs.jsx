@@ -225,7 +225,7 @@ function PostEditor({ post, onClose }) {
         <div>
           <label className="block text-xs font-semibold text-[#111] mb-1.5">Title <span className="text-red-500">*</span></label>
           <input value={form.title} onChange={set('title')} placeholder="Enter post title"
-            className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#111] transition-colors" />
+            className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm bg-white text-[#111111] focus:outline-none focus:border-[#111] transition-colors" />
         </div>
 
         {/* Slug */}
@@ -239,7 +239,7 @@ function PostEditor({ post, onClose }) {
             onChange={(e) => { setSlugLocked(true); set('slug')(e); }}
             onFocus={() => setSlugLocked(true)}
             placeholder="post-url-slug"
-            className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#111] transition-colors font-mono"
+            className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm bg-white text-[#111111] focus:outline-none focus:border-[#111] transition-colors font-mono"
           />
         </div>
 
@@ -251,7 +251,7 @@ function PostEditor({ post, onClose }) {
           <textarea value={form.excerpt} onChange={set('excerpt')} maxLength={160}
             placeholder="Short description shown in blog listing (max 160 chars)"
             rows={2}
-            className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#111] transition-colors resize-none" />
+            className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm bg-white text-[#111111] focus:outline-none focus:border-[#111] transition-colors resize-none" />
         </div>
 
         {/* Category + Status */}
@@ -259,14 +259,14 @@ function PostEditor({ post, onClose }) {
           <div>
             <label className="block text-xs font-semibold text-[#111] mb-1.5">Category</label>
             <select value={form.category} onChange={set('category')}
-              className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#111] bg-white transition-colors">
+              className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm bg-white text-[#111111] focus:outline-none focus:border-[#111] bg-white transition-colors">
               {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
           <div>
             <label className="block text-xs font-semibold text-[#111] mb-1.5">Status</label>
             <select value={form.status} onChange={set('status')}
-              className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#111] bg-white transition-colors">
+              className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm bg-white text-[#111111] focus:outline-none focus:border-[#111] bg-white transition-colors">
               <option value="draft">Draft</option>
               <option value="published">Published</option>
             </select>
@@ -278,7 +278,7 @@ function PostEditor({ post, onClose }) {
           <div>
             <label className="block text-xs font-semibold text-[#111] mb-1.5">Tags <span className="text-[#999] font-normal">(comma-separated)</span></label>
             <input value={form.tags} onChange={set('tags')} placeholder="badminton, rohtak, sports"
-              className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#111] transition-colors" />
+              className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm bg-white text-[#111111] focus:outline-none focus:border-[#111] transition-colors" />
           </div>
           <div>
             <label className="block text-xs font-semibold text-[#111] mb-1.5">Cover Image</label>
@@ -310,7 +310,7 @@ function PostEditor({ post, onClose }) {
               Meta Title <span className="text-[#999] font-normal">{form.metaTitle.length}/60</span>
             </label>
             <input value={form.metaTitle} onChange={set('metaTitle')} maxLength={60} placeholder="SEO title (max 60 chars)"
-              className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#111] transition-colors bg-white" />
+              className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm bg-white text-[#111111] focus:outline-none focus:border-[#111] transition-colors bg-white" />
           </div>
           <div>
             <label className="block text-xs font-semibold text-[#111] mb-1.5">
@@ -318,12 +318,12 @@ function PostEditor({ post, onClose }) {
             </label>
             <textarea value={form.metaDescription} onChange={set('metaDescription')} maxLength={160} rows={2}
               placeholder="Meta description for search engines (max 160 chars)"
-              className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#111] transition-colors resize-none bg-white" />
+              className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm bg-white text-[#111111] focus:outline-none focus:border-[#111] transition-colors resize-none bg-white" />
           </div>
           <div>
             <label className="block text-xs font-semibold text-[#111] mb-1.5">Meta Keywords <span className="text-[#999] font-normal">(comma-separated)</span></label>
             <input value={form.metaKeywords} onChange={set('metaKeywords')} placeholder="sports, rohtak"
-              className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#111] transition-colors bg-white" />
+              className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm bg-white text-[#111111] focus:outline-none focus:border-[#111] transition-colors bg-white" />
           </div>
         </div>
 

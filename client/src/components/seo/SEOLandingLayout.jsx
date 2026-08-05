@@ -17,7 +17,7 @@ export function CTAStrip() {
           <Link to="/book-slots" className="bg-white text-[#C5DB3B] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#F9F6F1] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             Book Slots
           </Link>
-          <Link to="/buy-membership" className="border-2 border-white text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-white hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <Link to="/book-slots" className="border-2 border-white text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-white hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             Buy Membership
           </Link>
         </div>

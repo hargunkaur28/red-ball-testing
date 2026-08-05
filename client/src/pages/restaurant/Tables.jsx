@@ -214,7 +214,7 @@ export default function Tables() {
                     </label>
                     <input 
                       placeholder="e.g. TBL-01" 
-                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-[#C5DB3B]" 
+                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm text-[#111111] focus:outline-none focus:border-[#C5DB3B]" 
                       value={form.tableNumber} 
                       onChange={e => setForm({...form, tableNumber: e.target.value})} 
                       required 
@@ -227,7 +227,7 @@ export default function Tables() {
                     </label>
                     <input 
                       placeholder="e.g. Premium Table 1" 
-                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-[#C5DB3B]" 
+                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm text-[#111111] focus:outline-none focus:border-[#C5DB3B]" 
                       value={form.label} 
                       onChange={e => setForm({...form, label: e.target.value})} 
                       required 
@@ -239,7 +239,7 @@ export default function Tables() {
                       Seating Section
                     </label>
                     <select 
-                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-[#C5DB3B]" 
+                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm text-[#111111] focus:outline-none focus:border-[#C5DB3B]" 
                       value={form.section} 
                       onChange={e => setForm({...form, section: e.target.value})}
                     >
@@ -256,7 +256,7 @@ export default function Tables() {
                     <input 
                       type="number" 
                       min="1" 
-                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-[#C5DB3B]" 
+                      className="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-sm text-[#111111] focus:outline-none focus:border-[#C5DB3B]" 
                       value={form.capacity} 
                       onChange={e => setForm({...form, capacity: e.target.value})} 
                       required 

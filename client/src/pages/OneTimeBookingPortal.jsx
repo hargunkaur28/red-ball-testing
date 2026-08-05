@@ -445,7 +445,7 @@ export default function OneTimeBookingPortal({ embedded = false }) {
                 if (isAuthenticated) {
                   navigate('/user/buy-memberships');
                 } else {
-                  navigate('/buy-membership');
+                  navigate('/book-slots');
                 }
               }}
               className="relative z-10 px-6 py-3 rounded-xl bg-[#F5A623] text-black font-extrabold uppercase tracking-widest text-xs hover:bg-[#E09410] transition-colors shrink-0 whitespace-nowrap shadow-lg shadow-[#F5A623]/20"

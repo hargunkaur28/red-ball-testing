@@ -349,8 +349,10 @@ export default function UserDashboard() {
         </div>
         <Link
           to="/user/scan"
-          className={`w-full md:w-auto px-6 py-3 rounded-xl text-white font-bold text-sm active:scale-95 transition-all text-center flex items-center justify-center gap-2 ${
-            activeSession ? 'bg-white/12 border border-white/20 hover:bg-white/18' : 'bg-[#C5DB3B] hover:bg-[#96AC2E]'
+          className={`w-full md:w-auto px-6 py-3 rounded-xl font-bold text-sm active:scale-95 transition-all text-center flex items-center justify-center gap-2 ${
+            activeSession
+              ? 'bg-white/12 border border-white/20 hover:bg-white/18 text-white'
+              : 'bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628]'
           }`}
         >
           <QrCode size={16} /> {activeSession ? 'Scan to Check Out' : 'Scan QR Now'}

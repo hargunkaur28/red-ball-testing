@@ -57,7 +57,7 @@ export default function SportsArenaRohtak() {
             <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book a Session
             </Link>
-            <Link to="/buy-membership" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Memberships
             </Link>
           </div>
@@ -95,7 +95,7 @@ export default function SportsArenaRohtak() {
             Alchemy 360 offers two ways to access the facilities. Book individual slots for a specific sport on any day you like, or opt for a monthly, quarterly, or annual membership for unlimited or fixed-quota access at a lower per-session cost.
           </p>
           <div className="flex flex-wrap gap-3 mt-4">
-            <Link to="/buy-membership" className="text-[#C5DB3B] text-sm font-semibold hover:underline" style={{ fontFamily: "'DM Sans', sans-serif" }}>Membership Plans →</Link>
+            <Link to="/book-slots" className="text-[#C5DB3B] text-sm font-semibold hover:underline" style={{ fontFamily: "'DM Sans', sans-serif" }}>Membership Plans →</Link>
           </div>
         </div>
       </section>

@@ -73,12 +73,12 @@ export default function About() {
         </div>
         <div className="max-w-5xl mx-auto px-4 sm:px-8 relative z-10">
           <FadeIn>
-            <p className="text-[#C5DB3B] text-xs font-black uppercase tracking-[0.25em] mb-4">Rohtak, Haryana · Est. Alchemy 360</p>
+            <p className="text-[#C5DB3B] text-xs font-black uppercase tracking-[0.25em] mb-4">Rohtak, Haryana</p>
             <h1
               className="text-white leading-none mb-6"
               style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(3rem, 8vw, 6rem)', letterSpacing: '2px' }}
             >
-              About Alchemy 360<br />Sports Arena
+              About<br />Alchemy 360
             </h1>
             <p className="text-white/55 text-lg max-w-2xl leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Rohtak's most comprehensive private multi-sport complex — badminton, pickleball, and gym under one roof.
@@ -214,7 +214,7 @@ export default function About() {
                 Book a Slot <ArrowRight size={14} />
               </Link>
               <Link
-                to="/buy-membership"
+                to="/book-slots"
                 className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border-2 border-[#0D0D0D] text-[#0D0D0D] font-bold hover:bg-[#0D0D0D] hover:text-white transition-all"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >

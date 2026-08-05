@@ -5,7 +5,7 @@ const heroCardSchema = new mongoose.Schema({
   tagline:  { type: String, required: true, trim: true },
   href:     { type: String, required: true, trim: true },
   iconUrl:  { type: String, default: '' },
-  color:    { type: String, default: '#C8102E' },
+  color:    { type: String, default: '#C5DB3B' },
   order:    { type: Number, default: 0 },
   active:   { type: Boolean, default: true },
 }, { timestamps: true });

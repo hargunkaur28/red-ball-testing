@@ -132,7 +132,7 @@ const css = `
 
 .btn-start {
   background: linear-gradient(135deg, #C5DB3B, #96AC2E);
-  color: #fff;
+  color: #0A1628;
   box-shadow: 0 18px 32px rgba(197, 219, 59, 0.22);
 }
 .btn-start:hover { transform: translateY(-1px); filter: brightness(1.04); }

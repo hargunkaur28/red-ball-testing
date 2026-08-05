@@ -11,7 +11,7 @@ const MARQUEE_SPEED = 1.5; // px per frame @ 60fps
 export default function ComboCarousel({
   comboFamilies = [],
   sportsBySlug = {},
-  membershipPath = '/buy-membership',
+  membershipPath = '/book-slots',
   showArrows = true,
   isMarquee = true,
 }) {

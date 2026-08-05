@@ -370,7 +370,7 @@ export default function Communication() {
                 <div>
                   <label className="block text-sm font-medium text-[#666] mb-1">Status</label>
                   <select 
-                    className="w-full border border-[#EAEAEA] rounded-lg p-2 text-sm outline-none"
+                    className="w-full border border-[#EAEAEA] rounded-lg p-2 text-sm outline-none bg-white text-[#111111]"
                     value={editingReview.status}
                     onChange={e => setEditingReview({...editingReview, status: e.target.value})}
                   >
@@ -386,7 +386,7 @@ export default function Communication() {
                     type="number" 
                     min="1" 
                     max="5"
-                    className="w-full border border-[#EAEAEA] rounded-lg p-2 text-sm outline-none"
+                    className="w-full border border-[#EAEAEA] rounded-lg p-2 text-sm outline-none bg-white text-[#111111]"
                     value={editingReview.rating}
                     onChange={e => setEditingReview({...editingReview, rating: Number(e.target.value)})}
                   />
@@ -396,7 +396,7 @@ export default function Communication() {
                   <label className="block text-sm font-medium text-[#666] mb-1">Comment</label>
                   <textarea 
                     rows={4}
-                    className="w-full border border-[#EAEAEA] rounded-lg p-2 text-sm outline-none resize-none"
+                    className="w-full border border-[#EAEAEA] rounded-lg p-2 text-sm outline-none resize-none bg-white text-[#111111]"
                     value={editingReview.comment}
                     onChange={e => setEditingReview({...editingReview, comment: e.target.value})}
                   />

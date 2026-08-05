@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../lib/axios';
 import { toast } from 'sonner';
-import { Star, MessageSquare, Utensils, Dumbbell } from 'lucide-react';
+import { Star, MessageSquare } from 'lucide-react';
 
 const SERVICE_SUBCATEGORIES = [
   { value: 'badminton',    label: 'Badminton',              emoji: '🏸' },
@@ -43,7 +43,9 @@ function categoryLabel(review) {
 
 export default function UserReviews() {
   const qc = useQueryClient();
-  const [group, setGroup] = useState('services'); // 'food' | 'services'
+  // Food reviews retired with the restaurant module. FOOD_SUBCATEGORIES is kept below
+  // so reviews already stored with category 'food' still render with a proper label.
+  const group = 'services';
   const [subCategory, setSubCategory] = useState('');
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
@@ -64,11 +66,6 @@ export default function UserReviews() {
     },
     onError: (err) => toast.error(err.response?.data?.message || 'Could not submit review'),
   });
-
-  const handleGroupChange = (g) => {
-    setGroup(g);
-    setSubCategory('');
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -91,7 +88,7 @@ export default function UserReviews() {
       <div>
         <p className="text-xs font-bold uppercase tracking-[0.32em] text-[#C5DB3B]">Alchemy 360</p>
         <h1 className="mt-3 text-3xl font-black sm:text-4xl tracking-tight text-white">Reviews</h1>
-        <p className="mt-2 text-sm text-white/50">Share your experience with our food and services</p>
+        <p className="mt-2 text-sm text-white/50">Share your experience with our services</p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -101,41 +98,10 @@ export default function UserReviews() {
             <h3 className="text-lg font-black text-white">Write a Review</h3>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Step 1 — Group */}
-              <div>
-                <label className="mb-2 block text-xs font-black uppercase tracking-[0.18em] text-white/38">What are you reviewing?</label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleGroupChange('services')}
-                    className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl border p-3 transition ${
-                      group === 'services'
-                        ? 'border-[#C5DB3B] bg-[#C5DB3B] text-[#0A1628] font-bold'
-                        : 'border-white/10 bg-white/4 text-white/58 hover:bg-white/[0.07]'
-                    }`}
-                  >
-                    <Dumbbell size={18} />
-                    <span className="text-xs font-bold">Services</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleGroupChange('food')}
-                    className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl border p-3 transition ${
-                      group === 'food'
-                        ? 'border-[#C5DB3B] bg-[#C5DB3B] text-[#0A1628] font-bold'
-                        : 'border-white/10 bg-white/4 text-white/58 hover:bg-white/[0.07]'
-                    }`}
-                  >
-                    <Utensils size={18} />
-                    <span className="text-xs font-bold">Food</span>
-                  </button>
-                </div>
-              </div>
-
               {/* Step 2 — Sub-category */}
               <div>
                 <label className="mb-2 block text-xs font-black uppercase tracking-[0.18em] text-white/38">
-                  {group === 'food' ? 'Food Category' : 'Service Type'}
+                  Service Type
                 </label>
                 <div className="grid grid-cols-3 gap-1.5">
                   {subOptions.map((opt) => (

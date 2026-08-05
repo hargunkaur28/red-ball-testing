@@ -12,7 +12,7 @@ const programs = [
 
 const quickLinks = [
   { label: 'About Us', to: '/about' },
-  { label: 'Membership Plans', to: '/buy-membership' },
+  { label: 'Membership Plans', to: '/book-slots' },
   { label: 'Book a Ground', to: '/book-slots' },
   { label: 'Contact', href: '#contact' },
 ];

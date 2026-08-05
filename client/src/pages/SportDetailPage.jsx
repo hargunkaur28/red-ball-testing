@@ -172,7 +172,7 @@ function BottomExploreSection({ currentSlug, embedded }) {
     });
   }, [plansData, currentSlug]);
 
-  const membershipPath = embedded ? '/user/buy-memberships' : '/buy-membership';
+  const membershipPath = embedded ? '/user/buy-memberships' : '/book-slots';
   const sportLinkPrefix = embedded ? '/user/sports' : '/sports';
 
   if (!others.length && !comboFamilies.length) return null;
