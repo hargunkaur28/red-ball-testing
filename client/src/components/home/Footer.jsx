@@ -86,7 +86,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-[#0D0D0D]/60 text-sm italic mb-5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-              "Where Every Delivery Counts."
+              "Play. Train. Dominate."
             </p>
             <div className="flex items-center gap-3">
               <a href="#" target="_blank" rel="noopener noreferrer"
