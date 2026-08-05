@@ -48,7 +48,7 @@ export default function GymGurgaon() {
     <SEOLandingLayout>
       <SEOHead
         title="Gym Near Gurgaon | Alchemy 360 Rohtak"
-        description="Gym near Gurgaon — Alchemy 360, Rohtak, 90 km / 90 min away. Sports-complex gym, Box 360 cricket, online booking, on-site restaurant."
+        description="Gym near Gurgaon — Alchemy 360, Rohtak, 90 km / 90 min away. Sports-complex gym, online booking, coaching."
         canonical="/gym-gurgaon"
         schema={schema}
       />
@@ -64,7 +64,7 @@ export default function GymGurgaon() {
             Gurgaon (Gurugram) has no shortage of gyms, but Alchemy 360 in Rohtak offers something they can't — a gymnasium embedded in a full multi-sport complex, 90 km and 90 minutes away. For Gurgaon fitness and sports enthusiasts who want to swap the city gym for a real sports environment, this drive is one of the best decisions you'll make on a weekend.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Gym
             </Link>
             <Link to="/gym-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -84,7 +84,7 @@ export default function GymGurgaon() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: 'Escape the City Gym', desc: "Gurgaon's commercial gyms are fine, but Alchemy 360's gymnasium inside a live sports complex offers a completely different training energy." },
-            { title: 'Multi-Sport on One Visit', desc: 'Train in the gym, then play Box 360 cricket or badminton, or swim. Gurgaon visitors who plan ahead can pack all of it into one Alchemy 360 day.' },
+            { title: 'Multi-Sport on One Visit', desc: 'Train in the gym, then play badminton or pickleball. Gurgaon visitors who plan ahead can pack all of it into one Alchemy 360 day.' },
             { title: 'Eat Well, Drive Back', desc: "Alchemy 360's on-site restaurant ensures Gurgaon visitors don't spend time hunting for food after a training session before the 90-minute return drive." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">

@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'What coaching programmes does Alchemy 360 offer for Bahadurgarh students?',
-    a: 'Alchemy 360 offers structured coaching in cricket (including the unique Box 360 circular format), badminton, pickleball. Batch timings are flexible to accommodate commuting students.',
+    a: 'Alchemy 360 offers structured coaching in badminton, pickleball. Batch timings are flexible to accommodate commuting students.',
   },
   {
     q: 'Can I get a sports academy membership from Bahadurgarh?',
@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'Is Alchemy 360 better than local sports options in Bahadurgarh?',
-    a: 'Alchemy 360 provides a professional multi-sport environment that is difficult to match locally — certified coaches, maintained facilities, and the only Box 360 circular cricket ground in Rohtak. The 40-minute drive is a small price for serious training.',
+    a: 'Alchemy 360 provides a professional multi-sport environment that is difficult to match locally — certified coaches and well-maintained facilities. The 40-minute drive is a small price for serious training.',
   },
 ];
 
@@ -65,7 +65,7 @@ export default function SportsAcademyBahadurgarh() {
             Bahadurgarh athletes deserve professional-grade training. Alchemy 360 in Rohtak is 45 km away — a 40-minute drive — and offers the kind of multi-sport coaching infrastructure that simply doesn't exist in the immediate Bahadurgarh area. Whether it's badminton or pickleball, the drive pays off.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join the Academy
             </Link>
             <Link to="/sports-academy-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -80,12 +80,12 @@ export default function SportsAcademyBahadurgarh() {
           Why Bahadurgarh Athletes Train at Alchemy 360
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Bahadurgarh sits at the crossroads of Haryana and Delhi NCR, yet lacks a dedicated multi-sport academy with the breadth Alchemy 360 offers. Players and parents from Bahadurgarh make the 40-minute journey to Rohtak because the quality is worth it — Box 360 circular cricket (Rohtak's first 24/7 ground), professional badminton courts, a pickleball setup, all in one complex. Coaches at Alchemy 360 have years of competitive and training experience, and batch sizes are kept manageable for proper attention.
+          Bahadurgarh sits at the crossroads of Haryana and Delhi NCR, yet lacks a dedicated multi-sport academy with the breadth Alchemy 360 offers. Players and parents from Bahadurgarh make the 40-minute journey to Rohtak because the quality is worth it — professional badminton courts (Rohtak's first 24/7 ground), professional badminton courts, a pickleball setup, all in one complex. Coaches at Alchemy 360 have years of competitive and training experience, and batch sizes are kept manageable for proper attention.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: '40 Min Drive, World-Class Training', desc: 'The 45 km journey from Bahadurgarh to Alchemy 360 on Jhajjar Road is smooth and direct — a small investment for access to Haryana\'s premier multi-sport facility.' },
-            { title: 'Cricket + Racket Sports', desc: 'From Box 360 circular cricket to badminton and pickleball courts — Alchemy 360 covers every major sport under one roof.' },
+            { title: 'Racket Sports', desc: 'From badminton to pickleball courts and a modern gym — Alchemy 360 covers every major sport under one roof.' },
             { title: 'Train Hard, Eat Well + Restaurant', desc: 'Post-training recovery matters. Alchemy 360\'s on-site restaurant lets Bahadurgarh athletes refuel with a proper meal before the drive home.' },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">

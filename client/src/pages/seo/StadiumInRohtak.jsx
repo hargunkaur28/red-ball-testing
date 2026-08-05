@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'Is Alchemy 360 a full stadium in Rohtak?',
-    a: 'Alchemy 360 is a modern multi-sport complex in Rohtak with floodlit courts, a covered box cricket ground, gym, and sports facilities — comparable to a community sports stadium.',
+    a: 'Alchemy 360 is a modern multi-sport complex in Rohtak with floodlit courts, a gym, and professional coaching — comparable to a community sports stadium.',
   },
   {
     q: 'Can I rent the sports complex for tournaments or events?',
@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'What facilities are available at the arena?',
-    a: 'The arena has box cricket grounds, badminton courts, pickleball courts, a modern gym, a restaurant, and a kids sports zone.',
+    a: 'The arena has badminton courts, pickleball courts, and a modern gym.',
   },
   {
     q: 'Is the ground available for early morning sessions?',
@@ -56,10 +56,10 @@ export default function StadiumInRohtak() {
             Stadium in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 is Rohtak's premier sports complex — a full-featured venue with cricket grounds, racquet sports courts, aquatic facilities, and a modern gym, all under one roof.
+            Alchemy 360 is Rohtak's premier sports complex — a full-featured venue with racquet sports courts and a modern gym, all under one roof.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book a Ground
             </Link>
           </div>

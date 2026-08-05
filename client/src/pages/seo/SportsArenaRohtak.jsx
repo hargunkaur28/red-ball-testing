@@ -51,10 +51,10 @@ export default function SportsArenaRohtak() {
             Sports Arena in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 brings world-class sports infrastructure to Rohtak. From floodlit cricket pitches to Olympic-standard courts, everything you need to play, train, and compete is here.
+            Alchemy 360 brings world-class sports infrastructure to Rohtak. From floodlit badminton courts to a fully equipped gym, everything you need to play, train, and compete is here.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book a Session
             </Link>
             <Link to="/buy-membership" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -69,7 +69,7 @@ export default function SportsArenaRohtak() {
           Play Every Sport, All in One Place
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Alchemy 360 in Rohtak is designed to be the city's go-to sports destination. Whether you love cricket, prefer racquet sports, or want to lift weights — you'll find it all here with professional-grade equipment and expert coaching.
+          Alchemy 360 in Rohtak is designed to be the city's go-to sports destination. Whether you prefer racquet sports or want to lift weights — you'll find it all here with professional-grade equipment and expert coaching.
         </p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {[

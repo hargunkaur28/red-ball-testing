@@ -40,7 +40,7 @@ export default function FloatingScanButton() {
             <button
               onClick={handleClick}
               aria-label="Scan QR to Check-In"
-              className="flex items-center gap-1.5 pl-2.5 pr-3.5 h-10 rounded-full bg-primary text-white shadow-[0_4px_20px_rgba(197, 219, 59,0.45)] hover:bg-[#96AC2E] transition-all duration-200 hover:scale-105"
+              className="flex items-center gap-1.5 pl-2.5 pr-3.5 h-10 rounded-full bg-primary text-[#0A1628] shadow-[0_4px_20px_rgba(197, 219, 59,0.45)] hover:bg-[#96AC2E] transition-all duration-200 hover:scale-105"
             >
               <ScanLine size={22} className="shrink-0" />
               <span className="text-sm font-bold tracking-wide whitespace-nowrap" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -71,7 +71,7 @@ export default function FloatingScanButton() {
             <Link
               to="/login?redirectTo=/user/scan"
               onClick={() => setShowMenu(false)}
-              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-primary hover:bg-[#96AC2E] text-white text-sm font-bold transition-all mb-2"
+              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-primary hover:bg-[#96AC2E] text-[#0A1628] text-sm font-bold transition-all mb-2"
             >
               <LogIn size={16} /> Login / Sign Up
             </Link>

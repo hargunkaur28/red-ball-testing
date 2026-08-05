@@ -24,15 +24,6 @@ const seoLinks = [
   { label: 'Gym in Rohtak', to: '/gym-in-rohtak' },
 ];
 
-// Instagram SVG
-const InstagramIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="2" width="20" height="20" rx="5" />
-    <circle cx="12" cy="12" r="5" />
-    <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
-  </svg>
-);
-
 // Facebook SVG
 const FacebookIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -98,11 +89,7 @@ export default function Footer() {
               "Where Every Delivery Counts."
             </p>
             <div className="flex items-center gap-3">
-              <a href="https://www.instagram.com/red_ball_cricket_ground/" target="_blank" rel="noopener noreferrer"
-                 className="social-icon text-[#0D0D0D]/50 hover:text-[#C5DB3B] hover:scale-[1.2] transition-all duration-200">
-                <InstagramIcon />
-              </a>
-              <a href="https://www.facebook.com/RBCGRohtak/" target="_blank" rel="noopener noreferrer"
+              <a href="#" target="_blank" rel="noopener noreferrer"
                  className="social-icon text-[#0D0D0D]/50 hover:text-[#C5DB3B] hover:scale-[1.2] transition-all duration-200">
                 <FacebookIcon />
               </a>

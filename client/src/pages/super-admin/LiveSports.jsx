@@ -419,7 +419,7 @@ function CourtDetailPanel({ group, sport, date, onClose, onManualPayment, onTogg
                     <button type="button" onClick={() => setShowCreateSlot(false)}
                       className="flex-1 py-2 rounded-xl border border-[#EAEAEA] text-[11px] font-medium text-[#666] hover:bg-[#F0F0F0]">Cancel</button>
                     <button type="submit" disabled={creating}
-                      className="flex-1 py-2 rounded-xl bg-[#C5DB3B] text-white text-[11px] font-bold flex items-center justify-center gap-1.5 hover:bg-[#96AC2E] disabled:opacity-60">
+                      className="flex-1 py-2 rounded-xl bg-[#C5DB3B] text-[#0A1628] text-[11px] font-bold flex items-center justify-center gap-1.5 hover:bg-[#96AC2E] disabled:opacity-60">
                       {creating ? <Loader2 size={12} className="animate-spin" /> : <Plus size={12} />} Create Slot
                     </button>
                   </div>
@@ -645,7 +645,7 @@ function AddCourtModal({ sport, onClose, onSuccess }) {
           <div className="flex gap-3">
             <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-[#EAEAEA] text-sm font-medium text-[#666] hover:bg-[#F5F5F5]">Cancel</button>
             <button type="submit" disabled={saving}
-              className="flex-1 py-2.5 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-2">
+              className="flex-1 py-2.5 rounded-xl bg-[#C5DB3B] text-[#0A1628] text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-2">
               {saving ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />} Add Court
             </button>
           </div>
@@ -803,7 +803,7 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
                 {result.skippedClosedCourts} closed court{result.skippedClosedCourts !== 1 ? 's' : ''} skipped
               </div>
             )}
-            <button onClick={onClose} className="w-full py-2.5 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E]">Close</button>
+            <button onClick={onClose} className="w-full py-2.5 rounded-xl bg-[#C5DB3B] text-[#0A1628] text-sm font-semibold hover:bg-[#96AC2E]">Close</button>
           </div>
         ) : courts.length === 0 ? (
           <div className="p-6 flex flex-col items-center gap-4 text-center">
@@ -1035,7 +1035,7 @@ function BulkSlotModal({ sport, courts, onClose, onSuccess, initialCourtIds }) {
               </button>
               <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-[#EAEAEA] text-sm font-medium text-[#666] hover:bg-[#F5F5F5]">Cancel</button>
               <button type="submit" disabled={saving || clearing || !form.courtIds.length || !form.weekdays.length}
-                className="flex-1 py-2.5 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-2">
+                className="flex-1 py-2.5 rounded-xl bg-[#C5DB3B] text-[#0A1628] text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-2">
                 {saving ? <Loader2 size={15} className="animate-spin" /> : <Zap size={15} />}
                 {saving ? 'Creating…' : 'Create Slots'}
               </button>
@@ -1468,7 +1468,7 @@ function ManualPaymentModal({ slot, onClose, onSuccess }) {
           <div className="flex gap-3">
             <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-xl border border-[#EAEAEA] text-sm font-medium text-[#666] hover:bg-[#F5F5F5]">Cancel</button>
             <button type="submit" disabled={submitting}
-              className="flex-1 py-2.5 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-2">
+              className="flex-1 py-2.5 rounded-xl bg-[#C5DB3B] text-[#0A1628] text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-2">
               {submitting ? <Loader2 size={15} className="animate-spin" /> : <Check size={15} />} Confirm
             </button>
           </div>
@@ -1891,7 +1891,7 @@ export default function LiveSports() {
                   <Building2 size={13} /> Add Court
                 </button>
                 <button onClick={() => { setBulkCourtPreselect(null); setShowBulkModal(true); }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C5DB3B] text-white text-xs font-semibold hover:bg-[#96AC2E]">
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C5DB3B] text-[#0A1628] text-xs font-semibold hover:bg-[#96AC2E]">
                   <Zap size={13} /> Bulk Create Slots
                 </button>
                 <button onClick={() => { setBulkCourtPreselect(null); setShowBulkDeleteModal(true); }}
@@ -1916,7 +1916,7 @@ export default function LiveSports() {
                     <Plus size={13} /> Add Court
                   </button>
                   <button onClick={() => { if (courts.length) { setBulkCourtPreselect(null); setShowBulkModal(true); } else toast.info('Add a court first.'); }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C5DB3B] text-white text-xs font-semibold hover:bg-[#96AC2E]">
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C5DB3B] text-[#0A1628] text-xs font-semibold hover:bg-[#96AC2E]">
                     <Zap size={13} /> Bulk Create Slots
                   </button>
                   <button onClick={() => { if (courts.length) { setBulkCourtPreselect(null); setShowBulkDeleteModal(true); } else toast.info('Add a court first.'); }}

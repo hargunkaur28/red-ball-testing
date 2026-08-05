@@ -9,7 +9,7 @@ export const blogPosts = [
     author: 'Alchemy 360',
     imagePrompt: 'Professional badminton court with wooden flooring at Alchemy 360 Rohtak. Two players mid-rally, one executing a smash, the other in defensive position. Bright court lighting, professional net, BWF-standard court markings. Sports action photography.',
     tags: ['badminton court', 'rohtak', 'badminton booking', 'badminton coaching'],
-    intro: 'Badminton is India\'s second most popular sport after cricket, and Rohtak\'s badminton community is growing rapidly. Whether you play for fitness, competition, or simply the joy of the game, having access to a quality court with the right surface, lighting, and atmosphere makes a significant difference. This guide covers everything about badminton in Rohtak — from court booking to coaching programs.',
+    intro: 'Badminton is one of India\'s most popular sports, and Rohtak\'s badminton community is growing rapidly. Whether you play for fitness, competition, or simply the joy of the game, having access to a quality court with the right surface, lighting, and atmosphere makes a significant difference. This guide covers everything about badminton in Rohtak — from court booking to coaching programs.',
     sections: [
       {
         heading: 'Badminton Courts at Alchemy 360',
@@ -61,7 +61,7 @@ export const blogPosts = [
       },
       {
         heading: 'Why Pickleball is Exploding in India',
-        body: 'Pickleball has grown from 4.8 million US players in 2022 to over 36 million by 2026, and India is now experiencing the same explosion. The reasons are straightforward: the game is easy to learn (most beginners can have a fun rally within 15 minutes), physically accessible for players from age 8 to 80, and requires a smaller court than tennis — making it easier to build facilities at existing sports complexes.\n\nFor India specifically, pickleball appeals because it bridges the gap between casual and competitive play in a way that cricket and badminton don\'t fully serve. It\'s competitive enough to be deeply satisfying for athletes, but accessible enough for complete beginners to enjoy from the first session. Corporate teams particularly love pickleball for exactly this reason — everyone can participate meaningfully regardless of athletic background.',
+        body: 'Pickleball has grown from 4.8 million US players in 2022 to over 36 million by 2026, and India is now experiencing the same explosion. The reasons are straightforward: the game is easy to learn (most beginners can have a fun rally within 15 minutes), physically accessible for players from age 8 to 80, and requires a smaller court than tennis — making it easier to build facilities at existing sports complexes.\n\nFor India specifically, pickleball appeals because it bridges the gap between casual and competitive play in a way that badminton alone doesn\'t fully serve. It\'s competitive enough to be deeply satisfying for athletes, but accessible enough for complete beginners to enjoy from the first session. Corporate teams particularly love pickleball for exactly this reason — everyone can participate meaningfully regardless of athletic background.',
       },
       {
         heading: 'Pickleball at Alchemy 360, Rohtak',
@@ -73,11 +73,11 @@ export const blogPosts = [
       },
       {
         heading: 'Corporate Pickleball Events at Alchemy 360',
-        body: 'Pickleball has become a corporate events favourite because of its accessibility and quick learning curve. A company with zero pickleball experience can have a functioning corporate tournament within 30 minutes of arriving at the courts — far faster than cricket or badminton. Alchemy 360 offers corporate pickleball packages including court reservation, equipment, brief coaching introduction, and tournament format.\n\nFor companies looking for something fresh and different from the standard cricket corporate day, pickleball offers novelty, competition, and genuine entertainment. Teams from across Haryana and Delhi NCR have begun including pickleball as part of their corporate sports events at Alchemy 360.',
+        body: 'Pickleball has become a corporate events favourite because of its accessibility and quick learning curve. A company with zero pickleball experience can have a functioning corporate tournament within 30 minutes of arriving at the courts — far faster than most court sports. Alchemy 360 offers corporate pickleball packages including court reservation, equipment, brief coaching introduction, and tournament format.\n\nFor companies looking for something fresh and different from the standard corporate sports day, pickleball offers novelty, competition, and genuine entertainment. Teams from across Haryana and Delhi NCR have begun including pickleball as part of their corporate sports events at Alchemy 360.',
       },
       {
         heading: 'The Future of Pickleball in Rohtak and Haryana',
-        body: 'Haryana has historically been one of India\'s strongest sports states — producing Olympic wrestlers, boxers, and cricketers in disproportionate numbers relative to its population. As pickleball grows nationally, Haryana\'s athletic culture positions it to produce competitive pickleball players at both state and national levels.\n\nAlchemy 360 intends to be at the centre of this growth in Rohtak. Plans for regular pickleball tournaments, structured coaching programs, and eventually a Rohtak Pickleball League are in development. Joining Alchemy 360\'s pickleball community now means being part of the sport\'s story in Haryana from the very beginning.',
+        body: 'Haryana has historically been one of India\'s strongest sports states — producing Olympic wrestlers and boxers in disproportionate numbers relative to its population. As pickleball grows nationally, Haryana\'s athletic culture positions it to produce competitive pickleball players at both state and national levels.\n\nAlchemy 360 intends to be at the centre of this growth in Rohtak. Plans for regular pickleball tournaments, structured coaching programs, and eventually a Rohtak Pickleball League are in development. Joining Alchemy 360\'s pickleball community now means being part of the sport\'s story in Haryana from the very beginning.',
       },
     ],
     faqs: [
@@ -85,50 +85,6 @@ export const blogPosts = [
       { q: 'How is pickleball different from tennis?', a: 'Pickleball uses a smaller court, a solid paddle instead of a strung racquet, an underhand serve, and a plastic wiffle ball. The game is slower than tennis but more strategic.' },
       { q: 'Is pickleball good exercise?', a: 'Yes. Pickleball provides good cardiovascular exercise, improves balance and reflexes, and is low-impact on joints making it suitable for all ages including older adults.' },
       { q: 'Can children play pickleball at Alchemy 360?', a: 'Yes. Pickleball is excellent for children. The smaller court size and lighter ball make it accessible and fun for kids from age 8 upwards.' },
-    ],
-  },
-  {
-    slug: 'corporate-sports-events-rohtak',
-    title: 'Corporate Sports Events in Rohtak: How to Organise a Successful Cricket Tournament',
-    metaDescription: 'Step-by-step guide to organising a corporate cricket tournament in Rohtak at Alchemy 360 — planning, logistics, formats, food, and making it a day to remember.',
-    h1: 'Corporate Sports Events in Rohtak: The Complete Organiser\'s Guide',
-    category: 'Events',
-    date: '2026-06-12',
-    author: 'Alchemy 360',
-    imagePrompt: 'Corporate cricket tournament at Alchemy 360 Rohtak. Teams in matching company jerseys, scoreboard visible, spectators watching from seating area, food stalls in background. Corporate sports day photography, natural afternoon light.',
-    tags: ['corporate cricket', 'rohtak', 'corporate sports events', 'team building'],
-    intro: 'Cricket has an almost magical ability to bring office colleagues together. The shared experience of competing, supporting teammates, and celebrating (or commiserating) creates bonds that no boardroom team-building exercise can replicate. Organising a corporate cricket event in Rohtak has never been easier with Alchemy 360 — but getting the details right makes the difference between a forgettable afternoon and a legendary company sports day.',
-    sections: [
-      {
-        heading: 'Why Corporate Cricket Events Work',
-        body: 'Research consistently shows that shared physical experiences create stronger social bonds than shared intellectual experiences. Cricket specifically — with its mix of individual skill moments (a good catch, a key wicket) and collective strategy (field placements, batting order decisions) — mirrors the dynamics of office teamwork in a way that resonates instinctively with participants.\n\nThe psychological dynamic of facing a challenge together — even a recreational one like a cricket match — activates team cohesion mechanisms that carry back into the workplace. Employees who play together tend to communicate better, trust each other more, and collaborate more effectively on work projects. This is why leading Indian companies allocate budget specifically for corporate sports events.',
-      },
-      {
-        heading: 'Choosing the Right Format for Your Corporate Cricket Event',
-        body: 'The format you choose determines the experience. For small teams (under 30 people), a single round-robin tournament with four teams playing 6-over box cricket matches works perfectly — everyone gets significant playing time and the day wraps up in 4–5 hours. For larger groups (50–200 people), a full-day knockout tournament with multiple courts running simultaneously is more appropriate.\n\nBox cricket (6-a-side, 6 overs) is the standard corporate cricket format at Alchemy 360. It balances involvement — everyone bats multiple times — with speed, keeping the energy high throughout the day. For groups with mixed cricket ability, consider a \'pairs batting\' format where two batters bat together and share runs, reducing the pressure on individuals with limited cricket experience.',
-      },
-      {
-        heading: 'Planning Timeline for a Corporate Cricket Event',
-        body: 'The golden rule of corporate event planning is: book your venue earlier than you think you need to. Alchemy 360\'s cricket ground weekends fill up 3–4 weeks in advance during cricket season. For large corporate events (100+ employees), booking 6–8 weeks ahead is strongly recommended.\n\nA realistic planning timeline: 6–8 weeks out — book the venue and confirm ground availability. 4 weeks out — communicate event details to employees, open team registrations, plan format and team composition. 2 weeks out — confirm team registrations, finalise catering arrangements, arrange for jerseys or bibs if desired. 1 week out — confirm all logistics with Alchemy 360, share final schedule with participants. Day before — confirm QR codes, prepare equipment list, brief team captains.',
-      },
-      {
-        heading: 'Making the Day Memorable',
-        body: 'The difference between a good corporate cricket day and a great one is in the details that teams remember. Personalised jerseys with company name and player number are surprisingly affordable and create a sense of occasion — players who have a jersey to wear feel like they\'re playing a real match, not just a casual game. Consider printing the tournament name (e.g., "Company Name Premier League 2026") on the jerseys.\n\nA trophy ceremony at the end of the day is essential. Even a modest trophy means something. Announce a "Man of the Match" for each game. Keep statistics — runs scored, wickets taken — and share them on the company communication channel afterwards. These details cost little and extend the event\'s social life well beyond the day itself.',
-      },
-      {
-        heading: 'Food and Catering at Alchemy 360',
-        body: 'Alchemy 360\'s on-site food court can handle corporate event catering for groups of 20 to 200+ people. In-ground food delivery during matches means players don\'t need to leave the ground to eat — a significant logistical advantage for full-day events. Pre-event breakfast packages, mid-day lunch packages, and post-event dinner arrangements can all be discussed with the Alchemy 360 team.\n\nFor corporate events, consider a buffet arrangement over individual ordering — it simplifies logistics, accommodates dietary preferences, and creates a more social lunch experience. Alchemy 360\'s kitchen can prepare North Indian cuisine, snacks, and beverages suitable for the energy demands of a full day of sports.',
-      },
-      {
-        heading: 'Beyond Cricket: Making It a Full Sports Day',
-        body: 'Alchemy 360\'s multi-sport facilities mean your corporate event doesn\'t have to end with cricket. For employees who don\'t play cricket or want additional activities, Alchemy 360 offers badminton, pickleball, and gym access that can be incorporated into a full corporate sports day schedule.\n\nA popular format: cricket tournament from 9 AM to 2 PM, lunch break from 2 PM to 3 PM, then free choice of badminton, pickleball, or swimming from 3 PM to 5 PM, followed by prize ceremony and dinner. This structure ensures maximum participation from all employees — even those who aren\'t cricket fans — and creates a complete, memorable corporate sports day experience.',
-      },
-    ],
-    faqs: [
-      { q: 'How much does a corporate cricket event at Alchemy 360 cost?', a: 'Pricing depends on number of teams, event duration, catering requirements, and additional services. Contact Alchemy 360 at +91 93500 76653 for a customised corporate event quote.' },
-      { q: 'Can Alchemy 360 provide umpires for our corporate cricket tournament?', a: 'Yes. Umpire arrangements are included in corporate tournament packages. Professional umpires ensure fair play and manage match flow professionally.' },
-      { q: 'Can we get company-branded trophies and medals through Alchemy 360?', a: 'Alchemy 360 can coordinate with trophy suppliers for customised corporate event trophies. Discuss requirements during the booking process.' },
-      { q: 'Is there a minimum team size for a corporate cricket booking?', a: 'Minimum recommended group is 20 people (two teams of 8–10) for a meaningful corporate cricket event format.' },
     ],
   },
   {
@@ -153,7 +109,7 @@ export const blogPosts = [
       },
       {
         heading: 'Combining Gym with Sports at Alchemy 360',
-        body: 'The unique advantage of joining Alchemy 360\'s gym is access to the broader multi-sport complex. Most gym memberships give you a single activity — weights and cardio. Alchemy 360\'s gym membership can be combined (or upgraded to) a multi-sport membership that adds badminton, and pickleball.\n\nThis combination is particularly valuable for performance-focused athletes. A cricketer who also swims builds cardiovascular fitness and upper body strength in ways that complement their game. A badminton player who adds gym training develops explosive power for jumping smashes and the physical endurance for long rallies. The cross-training synergy at Alchemy 360 is a genuine advantage over single-sport facilities.',
+        body: 'The unique advantage of joining Alchemy 360\'s gym is access to the broader multi-sport complex. Most gym memberships give you a single activity — weights and cardio. Alchemy 360\'s gym membership can be combined (or upgraded to) a multi-sport membership that adds badminton, and pickleball.\n\nThis combination is particularly valuable for performance-focused athletes. A badminton player who also trains in the gym builds cardiovascular fitness and upper body strength in ways that complement their game. A badminton player who adds gym training develops explosive power for jumping smashes and the physical endurance for long rallies. The cross-training synergy at Alchemy 360 is a genuine advantage over single-sport facilities.',
       },
       {
         heading: 'Gym Training Tips for Beginners in Rohtak',
@@ -183,7 +139,7 @@ export const blogPosts = [
     category: 'Kids Academy',
     date: '2026-06-16',
     author: 'Alchemy 360',
-    imagePrompt: 'Energetic children aged 6-12 playing cricket and badminton at Alchemy 360 kids academy in Rohtak. Colourful sports gear, enthusiastic coaches, diverse group of children. Bright outdoor sports photography.',
+    imagePrompt: 'Energetic children aged 6-12 playing badminton at Alchemy 360 in Rohtak. Colourful sports gear, enthusiastic coaches, diverse group of children. Bright outdoor sports photography.',
     tags: ['kids sports academy', 'rohtak', 'children sports', 'kids training rohtak'],
     intro: 'Parents often ask: "Is my child ready for sports coaching?" The research has a clear answer: earlier is usually better. Not because children should be pressured to perform, but because the physical literacy, coordination, and cognitive skills built through early sports participation create advantages that compound across a lifetime. Alchemy 360\'s kids academy in Rohtak is built on this evidence base.',
     sections: [
@@ -200,20 +156,12 @@ export const blogPosts = [
         body: 'Beyond physical and cognitive benefits, sports participation builds character traits that shape a child\'s entire life. Learning to lose gracefully, to win without arrogance, to support teammates even when frustrated, to follow through on commitments (coming to practice even when you don\'t feel like it) — these are life lessons that sport teaches more effectively than any classroom discussion.\n\nAlchemy 360\'s coaches are explicitly instructed to coach character alongside technique. When a child shows poor sportsmanship — blaming teammates, showing frustration inappropriately, celebrating opponents\' mistakes — coaches address it directly and constructively. When a child shows exceptional effort or sportsmanship, coaches acknowledge it specifically. These micro-lessons accumulate into the character foundations that parents work hard to instil.',
       },
       {
-        heading: 'Cricket Academy for Kids in Rohtak',
-        body: 'Cricket is the sport most Rohtak children dream about. Alchemy 360\'s kids cricket program provides the structured pathway from those dreams to real, developed skill. Children learn the fundamentals of batting (stance, grip, footwork, basic shots), bowling (run-up, release, line and length), and fielding (catching, throwing, positioning) in age-appropriate progressions.\n\nThe cricket academy uses box cricket format for matches — the faster pace and smaller format keeps young players engaged and gives them far more ball contact per session than traditional cricket formats. Children who complete the cricket academy program have the technical foundations to step up to school and district-level cricket with confidence.',
-      },
-      {
-        heading: 'Badminton and Swimming Programs for Kids',
-        body: 'Badminton is particularly valuable for children because the quick reflexes, footwork agility, and hand-eye coordination it demands build cognitive and physical abilities that transfer to many other sports and daily life activities. Alchemy 360\'s kids badminton program starts at age 6 and follows a structured progression from basic rallying through to competitive match play.\n\nSwimming at Alchemy 360\'s kids academy is more than a sport — it is safety training. Children who can swim are safe near water. Children who cannot are at risk. This alone makes the swimming program one of the most important investments a Rohtak parent can make. Beyond safety, the physical development benefits of swimming — lung capacity, full-body coordination, cardiovascular fitness — are among the best of any activity available to children.',
-      },
-      {
         heading: 'How to Enroll Your Child at Alchemy 360\'s Sports Academy',
         body: 'Enrollment at Alchemy 360\'s kids academy is straightforward. Visit the facility at Sector 22-D, Jhajjar Road, Rohtak, or visit alchemy360.in to check current enrollment status for specific programs. Contact Alchemy 360 at +91 93500 76653 to discuss which program is right for your child\'s age and current skill level.\n\nNew students are assessed in a trial session before being placed in the appropriate level batch. This ensures your child starts in a group that challenges without overwhelming them. Membership plans for kids academy include access to the specific sport program(s) enrolled and are available monthly, quarterly, and annually. Summer intensives and school holiday camps are also offered seasonally.',
       },
     ],
     faqs: [
-      { q: 'At what age can children join Alchemy 360\'s kids sports academy?', a: 'Swimming classes accept children from age 4. Cricket and badminton programs start from age 6. Contact Alchemy 360 for age-specific program details.' },
+      { q: 'At what age can children join Alchemy 360\'s kids sports academy?', a: 'Badminton coaching accepts children from age 6. Badminton programs start from age 6. Contact Alchemy 360 for age-specific program details.' },
       { q: 'How many days per week are kids academy sessions?', a: 'Standard academy programs run 5–6 days per week with one rest day. Parents can choose morning or evening batch times based on school schedules.' },
       { q: 'Are the kids academy coaches qualified?', a: 'Yes. Alchemy 360\'s kids coaches are assessed for both sport-specific expertise and child instruction ability. All children\'s coaches undergo child safety and first aid training.' },
       { q: 'Can my child join the academy mid-year?', a: 'Yes. Alchemy 360 accepts enrollments year-round. New students are assessed and placed in the appropriate level batch based on their current skill level.' },
@@ -233,11 +181,11 @@ export const blogPosts = [
     sections: [
       {
         heading: 'Understanding Alchemy 360\'s Membership Structure',
-        body: 'Alchemy 360 offers sport-specific memberships (cricket only, badminton only, swimming only, gym only) and multi-sport memberships that bundle two or more sports at a combined rate. Within each type, memberships are available monthly (most flexible), quarterly (moderate commitment, better rates), and annually (maximum savings, maximum commitment).\n\nThe fundamental principle is simple: the longer you commit, the lower your per-session cost. An annual membership can cost 30–40% less per month than a monthly membership for the same sports access. The question is whether you\'re confident you\'ll use the facility consistently enough for the annual rate to justify the upfront commitment.',
+        body: 'Alchemy 360 offers sport-specific memberships (badminton only, pickleball only, gym only) and multi-sport memberships that bundle two or more sports at a combined rate. Within each type, memberships are available monthly (most flexible), quarterly (moderate commitment, better rates), and annually (maximum savings, maximum commitment).\n\nThe fundamental principle is simple: the longer you commit, the lower your per-session cost. An annual membership can cost 30–40% less per month than a monthly membership for the same sports access. The question is whether you\'re confident you\'ll use the facility consistently enough for the annual rate to justify the upfront commitment.',
       },
       {
         heading: 'Who Should Choose a Monthly Membership',
-        body: 'Monthly memberships are the right choice for three types of people: those who are new to Alchemy 360 and want to test the facility before a longer commitment; those with genuinely unpredictable schedules (frequent travellers, shift workers) who cannot reliably use a facility month-to-month; and those using Alchemy 360 seasonally (summer winter badminton).\n\nIf you\'re genuinely unsure whether you\'ll use the facility regularly, start with a month. But be honest with yourself — most people who say their schedule is unpredictable are using that as a soft reason to avoid commitment. If you know you want to swim or play cricket regularly, the quarterly plan almost always makes better financial and motivational sense.',
+        body: 'Monthly memberships are the right choice for three types of people: those who are new to Alchemy 360 and want to test the facility before a longer commitment; those with genuinely unpredictable schedules (frequent travellers, shift workers) who cannot reliably use a facility month-to-month; and those using Alchemy 360 seasonally (summer winter badminton).\n\nIf you\'re genuinely unsure whether you\'ll use the facility regularly, start with a month. But be honest with yourself — most people who say their schedule is unpredictable are using that as a soft reason to avoid commitment. If you know you want to play regularly, the quarterly plan almost always makes better financial and motivational sense.',
       },
       {
         heading: 'Who Should Choose a Quarterly Membership',
@@ -245,11 +193,11 @@ export const blogPosts = [
       },
       {
         heading: 'Who Should Choose an Annual Membership',
-        body: 'Annual memberships are for people who are certain about their sport and their habit. If you\'ve been swimming for 6 months and have never missed more than a week, the annual membership is a financial no-brainer. The savings are significant and the psychological effect of having paid upfront creates accountability — you\'re more likely to go even on days you\'re not feeling it.\n\nFor cricket specifically, an annual membership with priority booking access is essential for anyone playing regularly at Alchemy 360. The priority booking that comes with annual membership means you never lose your preferred evening slot to a last-minute booker. For serious cricketers who use Alchemy 360 as their primary training and match venue, annual membership is the professional choice.',
+        body: 'Annual memberships are for people who are certain about their sport and their habit. If you\'ve been playing for 6 months and have never missed more than a week, the annual membership is a financial no-brainer. The savings are significant and the psychological effect of having paid upfront creates accountability — you\'re more likely to go even on days you\'re not feeling it.\n\nFor badminton specifically, an annual membership with priority booking access is essential for anyone playing regularly at Alchemy 360. The priority booking that comes with annual membership means you never lose your preferred evening slot to a last-minute booker. For serious players who use Alchemy 360 as their primary training and match venue, annual membership is the professional choice.',
       },
       {
         heading: 'Multi-Sport Memberships: The Best Value at Alchemy 360',
-        body: 'Alchemy 360\'s multi-sport memberships are the highest-value option in the entire membership range for the right user. If you play cricket twice a week, swim three times a week, and use the gym once a week, a multi-sport membership saves you significantly compared to three separate single-sport memberships.\n\nBeyond savings, multi-sport memberships change how you use the facility. When everything is included, you\'re more likely to try the pickleball court during a casual visit, or add a gym session before cricket practice. Cross-training becomes natural because the barrier to trying a different activity is gone. Many Alchemy 360 members who joined for cricket discovered a genuine passion for badminton or swimming through their multi-sport membership.',
+        body: 'Alchemy 360\'s multi-sport memberships are the highest-value option in the entire membership range for the right user. If you play badminton twice a week, use the pickleball court weekly, and train in the gym, a multi-sport membership saves you significantly compared to three separate single-sport memberships.\n\nBeyond savings, multi-sport memberships change how you use the facility. When everything is included, you\'re more likely to try the pickleball court during a casual visit, or add a gym session before badminton practice. Cross-training becomes natural because the barrier to trying a different activity is gone. Many Alchemy 360 members who joined for one sport discovered a genuine passion for another through their multi-sport membership.',
       },
       {
         heading: 'Maximising Your Alchemy 360 Membership Value',
@@ -264,76 +212,24 @@ export const blogPosts = [
     ],
   },
   {
-    slug: 'football-rohtak-guide',
-    title: 'Football in Rohtak: A Guide to the Sport and Venues',
-    metaDescription: 'Guide to football in Rohtak — where to play, how to book Alchemy 360\'s football ground, and why football is growing alongside cricket in Haryana.',
-    h1: 'Football in Rohtak: Guide to Playing and Booking Grounds',
-    category: 'Football',
-    date: '2026-06-18',
-    author: 'Alchemy 360',
-    imagePrompt: 'Football match in progress at Alchemy 360 Rohtak. Players in blue and red jerseys competing for the ball, green football ground, goal post visible in background. Sports action photography, golden hour light.',
-    tags: ['football', 'rohtak', 'football ground rohtak', 'football haryana'],
-    intro: 'Cricket dominates Haryana\'s sports identity, but football has been quietly growing for years. Rohtak\'s proximity to Delhi, the influence of national football leagues like the ISL, and the sport\'s natural advantages for urban recreation (faster to play, fewer players needed, no specialist equipment required) have made football increasingly popular among Rohtak\'s youth. Alchemy 360 now offers football alongside its badminton facilities.',
-    sections: [
-      {
-        heading: 'Football\'s Growing Popularity in Rohtak',
-        body: 'A decade ago, finding a proper football match in Rohtak meant heading to a school or college ground and hoping there were enough players. Today, the sport has dedicated enthusiasts who play regularly and follow professional football with genuine knowledge. The Indian Super League has been transformative — creating national heroes, professional competition, and a generation of young fans who grew up watching football as a major sport, not a niche one.\n\nFor Rohtak specifically, football offers an alternative to cricket for players who don\'t have the patience for cricket\'s pace or the coordination demands of racquet sports. Football\'s universal nature — you can join a game with zero experience — makes it the most socially accessible sport in the world. A diverse player base from Rohtak\'s growing corporate community, educational institutions, and young residents has created genuine demand for quality football facilities.',
-      },
-      {
-        heading: 'Football Ground at Alchemy 360',
-        body: 'Alchemy 360\'s football ground is a maintained outdoor field suitable for 5-a-side, 7-a-side, and full 11-a-side football. Proper line markings, goal posts, and adequate space for full-team play are standard. The ground is maintained regularly to ensure a consistent surface that supports safe, quality football.\n\nThe combination of football with Alchemy 360\'s other sports facilities — badminton, and gym — makes it possible to run a full corporate sports day that includes football as either a primary activity or a supplementary one alongside cricket. For mixed-sports events, the ability to rotate teams between cricket and football activities across the day significantly increases participant engagement.',
-      },
-      {
-        heading: 'Popular Football Formats in Rohtak',
-        body: 'The most popular format for recreational football in Rohtak is 5-a-side — smaller teams, smaller goals, and fast-paced action that keeps everyone continuously involved. A 5-a-side match can run for 20–30 minutes per half, making a complete game achievable in under an hour, which fits the after-work or weekend morning time constraints of most players.\n\n7-a-side is the preferred format for corporate football events — larger teams, slightly more space needed, and a closer resemblance to the 11-a-side full game that most people have experience with. Full 11-a-side is available for school and college teams that want regulation football training and match play.',
-      },
-      {
-        heading: 'Cricket vs Football: Which Sport is Right for Your Group?',
-        body: 'Both cricket and football are available at Alchemy 360, and choosing the right sport for your group depends on a few factors. Cricket demands more specialist knowledge and technique — batting and bowling have learning curves that make the sport less immediately accessible for complete beginners. Football\'s rules are universally known and the basic skills (kicking, running) require no instruction.\n\nFor mixed groups with varying sports backgrounds, football is often the more inclusive choice because it levels the playing field more effectively. For groups with cricket enthusiasts who have played since childhood creates more emotional investment and skill expression. For corporate events specifically, the answer often depends on the demographic profile of the team — cricket culture teams choose cricket; younger, diverse teams often prefer football.',
-      },
-      {
-        heading: 'Booking Football at Alchemy 360',
-        body: 'The football ground at Alchemy 360 is bookable through the standard slot booking system at alchemy360.in/book-slots. Select football as your sport, choose your preferred date and time slot, and complete the booking. Standard slot durations of 1 hour and 2 hours are available.\n\nFor tournament and event bookings involving multiple teams, contact Alchemy 360 directly at +91 93500 76653. The football ground can be reserved for full-day events with scheduling, umpiring (referee), and catering arrangements similar to cricket tournament packages.',
-      },
-      {
-        heading: 'The Future of Football at Alchemy 360',
-        body: 'As football grows in Rohtak, Alchemy 360 plans to expand its football offering. Discussions about establishing a Rohtak Football League — mirroring the successful Rohtak Cricket League format — are in progress. Community football coaching programs, youth football academies, and corporate football leagues are all on the development roadmap.\n\nFor football enthusiasts in Rohtak who want to be part of building the sport\'s community, joining Alchemy 360 now and engaging with the football program connects you with the ground floor of something that has significant momentum behind it. Haryana produces extraordinary athletes — there is no reason football cannot become a serious sporting pursuit in Rohtak alongside the cricket tradition.',
-      },
-    ],
-    faqs: [
-      { q: 'Does Alchemy 360 have a synthetic turf or natural grass football ground?', a: 'Contact Alchemy 360 directly for current football ground surface specifications at +91 93500 76653.' },
-      { q: 'Is football coaching available at Alchemy 360?', a: 'Football coaching programs are available seasonally. Contact Alchemy 360 for current football coaching availability and schedule.' },
-      { q: 'Can school football teams book the football ground at Alchemy 360?', a: 'Yes. School teams can book the football ground for practice and inter-school matches. Contact Alchemy 360 for school team booking arrangements and any applicable discounts.' },
-      { q: 'Is there a football league at Alchemy 360 like the cricket league?', a: 'A dedicated football league is in development at Alchemy 360. Contact us to express interest and be among the first to know when the Rohtak Football League launches.' },
-    ],
-  },
-  {
     slug: 'morning-vs-evening-sports-sessions',
     title: 'Morning vs Evening Sports Sessions: What Science Says About Timing',
-    metaDescription: 'Should you play cricket, swim, or go to the gym in the morning or evening? Science-backed guide to optimising your sports session timing at Alchemy 360 Rohtak.',
+    metaDescription: 'Should you play badminton, pickleball, or go to the gym in the morning or evening? Science-backed guide to optimising your sports session timing at Alchemy 360 Rohtak.',
     h1: 'Morning vs Evening Sports Sessions: What the Science Says',
     category: 'Fitness',
     date: '2026-06-18',
     author: 'Alchemy 360',
-    imagePrompt: 'Split image showing morning cricket practice at Alchemy 360 at sunrise with golden hour light, and evening badminton session under bright LED lights. Rohtak sports facility photography.',
+    imagePrompt: 'Split image showing a morning badminton session at Alchemy 360 at sunrise with golden hour light, and evening badminton session under bright LED lights. Rohtak sports facility photography.',
     tags: ['morning sports', 'evening sports', 'rohtak', 'sports timing', 'fitness tips'],
     intro: 'Alchemy 360 opens at 5:00 AM and closes at 11:00 PM. The question of when to book your session — morning or evening — is not just a matter of preference. Research on chronobiology, sports performance, and habit formation gives us useful guidance on when different activities perform best for different outcomes.',
     sections: [
       {
         heading: 'What Science Says About Morning Exercise',
-        body: 'Morning exercise (before 10 AM) has consistently shown benefits for habit formation and weight management. The primary reason is behavioural, not physiological: morning sessions are more likely to happen because fewer competing demands arise earlier in the day. A morning session that gets cancelled is unusual — most people who book a 6 AM cricket slot or swimming class show up. An evening session is far more vulnerable to "I\'ll reschedule" when work runs late, social plans emerge, or fatigue sets in.\n\nFrom a physiological standpoint, core body temperature and muscle flexibility are lower in the morning, meaning warm-up is more important and injury risk is slightly higher if warm-up is skipped. However, fasting exercise (before breakfast) has shown benefits for fat oxidation in research, making early morning gym sessions particularly effective for body composition goals.',
+        body: 'Morning exercise (before 10 AM) has consistently shown benefits for habit formation and weight management. The primary reason is behavioural, not physiological: morning sessions are more likely to happen because fewer competing demands arise earlier in the day. A morning session that gets cancelled is unusual — most people who book a 6 AM badminton or gym slot show up. An evening session is far more vulnerable to "I\'ll reschedule" when work runs late, social plans emerge, or fatigue sets in.\n\nFrom a physiological standpoint, core body temperature and muscle flexibility are lower in the morning, meaning warm-up is more important and injury risk is slightly higher if warm-up is skipped. However, fasting exercise (before breakfast) has shown benefits for fat oxidation in research, making early morning gym sessions particularly effective for body composition goals.',
       },
       {
         heading: 'What Science Says About Evening Exercise',
-        body: 'Athletic performance peaks in the late afternoon and early evening (3–7 PM). Core body temperature is higher, reaction times are faster, muscle strength is greater, and cardiorespiratory efficiency is optimised. For competitive badminton, or any sport where performance quality matters, evening slots at Alchemy 360 will typically produce your best performance.\n\nMuscle strength is approximately 5–8% higher in the evening compared to morning. Aerobic capacity is 3–5% better. For a competitive badminton match or a high-stakes cricket training session, these differences are meaningful. Alchemy 360\'s evening slots are consistently the most competitive — serious players know this instinctively and book them first.',
-      },
-      {
-        heading: 'Morning Swimming: The Ideal Combination',
-        body: 'Swimming is one activity where morning sessions have particular advantages over evening for physiological reasons beyond habit formation. The meditative quality of early morning lane swimming — quiet facility, cool air temperature, the rhythmic pattern of strokes — creates a mental clarity state that many swimmers describe as close to meditation. This cognitive benefit carries forward into the working day in a way that evening swimming (which is replaced by sleep shortly after) does not.\n\nAlchemy 360\'s swimming classes start at 5:30 AM, making it possible to complete a full swimming session and be at work or school by 8:00 AM. For working adults and school students in Rohtak who want the physical and mental benefits of swimming without sacrificing evening time for family and rest, morning swimming is the optimal structure.',
-      },
-      {
-        heading: 'Cricket and Badminton: Evening Wins for Performance',
-        body: 'For cricket and badminton — sports where reaction time, hand-eye coordination, explosive power, and sustained effort quality matter — evening sessions (5–9 PM) produce measurably better performance. Reaction times for hitting a moving ball are fastest in the late afternoon. The floodlit conditions at Alchemy 360 also create excellent visibility that compensates for any natural light loss.\n\nFor young cricketers training seriously, this means evening practice sessions at Alchemy 360 will develop your skills more efficiently than equivalent morning sessions. If your goal is competitive development — improving your bowling speed, sharpen your reflex in badminton, or building competitive cricket match fitness — prioritise evening slots.',
+        body: 'Athletic performance peaks in the late afternoon and early evening (3–7 PM). Core body temperature is higher, reaction times are faster, muscle strength is greater, and cardiorespiratory efficiency is optimised. For competitive badminton, or any sport where performance quality matters, evening slots at Alchemy 360 will typically produce your best performance.\n\nMuscle strength is approximately 5–8% higher in the evening compared to morning. Aerobic capacity is 3–5% better. For a competitive badminton match or a high-stakes training session, these differences are meaningful. Alchemy 360\'s evening slots are consistently the most competitive — serious players know this instinctively and book them first.',
       },
       {
         heading: 'Gym: It Depends on Your Goal',
@@ -341,13 +237,12 @@ export const blogPosts = [
       },
       {
         heading: 'Practical Advice for Rohtak Athletes',
-        body: 'The ideal schedule, if Alchemy 360\'s slots allow, is to match your activity to its optimal time. Morning sessions (5:30–9:00 AM) work well for general fitness gym work, and habit-building. Evening sessions (5:00–9:00 PM) are best for badminton, competitive gym training, and team sports.\n\nFor most people in Rohtak with work or school commitments, the practical reality is that you use whatever slot fits your schedule. A morning cricket session is vastly better than no cricket session. The most important variable in fitness and sport improvement is consistency — 100 sessions at a non-optimal time beats 10 sessions at the perfect time. Book what you can commit to. Show up. Repeat.',
+        body: 'The ideal schedule, if Alchemy 360\'s slots allow, is to match your activity to its optimal time. Morning sessions (5:30–9:00 AM) work well for general fitness gym work, and habit-building. Evening sessions (5:00–9:00 PM) are best for badminton, competitive gym training, and team sports.\n\nFor most people in Rohtak with work or school commitments, the practical reality is that you use whatever slot fits your schedule. A morning session is vastly better than no session. The most important variable in fitness and sport improvement is consistency — 100 sessions at a non-optimal time beats 10 sessions at the perfect time. Book what you can commit to. Show up. Repeat.',
       },
     ],
     faqs: [
       { q: 'What time does Alchemy 360 open?', a: 'Alchemy 360 opens at 5:00 AM daily and closes at 11:00 PM, seven days a week.' },
       { q: 'Are morning slots cheaper than evening slots at Alchemy 360?', a: 'Pricing typically varies by time of day with peak pricing for evening and weekend slots. Check current rates at alchemy360.in.' },
-      { q: 'Is there good lighting for morning cricket at Alchemy 360?', a: 'Alchemy 360\'s cricket ground has floodlighting that is fully operational from the first slot of the day, ensuring adequate visibility for all session times.' },
       { q: 'What is the least busy time to visit Alchemy 360?', a: 'Weekday afternoon slots (12–4 PM) typically have the lowest demand, making them ideal for those wanting a quieter facility experience.' },
     ],
   },
@@ -359,7 +254,7 @@ export const blogPosts = [
     category: 'Facilities',
     date: '2026-06-19',
     author: 'Alchemy 360',
-    imagePrompt: 'Wide angle exterior shot of Alchemy 360 multi-sport complex in Rohtak, Haryana. Modern facility with cricket ground, badminton courts pool visible. Clear sky, professional sports complex photography.',
+    imagePrompt: 'Wide angle exterior shot of Alchemy 360 multi-sport complex in Rohtak, Haryana. Modern facility with badminton and pickleball courts visible. Clear sky, professional sports complex photography.',
     tags: ['sports complex rohtak', 'best sports facility rohtak', 'multi-sport rohtak', 'sports arena haryana'],
     intro: 'Rohtak is not short of places to play sport. Schools have grounds, colonies have parks, and various private clubs have existed for years. But a genuine multi-sport complex — one that offers professional-standard facilities across multiple disciplines under one roof, with online booking, coaching, and year-round operation — is a different category. This guide walks you through what a quality sports complex should offer and how Alchemy 360 stacks up.',
     sections: [
@@ -369,27 +264,23 @@ export const blogPosts = [
       },
       {
         heading: 'Alchemy 360: Rohtak\'s Multi-Sport Hub',
-        body: 'Alchemy 360 at Sector 22-D, Jhajjar Road brings together cricket (box format), badminton (wooden courts), pickleball (one of very few courts in Haryana), swimming (year-round, certified coaches), gym, and football under one complex. This breadth is Alchemy 360\'s defining advantage — no other private sports facility in Rohtak offers this range at this standard.\n\nThe facility operates 5:00 AM to 11:00 PM seven days a week, 365 days a year. There are no seasonal closures. The LED floodlighting on the cricket ground and courts means evening sessions until 11 PM are fully viable — a critical factor for working adults and school students who cannot access sports during daylight hours on weekdays.',
-      },
-      {
-        heading: 'Cricket Facilities: The Alchemy 360 Benchmark',
-        body: 'Cricket is the defining sport of Rohtak\'s sporting culture, and the cricket ground at Alchemy 360 sets the standard for private cricket facilities in the city. The enclosed box cricket format means consistent playing conditions regardless of wind. The pitch is maintained professionally. The floodlighting is high-intensity LED — no flickering, no shadows, consistent coverage across the entire playing area.\n\nThe cricket ground hosts the Rohtak Cricket League — Haryana\'s most prominent local cricket competition — which is the clearest signal that the facility meets competitive match standards. Corporate events, inter-college tournaments, and individual training sessions all use the same ground with the same professional setup. The ground is not downgraded for casual bookings.',
+        body: 'Alchemy 360 at Sector 22-D, Jhajjar Road brings together badminton (wooden courts), pickleball (one of very few courts in Haryana), and a modern gym under one complex. This breadth is Alchemy 360\'s defining advantage — no other private sports facility in Rohtak offers this range at this standard.\n\nThe facility operates 5:00 AM to 11:00 PM seven days a week, 365 days a year. There are no seasonal closures. The LED floodlighting on the courts means evening sessions until 11 PM are fully viable — a critical factor for working adults and school students who cannot access sports during daylight hours on weekdays.',
       },
       {
         heading: 'Comparing Multi-Sport Access in Rohtak',
-        body: 'Before Alchemy 360, a Rohtak resident who wanted to swim three days a week, play badminton twice a week, and use the gym twice a week would need memberships at two or three different facilities — an arrangement that costs more, requires travelling to multiple locations, and creates friction that reduces actual usage.\n\nAlchemy 360\'s multi-sport membership consolidates all of this. A single membership covering cricket, badminton, and gym access at one facility — which you drive to once — removes all the inter-facility friction. The practical result is that Alchemy 360 members use sport more consistently than multi-facility members across the city, because the convenience barrier is lower.',
+        body: 'Before Alchemy 360, a Rohtak resident who wanted to play badminton three days a week, use the pickleball court, and train in the gym twice a week would need memberships at two or three different facilities — an arrangement that costs more, requires travelling to multiple locations, and creates friction that reduces actual usage.\n\nAlchemy 360\'s multi-sport membership consolidates all of this. A single membership covering badminton, pickleball, and gym access at one facility — which you drive to once — removes all the inter-facility friction. The practical result is that Alchemy 360 members use sport more consistently than multi-facility members across the city, because the convenience barrier is lower.',
       },
       {
         heading: 'The Food Court and Ancillary Facilities',
-        body: 'A sports complex that forces you to leave the facility to eat is a sports complex that loses your time and attention. Alchemy 360\'s on-site food court solves this. Open from 7:00 AM, offering North Indian cuisine and beverages, with in-ground delivery during cricket matches — the food court is a genuine part of the sports experience, not an afterthought.\n\nParking, changing rooms, and a sports accessories shop round out Alchemy 360\'s ancillary offering. The QR-code digital entry system means there is no queue at reception — you scan your code and walk in. These operational details are invisible when they work well and enormously frustrating when they don\'t. Alchemy 360 has invested in getting them right.',
+        body: 'A sports complex that forces you to leave the facility to eat is a sports complex that loses your time and attention. Alchemy 360\'s on-site food court solves this. Open from 7:00 AM, offering North Indian cuisine and beverages, with in-ground delivery during sessions — the food court is a genuine part of the sports experience, not an afterthought.\n\nParking, changing rooms, and a sports accessories shop round out Alchemy 360\'s ancillary offering. The QR-code digital entry system means there is no queue at reception — you scan your code and walk in. These operational details are invisible when they work well and enormously frustrating when they don\'t. Alchemy 360 has invested in getting them right.',
       },
       {
         heading: 'How to Get the Most from Alchemy 360',
-        body: 'New members who get the most from Alchemy 360 are those who explore beyond their primary sport within the first month. If you joined for cricket, book a badminton slot. If you joined for try the gym. The multi-sport membership is designed for this cross-training use, and the physical benefits of cross-training across sports are well-documented — cricketers who swim build cardiovascular capacity; badminton players who do gym work gain explosive power for jumping smashes.\n\nBook your slots at the start of each week for the entire week. The mobile-friendly booking system at alchemy360.in takes under 5 minutes to secure 5–7 sessions. Members who book in advance use the facility 3× more consistently than those who book same-day. Consistency is the single biggest determinant of sports progress — and Alchemy 360\'s booking system makes consistency easy.',
+        body: 'New members who get the most from Alchemy 360 are those who explore beyond their primary sport within the first month. If you joined for badminton, book a pickleball slot. If you joined for try the gym. The multi-sport membership is designed for this cross-training use, and the physical benefits of cross-training across sports are well-documented — players who add gym work build cardiovascular capacity; badminton players who do gym work gain explosive power for jumping smashes.\n\nBook your slots at the start of each week for the entire week. The mobile-friendly booking system at alchemy360.in takes under 5 minutes to secure 5–7 sessions. Members who book in advance use the facility 3× more consistently than those who book same-day. Consistency is the single biggest determinant of sports progress — and Alchemy 360\'s booking system makes consistency easy.',
       },
     ],
     faqs: [
-      { q: 'Is Alchemy 360 the only multi-sport complex in Rohtak?', a: 'Alchemy 360 is the most comprehensive private multi-sport complex in Rohtak, offering badminton, pickleball, gym, and football under one facility.' },
+      { q: 'Is Alchemy 360 the only multi-sport complex in Rohtak?', a: 'Alchemy 360 is the most comprehensive private multi-sport complex in Rohtak, offering badminton, pickleball and gym under one facility.' },
       { q: 'Can I visit Alchemy 360 without a membership?', a: 'Yes. One-time access bookings are available for all sports at Alchemy 360. Visit alchemy360.in/one-time-booking or alchemy360.in/book-slots.' },
       { q: 'Is Alchemy 360 suitable for school trips and group visits?', a: 'Yes. Group visits, school excursions, and college sports days are accommodated at Alchemy 360. Contact +91 93500 76653 to arrange group booking and activity scheduling.' },
       { q: 'How far is Alchemy 360 from Rohtak city centre?', a: 'Alchemy 360 is located at Sector 22-D, Jhajjar Road, approximately 3–5 km from Rohtak city centre, easily accessible by auto or private vehicle.' },
@@ -444,11 +335,9 @@ export const blogPosts = [
 const COVER_IMAGES = {
   'badminton-court-rohtak-guide':           'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=900&auto=format&fit=crop',
   'pickleball-rohtak-haryana':              'https://images.unsplash.com/photo-1612534847738-b3af9bc31f0c?q=80&w=900&auto=format&fit=crop',
-  'corporate-sports-events-rohtak':         'https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=900&auto=format&fit=crop',
   'gym-rohtak-fitness-guide':               'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=900&auto=format&fit=crop',
   'kids-sports-academy-rohtak-benefits':    'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=900&auto=format&fit=crop',
   'sports-membership-plans-guide':          'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=900&auto=format&fit=crop',
-  'football-rohtak-guide':                  'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=900&auto=format&fit=crop',
   'morning-vs-evening-sports-sessions':     'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=900&auto=format&fit=crop',
   'best-sports-complex-rohtak':             'https://images.unsplash.com/photo-1556817411-31ae72fa3ea0?q=80&w=900&auto=format&fit=crop',
   'kids-badminton-coaching-rohtak':         'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=900&auto=format&fit=crop',

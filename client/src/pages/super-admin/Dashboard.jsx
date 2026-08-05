@@ -854,7 +854,7 @@ function ReportsSection() {
             <button
               onClick={handleDownload}
               disabled={downloading || (range === 'custom' && (!startDate || !endDate))}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-white text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {downloading ? (
                 <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">

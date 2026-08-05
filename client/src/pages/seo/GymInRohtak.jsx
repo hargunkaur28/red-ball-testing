@@ -64,7 +64,7 @@ export default function GymInRohtak() {
             Alchemy 360's gym in Rohtak is equipped for serious training. Whether your goal is strength, weight loss, endurance, or athletic performance — train here with the right equipment and expert guidance.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/buy-membership?sport=gym" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership?sport=gym" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Gym
             </Link>
             <Link to="/book-slots" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>

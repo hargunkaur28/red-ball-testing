@@ -137,7 +137,7 @@ export default function AboutSection() {
               <div className="relative rounded-xl overflow-hidden shadow-2xl ml-auto w-[90%] md:w-full">
                 <img
                   src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?q=80&w=800&auto=format&fit=crop"
-                  alt="Alchemy 360 Cricket Academy Training"
+                  alt="Alchemy 360 badminton coaching session"
                   loading="lazy"
                   className="w-full h-[300px] sm:h-[380px] md:h-[420px] object-cover"
                 />

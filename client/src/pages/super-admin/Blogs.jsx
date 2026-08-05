@@ -30,7 +30,7 @@ function staticToDbForm(post) {
   };
 }
 
-const CATEGORIES = ['Cricket', 'Swimming', 'Badminton', 'Pickleball', 'Football', 'Gym', 'Fitness', 'Events', 'Membership', 'Kids Academy', 'Facilities', 'General'];
+const CATEGORIES = ['Badminton', 'Pickleball', 'Gym', 'Fitness', 'Events', 'Membership', 'Coaching', 'Facilities', 'General'];
 
 const EMPTY_FORM = {
   title: '', slug: '', excerpt: '', category: 'General', status: 'draft',
@@ -277,7 +277,7 @@ function PostEditor({ post, onClose }) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold text-[#111] mb-1.5">Tags <span className="text-[#999] font-normal">(comma-separated)</span></label>
-            <input value={form.tags} onChange={set('tags')} placeholder="cricket, rohtak, sports"
+            <input value={form.tags} onChange={set('tags')} placeholder="badminton, rohtak, sports"
               className="w-full border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#111] transition-colors" />
           </div>
           <div>

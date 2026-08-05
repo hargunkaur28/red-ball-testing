@@ -382,7 +382,7 @@ export default function RestaurantOrders() {
             </div>
             <button
               onClick={() => updateMutation.mutate({ id: order._id, paymentStatus: 'paid' })}
-              className="px-2.5 py-1 bg-[#C5DB3B] text-white rounded-lg text-[10px] font-black shadow hover:bg-[#96AC2E] transition-all cursor-pointer"
+              className="px-2.5 py-1 bg-[#C5DB3B] text-[#0A1628] rounded-lg text-[10px] font-black shadow hover:bg-[#96AC2E] transition-all cursor-pointer"
             >
               Mark Paid
             </button>
@@ -698,7 +698,7 @@ export default function RestaurantOrders() {
                         <td className="px-6 py-4">
                           <p className="text-sm font-extrabold font-mono">{formatCurrency(order.totalAmount)}</p>
                           {isManualPending ? (
-                            <button onClick={() => updateMutation.mutate({ id: order._id, paymentStatus: 'paid' })} className="text-[10px] font-bold text-white bg-[#C5DB3B] px-2 py-1 rounded shadow mt-1 cursor-pointer">Mark Paid</button>
+                            <button onClick={() => updateMutation.mutate({ id: order._id, paymentStatus: 'paid' })} className="text-[10px] font-bold text-[#0A1628] bg-[#C5DB3B] px-2 py-1 rounded shadow mt-1 cursor-pointer">Mark Paid</button>
                           ) : (
                             <span className="inline-flex text-[10px] font-bold uppercase tracking-wider text-green-700 bg-green-50 px-2 py-0.5 rounded-full border border-green-200 mt-1">
                               <CheckCircle size={10} className="mr-1" /> {order.paymentMethod}
@@ -845,7 +845,7 @@ export default function RestaurantOrders() {
                     updateMutation.mutate({ id: confirmDrag.orderId, status: confirmDrag.toStatus });
                     setConfirmDrag(null);
                   }}
-                  className="flex-1 py-2.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-xl text-sm font-black transition-all shadow-md"
+                  className="flex-1 py-2.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] rounded-xl text-sm font-black transition-all shadow-md"
                 >
                   Yes, move it
                 </button>

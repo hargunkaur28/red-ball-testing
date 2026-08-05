@@ -1,18 +1,12 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, Clock, Phone, Mail, Trophy, Users, Star, Tv2, ArrowRight } from 'lucide-react';
+import { MapPin, Clock, Phone, Mail, ArrowRight } from 'lucide-react';
 import SEOHead from '../components/seo/SEOHead';
 import Navbar from '../components/home/Navbar';
 import Footer from '../components/home/Footer';
 import { useAcademyInfo } from '../hooks/useAcademyInfo';
 
 const SPORTS = [
-  {
-    name: 'Box Cricket / Cricket',
-    icon: '🏏',
-    desc: 'Professional floodlit cricket ground for day-night matches. Supports hard-ball and tennis-ball cricket. Home of the Rohtak Cricket League (RCL). Box 360 — Rohtak\'s first 24/7 circular box cricket facility.',
-    link: '/rohtak-cricket-league',
-  },
   {
     name: 'Badminton',
     icon: '🏸',
@@ -36,15 +30,14 @@ const SPORTS = [
 const STATS = [
   { value: '4.7★', label: '312+ Google Reviews' },
   { value: '500+', label: 'Active Members' },
-  { value: '4', label: 'Sports & Facilities' },
+  { value: '3', label: 'Sports & Facilities' },
   { value: '5AM–11PM', label: 'Open Every Day' },
 ];
 
 const TIMELINE = [
   { year: 'Founded', text: 'Alchemy 360 was established by Ram Goyal with a vision to bring world-class multi-sport facilities to Rohtak, Haryana.' },
-  { year: 'Cricket', text: 'The cricket ground quickly became the home of the Rohtak Cricket League (RCL) — Rohtak\'s premier T20 competition, broadcast live on YouTube, Siti Cable, and DEN Networks.' },
-  { year: 'Expansion', text: 'Added badminton courts, gym, pickleball courts, and Box 360 — making Alchemy 360 one of the most comprehensive private sports complexes in Haryana.' },
-  { year: 'Today', text: 'Serving 500+ active members across Rohtak and surrounding districts. Registered with the Haryana Cricket Association (HCA).' },
+  { year: 'Expansion', text: 'Added badminton courts, a modern gym, and dedicated pickleball courts — making Alchemy 360 one of the most comprehensive private sports complexes in Haryana.' },
+  { year: 'Today', text: 'Serving 500+ active members across Rohtak and surrounding districts, with coaching, court memberships, and QR-based digital entry.' },
 ];
 
 function FadeIn({ children, delay = 0 }) {
@@ -67,7 +60,7 @@ export default function About() {
     <>
       <SEOHead
         title="About Alchemy 360 — Rohtak's Premier Multi-Sport Complex"
-        description="Learn about Alchemy 360 in Rohtak, Haryana — founded by Ram Goyal. Home of the Rohtak Cricket League. Badminton, pickleball, gym, and court memberships."
+        description="Learn about Alchemy 360 in Rohtak, Haryana — founded by Ram Goyal. Badminton, pickleball, gym, coaching and court memberships."
         canonical="/about"
       />
       <Navbar />
@@ -88,7 +81,7 @@ export default function About() {
               About Alchemy 360<br />Sports Arena
             </h1>
             <p className="text-white/55 text-lg max-w-2xl leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-              Rohtak's most comprehensive private multi-sport complex — badminton, pickleball, and gym under one roof. Home of the Rohtak Cricket League.
+              Rohtak's most comprehensive private multi-sport complex — badminton, pickleball, and gym under one roof.
             </p>
           </FadeIn>
 
@@ -119,7 +112,7 @@ export default function About() {
                 Alchemy 360 was founded by <strong className="text-[#0D0D0D]">Ram Goyal</strong> with a single goal: to give the people of Rohtak access to world-class sports infrastructure — no compromises.
               </p>
               <p className="text-[#6B7280] leading-relaxed mb-5" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                What started as a cricket ground has grown into Rohtak's most complete sports destination — multiple sports, an on-site restaurant, digital QR-based entry, and the home of the Rohtak Cricket League (RCL), broadcast live across Haryana.
+                It has grown into Rohtak's most complete sports destination — badminton, pickleball and gym under one roof, professional coaching, court memberships, and digital QR-based entry.
               </p>
               <p className="text-[#6B7280] leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
                 Located at Sector 22-D, Jhajjar Road, the facility serves members from Rohtak, Jhajjar, Bahadurgarh, Sonipat, and across the Delhi NCR.
@@ -127,7 +120,7 @@ export default function About() {
 
               {/* Founder chip */}
               <div className="flex items-center gap-4 mt-8 p-4 rounded-2xl bg-gray-50 border border-gray-100 w-fit">
-                <div className="w-11 h-11 rounded-full bg-[#C5DB3B] flex items-center justify-center text-white font-black text-sm shrink-0" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>RG</div>
+                <div className="w-11 h-11 rounded-full bg-[#C5DB3B] flex items-center justify-center text-[#0A1628] font-black text-sm shrink-0" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>RG</div>
                 <div>
                   <p className="text-[#0D0D0D] font-bold text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>Ram Goyal</p>
                   <p className="text-[#9CA3AF] text-xs uppercase tracking-widest" style={{ fontFamily: "'DM Sans', sans-serif" }}>Founder & Owner</p>
@@ -184,53 +177,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── RCL ── */}
-      <section className="bg-[#0A0D0D] py-20 md:py-28">
-        <div className="max-w-5xl mx-auto px-4 sm:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
-            <FadeIn>
-              <p className="text-[#C5DB3B] text-xs font-black uppercase tracking-[0.25em] mb-3">Cricket in Rohtak</p>
-              <h2 className="text-white font-black text-4xl md:text-5xl leading-none mb-6" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: '1.5px' }}>
-                Home of the Rohtak Cricket League
-              </h2>
-              <p className="text-white/55 leading-relaxed mb-4" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                Alchemy 360 is the official home ground of the <strong className="text-white">Rohtak Cricket League (RCL)</strong> — Rohtak's premier 20-over T20 competition featuring corporate and franchise teams from Rohtak, Haryana, and Delhi NCR.
-              </p>
-              <p className="text-white/55 leading-relaxed" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                RCL matches are broadcast live on YouTube, Siti Cable, and DEN Networks — making it one of the few local cricket leagues in Haryana with full live television and digital coverage.
-              </p>
-              <div className="flex flex-wrap gap-3 mt-8">
-                {[
-                  { icon: <Tv2 size={14} />, text: 'Live on YouTube & TV' },
-                  { icon: <Trophy size={14} />, text: '20-over T20 Format' },
-                  { icon: <Users size={14} />, text: 'Corporate & Franchise Teams' },
-                  { icon: <Star size={14} />, text: 'Floodlit Night Matches' },
-                ].map((chip) => (
-                  <span key={chip.text} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-white/60 border border-white/10" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                    {chip.icon}{chip.text}
-                  </span>
-                ))}
-              </div>
-              <Link
-                to="/rohtak-cricket-league"
-                className="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-full bg-[#C5DB3B] text-white font-bold text-sm hover:bg-[#96AC2E] transition-colors"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
-              >
-                About the RCL <ArrowRight size={14} />
-              </Link>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <div className="rounded-2xl overflow-hidden border border-white/8">
-                <img
-                  src="https://lh3.googleusercontent.com/gps-cs-s/APNQkAEP6A9XM-alVILJusO_Ifjrou4zYxU11ifUO2r_Pp2xb-PNxA7lV5vhtFrzmCk3CvcZHoGrtVEWDZ9Aly35PnKv7TVIKs3JVNXyMtsRE7CqUru4Jzvr9sonCeG2npxvlUuWOhhI=s1360-w1360-h1020-rw"
-                  alt="Rohtak Cricket League at Alchemy 360"
-                  className="w-full h-72 object-cover"
-                />
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
 
       {/* ── Location & Contact ── */}
       <section className="bg-white py-20 md:py-28">
@@ -262,7 +208,7 @@ export default function About() {
             <div className="mt-10 flex flex-col sm:flex-row gap-3">
               <Link
                 to="/book-slots"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#C5DB3B] text-white font-bold hover:bg-[#96AC2E] transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#C5DB3B] text-[#0A1628] font-bold hover:bg-[#96AC2E] transition-colors"
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >
                 Book a Slot <ArrowRight size={14} />

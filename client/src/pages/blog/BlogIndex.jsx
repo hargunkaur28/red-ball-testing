@@ -6,13 +6,10 @@ import { blogPosts, getBlogCoverImage } from '../../data/blogPosts';
 import api from '../../lib/axios';
 
 const categoryColors = {
-  Cricket: 'bg-red-100 text-red-700',
-  Swimming: 'bg-blue-100 text-blue-700',
   Badminton: 'bg-green-100 text-green-700',
   Pickleball: 'bg-yellow-100 text-yellow-700',
   Events: 'bg-purple-100 text-purple-700',
   Gym: 'bg-gray-100 text-gray-700',
-  Football: 'bg-orange-100 text-orange-700',
   Fitness: 'bg-teal-100 text-teal-700',
   Membership: 'bg-indigo-100 text-indigo-700',
   'Kids Academy': 'bg-pink-100 text-pink-700',
@@ -55,7 +52,7 @@ export default function BlogIndex() {
   return (
     <SEOLandingLayout>
       <SEOHead
-        title="Sports Blog | Cricket, Badminton, Swimming Tips | Alchemy 360 Rohtak"
+        title="Sports Blog | Badminton, Pickleball & Gym Tips | Alchemy 360 Rohtak"
         description="Expert articles on badminton, fitness, and sports events in Rohtak and Haryana from Alchemy 360 — Rohtak's premier multi-sport complex."
         canonical="/blog"
         schema={{

@@ -407,7 +407,7 @@ export default function TableOrder() {
 
           <button 
             onClick={() => setOrderPlaced(null)} 
-            className="w-full py-4 rounded-full bg-[#C5DB3B] hover:bg-[#96AC2E] text-white font-bold text-xs tracking-wider uppercase transition-all shadow-lg hover:scale-[1.02]"
+            className="w-full py-4 rounded-full bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] font-bold text-xs tracking-wider uppercase transition-all shadow-lg hover:scale-[1.02]"
           >
             Order Additional Recovery Items
           </button>
@@ -427,7 +427,7 @@ export default function TableOrder() {
       <header className="sticky top-0 z-40 bg-[#0D0D0D]/95 backdrop-blur-lg border-b border-white/10 px-3 py-3 sm:px-6 sm:py-4 shadow-2xl">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#C5DB3B] flex items-center justify-center font-black tracking-tighter text-white shadow-[0_0_15px_rgba(197, 219, 59,0.4)] text-xs sm:text-base">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[#C5DB3B] flex items-center justify-center font-black tracking-tighter text-[#0A1628] shadow-[0_0_15px_rgba(197, 219, 59,0.4)] text-xs sm:text-base">
               RB
             </div>
             <div className="min-w-0">
@@ -542,7 +542,7 @@ export default function TableOrder() {
                     )}
 
                     {/* Price Tag - Desktop only */}
-                    <div className="absolute bottom-3 right-3 px-3 py-1 bg-[#C5DB3B] text-white rounded-xl font-bold text-sm shadow-xl font-mono hidden sm:block">
+                    <div className="absolute bottom-3 right-3 px-3 py-1 bg-[#C5DB3B] text-[#0A1628] rounded-xl font-bold text-sm shadow-xl font-mono hidden sm:block">
                       {formatCurrency(price)}
                     </div>
                   </div>
@@ -589,14 +589,14 @@ export default function TableOrder() {
                           <>
                             <button
                               onClick={(e) => { e.stopPropagation(); openFoodModal(item); }}
-                              className="w-10 h-10 rounded-full bg-[#C5DB3B] text-white flex sm:hidden flex-col items-center justify-center shadow-lg active:scale-90 transition-transform"
+                              className="w-10 h-10 rounded-full bg-[#C5DB3B] text-[#0A1628] flex sm:hidden flex-col items-center justify-center shadow-lg active:scale-90 transition-transform"
                             >
                               <span className="text-[10px] font-black leading-none">ADD</span>
                               <Plus size={14} strokeWidth={3} />
                             </button>
                             <button
                               onClick={(e) => { e.stopPropagation(); openFoodModal(item); }}
-                              className="hidden sm:flex px-5 py-2.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-full text-xs font-bold transition-all shadow-lg hover:scale-105 active:scale-95 items-center gap-1.5 uppercase tracking-wider"
+                              className="hidden sm:flex px-5 py-2.5 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] rounded-full text-xs font-bold transition-all shadow-lg hover:scale-105 active:scale-95 items-center gap-1.5 uppercase tracking-wider"
                             >
                               <span>Add</span>
                               <span className="text-white/70 font-normal">+</span>
@@ -623,7 +623,7 @@ export default function TableOrder() {
                             {/* Mobile Circular Button */}
                             <button
                               onClick={(e) => { e.stopPropagation(); addItem({ menuItemId: item._id, name: item.name, size: item.sizes?.[0]?.label || 'Regular', price }); toast.success('Added!'); }}
-                              className="w-10 h-10 rounded-full bg-[#C5DB3B] text-white flex sm:hidden flex-col items-center justify-center shadow-lg active:scale-90 transition-transform"
+                              className="w-10 h-10 rounded-full bg-[#C5DB3B] text-[#0A1628] flex sm:hidden flex-col items-center justify-center shadow-lg active:scale-90 transition-transform"
                             >
                               <span className="text-[10px] font-black leading-none">ADD</span>
                               <Plus size={14} strokeWidth={3} />
@@ -873,7 +873,7 @@ export default function TableOrder() {
                         <div className="flex items-center gap-2 bg-[#1A1A1A] rounded-full p-1 border border-white/10">
                           <button onClick={() => updateQuantity(i.menuItemId, i.size, i.quantity - 1)} className="w-6 h-6 rounded-full bg-[#222] text-white hover:bg-[#333] font-bold text-xs flex items-center justify-center">−</button>
                           <span className="text-xs font-bold text-white w-4 text-center font-mono">{i.quantity}</span>
-                          <button onClick={() => updateQuantity(i.menuItemId, i.size, i.quantity + 1)} className="w-6 h-6 rounded-full bg-[#C5DB3B] text-white hover:bg-[#96AC2E] font-bold text-xs flex items-center justify-center">+</button>
+                          <button onClick={() => updateQuantity(i.menuItemId, i.size, i.quantity + 1)} className="w-6 h-6 rounded-full bg-[#C5DB3B] text-[#0A1628] hover:bg-[#96AC2E] font-bold text-xs flex items-center justify-center">+</button>
                         </div>
                       </div>
                     ))
@@ -936,7 +936,7 @@ export default function TableOrder() {
                 <button 
                   onClick={placeOrder} 
                   disabled={loading}
-                  className="w-full py-4 px-6 rounded-full bg-[#C5DB3B] hover:bg-[#96AC2E] text-white font-extrabold text-sm uppercase tracking-widest shadow-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-4 px-6 rounded-full bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] font-extrabold text-sm uppercase tracking-widest shadow-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -1162,7 +1162,7 @@ export default function TableOrder() {
                         toast.success('Added to your cart!');
                         setSelectedFood(null);
                       }}
-                      className="w-full py-4 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-2xl font-black uppercase tracking-widest text-xs shadow-[0_10px_30px_rgba(197, 219, 59,0.3)] transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
+                      className="w-full py-4 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] rounded-2xl font-black uppercase tracking-widest text-xs shadow-[0_10px_30px_rgba(197, 219, 59,0.3)] transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
                     >
                       <ShoppingBag size={16} />
                       {selectedSize

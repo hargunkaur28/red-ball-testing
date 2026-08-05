@@ -662,10 +662,8 @@ function SportCard({ sport, onEdit, onToggle, onArchive, onViewQR, onConfig, isA
 // Hero Icons Editor
 // ===========================================================================
 const HERO_SLUGS = [
-  { slug: 'box-cricket',  label: 'Box Cricket',   defaultTagline: 'Play & Train',  defaultHref: '/sports/box-cricket' },
   { slug: 'badminton',    label: 'Badminton',      defaultTagline: 'AC Courts',     defaultHref: '/sports/badminton' },
   { slug: 'pickleball',   label: 'Pickleball',     defaultTagline: 'Cushioned',     defaultHref: '/sports/pickleball' },
-  { slug: 'swimming',     label: 'Swimming',       defaultTagline: 'Heated Pool',   defaultHref: '/sports/swimming' },
   { slug: 'gym',          label: 'Gym & Fitness',  defaultTagline: 'AC Facility',   defaultHref: '/sports/gym' },
 ];
 
@@ -1316,7 +1314,7 @@ function SportDrawer({ sport, onClose, onSubmit, isPending }) {
                 required
                 defaultValue={sport?.name}
                 className="input-field"
-                placeholder="e.g., Cricket"
+                placeholder="e.g., Badminton"
               />
             </div>
 
@@ -1822,7 +1820,7 @@ function DiscountsPanel() {
 
         <div className="flex gap-2 pt-1">
           <button type="button" onClick={onCancel} className="flex-1 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 hover:bg-gray-100">Cancel</button>
-          <button type="submit" disabled={isPending} className="flex-1 py-2 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-1">
+          <button type="submit" disabled={isPending} className="flex-1 py-2 rounded-xl bg-[#C5DB3B] text-[#0A1628] text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-1">
             {isPending ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
             Save{entries.length > 1 ? ` (${entries.length} discounts)` : ''}
           </button>
@@ -2608,7 +2606,7 @@ function CouponFormModal({ initial, sports, onSave, onCancel, isPending }) {
         <button type="button" onClick={onCancel} className="flex-1 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 hover:bg-gray-100">
           Cancel
         </button>
-        <button type="submit" disabled={isPending} className="flex-1 py-2 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-1">
+        <button type="submit" disabled={isPending} className="flex-1 py-2 rounded-xl bg-[#C5DB3B] text-[#0A1628] text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-1">
           {isPending ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
           {initial ? 'Save Changes' : 'Create Coupon'}
         </button>
@@ -3213,7 +3211,7 @@ function CourtMembershipsPanel({ sports }) {
         </div>
         <button
           onClick={() => setEditingSport({ slug: '', plans: [] })}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] transition-colors"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#C5DB3B] text-[#0A1628] text-sm font-semibold hover:bg-[#96AC2E] transition-colors"
         >
           <Plus size={15} /> Configure a Sport
         </button>
@@ -3485,7 +3483,7 @@ function CourtMembershipFormModal({ sports, entry, configuredSlugs, onClose }) {
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 py-2 rounded-xl bg-[#C5DB3B] text-white text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-1"
+              className="flex-1 py-2 rounded-xl bg-[#C5DB3B] text-[#0A1628] text-sm font-semibold hover:bg-[#96AC2E] disabled:opacity-60 flex items-center justify-center gap-1"
             >
               {saving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
               Save

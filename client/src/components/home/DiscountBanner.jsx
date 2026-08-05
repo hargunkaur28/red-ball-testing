@@ -110,8 +110,8 @@ export default function DiscountBanner() {
     >
       {/* Left pill */}
       <div className="shrink-0 flex items-center gap-2 px-4 self-stretch" style={{ background: '#C5DB3B' }}>
-        <Tag size={13} className="text-white" />
-        <span className="text-white text-[11px] font-black uppercase tracking-widest whitespace-nowrap">
+        <Tag size={13} className="text-[#0A1628]" />
+        <span className="text-[#0A1628] text-[11px] font-black uppercase tracking-widest whitespace-nowrap">
           Live Offers
         </span>
       </div>

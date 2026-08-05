@@ -147,7 +147,7 @@ export default function ContactSection() {
             {/* Right Column — Google Map */}
             <div className="rounded-xl overflow-hidden h-full min-h-[500px] border border-white/[0.08]">
               <iframe
-                src="https://maps.google.com/maps?q=Red+Ball+Cricket+Ground+Rohtak&output=embed"
+                src="https://maps.google.com/maps?q=Alchemy+360+Rohtak&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0, borderRadius: '12px', minHeight: '500px' }}

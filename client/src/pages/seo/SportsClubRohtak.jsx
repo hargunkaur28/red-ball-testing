@@ -44,7 +44,7 @@ export default function SportsClubRohtak() {
     <SEOLandingLayout>
       <SEOHead
         title="Sports Club in Rohtak | Multi-Sport Membership | Alchemy 360"
-        description="Alchemy 360 is Rohtak's premier sports club — badminton, gym, pickleball, and football with flexible membership plans. Join today."
+        description="Alchemy 360 is Rohtak's premier sports club — badminton, pickleball and gym with flexible membership plans. Join today."
         canonical="/sports-club-rohtak"
         schema={schema}
       />
@@ -58,10 +58,10 @@ export default function SportsClubRohtak() {
             Sports Club in Rohtak
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 is Rohtak's most complete sports club — offering membership access across badminton, pickleball, gym, and football under one roof. As a club member, you get priority booking, discounted rates, and access to all facilities at Rohtak's most active multi-sport complex.
+            Alchemy 360 is Rohtak's most complete sports club — offering membership access across badminton, pickleball and gym under one roof. As a club member, you get priority booking, discounted rates, and access to all facilities at Rohtak's most active multi-sport complex.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/buy-membership" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join the Sports Club
             </Link>
             <Link to="/sports-complex-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -82,7 +82,7 @@ export default function SportsClubRohtak() {
           {[
             { title: 'Multi-Sport Access', desc: 'One membership gives you access to badminton, pickleball, and gym. The most comprehensive sports club value in Rohtak.' },
             { title: 'Priority Booking', desc: 'Club members get priority access to slot bookings, court reservations, and coaching program enrollments before open availability.' },
-            { title: 'Community Events', desc: 'Regular cricket tournaments, badminton leagues events, and social sports gatherings exclusive to Alchemy 360 club members.' },
+            { title: 'Community Events', desc: 'Regular badminton and pickleball leagues, tournaments, and social sports gatherings exclusive to Alchemy 360 club members.' },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>

@@ -65,7 +65,7 @@ export default function GymHisar() {
             Alchemy 360 in Rohtak is approximately 100 km from Hisar — about 100 minutes on NH-9. If you're looking for a serious gym with proper equipment, trained staff, and multi-sport access all under one roof, the drive from Hisar is absolutely worth it.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/buy-membership?sport=gym" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership?sport=gym" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join the Gym
             </Link>
             <Link to="/gym-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>

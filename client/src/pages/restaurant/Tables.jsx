@@ -67,7 +67,7 @@ export default function Tables() {
         subtitle={`Total Tables: ${tables.length} • Active: ${tables.filter(t => t.isActive).length}`} 
         action={
           <button 
-            className="px-6 py-3 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white font-extrabold rounded-2xl flex items-center gap-2 shadow-lg transition-all hover:scale-105" 
+            className="px-6 py-3 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] font-extrabold rounded-2xl flex items-center gap-2 shadow-lg transition-all hover:scale-105" 
             onClick={() => setModalOpen(true)}
           >
             <Plus size={20} />
@@ -153,7 +153,7 @@ export default function Tables() {
                       link.download = `table-qr-${table.tableNumber}.png`;
                       link.click();
                     }}
-                    className="flex-1 py-3 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md"
+                    className="flex-1 py-3 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md"
                   >
                     <Download size={16} />
                     <span>Download</span>
@@ -266,7 +266,7 @@ export default function Tables() {
                   <button 
                     type="submit" 
                     disabled={createMutation.isPending}
-                    className="w-full py-4 rounded-xl bg-[#C5DB3B] text-white hover:bg-[#96AC2E] font-extrabold text-base shadow-lg transition-all"
+                    className="w-full py-4 rounded-xl bg-[#C5DB3B] text-[#0A1628] hover:bg-[#96AC2E] font-extrabold text-base shadow-lg transition-all"
                   >
                     {createMutation.isPending ? 'Creating Table...' : 'Create Table'}
                   </button>
@@ -309,7 +309,7 @@ export default function Tables() {
                   <a 
                     href={qrModal.qrCode} 
                     download={`table-qr-${qrModal.tableId}.png`} 
-                    className="flex-1 py-3.5 bg-[#C5DB3B] text-white hover:bg-[#96AC2E] font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-all"
+                    className="flex-1 py-3.5 bg-[#C5DB3B] text-[#0A1628] hover:bg-[#96AC2E] font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-all"
                   >
                     <Download size={16} />
                     <span>Download PNG</span>

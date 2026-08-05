@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'Can I do both gym  on the same trip from Sonipat?',
-    a: "Yes. Many Sonipat visitors combine gym training with a session at Box 360 — Rohtak's first 24/7 circular box cricket facility. It's a full sports experience in one visit, capped off at Alchemy 360's on-site restaurant.",
+    a: "Yes. Many Sonipat visitors combine gym training with a session at Box 360 — Rohtak's dedicated pickleball courts. It's a full sports experience in one visit, capped off at Alchemy 360's on-site restaurant.",
   },
 ];
 
@@ -64,7 +64,7 @@ export default function GymSonipat() {
             Alchemy 360 in Rohtak is 55 km and about 55 minutes from Sonipat on NH-334B — and it offers a gymnasium that is part of a full sports complex, not a standalone fitness room. For Sonipat gym-goers who want to train in a real sports environment, the highway drive is a worthwhile commitment.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Gym
             </Link>
             <Link to="/gym-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -84,7 +84,7 @@ export default function GymSonipat() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: '55 Min on NH-334B', desc: 'NH-334B from Sonipat to Rohtak is a clear, direct route. Alchemy 360 is in Sector 22-D, Jhajjar Road — straightforward navigation from the highway.' },
-            { title: 'Athletes Train Here', desc: 'Alchemy 360\'s gym is used by cricketers, swimmers, and badminton players in training — a focused sports environment that Sonipat gym-goers find motivating.' },
+            { title: 'Athletes Train Here', desc: 'Alchemy 360\'s gym is used by badminton and pickleball players in training — a focused sports environment that Sonipat gym-goers find motivating.' },
             { title: 'Fuel After the Session', desc: "Alchemy 360's on-site restaurant handles post-workout nutrition. Sonipat visitors can eat well without hunting for a dhaba before the drive home." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">

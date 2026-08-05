@@ -64,7 +64,7 @@ export default function BadmintonCourtPanipat() {
             Alchemy 360 in Rohtak is the go-to badminton venue for serious players across Haryana — and for Panipat players, it's 95 km and 90 minutes away, worth every kilometre. When you arrive, you'll find professional courts, a buzzing sports atmosphere, and a full facility that turns a badminton trip into a proper sports day out.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/badminton-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>

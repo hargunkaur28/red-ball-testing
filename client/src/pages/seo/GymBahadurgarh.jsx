@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'Can I swim and use the gym on the same visit from Bahadurgarh?',
-    a: "Yes. Bahadurgarh visitors often combine gym training with a swim in Alchemy 360's open-air pool. The facilities are co-located and the on-site restaurant makes a full day practical and enjoyable.",
+    a: "Yes. Bahadurgarh visitors often combine gym training with a badminton or pickleball session. The facilities are co-located, which makes a full day practical and enjoyable.",
   },
 ];
 
@@ -48,7 +48,7 @@ export default function GymBahadurgarh() {
     <SEOLandingLayout>
       <SEOHead
         title="Gym Near Bahadurgarh | Alchemy 360 Rohtak"
-        description="Gym near Bahadurgarh — Alchemy 360, Rohtak, 45 km / 40 min away. Well-equipped gymnasium, memberships, full sports complex with cricket & more."
+        description="Gym near Bahadurgarh — Alchemy 360, Rohtak, 45 km / 40 min away. Well-equipped gymnasium, memberships, full sports complex & more."
         canonical="/gym-bahadurgarh"
         schema={schema}
       />
@@ -64,7 +64,7 @@ export default function GymBahadurgarh() {
             Alchemy 360 in Rohtak offers a proper gymnasium within a full multi-sport complex — 45 km and 40 minutes from Bahadurgarh on NH-148B. For Bahadurgarh fitness enthusiasts who want more than a standalone gym and are willing to make a 40-minute highway drive for a complete sports experience, Alchemy 360 is the right move.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Gym
             </Link>
             <Link to="/gym-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -84,7 +84,7 @@ export default function GymBahadurgarh() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: '40 Min NH-148B Drive', desc: 'Smooth, well-maintained highway from Bahadurgarh to Rohtak. Alchemy 360 is right off the main road near Omaxe — easy to find, easy to park.' },
-            { title: 'Sports Complex Gym', desc: 'Train in a facility built for athletes — surrounded by cricket, and racket sports infrastructure that keeps motivation high.' },
+            { title: 'Sports Complex Gym', desc: 'Train in a facility built for athletes — surrounded by racket sports infrastructure that keeps motivation high.' },
             { title: 'Gym + Meal', desc: "Post-workout nutrition sorted — Alchemy 360's on-site restaurant serves food for gym members and sports visitors from Bahadurgarh without any extra planning." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">

@@ -76,7 +76,7 @@ export default function HeroSection() {
     const n = name.toLowerCase();
     if (n.includes('gym') || n.includes('fitness')) return <Dumbbell size={22} className="text-[#F5A623]" />;
     if (n.includes('badminton')) return <Feather size={22} className="text-[#0EA5E9]" />;
-    if (n.includes('cricket')) return <Target size={22} className="text-[#C5DB3B]" />;
+    
     if (n.includes('pickleball')) return <Trophy size={22} className="text-[#10B981]" />;
     if (n.includes('all')) return <Layers size={22} className="text-[#8B5CF6]" />;
     return <Trophy size={22} className="text-[#F5A623]" />;
@@ -409,7 +409,7 @@ export default function HeroSection() {
           <Link
             to="/login?redirectTo=/user/scan"
             onClick={() => setShowCheckInMenu(false)}
-            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-primary hover:bg-[#96AC2E] text-white text-sm font-bold transition-all mb-2"
+            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-primary hover:bg-[#96AC2E] text-[#0A1628] text-sm font-bold transition-all mb-2"
           >
             <LogIn size={16} /> Login / Sign Up
           </Link>

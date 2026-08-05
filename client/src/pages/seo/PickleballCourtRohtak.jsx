@@ -60,7 +60,7 @@ export default function PickleballCourtRohtak() {
             Alchemy 360 has dedicated pickleball courts in Rohtak. Pickleball is one of the fastest-growing sports in India — and now you can play it right here without travelling far. Perfect for all ages and fitness levels.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/sports/pickleball" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/pickleball" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Pickleball Court
             </Link>
             <Link to="/buy-membership?sport=pickleball" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>

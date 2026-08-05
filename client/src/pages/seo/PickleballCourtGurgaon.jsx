@@ -65,7 +65,7 @@ export default function PickleballCourtGurgaon() {
             Tired of overpriced, overcrowded courts in Gurgaon? Alchemy 360 in Rohtak is 90 km and 90 minutes away — and the difference is night and day. A dedicated pickleball court, a full multi-sport complex, and a relaxed sporting atmosphere await Gurgaon players willing to make the drive to Haryana's finest sports arena.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/sports/pickleball" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/pickleball" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Pickleball Court
             </Link>
             <Link to="/badminton-court-gurgaon" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -80,7 +80,7 @@ export default function PickleballCourtGurgaon() {
           The Gurgaon Pickleball Escape — Come to Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Gurgaon has a fast-growing pickleball community, but court availability in the city can be frustrating — slots book out, prices run high, and the atmosphere is often rushed. Alchemy 360 in Rohtak offers a different experience: a dedicated pickleball court in a sprawling multi-sport complex where you can book ahead, arrive relaxed, and play without the usual city hassle. The 90-minute drive from Gurgaon becomes a sports day out rather than just a court booking. Combine pickleball with badminton on professional courts, a swim in the open-air pool, or a session in the gymnasium — all under one roof.
+          Gurgaon has a fast-growing pickleball community, but court availability in the city can be frustrating — slots book out, prices run high, and the atmosphere is often rushed. Alchemy 360 in Rohtak offers a different experience: a dedicated pickleball court in a sprawling multi-sport complex where you can book ahead, arrive relaxed, and play without the usual city hassle. The 90-minute drive from Gurgaon becomes a sports day out rather than just a court booking. Combine pickleball with badminton on professional courts, or a session in the gymnasium — all under one roof.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[

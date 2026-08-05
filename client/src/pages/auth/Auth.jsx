@@ -692,7 +692,7 @@ export default function Auth() {
                   <div className="brand-desc">
                     {isLogin
                       ? 'Access your sessions, track progress, and manage your membership in real-time.'
-                      : 'Join the most advanced cricket academy platform. Professional coaching, smart bookings, and elite tracking.'}
+                      : "Join Rohtak's most advanced sports platform. Professional coaching, smart bookings, and elite tracking."}
                   </div>
                 </motion.div>
               </AnimatePresence>

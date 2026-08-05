@@ -64,7 +64,7 @@ export default function BadmintonCourtJhajjar() {
             Alchemy 360 in Rohtak is the closest professional badminton facility to Jhajjar — located right on Jhajjar Road, Sector 22-D, just 25 km and about 25 minutes from Jhajjar. Whether you're looking for a regular court for weekend games or structured practice, the short drive from Jhajjar puts you on a proper badminton court.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/badminton-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -85,7 +85,7 @@ export default function BadmintonCourtJhajjar() {
           {[
             { title: '25 Min from Jhajjar', desc: 'Directly on Jhajjar Road — no city traffic to navigate. Most Jhajjar players arrive fresh and ready to play.' },
             { title: 'Professional Courts', desc: 'Well-lit badminton courts with standard markings, suitable for singles, doubles, and coaching sessions.' },
-            { title: 'Full Sports Day', desc: "Play badminton, then unwind with a swim in the open-air pool or a meal at Alchemy 360's on-site restaurant — all in one place." },
+            { title: 'Full Sports Day', desc: "Play badminton, then try pickleball or a session in the gym — all in one place." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>

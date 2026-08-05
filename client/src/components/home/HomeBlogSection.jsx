@@ -6,13 +6,10 @@ import { blogPosts, getBlogCoverImage } from '../../data/blogPosts';
 import api from '../../lib/axios';
 
 const categoryColors = {
-  Cricket:      { bg: 'bg-red-50',    text: 'text-red-600'    },
-  Swimming:     { bg: 'bg-blue-50',   text: 'text-blue-600'   },
   Badminton:    { bg: 'bg-green-50',  text: 'text-green-700'  },
   Pickleball:   { bg: 'bg-yellow-50', text: 'text-yellow-700' },
   Events:       { bg: 'bg-purple-50', text: 'text-purple-700' },
   Gym:          { bg: 'bg-gray-100',  text: 'text-gray-700'   },
-  Football:     { bg: 'bg-orange-50', text: 'text-orange-600' },
   Membership:   { bg: 'bg-indigo-50', text: 'text-indigo-700' },
   'Kids Academy':{ bg: 'bg-pink-50',  text: 'text-pink-700'   },
 };

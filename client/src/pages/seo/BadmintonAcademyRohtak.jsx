@@ -65,7 +65,7 @@ export default function BadmintonAcademyRohtak() {
             Alchemy 360 runs a full-scale badminton academy in Rohtak — offering structured coaching for beginners, intermediates, and competitive players. With professional wooden-floor courts and experienced coaches, it is Rohtak's most serious badminton training destination.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/buy-membership?sport=badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership?sport=badminton" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Badminton Academy
             </Link>
             <Link to="/book-slots" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>

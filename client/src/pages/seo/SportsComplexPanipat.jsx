@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'What unique sports does Alchemy 360 have that Panipat teams will find interesting?',
-    a: "Alchemy 360 hosts Box 360 — Rohtak's first 24/7 circular box cricket ground — and pickleball courts, both of which are unusual features that attract teams from as far as Panipat for unique sports experiences.",
+    a: "Alchemy 360 hosts dedicated pickleball courts and professional badminton courts, both unusual features that attract players from as far as Panipat.",
   },
   {
     q: 'Can Panipat corporate teams plan a full sports day at Alchemy 360?',
@@ -47,7 +47,7 @@ export default function SportsComplexPanipat() {
     <SEOLandingLayout>
       <SEOHead
         title="Sports Complex Near Panipat | Alchemy 360 Rohtak"
-        description="Sports complex near Panipat — Alchemy 360 in Rohtak, ~95 km, ~90 min drive. Cricket (Box 360), badminton, pickleball, gym & restaurant."
+        description="Sports complex near Panipat — Alchemy 360 in Rohtak, ~95 km, ~90 min drive. Badminton, pickleball and gym."
         canonical="/sports-complex-panipat"
         schema={schema}
       />
@@ -64,7 +64,7 @@ export default function SportsComplexPanipat() {
             Alchemy 360 in Rohtak is approximately 95 km from Panipat — about 90 minutes by road. For Panipat teams and individuals planning a dedicated sports day, Alchemy 360 is the most complete facility available within that range — with badminton, pickleball, a gym, and dining all in one complex.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Explore Facilities
             </Link>
             <Link to="/sports-complex-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -79,11 +79,11 @@ export default function SportsComplexPanipat() {
           A Sports Complex Worth the 90-Minute Drive from Panipat
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Panipat has growing demand for high-quality sports facilities, and Alchemy 360 in Rohtak meets that demand at a scale that justifies the drive. Located at Sector 22-D, Jhajjar Road, Rohtak, the complex brings together five sports disciplines, a full gym, and a restaurant — under one roof. Panipat corporate teams use Alchemy 360 for full-day sports events, while individuals come for the Box 360 box cricket experience or a serious gym session combined with a swim.
+          Panipat has growing demand for high-quality sports facilities, and Alchemy 360 in Rohtak meets that demand at a scale that justifies the drive. Located at Sector 22-D, Jhajjar Road, Rohtak, the complex brings together five sports disciplines, a full gym, and a restaurant — under one roof. Panipat corporate teams use Alchemy 360 for full-day sports events, while individuals come for a badminton session or a serious gym workout.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { title: 'Box 360 — Unique Experience', desc: "Rohtak's first 24/7 circular box cricket ground. Panipat cricket fans make the 90-minute trip specifically for this — a format and format not available anywhere else in the region." },
+            { title: 'Dedicated Pickleball', desc: "Panipat players make the 90-minute trip specifically for these courts — among the very few dedicated pickleball courts in the region." },
             { title: 'Eat and Recharge', desc: "Alchemy 360's on-site restaurant means Panipat groups don't have to rush — finish your sessions, eat a proper meal on-site, and drive back fed and satisfied." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">

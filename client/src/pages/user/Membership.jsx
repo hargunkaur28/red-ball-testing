@@ -474,7 +474,7 @@ export default function Membership() {
                   </p>
                   <Link
                     to={`/sports/${(plan?.sportsIncluded?.[0] || '').toLowerCase().replace(/\s+/g, '-')}`}
-                    className="inline-flex items-center rounded-full bg-white px-7 py-3 text-sm font-black text-black transition hover:bg-[#C5DB3B] hover:text-white"
+                    className="inline-flex items-center rounded-full bg-white px-7 py-3 text-sm font-black text-black transition hover:bg-[#C5DB3B] hover:text-[#0A1628]"
                   >
                     <RefreshCw size={18} className="mr-2" />
                     Renew Membership

@@ -1174,7 +1174,7 @@ export default function EntryPortal() {
                           </p>
                           <button
                             onClick={() => navigate(`/sports/${data?.sport?.slug}`)}
-                            className="w-full py-3 px-4 rounded-xl bg-[#C5DB3B] hover:bg-[#C5DB3B]/80 active:scale-[0.98] transition-all text-white text-sm font-bold shadow-lg shadow-[#C5DB3B]/20 flex items-center justify-center gap-2"
+                            className="w-full py-3 px-4 rounded-xl bg-[#C5DB3B] hover:bg-[#C5DB3B]/80 active:scale-[0.98] transition-all text-[#0A1628] text-sm font-bold shadow-lg shadow-[#C5DB3B]/20 flex items-center justify-center gap-2"
                           >
                             Book {data?.sport?.name} Slots
                           </button>

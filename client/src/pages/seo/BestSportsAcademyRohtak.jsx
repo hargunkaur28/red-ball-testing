@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     q: 'Which sports can I learn at Alchemy 360 Rohtak?',
-    a: 'You can train in cricket (box cricket), badminton, pickleball, and fitness/gym. Kids programs are available for cricket and badminton.',
+    a: 'You can train in badminton, pickleball, and fitness/gym. Kids programs are available for badminton.',
   },
   {
     q: 'Is Alchemy 360 good for beginners?',
@@ -54,7 +54,7 @@ export default function BestSportsAcademyRohtak() {
             Alchemy 360 stands out as Rohtak's most comprehensive sports facility. With multi-sport infrastructure, expert coaches, digital access, and a family-friendly environment, it's the clear choice for serious players and casual enthusiasts alike.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/sports-academy-rohtak" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports-academy-rohtak" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Explore Academy
             </Link>
             <Link to="/buy-membership" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -73,7 +73,7 @@ export default function BestSportsAcademyRohtak() {
             { icon: '🏟️', title: 'Multi-Sport Infrastructure', desc: 'Badminton, pickleball, and gym — all in one location in Rohtak.' },
             { icon: '👨‍🏫', title: 'Expert Coaching', desc: 'Experienced coaches across disciplines for both kids and adults, beginner to advanced.' },
             { icon: '📱', title: 'Digital Booking', desc: 'Book any court or slot online in minutes. No phone calls, no waiting.' },
-            { icon: '🎓', title: "Kids' Academy", desc: 'Dedicated youth programs for cricket and badminton with age-appropriate coaching.' },
+            { icon: '🎓', title: "Kids' Academy", desc: 'Dedicated youth programs for badminton with age-appropriate coaching.' },
             { icon: '💳', title: 'Flexible Memberships', desc: 'Monthly, quarterly, and annual plans to suit any budget and schedule.' },
             { icon: '🍽️', title: 'On-Site Restaurant', desc: 'Refuel after your session at our in-house restaurant.' },
           ].map(item => (

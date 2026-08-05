@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'What is the best sports complex in Haryana?',
-    a: 'Alchemy 360 in Rohtak is among Haryana\'s best multi-sport complexes — offering badminton, pickleball, gym, football, and kids academy under one roof.',
+    a: 'Alchemy 360 in Rohtak is among Haryana\'s best multi-sport complexes — offering badminton, pickleball and gym under one roof.',
   },
   {
     q: 'Where is Alchemy 360 located in Haryana?',
@@ -18,11 +18,11 @@ const faqs = [
   },
   {
     q: 'What sports are available at Alchemy 360?',
-    a: 'Cricket (box cricket and practice ground), badminton, pickleball, gym, football, and a kids sports academy. Plus food court and sports accessories shop.',
+    a: 'Badminton, pickleball and a fully equipped gym, plus professional coaching and court memberships.',
   },
   {
     q: 'Is Alchemy 360 suitable for corporate events in Haryana?',
-    a: 'Yes. Alchemy 360 is one of Haryana\'s best venues for corporate sports events — offering cricket tournaments, team-building sports days, and multi-sport corporate packages.',
+    a: 'Yes. Alchemy 360 is one of Haryana\'s best venues for corporate sports events — offering badminton and pickleball tournaments, team-building sports days, and multi-sport corporate packages.',
   },
   {
     q: 'Which cities in Haryana is Alchemy 360 accessible from?',
@@ -64,10 +64,10 @@ export default function SportsComplexHaryana() {
             Sports Complex in Haryana
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 in Rohtak is Haryana's most complete multi-sport complex — offering badminton, pickleball, gym, and football under one roof. Serving players from across Haryana with professional facilities, expert coaching, and flexible membership plans.
+            Alchemy 360 in Rohtak is Haryana's most complete multi-sport complex — offering badminton, pickleball and gym under one roof. Serving players from across Haryana with professional facilities, expert coaching, and flexible membership plans.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/buy-membership" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/buy-membership" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join the Complex
             </Link>
             <Link to="/sports-complex-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -82,13 +82,13 @@ export default function SportsComplexHaryana() {
           Haryana's Multi-Sport Hub — Alchemy 360, Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Haryana has always had a strong sports culture — from wrestling and kabaddi to cricket and badminton. Alchemy 360 in Rohtak brings that tradition into a modern, world-class facility that serves players from every corner of Haryana. With its central location in Rohtak, Alchemy 360 is within reach of virtually every major city in the state, making it the natural anchor of sport in Haryana.
+          Haryana has always had a strong sports culture — from wrestling and kabaddi to badminton. Alchemy 360 in Rohtak brings that tradition into a modern, world-class facility that serves players from every corner of Haryana. With its central location in Rohtak, Alchemy 360 is within reach of virtually every major city in the state, making it the natural anchor of sport in Haryana.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { title: '6 Sports Under One Roof', desc: 'Badminton, pickleball, gym, and football — the most comprehensive multi-sport complex in Haryana.' },
+            { title: '3 Sports Under One Roof', desc: 'Badminton, pickleball and gym — the most comprehensive multi-sport complex in Haryana.' },
             { title: 'Central Haryana Location', desc: 'Rohtak\'s central position in Haryana means Alchemy 360 is accessible from Jhajjar, Sonipat, Bahadurgarh, Hisar, and Delhi NCR.' },
-            { title: 'Haryana Sports Events', desc: 'Host of the Rohtak Cricket League and regular Haryana-wide sports events — Alchemy 360 is the sports events hub of the region.' },
+            { title: 'Haryana Sports Events', desc: 'Host of regular Haryana-wide badminton and pickleball events — Alchemy 360 is the sports events hub of the region.' },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>

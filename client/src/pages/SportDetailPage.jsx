@@ -52,7 +52,7 @@ export default function SportDetailPage({ embedded = false }) {
           <p className="text-white/40 text-sm">This sport or facility may not be available.</p>
           <button
             onClick={() => navigate(-1)}
-            className="px-6 py-2.5 rounded-xl bg-[#C5DB3B] text-white font-bold text-sm mt-2 hover:bg-[#96AC2E] transition-colors"
+            className="px-6 py-2.5 rounded-xl bg-[#C5DB3B] text-[#0A1628] font-bold text-sm mt-2 hover:bg-[#96AC2E] transition-colors"
           >
             Go Back
           </button>

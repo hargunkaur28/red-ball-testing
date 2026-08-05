@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'What facilities are available alongside the badminton courts at Alchemy 360?',
-    a: "Alchemy 360 also has cricket grounds, Box 360 box cricket, gym, pickleball courts, and an on-site restaurant — making it a full sports day destination for Bahadurgarh visitors.",
+    a: "Alchemy 360 also has badminton courts, a gym and pickleball courts — making it a full sports day destination for Bahadurgarh visitors.",
   },
 ];
 
@@ -64,7 +64,7 @@ export default function BadmintonCourtBahadurgarh() {
             Alchemy 360 is Rohtak's premier badminton destination — and at just 45 km and 40 minutes from Bahadurgarh, it's the best professional court accessible to players in the area. Bahadurgarh players increasingly make Alchemy 360 their regular badminton venue, drawn by the quality courts, clean facility, and the convenience of online booking.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/badminton-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>

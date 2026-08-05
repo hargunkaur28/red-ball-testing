@@ -9,31 +9,15 @@ import api from '../../lib/axios';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+// Testimonials for cricket coaching, swimming, the restaurant and one-time booking
+// were removed with those offerings. The remaining quote is attributed to a named
+// person, so it is left exactly as written — rewriting it to be about badminton
+// would put words in someone's mouth. Add real badminton/pickleball quotes here.
 const testimonials = [
-  {
-    sport: 'Cricket Coaching',
-    text: "My son's batting has completely transformed. The coaches are incredibly patient and skilled — best decision we made.",
-    name: 'Rahul M.',
-  },
-  {
-    sport: 'Restaurant',
-    text: 'The QR ordering is brilliant! Scan, order, eat — while watching the cricket. Love this place.',
-    name: 'Priya S.',
-  },
-  {
-    sport: 'Swimming',
-    text: 'Best swimming coaching around. The pool is pristine and the timings are super flexible for working parents.',
-    name: 'Arjun K.',
-  },
   {
     sport: 'Gym & Fitness',
     text: 'Lost 10kg in 3 months with a fully personalised plan. The trainers here genuinely care about your progress.',
     name: 'Neha T.',
-  },
-  {
-    sport: 'One-Time Booking',
-    text: 'Booked the cricket ground for our office trip — seamless process, great pitch, everyone had a blast.',
-    name: 'Vikram D.',
   },
 ];
 

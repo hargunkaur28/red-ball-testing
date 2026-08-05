@@ -139,7 +139,7 @@ export default function Menu() {
         subtitle={`Total Live Dishes: ${items.length} • Featured Recovery Items: ${items.filter(i => i.featured).length}`}
         action={
           <button 
-            className="px-6 py-3 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white font-extrabold text-xs rounded-2xl flex items-center gap-2 shadow-lg transition-all hover:scale-105" 
+            className="px-6 py-3 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] font-extrabold text-xs rounded-2xl flex items-center gap-2 shadow-lg transition-all hover:scale-105" 
             onClick={() => { setEditId(null); setForm({ ...emptyForm }); setDrawerOpen(true); }}
           >
             <Plus size={18} />

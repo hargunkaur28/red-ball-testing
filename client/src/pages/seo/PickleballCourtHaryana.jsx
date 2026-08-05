@@ -65,7 +65,7 @@ export default function PickleballCourtHaryana() {
             Pickleball is one of the world's fastest-growing sports — and Haryana is catching on fast. Alchemy 360 in Rohtak hosts one of the state's dedicated pickleball courts, open to beginners and seasoned players from Jhajjar, Bahadurgarh, Sonipat, Gurgaon, Panipat, and beyond. Come try the sport everyone's talking about.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/sports/pickleball" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/pickleball" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Pickleball Court
             </Link>
             <Link to="/pickleball-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -86,7 +86,7 @@ export default function PickleballCourtHaryana() {
           {[
             { title: 'Rare in Haryana', desc: 'Dedicated pickleball courts are scarce across Haryana. Alchemy 360 in Rohtak is one of the very few venues in the state where you can play on a properly marked, maintained pickleball court.' },
             { title: 'Beginner Friendly', desc: 'Never held a pickleball paddle? No problem. The sport takes minutes to learn. Equipment is available, and Alchemy 360\'s staff can walk you through the basics before your first game.' },
-            { title: 'Multiple Sports + Restaurant', desc: 'Pickleball is just the start. Pair your session with a swim, a badminton match, or a cricket slot — and wrap up the day with a meal at Alchemy 360\'s on-site restaurant.' },
+            { title: 'Multiple Sports + Restaurant', desc: 'Pickleball is just the start. Pair your session with a badminton match or a pickleball slot at Alchemy 360\'s on-site restaurant.' },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>

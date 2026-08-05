@@ -91,7 +91,7 @@ export default function BlogPost() {
               <p className="font-bold text-[#0D0D0D] text-sm mb-1" style={{ fontFamily: "'DM Sans', sans-serif" }}>Alchemy 360</p>
               <p className="text-xs text-[#0D0D0D]/60" style={{ fontFamily: "'DM Sans', sans-serif" }}>Sector 22-D, Jhajjar Road, Rohtak, Haryana 124001 · +91 93500 76653</p>
             </div>
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-5 py-2.5 rounded-full text-sm hover:bg-[#96AC2E] transition-colors whitespace-nowrap" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-5 py-2.5 rounded-full text-sm hover:bg-[#96AC2E] transition-colors whitespace-nowrap" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book a Slot
             </Link>
           </div>

@@ -426,7 +426,7 @@ export default function Communication() {
                 <button 
                   onClick={() => editReviewMut.mutate({ id: editingReview._id, data: { status: editingReview.status, rating: editingReview.rating, comment: editingReview.comment, isFeatured: editingReview.isFeatured } })}
                   disabled={editReviewMut.isPending}
-                  className="flex-1 px-4 py-2 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+                  className="flex-1 px-4 py-2 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
                 >
                   {editReviewMut.isPending ? 'Saving...' : 'Save Changes'}
                 </button>

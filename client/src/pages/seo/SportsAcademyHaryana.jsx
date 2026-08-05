@@ -6,7 +6,7 @@ import { localBusinessSchema, breadcrumbSchema, faqSchema } from '../../componen
 const faqs = [
   {
     q: 'What is the best private sports academy in Haryana?',
-    a: 'Alchemy 360 in Rohtak is widely regarded as one of Haryana\'s best private multi-sport academies, offering cricket (including the Box 360 circular format), badminton, pickleball, and gymnasium in a single complex.',
+    a: 'Alchemy 360 in Rohtak is widely regarded as one of Haryana\'s best private multi-sport academies, offering badminton, pickleball, and gymnasium in a single complex.',
   },
   {
     q: 'Which cities in Haryana can access Alchemy 360?',
@@ -17,8 +17,8 @@ const faqs = [
     a: 'Yes. Alchemy 360 has structured programmes for kids, teenagers, and adults across badminton, pickleball. Separate batches ensure age-appropriate training.',
   },
   {
-    q: 'Is Alchemy 360 the only facility with Box 360 cricket in Haryana?',
-    a: 'Box 360 at Alchemy 360 is Rohtak\'s first 24/7 circular box cricket ground. This unique format — available round the clock — sets Alchemy 360 apart from any other sports facility in the region.',
+    q: 'Is Alchemy 360 the only facility with dedicated pickleball courts in Haryana?',
+    a: 'Box 360 at Alchemy 360 is Rohtak\'s dedicated pickleball courts. This unique format — available round the clock — sets Alchemy 360 apart from any other sports facility in the region.',
   },
   {
     q: 'How do I enroll in a sports academy programme at Alchemy 360 from anywhere in Haryana?',
@@ -62,10 +62,10 @@ export default function SportsAcademyHaryana() {
             Sports Academy in Haryana
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 in Rohtak serves athletes from across Haryana — Jhajjar, Bahadurgarh, Sonipat, Panipat, Gurgaon, and every district in between. One campus, multiple professional sports, expert coaching, and the state's only Box 360 24/7 circular cricket ground. This is Haryana's go-to private sports academy.
+            Alchemy 360 in Rohtak serves athletes from across Haryana — Jhajjar, Bahadurgarh, Sonipat, Panipat, Gurgaon, and every district in between. One campus, multiple professional sports, expert coaching, and the state's dedicated pickleball courts. This is Haryana's go-to private sports academy.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join the Academy
             </Link>
             <Link to="/sports-academy-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -80,13 +80,13 @@ export default function SportsAcademyHaryana() {
           Haryana's Premier Private Multi-Sport Academy
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Haryana breeds champions — and Alchemy 360 in Rohtak is where many of them train. Athletes from Jhajjar drive 25 minutes, those from Bahadurgarh take 40 minutes, and families from Sonipat and Panipat travel over an hour, all because the quality at Alchemy 360 is simply not available closer to home. The Box 360 circular cricket ground is open 24 hours, 7 days a week — the first of its kind in Rohtak and unique across Haryana. professional badminton and pickleball courts, and a full gymnasium make Alchemy 360 a complete sporting destination. Add professional coaching staff and structured academy programmes for kids, teens, and adults, and the drive from anywhere in Haryana becomes an easy decision.
+          Haryana breeds champions — and Alchemy 360 in Rohtak is where many of them train. Athletes from Jhajjar drive 25 minutes, those from Bahadurgarh take 40 minutes, and families from Sonipat and Panipat travel over an hour, all because the quality at Alchemy 360 is simply not available closer to home. The pickleball courts are open every day from 5 AM to 11 PM — among the first of their kind in Rohtak and unique across Haryana. professional badminton and pickleball courts, and a full gymnasium make Alchemy 360 a complete sporting destination. Add professional coaching staff and structured academy programmes for kids, teens, and adults, and the drive from anywhere in Haryana becomes an easy decision.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: 'Haryana-Wide Catchment', desc: 'Athletes travel from Jhajjar, Bahadurgarh, Sonipat, Panipat, Gurgaon, and beyond. Rohtak\'s central location in Haryana makes Alchemy 360 accessible from all directions.' },
-            { title: 'Best Sports Academy Rohtak', desc: 'Alchemy 360 has earned its reputation as Rohtak\'s top sports academy through results — competitive cricketers, strong swimmers, and skilled badminton players trained here.' },
-            { title: 'Compete, Train + Restaurant', desc: 'From academy enrollment to tournament play in the Rohtak Cricket League, Alchemy 360 is a full sports ecosystem. Stay for a meal at the on-site restaurant after your session.' },
+            { title: 'Best Sports Academy Rohtak', desc: 'Alchemy 360 has earned its reputation as Rohtak\'s top sports academy through results — skilled badminton and pickleball players trained here.' },
+            { title: 'Compete, Train + Restaurant', desc: 'From coaching enrollment to competitive play, Alchemy 360 is a full sports ecosystem. Stay for a meal at the on-site restaurant after your session.' },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
               <h3 className="font-bold text-[#0D0D0D] mb-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>{item.title}</h3>

@@ -79,7 +79,7 @@ export default function FacilityRentals() {
 
           <Link
             to={isAuthenticated ? '/user/book-slots' : '/book-slots'}
-            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider text-white transition-all duration-200 hover:gap-3 shrink-0 group"
+            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider text-[#0A1628] transition-all duration-200 hover:gap-3 shrink-0 group"
             style={{
               background: '#C5DB3B',
               boxShadow: '0 6px 20px rgba(197, 219, 59,0.25)',

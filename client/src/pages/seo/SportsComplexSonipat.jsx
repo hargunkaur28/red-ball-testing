@@ -21,8 +21,8 @@ const faqs = [
     a: 'Yes. Alchemy 360 has multiple badminton courts available for casual play, competitive matches, and coaching sessions — one of several sports available for Sonipat visitors.',
   },
   {
-    q: 'What is Box 360 at Alchemy 360?',
-    a: "Box 360 is Rohtak's first 24/7 circular box cricket ground — a unique format that runs at Alchemy 360 around the clock. Sonipat cricket teams can book it for matches and tournaments at any time.",
+    q: 'What pickleball facilities does Alchemy 360 have?',
+    a: "Alchemy 360 has dedicated pickleball courts built to IFP specifications. Sonipat players can book them online for casual play, coaching or corporate events.",
   },
 ];
 
@@ -61,10 +61,10 @@ export default function SportsComplexSonipat() {
             Sports Complex Near Sonipat
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 in Rohtak is approximately 55 km from Sonipat — around 55 minutes on the Rohtak–Sonipat Road. Sonipat players, students, and teams looking for a serious multi-sport facility will find everything at Alchemy 360 that isn't locally available — including Box 360 circular box cricket and courts for badminton and pickleball.
+            Alchemy 360 in Rohtak is approximately 55 km from Sonipat — around 55 minutes on the Rohtak–Sonipat Road. Sonipat players, students, and teams looking for a serious multi-sport facility will find everything at Alchemy 360 that isn't locally available — including dedicated courts for badminton and pickleball.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Explore Facilities
             </Link>
             <Link to="/sports-complex-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -83,7 +83,7 @@ export default function SportsComplexSonipat() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
-            { title: 'Box 360 Cricket', desc: "Rohtak's first 24/7 circular box cricket ground — a unique format that Sonipat cricket enthusiasts make the 55-minute drive for. Book any time, day or night." },
+            { title: 'Dedicated Pickleball', desc: "Courts that Sonipat players make the 55-minute drive for — among the very few dedicated pickleball courts in Haryana." },
             { title: 'Badminton + Pickleball', desc: 'Courts for badminton and pickleball are available for casual players and competitive athletes from Sonipat. Coaching is available for both sports.' },
             { title: 'Full Day Out', desc: "Alchemy 360's on-site restaurant means Sonipat visitors can spend a full day — train in the morning, swim or play badminton in the afternoon, and eat before heading home." },
           ].map(item => (

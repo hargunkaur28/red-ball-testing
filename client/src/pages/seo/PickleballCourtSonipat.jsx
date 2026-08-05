@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'What else can I do at Alchemy 360 when visiting from Sonipat?',
-    a: 'Alongside pickleball, Alchemy 360 offers badminton courts, the Box 360 circular cricket ground, and a gymnasium. Sonipat visitors often spend a full day enjoying multiple sports.',
+    a: 'Alongside pickleball, Alchemy 360 offers badminton courts and a gymnasium. Sonipat visitors often spend a full day enjoying multiple sports.',
   },
 ];
 
@@ -65,7 +65,7 @@ export default function PickleballCourtSonipat() {
             Sonipat players looking for a dedicated pickleball court need look no further than Alchemy 360 in Rohtak — just 55 km and 55 minutes away. One of the only purpose-built pickleball setups in the region, Alchemy 360 is where Sonipat's pickleball community comes to play, compete, and improve.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/sports/pickleball" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/pickleball" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Pickleball Court
             </Link>
             <Link to="/badminton-court-sonipat" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>

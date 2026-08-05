@@ -895,7 +895,7 @@ export default function TablePortal({ embedded = false }) {
                     <button
                       onClick={handleApplyCoupon}
                       disabled={couponLoading || !couponInput.trim()}
-                      className="px-3 py-2 rounded-xl text-xs font-bold text-white bg-[#C5DB3B] hover:bg-[#96AC2E] disabled:opacity-50 transition-colors"
+                      className="px-3 py-2 rounded-xl text-xs font-bold text-[#0A1628] bg-[#C5DB3B] hover:bg-[#96AC2E] disabled:opacity-50 transition-colors"
                     >
                       {couponLoading ? <Loader2 size={12} className="animate-spin" /> : 'Apply'}
                     </button>
@@ -972,7 +972,7 @@ export default function TablePortal({ embedded = false }) {
               </div>
 
               {/* Submit Button */}
-              <button onClick={handleSubmitOrder} className="w-full bg-[#C5DB3B] hover:bg-[#96AC2E] text-white font-bold py-3 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled={items.length === 0 || !customer.name || !customer.phone || (orderType === 'table' && !selectedTable) || (orderType === 'delivery' && !customer.address)}>
+              <button onClick={handleSubmitOrder} className="w-full bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] font-bold py-3 rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed" disabled={items.length === 0 || !customer.name || !customer.phone || (orderType === 'table' && !selectedTable) || (orderType === 'delivery' && !customer.address)}>
                 {paymentMethod === 'razorpay' ? `Pay ${formatCurrency(cartTotal)}` : 'Send Order'}
               </button>
             </>
@@ -1125,7 +1125,7 @@ export default function TablePortal({ embedded = false }) {
                     <span className={`px-3 py-1 rounded text-xs font-black tracking-wider text-white ${selectedItem.isVeg ? 'bg-green-600' : 'bg-red-600'}`}>
                       {selectedItem.isVeg ? 'Veg' : 'Non-Veg'}
                     </span>
-                    <span className="px-3 py-1 bg-[#C5DB3B] text-white rounded-full text-sm font-bold font-mono">
+                    <span className="px-3 py-1 bg-[#C5DB3B] text-[#0A1628] rounded-full text-sm font-bold font-mono">
                       {formatCurrency(selectedItemSize?.price ?? selectedItem.sizes?.[0]?.price ?? selectedItem.price)}
                     </span>
                   </div>
@@ -1173,7 +1173,7 @@ export default function TablePortal({ embedded = false }) {
                     setSelectedItem(null);
                     toast.success('Added to cart!');
                   }}
-                  className="w-full py-4 bg-[#C5DB3B] hover:bg-[#96AC2E] text-white font-black text-sm uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg"
+                  className="w-full py-4 bg-[#C5DB3B] hover:bg-[#96AC2E] text-[#0A1628] font-black text-sm uppercase tracking-widest rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg"
                 >
                   <ShoppingBag size={16} />
                   {selectedItemSize

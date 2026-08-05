@@ -5,10 +5,8 @@ import { toast } from 'sonner';
 import { Star, MessageSquare, Utensils, Dumbbell } from 'lucide-react';
 
 const SERVICE_SUBCATEGORIES = [
-  { value: 'box-cricket',  label: 'Box Cricket',           emoji: '🏏' },
   { value: 'badminton',    label: 'Badminton',              emoji: '🏸' },
   { value: 'pickleball',   label: 'Pickleball',             emoji: '🎾' },
-  { value: 'swimming',     label: 'Swimming',               emoji: '🏊' },
   { value: 'gym',          label: 'Gym & Fitness',          emoji: '💪' },
   { value: 'membership',   label: 'Membership / Plan',      emoji: '🎫' },
   { value: 'one-time',     label: 'One-Time Pass',          emoji: '🎟️' },

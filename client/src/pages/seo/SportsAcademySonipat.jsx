@@ -13,8 +13,8 @@ const faqs = [
     a: 'Alchemy 360 is located in Sector 22-D, Jhajjar Road, Rohtak — approximately 55 km from Sonipat, reachable in about 55 minutes via well-connected Haryana state highways.',
   },
   {
-    q: 'Can Sonipat students enroll in cricket coaching at Alchemy 360?',
-    a: 'Absolutely. Sonipat students are welcome to join Alchemy 360\'s cricket academy. The Box 360 circular cricket ground — Rohtak\'s first 24/7 circular format — is a major draw for serious cricketers.',
+    q: 'Can Sonipat students enroll in badminton coaching at Alchemy 360?',
+    a: 'Absolutely. Sonipat students are welcome to join Alchemy 360\'s badminton coaching programme, which runs structured batches from beginner to advanced level.',
   },
   {
     q: 'Is it worth travelling from Sonipat to Alchemy 360 for sports training?',
@@ -61,7 +61,7 @@ export default function SportsAcademySonipat() {
             Alchemy 360 is Rohtak's premier multi-sport complex — and the best sports academy option for Sonipat athletes. At 55 km and a 55-minute drive, Alchemy 360 offers badminton, pickleball under one roof, with professional coaching that serious athletes from Sonipat have come to rely on.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join the Academy
             </Link>
             <Link to="/sports-academy-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -76,7 +76,7 @@ export default function SportsAcademySonipat() {
           Sonipat's Go-To Sports Academy in Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Sonipat has a strong sporting culture, but a dedicated private multi-sport academy with the depth of Alchemy 360's offering is hard to find locally. Alchemy 360 in Rohtak provides exactly that — a single campus where cricketers train on the Box 360 circular ground (open 24/7), swimmers develop in the open-air pool, and racket sport players take to professional badminton and pickleball courts. The journey from Sonipat to Rohtak on NH-9 is well-maintained and takes under an hour — a reasonable investment for training that genuinely builds careers.
+          Sonipat has a strong sporting culture, but a dedicated private multi-sport academy with the depth of Alchemy 360's offering is hard to find locally. Alchemy 360 in Rohtak provides exactly that — a single campus where racket sport players take to professional badminton and pickleball courts. The journey from Sonipat to Rohtak on NH-9 is well-maintained and takes under an hour — a reasonable investment for training that genuinely builds careers.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[

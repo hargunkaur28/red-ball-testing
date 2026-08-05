@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: 'What sports can I play at Alchemy 360 besides badminton?',
-    a: "Alchemy 360 offers cricket on Box 360 (Rohtak's first 24/7 circular box cricket facility), gymnasium, and pickleball courts — making it a worthwhile day trip from Hisar.",
+    a: "Alchemy 360 offers badminton courts, a gymnasium, and pickleball courts — making it a worthwhile day trip from Hisar.",
   },
   {
     q: 'Does Alchemy 360 have a sports academy for players from Hisar?',
@@ -48,7 +48,7 @@ export default function BadmintonCourtHisar() {
     <SEOLandingLayout>
       <SEOHead
         title="Badminton Court Near Hisar | Alchemy 360 Rohtak"
-        description="Professional badminton court near Hisar — Alchemy 360, Rohtak, 100 km / 100 min away. Book online, full sports complex with cricket & gym."
+        description="Professional badminton court near Hisar — Alchemy 360, Rohtak, 100 km / 100 min away. Book online, full sports complex with badminton & gym."
         canonical="/badminton-court-hisar"
         schema={schema}
       />
@@ -64,7 +64,7 @@ export default function BadmintonCourtHisar() {
             Alchemy 360 in Rohtak is 100 km and about 100 minutes from Hisar via NH-9 — a highway drive that drops you into Haryana's most fully-equipped sports complex. For Hisar badminton players who want professional courts and a facility worth the trip, Alchemy 360 is the destination.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/badminton-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -79,12 +79,12 @@ export default function BadmintonCourtHisar() {
           Hisar's Best Badminton Option is in Rohtak
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Hisar players with a competitive or enthusiastic approach to badminton consistently point to Alchemy 360 in Rohtak as the facility that justifies the highway drive. The courts are properly set up, the facility is clean and well-staffed, and the supporting amenities — including a gym, open-air pool, Box 360 cricket, and a restaurant — mean your day at Alchemy 360 is never just about one sport. Groups from Hisar planning a sports day often find Alchemy 360 the ideal destination.
+          Hisar players with a competitive or enthusiastic approach to badminton consistently point to Alchemy 360 in Rohtak as the facility that justifies the highway drive. The courts are properly set up, the facility is clean and well-staffed, and the supporting amenities — including a modern gym and pickleball courts — mean your day at Alchemy 360 is never just about one sport. Groups from Hisar planning a sports day often find Alchemy 360 the ideal destination.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: 'NH-9 Direct from Hisar', desc: 'Hisar to Rohtak on NH-9 is a smooth national highway route. Plan your drive for an early start and you\'ll be on court within 100 minutes.' },
-            { title: 'Full Sports Complex', desc: 'Beyond badminton, explore Box 360 cricket, and a well-equipped gym — all available on the same visit from Hisar.' },
+            { title: 'Full Sports Complex', desc: 'Beyond badminton, explore pickleball and a well-equipped gym — all available on the same visit from Hisar.' },
             { title: 'Eat On-Site', desc: "Alchemy 360's restaurant means Hisar visitors can refuel without searching for food in an unfamiliar part of Rohtak. Convenient and good." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">

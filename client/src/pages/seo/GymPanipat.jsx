@@ -17,8 +17,8 @@ const faqs = [
     a: "For serious fitness enthusiasts or athletes from Panipat who want a gym within a full sports complex — with badminton, and an on-site restaurant — the answer is yes. It's a proper sports day, not just a gym session.",
   },
   {
-    q: 'Can Panipat gym members combine training with cricket at Alchemy 360?',
-    a: "Yes. Alchemy 360's Box 360 — Rohtak's first 24/7 circular box cricket facility — is on the same complex as the gym. Panipat athletes who play cricket and train in the gym can do both in a single visit.",
+    q: 'Can Panipat gym members combine training with badminton at Alchemy 360?',
+    a: "Yes. Alchemy 360's Box 360 — Rohtak's pickleball courts are on the same complex as the gym. Panipat athletes who play badminton and train in the gym can do both in a single visit.",
   },
   {
     q: 'How do I book a gym session at Alchemy 360 from Panipat?',
@@ -48,7 +48,7 @@ export default function GymPanipat() {
     <SEOLandingLayout>
       <SEOHead
         title="Gym Near Panipat | Alchemy 360 Rohtak"
-        description="Gym near Panipat — Alchemy 360, Rohtak, 95 km / 90 min away. Sports-complex gymnasium, Box 360 cricket, online booking, on-site restaurant."
+        description="Gym near Panipat — Alchemy 360, Rohtak, 95 km / 90 min away. Sports-complex gymnasium, online booking, coaching."
         canonical="/gym-panipat"
         schema={schema}
       />
@@ -61,10 +61,10 @@ export default function GymPanipat() {
             Gym Near Panipat
           </h1>
           <p className="text-white/70 text-base md:text-lg max-w-2xl leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            Alchemy 360 in Rohtak is 95 km from Panipat — a 90-minute highway drive on NH-44 that delivers you to one of Haryana's most complete sports facilities. The gymnasium here isn't a commercial gym franchise; it's a proper training space within a multi-sport complex that includes Box 360 cricket, an open-air pool, and badminton courts.
+            Alchemy 360 in Rohtak is 95 km from Panipat — a 90-minute highway drive on NH-44 that delivers you to one of Haryana's most complete sports facilities. The gymnasium here isn't a commercial gym franchise; it's a proper training space within a multi-sport complex that includes badminton and pickleball courts.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Gym
             </Link>
             <Link to="/gym-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -79,7 +79,7 @@ export default function GymPanipat() {
           Panipat Athletes Choose Alchemy 360 for a Reason
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Panipat has a strong sporting tradition, and Alchemy 360 in Rohtak is the facility that Panipat athletes point to when they want to train at a higher level. The gym is surrounded by cricketers, swimmers, and badminton players — an environment that motivates serious training in a way a standalone gym simply cannot. For Panipat visitors making the 90-minute journey, Alchemy 360's on-site restaurant ensures the day is well-catered before the drive home on NH-44.
+          Panipat has a strong sporting tradition, and Alchemy 360 in Rohtak is the facility that Panipat athletes point to when they want to train at a higher level. The gym is surrounded by badminton and pickleball players — an environment that motivates serious training in a way a standalone gym simply cannot. For Panipat visitors making the 90-minute journey, Alchemy 360's on-site restaurant ensures the day is well-catered before the drive home on NH-44.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[

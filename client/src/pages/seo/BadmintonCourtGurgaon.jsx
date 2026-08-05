@@ -64,7 +64,7 @@ export default function BadmintonCourtGurgaon() {
             Alchemy 360 in Rohtak is a full-scale sports destination — 90 km and approximately 90 minutes from Gurgaon (Gurugram). Gurgaon players who want a change of scene and a proper professional badminton setup without the city crowd find Alchemy 360 a compelling day trip. Book your court online before you leave and step onto the court the moment you arrive.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/badminton" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Badminton Court
             </Link>
             <Link to="/badminton-court-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -79,7 +79,7 @@ export default function BadmintonCourtGurgaon() {
           Escape the City, Play at Alchemy 360
         </h2>
         <p className="text-[#0D0D0D]/70 text-sm md:text-base leading-relaxed mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          Gurgaon has plenty of sports options, but Alchemy 360 offers something different — a purpose-built multi-sport complex in Haryana's sports capital of Rohtak, where you can play badminton, try Box 360 cricket, swim in an open-air pool, and eat at the on-site restaurant all in one day. The 90-minute drive is best treated as part of the experience, especially on weekends when Rohtak's roads are clear and the facility is buzzing.
+          Gurgaon has plenty of sports options, but Alchemy 360 offers something different — a purpose-built multi-sport complex in Haryana's sports capital of Rohtak, where you can play badminton, pickleball and train in the gym all in one day. The 90-minute drive is best treated as part of the experience, especially on weekends when Rohtak's roads are clear and the facility is buzzing.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[

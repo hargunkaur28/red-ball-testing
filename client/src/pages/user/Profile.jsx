@@ -222,7 +222,7 @@ export default function Profile() {
             <button 
               type="submit"
               disabled={profileLoading}
-              className="w-full flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black text-black transition hover:bg-[#C5DB3B] hover:text-white disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black text-black transition hover:bg-[#C5DB3B] hover:text-[#0A1628] disabled:opacity-50"
             >
               {profileLoading ? (
                 <div className="w-5 h-5 border-2 border-black/35 border-t-black rounded-full animate-spin" />
@@ -309,7 +309,7 @@ export default function Profile() {
             <button 
               type="submit"
               disabled={passwordLoading}
-              className="w-full flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black text-black transition hover:bg-[#C5DB3B] hover:text-white disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black text-black transition hover:bg-[#C5DB3B] hover:text-[#0A1628] disabled:opacity-50"
             >
               {passwordLoading ? (
                 <div className="w-5 h-5 border-2 border-black/35 border-t-black rounded-full animate-spin" />

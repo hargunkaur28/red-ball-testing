@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: 'Can Bahadurgarh corporate groups book multiple sports facilities?',
-    a: 'Yes. Multi-sport corporate events combining cricket, football, badminton, and more can be arranged at Alchemy 360. Call +91 93500 76653 to plan a corporate sports day.',
+    a: 'Yes. Multi-sport corporate events combining badminton and pickleball can be arranged at Alchemy 360. Call +91 93500 76653 to plan a corporate sports day.',
   },
   {
     q: 'Is the Alchemy 360 gym open early for Bahadurgarh visitors who travel in the morning?',
@@ -60,7 +60,7 @@ export default function SportsComplexBahadurgarh() {
             Alchemy 360 in Rohtak is approximately 45 km from Bahadurgarh — around 40 minutes on NH-334B. For Bahadurgarh residents wanting a complete multi-sport facility without going all the way into Delhi, Alchemy 360 is the most practical destination in the region.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Explore Facilities
             </Link>
             <Link to="/sports-complex-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>

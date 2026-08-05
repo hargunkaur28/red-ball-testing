@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'Can I combine gym with other sports at Alchemy 360 in the same visit from Jhajjar?',
-    a: "Yes. Jhajjar visitors often combine the gym with a cricket session at Box 360 or a swim in the open-air pool. After training, Alchemy 360's on-site restaurant is right there for a meal.",
+    a: "Yes. Jhajjar visitors often combine the gym with a badminton or pickleball session. After training, Alchemy 360's on-site restaurant is right there for a meal.",
   },
 ];
 
@@ -64,7 +64,7 @@ export default function GymJhajjar() {
             Alchemy 360 in Rohtak has a well-equipped gymnasium that is the closest proper sports-complex gym to Jhajjar — just 25 km and 25 minutes away on Jhajjar Road. For fitness-focused residents of Jhajjar who want more than a local commercial gym, Alchemy 360 delivers a training environment backed by a full multi-sport facility.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Gym
             </Link>
             <Link to="/gym-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -84,7 +84,7 @@ export default function GymJhajjar() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { title: '25 Min from Jhajjar', desc: 'Directly on Jhajjar Road — one of the most accessible sports-complex gyms for Jhajjar district residents. No city traffic to wade through.' },
-            { title: 'Gym Within a Sports Complex', desc: 'Train in a real sports environment alongside cricketers, badminton players, and swimmers — a different energy from a standalone gym.' },
+            { title: 'Gym Within a Sports Complex', desc: 'Train in a real sports environment alongside badminton and pickleball players — a different energy from a standalone gym.' },
             { title: 'Train, Play, Eat', desc: "Hit the gym, then try a badminton session or a swim. After training, Alchemy 360's on-site restaurant is ready when you are." },
           ].map(item => (
             <div key={item.title} className="bg-[#F9F6F1] rounded-xl p-5">
