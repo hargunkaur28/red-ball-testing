@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ChevronDown, X } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 
@@ -18,6 +18,18 @@ const dropdownSports = [
   { label: 'Pickleball', href: '/sports/pickleball', color: '#A855F7' },
 ];
 
+// Sections live on the home page only, so the #hash links have to route back to
+// "/" first when the navbar is rendered anywhere else (blog, SEO landings, /about).
+const scrollToId = (id) => {
+  const el = document.getElementById(id);
+  if (!el) return false;
+  const header = document.querySelector('header');
+  const offset = header ? header.getBoundingClientRect().bottom : 96;
+  const top = el.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  return true;
+};
+
 const parseBgColor = (colorStr) => {
   if (!colorStr || colorStr === 'transparent' || colorStr === 'rgba(0, 0, 0, 0)') return null;
   const match = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
@@ -35,6 +47,34 @@ export default function Navbar({ hideLogo = false }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuthStore();
+  const { pathname, hash } = useLocation();
+  const navigate = useNavigate();
+
+  // Landing on "/#sports" from another page: Home is lazy-loaded, so poll a few
+  // frames until the section actually exists before scrolling to it.
+  useEffect(() => {
+    if (!hash) return;
+    const id = hash.slice(1);
+    let raf;
+    let tries = 0;
+    const attempt = () => {
+      if (scrollToId(id) || tries++ > 180) return;
+      raf = requestAnimationFrame(attempt);
+    };
+    attempt();
+    return () => cancelAnimationFrame(raf);
+  }, [pathname, hash]);
+
+  const handleHashNav = (e, href) => {
+    e.preventDefault();
+    setDrawerOpen(false);
+    if (pathname === '/') {
+      scrollToId(href.slice(1));
+      navigate(`/${href}`, { replace: true });
+    } else {
+      navigate(`/${href}`);
+    }
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -174,8 +214,9 @@ export default function Navbar({ hideLogo = false }) {
                   </Link>
                 ) : (
                   <a
-                    href={link.href}
-                    className={`nav-link px-4 py-2 ${textColor} text-[15px] font-medium flex items-center gap-1 transition-colors hover:text-[#C5DB3B]`}
+                    href={`/${link.href}`}
+                    onClick={(e) => handleHashNav(e, link.href)}
+                    className={`nav-link px-4 py-2 ${textColor} text-[15px] font-medium flex items-center gap-1 transition-colors hover:text-[#C5DB3B] cursor-pointer`}
                     style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}
                   >
                     {link.label}
@@ -322,9 +363,15 @@ export default function Navbar({ hideLogo = false }) {
                 {link.label}
               </Link>
             ) : (
-              <Link key={link.label} to={`/${mobileDest}`} onClick={() => setDrawerOpen(false)} className={cls} style={linkStyle}>
+              <a
+                key={link.label}
+                href={`/${mobileDest}`}
+                onClick={(e) => handleHashNav(e, mobileDest)}
+                className={cls}
+                style={linkStyle}
+              >
                 {link.label}
-              </Link>
+              </a>
             );
           })}
 

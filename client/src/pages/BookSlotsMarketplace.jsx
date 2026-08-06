@@ -59,7 +59,7 @@ export default function BookSlotsMarketplace({ embedded = false }) {
   );
 
   const sportLinkPrefix = embedded ? '/user/sports' : '/sports';
-  const membershipPath = embedded ? '/user/buy-memberships' : '/book-slots';
+  const membershipPath = embedded ? '/user/buy-memberships' : '/buy-membership';
   const loading = isLoading;
 
   const wrapClass = embedded
@@ -275,7 +275,7 @@ export default function BookSlotsMarketplace({ embedded = false }) {
               </p>
             </div>
             <Link
-              to={isAuthenticated ? '/user/buy-memberships' : '/book-slots'}
+              to={isAuthenticated ? '/user/buy-memberships' : '/buy-membership'}
               className="relative z-10 px-7 py-3 rounded-xl bg-[#F5A623] text-black font-black text-sm uppercase tracking-wider hover:bg-[#E09410] transition-colors shrink-0 whitespace-nowrap shadow-lg"
               style={{ boxShadow: '0 6px 20px rgba(245,166,35,0.25)' }}
             >

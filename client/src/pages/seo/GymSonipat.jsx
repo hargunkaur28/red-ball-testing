@@ -64,7 +64,7 @@ export default function GymSonipat() {
             Alchemy 360 in Rohtak is 55 km and about 55 minutes from Sonipat on NH-334B — and it offers a gymnasium that is part of a full sports complex, not a standalone fitness room. For Sonipat gym-goers who want to train in a real sports environment, the highway drive is a worthwhile commitment.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/gym" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Gym
             </Link>
             <Link to="/gym-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -113,7 +113,7 @@ export default function GymSonipat() {
         </div>
       </section>
 
-      <CTAStrip />
+      <CTAStrip sport="gym" />
       <FAQSection faqs={faqs} />
       <ContactBand />
     </SEOLandingLayout>

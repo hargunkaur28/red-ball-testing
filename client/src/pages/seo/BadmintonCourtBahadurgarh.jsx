@@ -113,7 +113,7 @@ export default function BadmintonCourtBahadurgarh() {
         </div>
       </section>
 
-      <CTAStrip />
+      <CTAStrip sport="badminton" />
       <FAQSection faqs={faqs} />
       <ContactBand />
     </SEOLandingLayout>

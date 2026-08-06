@@ -115,7 +115,7 @@ export default function GymHisar() {
         </div>
       </section>
 
-      <CTAStrip />
+      <CTAStrip sport="gym" />
       <FAQSection faqs={faqs} />
       <ContactBand />
     </SEOLandingLayout>

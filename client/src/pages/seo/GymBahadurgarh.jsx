@@ -64,7 +64,7 @@ export default function GymBahadurgarh() {
             Alchemy 360 in Rohtak offers a proper gymnasium within a full multi-sport complex — 45 km and 40 minutes from Bahadurgarh on NH-148B. For Bahadurgarh fitness enthusiasts who want more than a standalone gym and are willing to make a 40-minute highway drive for a complete sports experience, Alchemy 360 is the right move.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/gym" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Gym
             </Link>
             <Link to="/gym-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -113,7 +113,7 @@ export default function GymBahadurgarh() {
         </div>
       </section>
 
-      <CTAStrip />
+      <CTAStrip sport="gym" />
       <FAQSection faqs={faqs} />
       <ContactBand />
     </SEOLandingLayout>

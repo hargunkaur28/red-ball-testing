@@ -328,6 +328,7 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
                     {/* Account details */}
                     {isAuthenticated ? (
                       <div
+                        key="signed-in"
                         className="rounded-2xl p-4 flex items-center gap-3"
                         style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)' }}
                       >
@@ -342,7 +343,7 @@ export default function MembershipBookingModal({ plan, sport, isOpen, onClose })
                     ) : (
                       /* Sign-in required — guest checkout is not supported for any plan
                          type, so collect an identity instead of contact fields. */
-                      <div className="space-y-3">
+                      <div key="signed-out" className="space-y-3">
                         <div
                           className="rounded-2xl p-5 text-center"
                           style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}

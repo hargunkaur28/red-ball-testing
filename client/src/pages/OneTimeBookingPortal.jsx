@@ -345,7 +345,7 @@ export default function OneTimeBookingPortal({ embedded = false }) {
             <div>
               <h3 className="text-sm font-extrabold uppercase tracking-wider text-white/40 mb-4">2. Your Account Details</h3>
               {isAuthenticated ? (
-                <div className="bg-green-500/5 border border-green-500/20 rounded-2xl p-4 flex items-center gap-3">
+                <div key="signed-in" className="bg-green-500/5 border border-green-500/20 rounded-2xl p-4 flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
                     <CheckCircle2 className="text-green-500" size={20} />
                   </div>
@@ -355,7 +355,7 @@ export default function OneTimeBookingPortal({ embedded = false }) {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div key="signed-out" className="space-y-3">
                   <div className="bg-white/5 border border-white/5 rounded-2xl p-4 mb-2">
                     <p className="text-xs text-white/60 leading-relaxed mb-3">
                       💡 <strong>No account? No problem!</strong> We will automatically create a secure account and profile for you with this email so you can access your pass.

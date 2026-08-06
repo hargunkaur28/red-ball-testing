@@ -116,7 +116,7 @@ export default function PickleballCourtGurgaon() {
         </div>
       </section>
 
-      <CTAStrip />
+      <CTAStrip sport="pickleball" />
       <FAQSection faqs={faqs} />
       <ContactBand />
     </SEOLandingLayout>

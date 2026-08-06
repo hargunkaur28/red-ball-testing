@@ -64,7 +64,7 @@ export default function GymPanipat() {
             Alchemy 360 in Rohtak is 95 km from Panipat — a 90-minute highway drive on NH-44 that delivers you to one of Haryana's most complete sports facilities. The gymnasium here isn't a commercial gym franchise; it's a proper training space within a multi-sport complex that includes badminton and pickleball courts.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/gym" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Gym
             </Link>
             <Link to="/gym-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -113,7 +113,7 @@ export default function GymPanipat() {
         </div>
       </section>
 
-      <CTAStrip />
+      <CTAStrip sport="gym" />
       <FAQSection faqs={faqs} />
       <ContactBand />
     </SEOLandingLayout>

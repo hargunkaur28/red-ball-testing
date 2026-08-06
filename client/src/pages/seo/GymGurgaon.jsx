@@ -64,7 +64,7 @@ export default function GymGurgaon() {
             Gurgaon (Gurugram) has no shortage of gyms, but Alchemy 360 in Rohtak offers something they can't — a gymnasium embedded in a full multi-sport complex, 90 km and 90 minutes away. For Gurgaon fitness and sports enthusiasts who want to swap the city gym for a real sports environment, this drive is one of the best decisions you'll make on a weekend.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/book-slots" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/gym" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Gym
             </Link>
             <Link to="/gym-rohtak" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -113,7 +113,7 @@ export default function GymGurgaon() {
         </div>
       </section>
 
-      <CTAStrip />
+      <CTAStrip sport="gym" />
       <FAQSection faqs={faqs} />
       <ContactBand />
     </SEOLandingLayout>

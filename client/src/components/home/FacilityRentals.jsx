@@ -39,7 +39,7 @@ export default function FacilityRentals() {
     [sportsData]
   );
 
-  const membershipPath = isAuthenticated ? '/user/buy-memberships' : '/book-slots';
+  const membershipPath = isAuthenticated ? '/user/buy-memberships' : '/buy-membership';
 
   return (
     <section id="sports" className="bg-[#0D0D0D] pt-20 md:pt-28 pb-4 md:pb-6 overflow-hidden">

@@ -113,7 +113,7 @@ export default function BadmintonCourtPanipat() {
         </div>
       </section>
 
-      <CTAStrip />
+      <CTAStrip sport="badminton" />
       <FAQSection faqs={faqs} />
       <ContactBand />
     </SEOLandingLayout>

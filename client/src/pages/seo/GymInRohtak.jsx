@@ -67,7 +67,7 @@ export default function GymInRohtak() {
             <Link to="/buy-membership?sport=gym" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Gym
             </Link>
-            <Link to="/book-slots" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/gym" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book Day Pass
             </Link>
           </div>
@@ -106,7 +106,7 @@ export default function GymInRohtak() {
           <div className="flex flex-wrap gap-3">
             {[
               { label: 'Badminton Courts', to: '/badminton-court-rohtak' },
-              { label: 'Memberships', to: '/book-slots' },
+              { label: 'Memberships', to: '/buy-membership?sport=gym' },
             ].map(item => (
               <Link key={item.label} to={item.to}
                 className="px-4 py-2 border border-black/20 rounded-full text-sm text-[#0D0D0D] hover:border-[#C5DB3B] hover:text-[#C5DB3B] transition-colors"
@@ -118,7 +118,7 @@ export default function GymInRohtak() {
         </div>
       </section>
 
-      <CTAStrip />
+      <CTAStrip sport="gym" />
       <FAQSection faqs={faqs} />
       <ContactBand />
     </SEOLandingLayout>

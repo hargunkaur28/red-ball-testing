@@ -68,7 +68,7 @@ export default function BadmintonAcademyRohtak() {
             <Link to="/buy-membership?sport=badminton" className="bg-[#C5DB3B] text-[#0A1628] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#96AC2E] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Join Badminton Academy
             </Link>
-            <Link to="/book-slots" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <Link to="/sports/badminton" className="border border-white/30 text-white font-bold px-6 py-3 rounded-full text-sm hover:border-white transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               Book a Court
             </Link>
           </div>
@@ -114,7 +114,7 @@ export default function BadmintonAcademyRohtak() {
         </div>
       </section>
 
-      <CTAStrip />
+      <CTAStrip sport="badminton" />
       <FAQSection faqs={faqs} />
       <ContactBand />
     </SEOLandingLayout>

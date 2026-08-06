@@ -2,8 +2,10 @@ import { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation, useSearchParams } from 'react-router-dom';
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  const { pathname, hash } = useLocation();
+  // A "/#sports" style link owns the scroll position — Navbar scrolls to the
+  // section once it mounts, so jumping to the top here would undo it.
+  useEffect(() => { if (!hash) window.scrollTo(0, 0); }, [pathname, hash]);
   return null;
 }
 import { QueryClientProvider } from '@tanstack/react-query';

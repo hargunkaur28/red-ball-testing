@@ -765,9 +765,11 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                           </AnimatePresence>
                         </div>
 
-                        {/* Auth / guest details */}
+                        {/* Auth / guest details — the keys matter: Google renders its
+                            button imperatively into the ref'd node, so without them React
+                            reuses the same div on sign-in and the GSI button survives. */}
                         {isAuthenticated ? (
-                          <div className="rounded-2xl p-4 flex items-center gap-3" style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)' }}>
+                          <div key="signed-in" className="rounded-2xl p-4 flex items-center gap-3" style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)' }}>
                             <CheckCircle2 className="text-green-500 shrink-0" size={18} />
                             <div>
                               <p className="text-white text-sm font-semibold">{user?.name}</p>
@@ -775,7 +777,7 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                             </div>
                           </div>
                         ) : (
-                          <div className="rounded-2xl p-4 text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                          <div key="signed-out" className="rounded-2xl p-4 text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                             <p className="text-white/50 text-xs mb-3">Sign in to continue with your booking.</p>
                             <div ref={googleButtonRef} className="flex justify-center" />
                           </div>

@@ -3,7 +3,13 @@ import Footer from '../home/Footer';
 import Navbar from '../home/Navbar';
 import { useAcademyInfo } from '../../hooks/useAcademyInfo';
 
-export function CTAStrip() {
+// `sport` is a sport slug ('badminton' | 'gym' | 'pickleball'). On a sport's own
+// landing page the CTA belongs on that sport's booking portal rather than the
+// generic facilities grid, which would make the visitor pick the sport again.
+export function CTAStrip({ sport }) {
+  const bookHref = sport ? `/sports/${sport}` : '/book-slots';
+  const membershipHref = sport ? `/buy-membership?sport=${sport}` : '/buy-membership';
+
   return (
     <div className="bg-[#C5DB3B] py-10 px-4">
       <div className="max-w-4xl mx-auto text-center">
@@ -14,10 +20,10 @@ export function CTAStrip() {
           Alchemy 360 — Rohtak, Haryana. Walk-in welcome, online bookings preferred.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Link to="/book-slots" className="bg-white text-[#C5DB3B] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#F9F6F1] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <Link to={bookHref} className="bg-white text-[#C5DB3B] font-bold px-6 py-3 rounded-full text-sm hover:bg-[#F9F6F1] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             Book Slots
           </Link>
-          <Link to="/book-slots" className="border-2 border-white text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-white hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <Link to={membershipHref} className="border-2 border-white text-white font-bold px-6 py-3 rounded-full text-sm hover:bg-white hover:text-[#C5DB3B] transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             Buy Membership
           </Link>
         </div>
