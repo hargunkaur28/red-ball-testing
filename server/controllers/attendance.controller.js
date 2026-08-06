@@ -153,12 +153,19 @@ exports.checkIn = async (req, res) => {
       ? (req.body.userId || req.user.userId.toString())
       : req.user.userId.toString();
 
+    // Front desk can let a court member in outside their time band — deliberate
+    // staff decision, so it is opt-in per request and recorded on the session.
+    const overrideCourtBand = req.user.role === 'superadmin' && !!req.body.overrideCourtBand;
+
     // ── Entitlement validation ──
     if (sport) {
-      const validation = await validateCheckIn(userId, sport);
+      const validation = await validateCheckIn(userId, sport, { bypassCourtBand: overrideCourtBand });
       if (!validation.allowed) {
         return res.status(403).json({
           message: validation.reason,
+          // Lets the desk UI offer an override instead of a dead end
+          outOfCourtBand: !!validation.outOfCourtBand,
+          canOverride: !!validation.outOfCourtBand && req.user.role === 'superadmin',
           entitlement: validation.entitlement,
           activeSessions: validation.activeSessions?.map(s => ({
             _id: s._id,
@@ -226,7 +233,9 @@ exports.checkIn = async (req, res) => {
       sport,
       sportId: sportDoc?._id || null,
       ground,
-      notes,
+      notes: overrideCourtBand
+        ? [notes, `Court time-band override by ${req.user.email || req.user.userId}`].filter(Boolean).join(' | ')
+        : notes,
       hourlyRateAtCheckIn: sportDoc?.hourlyPrice || 0,
       // Entitlement snapshot
       entitlementType: entitlement?.entitlementType || 'one-time-play',

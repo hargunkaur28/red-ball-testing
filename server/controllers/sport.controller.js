@@ -779,6 +779,14 @@ exports.entryCheck = async (req, res) => {
         }).lean() || null;
       }
 
+      // A court band gates entry, not exit. Someone who checked in inside their
+      // window must still be able to check out after it closes, so don't let the
+      // band denial hide the checkout UI mid-session.
+      if (activeCheckIn && validation.outOfCourtBand) {
+        validationAllowed = true;
+        validationReason = null;
+      }
+
       const wrongSportCheckIn = validation.activeSessions.find(
         (s) => (s.sport || '').trim().toLowerCase() !== sport.slug && (s.sport || '').trim().toLowerCase() !== sport.name.toLowerCase()
       );

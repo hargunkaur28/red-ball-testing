@@ -1,6 +1,71 @@
 const Membership = require('../models/Membership');
 const Attendance = require('../models/Attendance');
 const Sport = require('../models/Sport');
+const { currentISTMinutes } = require('./istUtils');
+
+// ---------------------------------------------------------------------------
+// Court membership time bands
+// ---------------------------------------------------------------------------
+
+// Court memberships buy a fixed window of the day (Morning / Evening / Happy
+// Hours), so a morning member walking in at 8 PM has no entitlement. Booking
+// already refuses out-of-band slots; this is the same rule at the door, which
+// is what actually gates walk-in sports and front-desk check-ins.
+const COURT_BAND_EARLY_GRACE_MINUTES = 5; // matches the slot-entry early window
+
+const timeToMinutes = (hhmm) => {
+  const [h, m] = String(hhmm || '').split(':').map(Number);
+  return (Number.isFinite(h) ? h : 0) * 60 + (Number.isFinite(m) ? m : 0);
+};
+
+const formatBandTime = (hhmm) => {
+  const [h, m] = String(hhmm || '').split(':').map(Number);
+  if (!Number.isFinite(h) || !Number.isFinite(m)) return hhmm;
+  return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
+};
+
+const planCoversSport = (plan, sportObj) => {
+  if (!plan) return false;
+  const keys = (plan.sportsIncluded || []).map((k) => (k || '').trim().toLowerCase());
+  return keys.some((k) => k === sportObj.slug || k === (sportObj.name || '').toLowerCase());
+};
+
+// A band is usable now when we're inside it, allowing a short early arrival.
+const bandOpenNow = (band, nowMinutes) =>
+  nowMinutes >= timeToMinutes(band.startTime) - COURT_BAND_EARLY_GRACE_MINUTES &&
+  nowMinutes < timeToMinutes(band.endTime);
+
+/**
+ * Court-band gate for a sport the user is entitled to via membership.
+ *
+ * Returns null when entry is fine, or a denial reason string. The restriction
+ * applies only when EVERY membership covering this sport is a court plan — a
+ * regular unlimited membership alongside a court one lifts it, since that
+ * membership grants all-day access on its own.
+ */
+const checkCourtBandAccess = (activeMemberships, sportObj) => {
+  const covering = (activeMemberships || []).filter((m) => planCoversSport(m.planId, sportObj));
+  if (!covering.length) return null;
+
+  const banded = covering.filter(
+    (m) => m.planId?.isCourtMembership && m.planId.courtBand?.startTime && m.planId.courtBand?.endTime,
+  );
+  // Any non-court coverage (or a court plan with no band configured) means
+  // unrestricted access — never lock someone out on malformed plan data.
+  if (banded.length !== covering.length) return null;
+
+  const nowMinutes = currentISTMinutes();
+  if (banded.some((m) => bandOpenNow(m.planId.courtBand, nowMinutes))) return null;
+
+  const windows = banded
+    .map((m) => m.planId.courtBand)
+    .map((b) => `${b.label || 'Court'} (${formatBandTime(b.startTime)} – ${formatBandTime(b.endTime)})`)
+    .join(', ');
+
+  return `Entry not permitted right now. Your court membership covers ${windows}. Please come back within that window.`;
+};
+
+exports.checkCourtBandAccess = checkCourtBandAccess;
 
 // ---------------------------------------------------------------------------
 // Per-user entitlement cache (in-memory, 30-second TTL)
@@ -142,9 +207,13 @@ exports.calculateEntitlement = calculateEntitlement;
  *
  * @param {String|ObjectId} userId
  * @param {String} sportName  – sport slug or display name
+ * @param {Object} [options]
+ * @param {Boolean} [options.bypassCourtBand] – staff override for a manual
+ *        front-desk check-in outside the member's court time band.
  * @returns {Object} { allowed, reason, entitlement, activeSessions }
  */
-exports.validateCheckIn = async (userId, sportName) => {
+exports.validateCheckIn = async (userId, sportName, options = {}) => {
+  const { bypassCourtBand = false } = options;
   const OneTimeAccess = require('../models/OneTimeAccess');
   const Sport = require('../models/Sport');
 
@@ -210,6 +279,20 @@ exports.validateCheckIn = async (userId, sportName) => {
         entitlement: baseEntitlement,
         activeSessions: [],
       };
+    }
+
+    // Court memberships are time-banded — deny entry outside the paid window.
+    if (!bypassCourtBand) {
+      const bandDenial = checkCourtBandAccess(entitlement.activeMemberships, sportObj);
+      if (bandDenial) {
+        return {
+          allowed: false,
+          reason: bandDenial,
+          outOfCourtBand: true,
+          entitlement: baseEntitlement,
+          activeSessions: [],
+        };
+      }
     }
   }
 

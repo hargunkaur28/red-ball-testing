@@ -39,6 +39,12 @@ const toISTDateString = (date) =>
 /** Current IST hour (0-23) */
 const currentISTHour = () => nowIST().getUTCHours();
 
+/** Minutes since midnight IST (0-1439) — for comparing against "HH:MM" windows */
+const currentISTMinutes = () => {
+  const ist = nowIST();
+  return ist.getUTCHours() * 60 + ist.getUTCMinutes();
+};
+
 module.exports = {
   IST_OFFSET_MS,
   nowIST,
@@ -47,4 +53,5 @@ module.exports = {
   todayISTString,
   toISTDateString,
   currentISTHour,
+  currentISTMinutes,
 };

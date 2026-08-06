@@ -6,9 +6,9 @@ import api from '../../lib/axios';
 import { useAcademyInfo } from '../../hooks/useAcademyInfo';
 
 const hours = [
-  { day: 'Monday – Friday', time: '6:00 AM – 8:00 PM' },
-  { day: 'Saturday', time: '6:00 AM – 6:00 PM' },
-  { day: 'Sunday', time: '8:00 AM – 4:00 PM' },
+  { day: 'Monday – Friday', time: '5:30 AM – 9:30 PM' },
+  { day: 'Saturday', time: '5:30 AM – 9:30 PM' },
+  { day: 'Sunday', time: '5:30 AM – 9:30 PM' },
 ];
 
 export default function ContactSection() {
