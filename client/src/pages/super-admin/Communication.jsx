@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../lib/axios';
-import { Search, Filter, MessageSquare, Star, Trash2, Edit2, EyeOff, Archive, CheckCircle, Mail, Eye, MoreVertical } from 'lucide-react';
+import { Filter, MessageSquare, Star, Trash2, Edit2, EyeOff, Archive, CheckCircle, Mail, Eye, MoreVertical } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 
@@ -26,8 +26,7 @@ const getStatusBadge = (status) => {
 
 export default function Communication() {
   const [activeTab, setActiveTab] = useState('reviews'); // 'reviews' | 'messages'
-  const [searchQuery, setSearchQuery] = useState('');
-  
+
   // Review Filters
   const [reviewFilter, setReviewFilter] = useState('Latest');
   const [reviewStatusFilter, setReviewStatusFilter] = useState('All');
@@ -103,14 +102,8 @@ export default function Communication() {
     }
   });
 
-  // Filter and Sort Reviews locally
-  const filteredReviews = reviews.filter(r => {
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      if (!r.name?.toLowerCase().includes(q) && !r.comment?.toLowerCase().includes(q) && !r.category?.toLowerCase().includes(q)) return false;
-    }
-    return true;
-  }).sort((a, b) => {
+  // Sort Reviews locally
+  const filteredReviews = [...reviews].sort((a, b) => {
     if (reviewFilter === 'Highest Rated') return b.rating - a.rating;
     if (reviewFilter === 'Lowest Rated') return a.rating - b.rating;
     return new Date(b.createdAt) - new Date(a.createdAt); // Latest default
@@ -118,10 +111,6 @@ export default function Communication() {
 
   // Filter Messages locally
   const filteredMessages = messages.filter(m => {
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      if (!m.name?.toLowerCase().includes(q) && !m.email?.toLowerCase().includes(q) && !m.subject?.toLowerCase().includes(q)) return false;
-    }
     if (messageReadFilter === 'Read' && !m.isRead) return false;
     if (messageReadFilter === 'Unread' && m.isRead) return false;
     return true;
@@ -137,17 +126,6 @@ export default function Communication() {
           <p className="text-sm text-[#666666] mt-1">Manage reviews and user inquiries seamlessly.</p>
         </div>
 
-        {/* Global Search */}
-        <div className="relative w-full md:w-64">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]" />
-          <input 
-            type="text" 
-            placeholder="Search..." 
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-white border border-[#EAEAEA] rounded-xl text-sm focus:outline-none focus:border-[#C5DB3B] transition-colors"
-          />
-        </div>
       </div>
 
       {/* Tabs */}
