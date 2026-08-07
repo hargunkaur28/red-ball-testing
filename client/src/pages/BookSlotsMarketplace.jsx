@@ -1,18 +1,17 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Loader2, Search, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Loader2, Search } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import api from '../lib/axios';
 import SportCard from '../components/sports/SportCard';
 import ComboPlanCard from '../components/sports/ComboPlanCard';
 import CourtMembershipCard from '../components/sports/CourtMembershipCard';
 import { groupComboFamilies } from '../lib/comboPlans';
-import useAuthStore from '../store/authStore';
 import Navbar from '../components/home/Navbar';
 
 export default function BookSlotsMarketplace({ embedded = false }) {
-  const { isAuthenticated } = useAuthStore();
+  const { hash } = useLocation();
 
   const { data, isLoading } = useQuery({
     queryKey: ['public-sports'],
@@ -61,6 +60,29 @@ export default function BookSlotsMarketplace({ embedded = false }) {
   const sportLinkPrefix = embedded ? '/user/sports' : '/sports';
   const membershipPath = embedded ? '/user/buy-memberships' : '/buy-membership';
   const loading = isLoading;
+
+  // Sections render only once the plans query resolves, so a "#court-memberships"
+  // deep link has to poll a few frames until the target actually exists.
+  useEffect(() => {
+    if (!hash) return;
+    const id = hash.slice(1);
+    let raf;
+    let tries = 0;
+    const attempt = () => {
+      const el = document.getElementById(id);
+      if (!el) {
+        if (tries++ > 180) return;
+        raf = requestAnimationFrame(attempt);
+        return;
+      }
+      const header = document.querySelector('header');
+      const offset = header ? header.getBoundingClientRect().bottom : 96;
+      const top = el.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    };
+    attempt();
+    return () => cancelAnimationFrame(raf);
+  }, [hash]);
 
   const wrapClass = embedded
     ? 'min-h-[60vh] py-8'
@@ -209,10 +231,11 @@ export default function BookSlotsMarketplace({ embedded = false }) {
         {/* Court memberships */}
         {!loading && courtSports.length > 0 && (
           <motion.div
+            id="court-memberships"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="mt-12"
+            className="mt-12 scroll-mt-28"
           >
             <div className="mb-6">
               <p className="text-white/30 text-xs uppercase tracking-[4px] font-bold mb-1">
@@ -249,40 +272,6 @@ export default function BookSlotsMarketplace({ embedded = false }) {
           </motion.div>
         )}
 
-        {/* Membership upsell banner */}
-        {!embedded && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mt-16 rounded-3xl p-8 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden"
-            style={{
-              background: 'linear-gradient(135deg, rgba(245,166,35,0.12) 0%, rgba(245,166,35,0.04) 100%)',
-              border: '1px solid rgba(245,166,35,0.2)',
-            }}
-          >
-            <div
-              className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-20"
-              style={{ background: '#F5A623' }}
-            />
-            <div className="relative z-10">
-              <p className="text-[#F5A623] font-black text-xl leading-tight mb-1">
-                Play Unlimited. Pay Once.
-              </p>
-              <p className="text-white/50 text-sm">
-                Get a membership and enjoy unlimited access to all our world-class facilities.
-              </p>
-            </div>
-            <Link
-              to={isAuthenticated ? '/user/buy-memberships' : '/buy-membership'}
-              className="relative z-10 px-7 py-3 rounded-xl bg-[#F5A623] text-black font-black text-sm uppercase tracking-wider hover:bg-[#E09410] transition-colors shrink-0 whitespace-nowrap shadow-lg"
-              style={{ boxShadow: '0 6px 20px rgba(245,166,35,0.25)' }}
-            >
-              View Memberships
-            </Link>
-          </motion.div>
-        )}
       </div>
     </div>
   );
