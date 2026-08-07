@@ -8,6 +8,7 @@ import {
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import api from '../../lib/axios';
+import { isWalkInSport } from '../../lib/walkInSports';
 import { getSportFallback } from './sportFallbacks';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
@@ -48,7 +49,7 @@ function SportSelectorStep({ plan, onSelect }) {
   const allSports = sportsData?.sports || [];
   const availableSports = allSports.filter((s) => {
     // Gym has no court slot booking
-    if (s.slug === 'gym' || (s.name || '').toLowerCase() === 'gym') return false;
+    if (isWalkInSport(s)) return false;
     const keys = (plan?.sportsIncluded || []).map((k) => (k || '').toLowerCase());
     const planName = (plan?.name || '').toLowerCase();
     const sName = (s.name || '').toLowerCase();

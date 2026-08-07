@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, CreditCard, CheckCircle2, Loader2,
   ShieldCheck, Check, Calendar, Building2, Clock, ChevronLeft,
-  Tag, AlertTriangle, Zap, Ticket, Crown,
+  Tag, AlertTriangle, Zap, Ticket, Crown, QrCode, Timer, CalendarClock,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/axios';
 import { formatCurrency } from '../../lib/utils';
 import useAuthStore from '../../store/authStore';
+import { isWalkInSport } from '../../lib/walkInSports';
 import { getSportFallback } from './sportFallbacks';
 import PhoneCollectModal from '../shared/PhoneCollectModal';
 
@@ -79,7 +80,12 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
 
   const membershipCoversSport = !!activeMembership;
 
-  // ── Step state: 'date' | 'slot' | 'details' | 'success'
+  // Gym has no courts to reserve — a one-time buyer gets a prepaid pass and walks
+  // in whenever, so the whole date → slot flow is replaced by a single step.
+  const walkIn = isWalkInSport(sport);
+  const walkInPrice = sport?.hourlyPrice || 0;
+
+  // ── Step state: 'pass' (walk-in only) | 'date' | 'slot' | 'details' | 'success'
   const [step, setStep] = useState('date');
   const [selectedDate, setSelectedDate] = useState(todayStr());
   const [selectedCourt, setSelectedCourt] = useState(null);
@@ -109,7 +115,7 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
   // Reset when modal opens
   useEffect(() => {
     if (isOpen) {
-      setStep('date');
+      setStep(walkIn ? 'pass' : 'date');
       setSelectedDate(todayStr());
       setSelectedCourt(null);
       setSelectedSlot(null);
@@ -119,7 +125,7 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
       setCouponError('');
       setShowMembershipPopup(false);
     }
-  }, [isOpen]);
+  }, [isOpen, walkIn]);
 
   // Show membership popup once membership data resolves and covers this sport
   useEffect(() => {
@@ -273,6 +279,68 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
     } catch { setCouponError('Failed to apply coupon.'); } finally { setCouponLoading(false); }
   };
 
+  // Walk-in purchase — buys a prepaid OneTimeAccess pass instead of reserving a
+  // slot. The pass is valid for 24h and the allowed hour starts on QR check-in.
+  const handleWalkInPayment = async () => {
+    if (!isAuthenticated) return toast.error('Please sign in to continue.');
+    if (!user?.phone) { setShowPhoneModal(true); return; }
+    if (walkInPrice <= 0) return toast.error('Pricing is not configured for this facility yet.');
+    if (!scriptLoaded || !window.Razorpay) return toast.error('Payment gateway loading. Please retry.');
+    if (!import.meta.env.VITE_RAZORPAY_KEY_ID) return toast.error('Payment key not configured.');
+
+    setSubmitting(true);
+    try {
+      const { data: orderRes } = await api.post('/onetimeaccess/purchase-order', {
+        sportId: sport._id,
+      });
+      if (!orderRes.success) throw new Error(orderRes.message || 'Failed to initialize order.');
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: orderRes.rzpOrder.amount,
+        currency: orderRes.rzpOrder.currency,
+        name: 'Alchemy 360',
+        description: `1 Hour ${sport.name} Access Pass`,
+        order_id: orderRes.rzpOrder.id,
+        theme: { color: accentColor },
+        prefill: { name: user.name, email: user.email, contact: validPhone(user.phone) },
+        handler: async (response) => {
+          setSubmitting(true);
+          try {
+            const { data: verifyRes } = await api.post('/onetimeaccess/verify-purchase', {
+              sportId: sport._id,
+              razorpayOrderId: response.razorpay_order_id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpaySignature: response.razorpay_signature,
+            });
+
+            if (verifyRes.success) {
+              clearPendingEntryIntent?.();
+              setStep('success');
+              toast.success('Pass purchased! Scan the QR at the facility to start your hour.');
+            } else {
+              toast.error(verifyRes.message || 'Verification failed.');
+            }
+          } catch (err) {
+            toast.error(err.response?.data?.message || 'Verification failed. Contact reception.');
+          } finally {
+            setSubmitting(false);
+          }
+        },
+        modal: {
+          ondismiss: () => { toast.info('Payment cancelled.'); setSubmitting(false); },
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', () => { toast.error('Payment failed. Please try again.'); setSubmitting(false); });
+      rzp.open();
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message || 'Could not initialize payment.');
+      setSubmitting(false);
+    }
+  };
+
   const handlePayment = async () => {
     if (!selectedSlot) return toast.error('Please select a slot.');
     // Guest checkout is gone — booking requires a signed-in account
@@ -409,7 +477,7 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                   {/* Header */}
                   <div className="flex items-center justify-between p-5 pb-3">
                     <div className="flex items-center gap-3">
-                      {step !== 'date' && step !== 'success' && (
+                      {step !== 'date' && step !== 'pass' && step !== 'success' && (
                         <button
                           onClick={() => setStep(step === 'slot' ? 'date' : 'slot')}
                           className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 mr-1"
@@ -423,10 +491,11 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                       <div>
                         <p className="text-white font-black text-sm leading-tight">{sport?.name}</p>
                         <p className="text-white/40 text-[10px]">
+                          {step === 'pass' && 'Walk-in access pass'}
                           {step === 'date' && 'Select date'}
                           {step === 'slot' && `${selectedDate ? new Date(selectedDate).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' }) : ''}`}
                           {step === 'details' && `${selectedSlot?.startTime}–${selectedSlot?.endTime}`}
-                          {step === 'success' && 'Booking confirmed'}
+                          {step === 'success' && (walkIn ? 'Pass ready' : 'Booking confirmed')}
                         </p>
                       </div>
                     </div>
@@ -451,6 +520,94 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                   )}
 
                   <div className="px-5 pb-6">
+                    {/* ── STEP: pass (walk-in facilities — no slots to pick) ── */}
+                    {step === 'pass' && (
+                      <div className="space-y-4">
+                        {/* Membership banner */}
+                        {membershipCoversSport && activeMembership && (
+                          <div className="rounded-2xl px-4 py-3 flex items-start gap-3" style={{ background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)' }}>
+                            <Crown size={16} className="text-violet-400 shrink-0 mt-0.5" />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-violet-200 text-xs font-bold leading-tight">You have an active {activeMembership.planId?.name} membership</p>
+                              <p className="text-violet-300/70 text-[11px] mt-0.5">No need to buy a pass — just scan the QR at the {sport?.name?.toLowerCase()}.</p>
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="rounded-2xl p-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                          <div className="flex items-start justify-between gap-4">
+                            <div>
+                              <p className="text-white font-black text-base leading-tight">1 Hour Access Pass</p>
+                              <p className="text-white/40 text-xs mt-1">No booking needed — walk in anytime</p>
+                            </div>
+                            <p className="font-black text-2xl leading-none shrink-0" style={{ color: accentColor }}>
+                              {formatCurrency(walkInPrice)}
+                            </p>
+                          </div>
+
+                          <ul className="space-y-2.5 mt-4 pt-4 border-t border-white/5">
+                            {[
+                              { icon: CalendarClock, text: 'Pass is valid for 24 hours from purchase' },
+                              { icon: QrCode, text: 'Scan the QR at reception to check in' },
+                              { icon: Timer, text: 'Your 60 minutes start on check-in, not before' },
+                            ].map(({ icon: Icon, text }) => (
+                              <li key={text} className="flex items-start gap-2.5 text-xs text-white/60">
+                                <Icon size={13} className="shrink-0 mt-0.5" style={{ color: accentColor }} />
+                                {text}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Auth — keys keep the Google button's node from being reused */}
+                        {isAuthenticated ? (
+                          <div key="signed-in" className="rounded-2xl p-4 flex items-center gap-3" style={{ background: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.2)' }}>
+                            <CheckCircle2 className="text-green-500 shrink-0" size={18} />
+                            <div>
+                              <p className="text-white text-sm font-semibold">{user?.name}</p>
+                              <p className="text-white/40 text-xs">{user?.email}</p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div key="signed-out" className="rounded-2xl p-4 text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                            <p className="text-white/50 text-xs mb-3">Sign in to continue with your purchase.</p>
+                            <div ref={googleButtonRef} className="flex justify-center" />
+                          </div>
+                        )}
+
+                        {walkInPrice <= 0 ? (
+                          <div className="rounded-2xl px-4 py-3 flex items-center gap-2 text-xs" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)' }}>
+                            <AlertTriangle size={13} className="text-red-400 shrink-0" />
+                            <span className="text-red-300">One-time pricing isn't set up for this facility yet. Please contact reception.</span>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={handleWalkInPayment}
+                            disabled={submitting || !isAuthenticated}
+                            className="w-full py-4 rounded-2xl font-black text-sm flex flex-col items-center justify-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                            style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor}BB)`, boxShadow: `0 8px 24px ${accentColor}30` }}
+                          >
+                            {submitting ? (
+                              <Loader2 size={20} className="animate-spin text-white" />
+                            ) : (
+                              <>
+                                <div className="flex items-center gap-2 text-white">
+                                  <CreditCard size={15} />
+                                  Pay {formatCurrency(walkInPrice)} via Razorpay
+                                </div>
+                                <span className="text-[10px] text-white/60 font-normal normal-case">Secured by Razorpay</span>
+                              </>
+                            )}
+                          </button>
+                        )}
+
+                        <div className="flex items-center gap-2 text-white/30 text-xs justify-center">
+                          <ShieldCheck size={12} />
+                          <span>256-bit encrypted · PCI-DSS compliant</span>
+                        </div>
+                      </div>
+                    )}
+
                     {/* ── STEP: date ── */}
                     {step === 'date' && (
                       <div className="space-y-4">
@@ -818,21 +975,51 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                         <div className="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center mx-auto">
                           <Check className="text-green-500" size={32} />
                         </div>
-                        <div>
-                          <h3 className="text-white font-black text-xl">Slot Booked!</h3>
-                          <p className="text-white/50 text-sm mt-1">
-                            {sport?.name} · {selectedSlot?.startTime}–{selectedSlot?.endTime}
-                          </p>
-                          <p className="text-white/30 text-xs mt-1">
-                            {new Date(selectedDate).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}
-                          </p>
-                        </div>
-                        <button
-                          onClick={onClose}
-                          className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white/70 hover:text-white border border-white/10 hover:border-white/20"
-                        >
-                          Close
-                        </button>
+                        {walkIn ? (
+                          <div>
+                            <h3 className="text-white font-black text-xl">Pass Ready!</h3>
+                            <p className="text-white/50 text-sm mt-1">
+                              {sport?.name} · 1 hour access
+                            </p>
+                            <p className="text-white/30 text-xs mt-1">
+                              Valid for 24 hours. Scan the QR at reception when you arrive.
+                            </p>
+                          </div>
+                        ) : (
+                          <div>
+                            <h3 className="text-white font-black text-xl">Slot Booked!</h3>
+                            <p className="text-white/50 text-sm mt-1">
+                              {sport?.name} · {selectedSlot?.startTime}–{selectedSlot?.endTime}
+                            </p>
+                            <p className="text-white/30 text-xs mt-1">
+                              {new Date(selectedDate).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' })}
+                            </p>
+                          </div>
+                        )}
+                        {walkIn ? (
+                          <div className="flex flex-col gap-2.5 max-w-[240px] mx-auto">
+                            <button
+                              onClick={() => { onClose(); navigate('/user/scan'); }}
+                              className="w-full py-3 rounded-2xl font-black text-sm text-white flex items-center justify-center gap-2"
+                              style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor}BB)`, boxShadow: `0 8px 24px ${accentColor}30` }}
+                            >
+                              <QrCode size={15} /> Scan QR to Check In
+                            </button>
+                            <button
+                              onClick={onClose}
+                              className="w-full py-2.5 rounded-xl text-sm font-semibold text-white/50 hover:text-white/80 border border-white/10 hover:border-white/20 transition-colors"
+                            >
+                              Close
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={onClose}
+                            className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white/70 hover:text-white border border-white/10 hover:border-white/20"
+                          >
+                            Close
+                          </button>
+                        )}
                       </motion.div>
                     )}
                   </div>
@@ -877,22 +1064,24 @@ export default function OneTimeBookingModal({ sport, isOpen, onClose }) {
                           {activeMembership?.planId?.name || 'Your membership'} covers {sport?.name}
                         </h3>
                         <p className="text-white/50 text-sm leading-relaxed mb-6">
-                          You can book this sport for free using your membership. Head to your Bookings page to pick a slot without paying again.
+                          {walkIn
+                            ? `Your membership already covers this — there's nothing to book. Just walk in, scan the QR at reception, and your hour starts.`
+                            : 'You can book this sport for free using your membership. Head to your Bookings page to pick a slot without paying again.'}
                         </p>
 
                         <div className="w-full flex flex-col gap-2.5">
                           <button
-                            onClick={() => { setShowMembershipPopup(false); onClose(); navigate('/user/membership'); }}
+                            onClick={() => { setShowMembershipPopup(false); onClose(); navigate(walkIn ? '/user/scan' : '/user/membership'); }}
                             className="w-full py-3 rounded-2xl font-black text-sm text-white flex items-center justify-center gap-2"
                             style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)', boxShadow: '0 8px 24px rgba(124,58,237,0.35)' }}
                           >
-                            <Crown size={15} /> Go to Membership
+                            {walkIn ? <><QrCode size={15} /> Scan QR to Check In</> : <><Crown size={15} /> Go to Membership</>}
                           </button>
                           <button
                             onClick={() => setShowMembershipPopup(false)}
                             className="w-full py-3 rounded-2xl font-semibold text-sm text-white/50 hover:text-white/80 border border-white/10 hover:border-white/20 transition-colors"
                           >
-                            Book as One-Time Anyway
+                            {walkIn ? 'Buy a Pass Anyway' : 'Book as One-Time Anyway'}
                           </button>
                         </div>
                       </div>

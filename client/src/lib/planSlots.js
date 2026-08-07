@@ -7,16 +7,18 @@
 //
 // Shared by /user/membership and /buy-memberships so both pages agree on which
 // memberships get a "Book Slot" button. Change the rule here, both follow.
+import { isWalkInSportKey } from './walkInSports';
+
 export function planHasNoSlots(p) {
   if (!p) return false;
   if (p.requiresSlotBooking === false) return true;
   if (p.requiresSlotBooking === true) return false;
 
-  const sports = (p.sportsIncluded || []).map((s) => (s || '').trim().toLowerCase());
+  const sports = p.sportsIncluded || [];
 
   // If sportsIncluded lists any sport other than gym, it requires slot booking
   if (sports.length > 0) {
-    const hasSlotSport = sports.some((s) => s !== 'gym');
+    const hasSlotSport = sports.some((s) => !isWalkInSportKey(s));
     if (hasSlotSport) return false;
   }
 

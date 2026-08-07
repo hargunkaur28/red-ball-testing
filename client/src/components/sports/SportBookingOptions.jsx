@@ -4,6 +4,7 @@ import { Clock, QrCode, Zap, ChevronRight, Loader2, Sun, Moon } from 'lucide-rea
 import { formatCurrency } from '../../lib/utils';
 import { getSportFallback } from './sportFallbacks';
 import { isComboPlan } from '../../lib/comboPlans';
+import { isWalkInSport } from '../../lib/walkInSports';
 import MembershipPlanCard from './MembershipPlanCard';
 import OneTimeBookingModal from './OneTimeBookingModal';
 
@@ -12,7 +13,10 @@ export default function SportBookingOptions({ sport, plans = [], plansLoading = 
   const fallback = getSportFallback(sport?.slug || sport?.name || '');
   const accentColor = fallback.color || '#C5DB3B';
 
-  const isDayNight = sport?.slotPricingMode === 'dayNight';
+  // Walk-in facilities (gym) sell a prepaid pass, not a slot — day/night slot
+  // pricing never applies to them.
+  const walkIn = isWalkInSport(sport);
+  const isDayNight = !walkIn && sport?.slotPricingMode === 'dayNight';
   const hasOneTime = (sport?.hourlyPrice > 0) ||
     (isDayNight && (sport?.daySlotPrice > 0 || sport?.nightSlotPrice > 0));
 
@@ -72,7 +76,9 @@ export default function SportBookingOptions({ sport, plans = [], plansLoading = 
                 </div>
               ) : (
                 <div>
-                  <p className="text-white font-black text-lg leading-tight">1 Hour Session</p>
+                  <p className="text-white font-black text-lg leading-tight">
+                    {walkIn ? '1 Hour Access Pass' : '1 Hour Session'}
+                  </p>
                   <p className="font-black text-3xl leading-tight mt-1" style={{ color: accentColor }}>
                     {formatCurrency(sport.hourlyPrice)}
                   </p>
@@ -80,11 +86,18 @@ export default function SportBookingOptions({ sport, plans = [], plansLoading = 
               )}
 
               <ul className="space-y-1.5">
-                {[
-                  { icon: Clock, text: 'Select date & pick from available slots' },
-                  { icon: QrCode, text: 'Instant QR check-in' },
-                  { icon: Zap, text: 'Secure online payment' },
-                ].map(({ icon: Icon, text }) => (
+                {(walkIn
+                  ? [
+                      { icon: Clock, text: 'No booking — walk in anytime, pass valid 24 hours' },
+                      { icon: QrCode, text: 'Your hour starts when you scan the QR' },
+                      { icon: Zap, text: 'Secure online payment' },
+                    ]
+                  : [
+                      { icon: Clock, text: 'Select date & pick from available slots' },
+                      { icon: QrCode, text: 'Instant QR check-in' },
+                      { icon: Zap, text: 'Secure online payment' },
+                    ]
+                ).map(({ icon: Icon, text }) => (
                   <li key={text} className="flex items-center gap-2 text-xs text-white/50">
                     <Icon size={12} className="text-white/30 shrink-0" />
                     {text}
@@ -101,7 +114,7 @@ export default function SportBookingOptions({ sport, plans = [], plansLoading = 
                 boxShadow: `0 6px 20px ${accentColor}25`,
               }}
             >
-              Book Now
+              {walkIn ? 'Buy Pass' : 'Book Now'}
               <ChevronRight size={16} />
             </button>
           </div>

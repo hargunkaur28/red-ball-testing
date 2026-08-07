@@ -8,7 +8,7 @@ import { useAcademyInfo } from '../../hooks/useAcademyInfo';
 // generic facilities grid, which would make the visitor pick the sport again.
 export function CTAStrip({ sport }) {
   const bookHref = sport ? `/sports/${sport}` : '/book-slots';
-  const membershipHref = sport ? `/buy-membership?sport=${sport}` : '/buy-membership';
+  const membershipHref = sport ? `/sports/${sport}` : '/book-slots';
 
   return (
     <div className="bg-[#C5DB3B] py-10 px-4">

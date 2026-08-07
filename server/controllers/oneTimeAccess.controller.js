@@ -40,6 +40,14 @@ exports.purchaseOrder = async (req, res) => {
 
     const ratePerHour = sport.hourlyPrice || 0;
     const amount = ratePerHour; // 1 hour access
+    // Razorpay rejects zero-value orders, and a free pass should never be sold by
+    // accident — a sport with no hourly price simply isn't on sale.
+    if (amount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'One-time access is not available for this facility yet.',
+      });
+    }
     const gstAmount = 0; // Removed GST
     const totalAmount = amount + gstAmount;
 
@@ -158,6 +166,12 @@ exports.verifyPurchase = async (req, res) => {
     // 5. Create Payment record
     const ratePerHour = sport.hourlyPrice || 0;
     const amount = ratePerHour;
+    if (amount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'One-time access is not available for this facility yet.',
+      });
+    }
 
     const payment = await Payment.create({
       studentId: userId,
